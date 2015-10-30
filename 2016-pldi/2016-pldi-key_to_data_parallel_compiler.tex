@@ -26,6 +26,29 @@ relationships in a pure data-parallel fashion without complex control flow. We g
 method through examples of function lifting and expression flattening.
 \end{abstract}
 
+%[c]Proposed new outline:
+%[c]
+%[c]I. 	Generalization on manipulations over Sub-tree computation
+%[c]  A.	Key + Encoding → Data parallel, Array-based computation
+%[c]  B.	Easy to write/read
+%[c]  C.	Uniform across passes
+%[c]II.	Case Studies
+%[c]  A.	Function Lifting
+%[c]  B.	Expression Flattening
+%[c]  C.	Lexical Scope Resolution
+%[c]  D.	Illustrates the problem space
+%[c]III.	Other passes/Issues
+%[c]  A.	Discussion of other passes
+%[c]  B.	Beyond the Key Operator
+%[c]IV.	In practice/Co-dfns Compiler
+%[c]V.	Performance/Results
+%[c]
+%[c]Questions that must be addressed:
+%[c]
+%[c]1. Why the formalization in APL?
+%[c]2. Why parallelize a compiler?
+%[c]3. How well does it work/scale/generalize
+
 %[of]:Introduction
 \section{Introduction}
 
