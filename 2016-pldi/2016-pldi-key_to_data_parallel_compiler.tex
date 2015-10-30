@@ -17,13 +17,7 @@
 
 \maketitle
 \begin{abstract}
-By choosing an appropriate representation for the AST, we can implement a compiler for a modern functional 
-language using only data-parallel array operations under simple functional composition without the use of 
-branching, recursion, or other means of explicit control flow. In this pearl we elucidate the core data structure 
-and an operator, called Key, that enable a surprisingly direct implementation of non-trivial transformations. 
-The result permits arbitrary computation over sub-trees chosen by parent-child and other inter-node 
-relationships in a pure data-parallel fashion without complex control flow. We give direction on the use of this 
-method through examples of function lifting and expression flattening.
+TBW
 \end{abstract}
 
 %[c]Proposed new outline:
@@ -51,6 +45,108 @@ method through examples of function lifting and expression flattening.
 
 %[of]:Introduction
 \section{Introduction}
+
+Compilers are everywhere, but their design and structure does not scale well to modern 
+parallel architectures. Traditional compilers are very difficult to parallelize, and the benefits of 
+modern architectures is often seen only through the use of distributed build systems which invoke 
+the single threaded compilers on multiple ``documents'' at the same time. Future CPU architectures 
+promise to be even more data parallel, such as the Xeon Phi and the GPGPU architectures. On these 
+systems it is even harder to obtain good performance for compilers written in the traditional fashion. 
+
+Fundamentally, a compiler is a translator that operates over some sort of tree and transforms it to 
+another tree of an usually radically different shape but equivalent ``semantics.'' These algorithms and 
+transformations show up everywhere, from document processing on the Web, XML-based publishing 
+workflows, to the programming language compilers with which most developers are intimately familar. 
+These transformations differ from other widely studied parallel graph problems in that they tend to greatly 
+alter the fundamental structure of the graph/tree, unlike, say, breadth-first search or single-source 
+shortest path algorithms. This rapidly shifting graph structure requires different approaches to 
+achieving good parallelism. 
+
+There has been some interesting use of GPUs to accelerate certain compiler analyses and passes. 
+Unfortunately, attempts to parallelize compilers usually takes the form of a great deal of work spent to 
+highly optimize a single compiler pass. The results are often fragile and require a great deal of effort 
+to maintain and keep in line with the rest of the compiler. This integration problem makes it difficult to 
+scale the "ad hoc" parallelization effort of individual compiler passes to a complete system. This is 
+particularly true in situations where the compiler passes may change rapidly, such as with XSLT or 
+document publishing, where it is very common for the document preparer to write or tweak transformation 
+passes to suit the specific class of documents being handled. In these cases, the expertise and time 
+involved in parallelizing such transformations makes the ad hoc approach mostly intractable. 
+
+Furthermore, compilers are increasingly becoming a part of a "live" and interactive feedback loop. 
+Just in time compilation and on the fly static compilation are both used to provide custom binaries tuned 
+to specific tasks on the fly. These techniques are used in web services and large scale databases, where 
+in-memory databases may construct functions on the fly to execute. There is great interest in moving 
+such systems on to the GPU or other highly data-parallel architectures, but it would significantly hamper 
+the performance of the system if the compilation phase of query execution were required to occur on the 
+CPU, especially at scale where there may be many more GPU accelerators than CPU resources. 
+
+We propose a language-driven approach to compiler construction that provides a framework for the 
+development of arbitrary compiler transformations that are data-parallel by construction. These 
+techniques intentionally optimize for the data-parallel case, which permits a wide degree of platform 
+independent performance compared to the traditional approach to compiler design, which requires 
+significant effort and possibly signficiant transformation of the source code to achieve good parallel 
+performance on high-parallel architectures. 
+
+We use a mathematically oriented, array based language that is accessible and popular with information 
+scientists. We restrict this language to permit only the composition of data-flow oriented array based 
+programs whose core primitives are all data-parallel by definition. The permitted compositions of these 
+primitives ensures that the resulting programs are both analyzable and parallel by construction, permitting 
+a wide array of whole program and transformation specific optimizations that have been long studied. 
+The notation is intentially close to mathematical notation, and as such, the resulting compiler passes 
+more closely resemble the compact formal descriptions of the transformations rather than complex 
+recursive algorithms for transforming trees. 
+
+At the core of such techniques, we must have some method for transforming trees in a controlled and 
+predictable manner. We build on the Nanopass paradigm for compiler construction, wherein a compiler is 
+developed as a series of small, functional tree transformations (passes) that have an input AST language 
+and an output AST language. Through progressive refinement of the tree, the composition of these 
+passes results in the complete compiler. This is a highly functional approach, with very little mutation. 
+Fundamentally, each pass must identify regions of the tree upon which it works, do some sort of computation 
+on that sub-tree that has been matched (often through pattern matching on the nodes) and reassemble 
+the tree in some new order that matches the desired structure. In other words, a compiler nanopass 
+can be thought of as an arbitrary computation over a given selection of sub-trees in an AST, where 
+this computation could move, relocate, or change the sub-tree. 
+
+The key to our language-drive approach is a set of techniques that enable a data-parallel expression of 
+these arbitrary transformations. By using a higher-order function called Key, together with basic array 
+programming techniques and an encoding for the tree connections called a Node Coordinate matrix, we can 
+identify sub-trees and select them for computation by their parent-child relationships in a data-parallel 
+fashion, and then compute on these sub-trees using traditional array programming techniques. 
+
+We have constructed a complete compiler for a superset of our language called Co-dfns. This compiler is 
+part of a commercial effort to develop platform independent performance for array programs. The 
+compiler is developed completely in a data-parallel by construction as described in this paper, and uses 
+only traditional and well known array primitives together with function composition to form the entire 
+core compiler passes and generator. As a result, the compiler takes the form of a pure data-flow graph 
+without mutation and has an extremely uniform and concise definition. It uses no recursion, pattern 
+matching, branching, or other forms of explicit looping. The compiler, together with its runtime libraries 
+and parser, comes in under 1000 lines of code. 
+
+In this paper we fully elucidate three compiler passes from the Co-dfns compiler to demonstrate the 
+techniques used and we provide further analysis of how these techniques are used in the other compiler 
+passes. We further provide a comparative analysis of these passes against their counterparts implemented 
+using the Nanopass compiler framework, comparing performance both in terms of programmer effort and 
+portability/maintainability, as well as runtime performance. 
+
+\paragraph{Contributions}
+
+\begin{itemize}[noitemsep]
+\item We describe a method of computing over arbitrary sub-trees selected by their parent-child 
+relationships in a data-parallel manner using the Key operator and Node Coordinates.
+\item We situate this technique into a broader, language-driven compiler construction strategy 
+that enables the development of parallel by construction compilers that exhibit desirable programmability 
+features in terms of code size, complexity, portability, and maintainability. 
+\item We provide analysis of these techniques as used in a commercial compiler project called Co-dfns and 
+report on the results.
+\item We compare these techniques to the Nanopass approach to compiler design in terms of programmer 
+productivity and compiler runtime performance. 
+\item We enumerate a set of programming techniques, patterns, and strategies that complement the 
+Key operator and Node Coordinates in the construction of tree transformations in general and give some 
+intuitions on the use of these techniques on arbitrary transformations.
+\end{itemize}
+%[cf]
+%[of]:Introduction
+\section{Introduction (Old)}
 
 When compiling a high-level language into a low-level language, we often implement a variety of 
 flattening transformations to normalize more complex code exhibiting nesting into flat programs 
