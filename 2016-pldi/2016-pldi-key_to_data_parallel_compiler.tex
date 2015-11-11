@@ -1,5 +1,6 @@
 \documentclass[pldi]{sigplanconf-pldi15}
 % \usepackage[utf8]{inputenc}
+\usepackage{array}
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX]{STIX}
 \setmonofont{APL385 Unicode}
@@ -642,51 +643,6 @@ throughout our data parallel compiler, and is therefore particularly useful to u
 %[of]:Case Studies
 \section{Case Studies}
 
-%[of]:Table of Compiler Passes
-\begin{table*}
-\centering
-\begin{tabular}{l p{2.4in} l l l}
-\textbf{Pass} & \textbf{Description} & \textbf{Core Patterns} 
- & \textbf{Key?} & \textbf{Coordinate?} \\ \hline
-Record Node Coordinates & Adds a new field to each node containing that node's 
- node coordinate. & Outer Product/Scan & No & Yes \\
-Record Function Depths & Adds a new field to each node recording how many 
- functions surround the node. & Inner Product & No & Yes \\
-Drop Unnamed Functions & Eliminates some code that will not be evaluated at 
- the top-level. & Filter & No & No \\
-Drop Unreachable Code & Eliminates some unreachable code. &
- Filter/Inner Product & No & Yes \\
-Lift Functions & Moves all functions to the top-level. & Key & Yes & Yes \\
-Drop Redundant Nodes & Eliminates unnecessary nodes/nesting & Filter & No & No \\
-Flatten Expressions & Removes nesting from expressions. & Key & Yes & Yes \\
-Compress Atomic Nodes & Atomizes nested atom nodes & Amend & No & No \\
-Propagate Constants & Inlines all references to literal values. &
- Amend/Rank & No & Yes \\
-Fold Constants & Converts constant expressions to literals & Amend & No & No \\
-Compress Expressions & Converts expression sub-trees into single nodes. & 
- Amend & No & No \\
-Record Final Return Value & Records the value returned by each function. & 
- Key & Yes & No \\
-Normalize Values Field & Normalizes the shape and size of the values field. &
- Amend & No & No \\
-Lift Type-checking & Infers some type information at compile time &
- Power Limit/Rank & No & No \\
-Allocate Value Slots & Does a form of frame allocation for variables &
- Key & Yes & No \\
-Anchor Variables & Resolves lexically scoped variables &
- Key & Yes & No \\
-Record Live Variables & Records the variables that are live at each point of 
- execution. & Key & Yes & No \\
-Fuse Scalar Loops & Identifies Fusion opportunities and fuses expressions &
- Key & Yes & No \\
-Type Specialization & Specializes each function for a series of potential inputs. 
- & Key & Yes & No \\
-\end{tabular}
-\caption{A listing of some compiler passes in the Co-dfns compiler and their 
- relationship with the Key operator and associated tree computation techniques}
-\label{table:passes}
-\end{table*}
-%[cf]
 %[of]:Function Lifting
 \subsection{Function Lifting}
 
@@ -791,8 +747,82 @@ that problem. More work would be required to take into consideration a specific 
 \subsection{Lexical Scoping}
 %[cf]
 %[cf]
+%[of]:Table of Compiler Passes
+\renewcommand{\arraystretch}{1.5}
+\begin{table*}
+\centering
+\begin{tabular}{l p{2.8in} l l l}
+\textbf{Pass} & \textbf{Description} & \textbf{Core Patterns} 
+ & \textbf{Coordinate?} \\ \hline
+Record Node Coordinates & Adds a new field to each node containing that node's 
+ node coordinate. & Outer Product/Scan & Yes \\
+Record Function Depths & Adds a new field to each node recording how many 
+ functions surround the node. & Inner Product & Yes \\
+Drop Unnamed Functions & Eliminates some code that will not be evaluated at 
+ the top-level. & Filter & No \\
+Drop Unreachable Code & Eliminates some unreachable code. &
+ Filter/Inner Product & Yes \\
+Lift Functions & Moves all functions to the top-level. & Key & Yes \\
+Drop Redundant Nodes & Eliminates unnecessary nodes/nesting & Filter & No \\
+Flatten Expressions & Removes nesting from expressions. & Key & Yes \\
+Compress Atomic Nodes & Atomizes nested atom nodes & Amend & No \\
+Propagate Constants & Inlines all references to literal values. &
+ Amend/Rank & Yes \\
+Fold Constants & Converts constant expressions to literals & Amend & No \\
+Compress Expressions & Converts expression sub-trees into single nodes. & 
+ Amend & No \\
+Record Final Return Value & Records the value returned by each function. & 
+ Key & No \\
+Normalize Values Field & Normalizes the shape and size of the values field. &
+ Amend & No \\
+Lift Type-checking & Infers some type information at compile time &
+ Power Limit/Rank & No \\
+Allocate Value Slots & Does a form of frame allocation for variables &
+ Key & No \\
+Anchor Variables & Resolves lexically scoped variables &
+ Key & Yes \\
+Record Live Variables & Records the variables that are live at each point of 
+ execution. & Key & No \\
+Fuse Scalar Loops & Identifies Fusion opportunities and fuses expressions &
+ Key & No \\
+Type Specialization & Specializes each function for a series of potential inputs. 
+ & Key & No \\
+\end{tabular}
+\caption{A listing of some compiler passes in the Co-dfns compiler and their 
+ relationship with the Key operator and associated tree computation techniques}
+\label{table:passes}
+\end{table*}
+%[cf]
 %[of]:Other Passes
 \section{Other Passes}
+
+Table \ref{table:passes} contains a selection of passes from the Co-dfns compiler 
+and breaks down their features based on how they traverse the tree and whether 
+or not they use the Key operator or Node Coordinates. They are oriented with 
+front-end passes higher in the table and passes further down the compiler 
+chain at the bottom of the table. These passes give a good idea of how the Key 
+operator plays a part in the complete compiler as well as how Node Coordinates 
+help to deal with complex sub-tree selections. 
+
+We make a few notes on the table and the analysis. The Key operator can be used 
+with or without the node coordinates structure. In cases where the AST is 
+sufficiently flat and arranged in a sufficiently convenient order, the grouping 
+operations are very simple. In these cases, the Key operator amounts to a 
+map operation over some selected sub-trees selected at a specific depth. These 
+occur later in the compiler where the reader will note appearences of the Key 
+operator without the use of Node Coordinates. 
+
+Likewise, node coordinates find their place early on in the compiler where it 
+is necessary to deal with the more highly nested AST. They are useful for identifying 
+this information regardless of whether the Key operator is used to handle the 
+grouping or not. Thus passes like ``Drop Unreachable Code'' that remove whole 
+sub-trees from the AST may use the Node Coordinates to do the grouping once 
+the correct parent node has been identified. 
+
+In short, the goal of the structure and design of the compiler passes given 
+in table \ref{table:passes} is to utilize Node Coordinates to remove as quickly as possible 
+the nested structure of the AST into a flatter form that does not require complex 
+analysis to traverse. 
 %[cf]
 %[of]:The Co-dfns Compiler
 \section{The Co-dfns Compiler}
