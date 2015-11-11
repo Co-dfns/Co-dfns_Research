@@ -642,6 +642,51 @@ throughout our data parallel compiler, and is therefore particularly useful to u
 %[of]:Case Studies
 \section{Case Studies}
 
+%[of]:Table of Compiler Passes
+\begin{table*}
+\centering
+\begin{tabular}{l p{2.4in} l l l}
+\textbf{Pass} & \textbf{Description} & \textbf{Core Patterns} 
+ & \textbf{Key?} & \textbf{Coordinate?} \\ \hline
+Record Node Coordinates & Adds a new field to each node containing that node's 
+ node coordinate. & Outer Product/Scan & No & Yes \\
+Record Function Depths & Adds a new field to each node recording how many 
+ functions surround the node. & Inner Product & No & Yes \\
+Drop Unnamed Functions & Eliminates some code that will not be evaluated at 
+ the top-level. & Filter & No & No \\
+Drop Unreachable Code & Eliminates some unreachable code. &
+ Filter/Inner Product & No & Yes \\
+Lift Functions & Moves all functions to the top-level. & Key & Yes & Yes \\
+Drop Redundant Nodes & Eliminates unnecessary nodes/nesting & Filter & No & No \\
+Flatten Expressions & Removes nesting from expressions. & Key & Yes & Yes \\
+Compress Atomic Nodes & Atomizes nested atom nodes & Amend & No & No \\
+Propagate Constants & Inlines all references to literal values. &
+ Amend/Rank & No & Yes \\
+Fold Constants & Converts constant expressions to literals & Amend & No & No \\
+Compress Expressions & Converts expression sub-trees into single nodes. & 
+ Amend & No & No \\
+Record Final Return Value & Records the value returned by each function. & 
+ Key & Yes & No \\
+Normalize Values Field & Normalizes the shape and size of the values field. &
+ Amend & No & No \\
+Lift Type-checking & Infers some type information at compile time &
+ Power Limit/Rank & No & No \\
+Allocate Value Slots & Does a form of frame allocation for variables &
+ Key & Yes & No \\
+Anchor Variables & Resolves lexically scoped variables &
+ Key & Yes & No \\
+Record Live Variables & Records the variables that are live at each point of 
+ execution. & Key & Yes & No \\
+Fuse Scalar Loops & Identifies Fusion opportunities and fuses expressions &
+ Key & Yes & No \\
+Type Specialization & Specializes each function for a series of potential inputs. 
+ & Key & Yes & No \\
+\end{tabular}
+\caption{A listing of some compiler passes in the Co-dfns compiler and their 
+ relationship with the Key operator and associated tree computation techniques}
+\label{table:passes}
+\end{table*}
+%[cf]
 %[of]:Function Lifting
 \subsection{Function Lifting}
 
