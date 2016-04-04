@@ -1,0 +1,210 @@
+Abstraction Considered Harmful
+    Aaron W. Hsu
+    PL Wonks 2016 Spring
+
+Co-dfns Architecture
+
+How do we make a parallel compiler?
+
+What is the Hardware?
+
+Modern Hardware ←→ Parallelism
+
+Vectorization vs. Multi-core
+
+Multi-core ←→ Parallel Build
+
+How do we leverage vectorization
+ and fine grained parallelism?
+
+How do we make a data parallel compiler?
+
+How do we DESIGN a data parallel compiler?
+
+Constraints are FUNDAMENTAL to good design
+
+Iverson: Notation as a Tool of Thought
+A.K.A. -- Language Syntax Matters
+
+Language-driven Compiler Design
+
+Step 1: Data-parallel Primitives
+
+Step 2: Drop everything not obviously data-parallel
+
+Step 3: Stuff
+
+Step 4: Profit (Publish?)
+
+Core APL Primitives
++-÷×|*⍟⌈⌊!<≤=≠≥>∧∨⍲⍱⌷?⍴,⍪⌽⊖⍉∊⊃⍳○~≡≢⊢⊣/⌿\⍀⊤⊥↑↓
+
+Basic Higher-order Operators
+    Reduction: /⌿
+    Scan: \⍀
+    Inner Product: .
+    Outer Product: ∘.
+    Compose: ∘
+    Commute: ⍨
+    Power Limit*: ⍣
+
+Power Limit is of Un-limited Power
+    ...Use with Caution!
+
+Function Composition
+    Function Application
+    Binding
+    Trains
+
+Trains give concise function composition
+
+You have what you need...Go!
+
+Parser → Core → Generator → C Compiler
+
+Parser is prior work: APL 2 by 2
+  Parsing is just N-wise Reduction over Power Limit
+
+Generator is becoming more Data Parallel
+    Single Dispatch to Generators
+    Each node generated independent of all other nodes
+
+Core Compiler
+    Nanopass becomes Picopass
+    Fully Data Parallel
+
+Hey! What about Abstraction?
+
+@code_frequency.png
+
+Implementations Languages
+    Scheme
+    Java
+    C
+    C++
+    ML
+    APL
+
+Programming Approaches
+    Nanopass
+    Traditional
+    Cleanroom
+
+Smaller Code ←→ Less Abstraction
+
+BC When you're actually in the practice of writing code, 
+do you try many drafts?
+ 
+AW I've found the best thing is just to get something running, and then I'll 
+redo it probably 10 or 20 times until I can't get it any smaller.
+ 
+BC Do you redo it for aesthetics?
+ 
+AW Yes. What I tell my community is if you can find a shorter, 
+more elegant program that isn't much slower than my code, I want to hear 
+about it. And if it's shorter and faster, I absolutely want to hear about it.
+
+AW I think so. The thing about beautiful code is, first of all, it's beautiful. 
+Second, it's a lot easier to maintain.
+ 
+BC I think elegant is something that we all know when we see it, but how 
+would you describe elegant code?
+ 
+AW It's just really clear. I don't know what it is. In our community we 
+have a listbox where people post questions and answers about coding, and the 
+elegant code is always the shortest code.
+ 
+BC Is it elegant because it's the shortest, or is being short a side 
+effect of being elegant?
+ 
+AW I guess it's both. All things being equal, less code is always better.
+
+Terse ≠ Cryptic
+
+Demo: Code Structure and Compiler Passes
+
+Single File, Short, Flat
+
+Line-oriented Structure ←→ Easy Navigation
+
+Function Trains Masterclass
+
+Design solid, flexible core vocabulary and convention
+
+Demo: AST and the Core Vocabulary
+
+Trick #1: Arity agnosticism
+
+Trick #2: Aggregate Operations
+
+Demo: Extracting Node Coordinates
+
+Trick #3: Idioms
+    Design Patterns that actually work
+
+Demo: Node Coordinates and the Key Operator
+
+Abstraction Reduction Tip #1:
+Idioms help reduce library dependency
+
+Trick #4: Table-driven Logic
+
+Demo: Type-Checking, Code Generator Dispatch
+
+Trick #5: Leverage Encode and Decode (Demo)
+
+Trick #6: Carefully extend vocabulary
+
+Demo: Core Compiler Utilities
+
+Trick #7: When all else fails, Index
+
+Trick #8: UNIX KISS, It's Good Enough (tm)
+
+Demo: Scalar Function Fusion
+
+How does this fit into other APL programmers?
+
+A core of classic techniques coupled with some new algorithms
+
+Extreme application of trains
+Turns out to work surprisingly well
+A "new expression level"
+
+Major differences in technique
+    Aggregate vs. Unit-level
+    Idioms Vs. Libraries
+    Spatial Arrangement vs. Syntax
+    Tersity vs. Long Names
+
+Fundamentally different base abstraction layer
+
+Common abstractions were not helpful
+    Static Typing
+    Objects
+    Type Classes
+    Syntax Abstraction
+    Recursion
+    Branching
+    Nanopass Languages (Surprised me)
+    Module Systems
+
+Each attempt to use extra abstractions made life harder
+
+Vocabulary + Carefully Selected Grammar = Win
+Don't be afraid to use spatial conventions
+
+Takeaway #1:
+Language drives design
+
+Takeaway #2:
+Elegance is visual and human,
+Be careful of designing for the computer
+
+Takeaway #3:
+Parallel programming does not have to be second class
+
+Takeaway #4:
+ed(1) editor FTW!
+ 
+Thank You.
