@@ -1,0 +1,380 @@
+From: PLDI '15 HotCRP <noreply@pldi15.hotcrp.com>
+Message-Id: <20150202071311.0335F2339C@mail.hotcrp.com>
+Date: Mon,  2 Feb 2015 07:13:11 +0000 (UTC)
+
+Dear Aaron,
+
+I regret to inform you that your submission #144, "No branching, no
+recursion, no problem:...", will not appear at PLDI'15 (it has been
+rejected).  This year we had a record number of submissions (303) of which
+the program committee accepted 58 papers (19%).
+
+I have included your reviews below and a summary of the PC discussion of
+your submission.  I hope you find that this feedback is constructive.
+
+Please participate in a brief anonymous survey about the submission,
+reviewing, and decision process for PLDI 2015.
+
+        http://bit.ly/1wUJOwS
+
+Best wishes,
+
+Steve Blackburn
+PLDI'15 Program Chair
+
+===========================================================================
+                                  Comment
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+Dear authors, thank you for your thorough response. The consensus was that the
+paper contains some interesting ideas but will need additional work to pass the
+bar for a broad conference such as PLDI. In particular there is a concern about
+evaluation. While parallelization of compiler transforms is interesting and
+likely has some intellectual merit of its own, ultimately the point of
+parallelization is increased performance which needs to be demonstrated to make
+a convincing case for the approach you are advocating.
+
+
+===========================================================================
+                           PLDI '15 Review #144A
+                     Updated 27 Nov 2014 2:50:46pm EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 1. Reject
+                         Conviction: 1. High
+
+                         ===== Paper summary =====
+
+This paper describes how to implement lexical scoping using only well-known
+array operations without complex control flow, recursion, or branching. This
+type of implementation is potentially useful for compilers running on massively
+parallel hardware.
+
+                        ===== Points in favor =====
+
+interesting idea
+
+                        ===== Points against =====
+
+no evaluation
+unclear practical value
+
+                      ===== Comments for author =====
+
+I am not an expert on the topic of this paper, so I cannot comment on the
+novelty of the presented idea nor on the related work coverage. Having said
+that, the paper probably makes an interesting theoretical contribution.
+However, I’m concerned about the complete lack of any result charts or tables.
+For example, there is no evaluation of the compilation speed (or memory usage)
+and no comparison with other approaches. This makes it impossible to assess
+whether the presented ideas are valuable in practice. Also, I’m wondering about
+the relevance of APL in the accelerator community.
+
+Minutiae:
+
+Blind submissions should not include acknowledgments.
+ast -> AST
+it’s -> its
+which -> that (several occurrences)
+
+===========================================================================
+                           PLDI '15 Review #144B
+                     Updated 9 Dec 2014 3:04:55pm EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 2. Accept
+                         Conviction: 2. Low
+
+                         ===== Paper summary =====
+
+The paper presents an APL implementation of two compiler passes (function
+lifting and variable anchoring) entirely without branching control flow, jumps
+or recursion. A future goal is to potentially run compilers on accelerator
+hardware such as GPUs.
+
+                        ===== Points in favor =====
+
+I found the paper quite refreshing, and the result impressive. 
+
+I can't claim fluency in APL, so Section 2 was very helpful as intro to the
+notation.
+
+The shown approach of working with trees, which is well suited to GPUs, may
+have applications beyond compilers.
+
+			===== Points against =====
+
+I'm a bit concerned about the overall memory requirements. It seems like tables
+as in Snippet 2 can grow exponential in the program size (?)
+
+The described transformations are promising, but of course implementing a full
+compiler on a GPU will need additional work (as the authors acknowledge).
+
+                      ===== Comments for author =====
+
+The authors may want to mention other related work on representing trees on
+GPUs, for example: General transformations for GPU execution of tree traversals
+(Goldfarb et al)
+
+===========================================================================
+                           PLDI '15 Review #144C
+                     Updated 13 Dec 2014 6:26:08pm EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 1. Reject
+                         Conviction: 1. High
+
+                         ===== Paper summary =====
+
+The paper describes the effect of using only arrays for a compiler without
+program conditionals. Usual program constructs are encoded in array operations
+of APL.
+
+                        ===== Points in favor =====
+
+The paper asks an interesting new question about compilation. Can a compiler
+become data-parallel? The encoding works as far as I can see, though I have not
+checked the details.
+
+                        ===== Points against =====
+
+The work seems at an early stage and only considers "function lifting" and
+"variable anchoring". The benefit of doing this is not very convincing yet,
+unless you can demonstrate significant improvement on compilation performance
+for example.
+
+                      ===== Comments for author =====
+
+Compiler may not have been the best example to demonstrate the use of arrays in
+complex computing tasks.
+
+===========================================================================
+                           PLDI '15 Review #144D
+                     Updated 22 Jan 2015 8:03:02am EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 1. Reject
+                         Conviction: 1. High
+
+                         ===== Paper summary =====
+
+Added in response to the author response, which says:
+
+> As a final note, we reiterate our opinion that the first step in
+> approaching a truly data parallel compiler in this style is to
+> demonstrate the viability and accessibility of the techniques absent
+> the obfuscating constraints necessary to implement at scale on the
+> GPU.
+
+While I agree that this is sensible when planning the exposition of a
+paper, it does not make sense from the perspective of carrying out the
+research. In particular, if you can offer no hope that writing in this
+style will help improve the (parallel) performance of a compiler, why
+is this an interesting direction to pursue? Some (hopefully
+compelling) argument needs to be made!
+
+==================================================
+
+This paper demonstrates some small compiler passes implemented in APL
+which are thus based on array manipulations that might be more
+amenable to parallelization.
+
+                        ===== Points in favor =====
+
+The paper provides more exposure to APL and seems to present some new
+tree manipulation techniques when using APL-style
+representations. (Well, they look new to me, but I have no experience
+programming in APL.)
+
+                        ===== Points against =====
+
+The paper discusses no implementation and does not deliver on the
+promise in the abstract, namely something that "efficiently executes
+on modern architectures like the GPU". 
+
+The paper is presented as a pearl, but there is no pearl category in
+the PLDI call for papers.
+
+The paper is quite difficult to understand, something that is the
+opposite of a pearl. In particular, the first interestingly pearly
+opportunity seems to come in section 4.1, where the paper discusses
+the node coordinate data structure. But I found this section
+impenetrable. Each of the transformations in snippet 2 made sense to
+me, but I couldn't connect them back to the tree or figure out how one
+might compute as promised in the last paragraph on page 5. It would be
+quite helpful if we got to see how this happened in the actual
+example.
+
+Overall, I think this paper does have the germ of a pearl in it, but
+
+a) it needs to be submitted to a conference that accepts pearls, and
+
+b) it needs to draw the reader along more carefully, using less of its
+space for big arrays of digits and more space for intuitions and
+examples.
+
+If this paper were to be considered as a non-pearl, then it surely
+would have to demonstrate somehow that the goals from the abstract
+and introduction were met with some kind of a performance analysis.
+
+                      ===== Comments for author =====
+
+What is the omega in the code on the bottom right of the first page?
+
+Just before section 3, there is a presumption that all dead code is
+already eliminated, but it seems like all of the code in the running
+example is dead, since the expression just returns the empty list.
+
+===========================================================================
+                           PLDI '15 Review #144E
+                    Updated 14 Jan 2015 11:07:20am EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 1. Reject
+                         Conviction: 2. Low
+
+                         ===== Paper summary =====
+
+This paper tackles an interesting problem: most compiler passes are written as
+AST traversals and transformations, which are often inherently sequential and
+inherently irregular. So how might one write such algorithms on hardware such
+as GPUs where the branching and irregularity destroy any hope of performance
+gains? The solution is to cleverly encode the AST in a matrix, and redefine a
+lot of the operations as manipulations of this matrix where each operation is
+essentially a "local" one, potentially making the algorithm more amenable to
+GPU execution. The authors demonstrate this technique using a "function
+lifting" AST transformation.
+
+                        ===== Points in favor =====
+
++ Interesting problem to tackle. I think the general idea of regularizing
+inherently irregular algorithms is a good one, and this seems to be a clever
+approach
+
+                        ===== Points against =====
+
+- The motivation is that this array-based approach is better suited for GPUs or
+  SIMD, but there's no real evidence that this is the case. In particular, it
+  seems like you would need efficient SIMDized implementations of some fairly
+  sophisticated operators like "key" to make this work.
+
+- The paper makes *heavy* use of APL syntax, and often strings together a set
+  of tersely described operations to produce fairly complex results, making the
+  paper very difficult to follow.
+
+                      ===== Comments for author =====
+
+I think the authors are tackling a very interesting problem. I would be very
+interested to see an approach to compiler transformations that can be
+effectively parallelized or implemented on a GPU, and I think the chosen
+approach seems plausible. However, I cannot recommend acceptance in the paper's
+current form.
+
+First, I found the paper very difficult to follow. In some sense, the
+transformations are intuitive and straightforward, but it's very hard to figure
+out what is going on . 
+
+For example, the matrix encoding of the AST is nice, but it is also fairly
+straightforward once I figured out what the encoding was actually doing. I
+would have liked to see a more plain English description of what is going on,
+rather than relying on so much APL syntax. A lot of the paper uses very terse
+English descriptions of complex operations, and then strings those operations
+together to do something even more complicated, without ever really providing
+an intuition for what the routines are really doing.
+
+Moreover, it's not clear that the APL syntax is helpful at all here, other than
+to show that the transformation can be concisely encoded in APL -- I think it
+would be much easier to follow the paper if more mnemonic forms of the
+functions were used.
+
+Some specific comments along those lines:
+
+1) "Given this coordinate matrix, named R, all the other compiler passes may
+not compute with the parent-child relationships..." it's not actually clear how
+this happens. What is the actual procedure for computing these relationships (I
+have some idea that it is based on scanning the rows and columns to find the
+parent of a child)? Is this essentially a sub-operation that appears in
+multiple places in the rest of the procedures? Where is this captured?
+
+2) What does the encoding function do? Is its particular encoding critical? Or
+is its only importance that it can take a (unique) vector index and create a
+unique integer?
+
+3) The use of transposed matrices in all the examples while still referring to
+"rows" and "columns" of the original matrices is quite confusing. In fact, I
+think that the authors themselves got mixed up at one point. In the first
+paragraph of the second column of page 5: "These spurious values are any
+non-zero values that appear in columns past the depth of any given node." I
+think that should be "rows" not "columns"
+
+The second big issue I have with the paper is that there's no evaluation of the
+claim that motivates the paper: that by eliminating recursion and branching,
+the resulting transformations can be more effectively implemented on something
+like a GPU. Just because a problem can be encoded as a bunch of matrix
+operations does not mean that it is amenable to execution on a GPU, or that
+doing so will be more efficient (for example, if the resulting matrices are
+very sparse, hence reintroducing the irregularity in order to represent the
+matrices in a GPU's limited memory). Any kind of implementation would have been
+welcome.
+
+===========================================================================
+                           PLDI '15 Review #144F
+                     Updated 19 Jan 2015 1:13:41pm EST
+---------------------------------------------------------------------------
+  Paper #144: No branching, no recursion, no problem: Lexical scoping with
+              arrays
+---------------------------------------------------------------------------
+
+                      Overall merit: 1. Reject
+                         Conviction: 2. Low
+
+                         ===== Paper summary =====
+
+This paper describes the design of two compiler passes, function lifting and
+variable anchoring, in the context of array languages.
+
+                        ===== Points in favor =====
+
+- The proposed passes that use array-only operations seem to make sense
+
+                        ===== Points against =====
+
+- very limited scope
+
+                      ===== Comments for author =====
+
+The paper is first motivated by the observation that array languages without
+recursion and branches are particularly suitable for GPU-like architectures.
+The paper then focuses on designs of two compiler passes including function
+lifting and variable anchoring in the context of an array language compiler,
+CO-dfns. The focus on function lifting and variable anchoring is poorly
+motivated. And it is not clear what is challenging about realizing these two
+passes. Instead of focusing on the implementation details of these two passes,
+which reads more like a technical report lack of insights, I would love to see
+some experiments demonstrating the motivation of paper, evaluating whether
+APL-like languages can be particularly efficient for GPUs compared to
+traditional languages. However, the paper’s current focus is of limited scope.
+There is also no discussion as why it is important and how the proposed
+approach compares against the prior work.
+  
+
+- Acknowledgment section should be omitted for double-blind submission
+
+
+
