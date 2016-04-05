@@ -90,7 +90,7 @@ compilers usually takes the form of a great deal of work spent
 to highly optimize a single compiler pass. The results are often
 fragile and require a great deal of effort to maintain and keep in
 line with the rest of the compiler. This integration problem makes it
-difficult to scale the "ad hoc" parallelization effort of individual
+difficult to scale the ``ad hoc'' parallelization effort of individual
 compiler passes to a complete system. This is particularly true in
 situations where the compiler passes may change rapidly, such as with
 XSLT or document publishing, where it is very common for the document
@@ -99,7 +99,7 @@ class of documents being handled. In these cases, the expertise and
 time involved in parallelizing such transformations makes the ad hoc
 approach mostly intractable.
 
-Furthermore, compilers are increasingly becoming a part of a "live"
+Furthermore, compilers are increasingly becoming a part of a ``live''
 and interactive feedback loop.  Just in time compilation and on
 the fly static compilation are both used to provide custom binaries
 tuned to specific tasks on the fly. These techniques are used in web
@@ -269,7 +269,7 @@ Symbol                   & Monadic            & Dyadic \\
 \texttt{!}               & Factorial          & Binomial \\
 \texttt{\textasciitilde} & Not                & \\
 \texttt{?}               & Roll               & \\
-\texttt{\^}              &                    & And \\
+\texttt{∧}              &                    & And \\
 \texttt{∨}               &                    & Or \\
 \texttt{⍲}               &                    & Nand \\
 \texttt{⍱}               &                    & Nor \\
@@ -381,7 +381,7 @@ Symbol     & Name & Description \\
 \texttt{⌸} & Key & Apply operand once for each sub-array grouped by key \\
 \end{tabular}
 \caption{Primitive Monadic/Unary Operators, each takes a single left
-operand and describes a verb operating over one or two arguments}
+operand and describes a function operating over one or two arguments}
 \label{tab:adverbs}
 \end{table*}
 
@@ -396,10 +396,10 @@ Symbol     & Name & Description \\
  \texttt{+.×} for matrix multiplication \\
 \texttt{∘.} & Outer Product & Cartesian product or ``function table'' \\
 \texttt{⍣} & Power & Iteration, Limited use only \\
-\texttt{⍤} & Rank & Apply a verb along cells of an array \\
+\texttt{⍤} & Rank & Apply a function along cells of an array \\
 \end{tabular}
 \caption{Primitive Dyadic/Binary Operators, each takes a left
- and right operand and describes a verb operating over one or two arguments}
+ and right operand and describes a function operating over one or two arguments}
 \label{tab:conjunctions}
 \end{table*}
 
@@ -418,54 +418,12 @@ relative to others, we use these coordinates to select and group nodes for
 work as a single sub-tree, and then we operate over these groupings using 
 the key operator.
 
-\subsection{The Key Operator}
-
-The Key operator (written \verb;⌸;), takes a single function
-that expects two arguments and returns a function which takes two
-arguments. The left argument is a set of keys, and the right argument
-is a set of corresponding elements associated with those keys. In our
-case, we provide matrices for both of these arguments, so each pair
-of rows corresponds to a key-value pair. A simple example of the key
-operation at work is to compute a histogram (≢ here can be thought
-of as “tally” or count):
-
-\begin{verbatim}
-       ⊢X←?10⍴5
-1 1 4 0 1 3 1 1 2 1
-      X(⊣,(≢⊢))⌸X
-1 6
-4 1
-0 1
-3 1
-2 1
-\end{verbatim}
-
-To understand a bit better how the Key operator applies its function,
-consider the function {⍺ ⍵} which returns the pair of its right
-and left arguments. If we apply it to the same value as above, we
-get the following:
-
-\begin{verbatim}
-      X{⍺ ⍵}⌸X
-1  1 1 1 1 1 1 
-4  4           
-0  0           
-3  3           
-2  2
-\end{verbatim}
-
-In our case, we use either Fk or Ek as our keys applied to the
-corresponding AST. We also will drop off the first row in each AST
-using 1↓ since this node “contains” everything. In a complete
-AST this is usually the Module boundary node which contains the entire
-set of functions and values in the module.
-
 \subsection{Encoding the AST}
 
 We represent the AST as a matrix of 3 columns and n rows, one for
 each node in the tree. The first column contains the inter-node
 relationships in the form of a depth vector. The second column is a
-vector of the node types, while the third contains the “value”
+vector of the node types, while the third contains the ``value''
 of the node, such as the name in a variable.
 
 Parsing the examples above gives the following ASTs:
@@ -482,29 +440,29 @@ Parsing the examples above gives the following ASTs:
 V(⍵) P(+) V(⍵)
 \end{verbatim}
 
-The depth vector for these trees we name Fd and Ed, respectively:
+The depth vector for these trees we name \verb;Fd; and \verb;Ed;, respectively:
 
 \begin{verbatim}
 Fd←0 1 2 3 4 4 4 2 2 3
 Ed←0 1 2 2 2 1 1 2 2 2
 \end{verbatim}
 
-The node types we call Ft and Et:
+The node types we call \verb;Ft; and \verb;Et;:
 
 \begin{verbatim}
 Ft←’FEFEVPVAN’
 Et←’EEVPVPEVPV’
 \end{verbatim}
 
-And finally, we call the values vectors Fv and Ev:
+And finally, we call the values vectors \verb;Fv; and \verb;Ev;:
 
 \begin{verbatim}
 Fv←’f’ 0 0 0 ‘⍵’ ‘+’ 0 7
 Ev←’v’ 0 ‘a’ ‘+’ ‘b’ ‘÷’ 0 ‘c’ ‘×’ ‘d’
 \end{verbatim}
 
-We combine these to form the respective AST matrices. We write A,B
-to catenate arrays A and B along their last axes and ⍪A to turn a
+We combine these to form the respective AST matrices. We write \verb;A,B;
+to catenate arrays \verb;A; and \verb;B; along their last axes and \verb;⍪A; to turn a
 vector into a 1-column matrix. Thus, the two tree matrices are given
 by the following expressions:
 
@@ -519,7 +477,7 @@ by the following expressions:
 4 V ⍵
 2 A 0
 3 N 7
-      Ed,Et,Ev
+      Ed,Et,⍪Ev
 0 E v
 1 E 0
 2 V a
@@ -549,7 +507,7 @@ the following questions about any two arbitrary nodes in a tree:
 \begin{enumerate}[noitemsep]
 \item Are the nodes the same?
 \item Are they siblings?
-\item Does one appear “earlier” in the tree?
+\item Does one appear ``earlier'' in the tree?
 \item Are they at the same depth?
 \item Is one an ancestor of another?
 \end{enumerate}
@@ -581,8 +539,8 @@ requirements. We end up with an n d shaped matrix where n is the number
 of rows and d the depth of the tree. As noted above, the depth vector
 contains all the necessary information, but in the wrong form.
 
-We write f⌿A to reduce the first axis of A using function f. Thus,
-+⌿V is the sum of the elements in vector V. The function x⌈y
+We write \verb;f⌿A; to reduce the first axis of \verb;A; using function \verb;f;. Thus,
+\verb;+⌿V; is the sum of the elements in vector \verb;V;. The function \verb;x⌈y;
 gives the maximum of its two arguments. So, the depth of each tree
 is given by the following:
 
@@ -609,9 +567,9 @@ So the depths of all nodes that appear in the depth vectors is thus:
 0 1 2
 \end{verbatim}
 
-The function table or outer product of f over vectors U and V is
-written U ∘.f V giving a U V shaped matrix as a result. Thus,
-(⍳3)∘.×⍳3 gives a small multiplication table:
+The function table or outer product of \verb;f; over vectors \verb;U; and \verb;V; is
+written \verb;U ∘.f V; giving a \verb;U V; shaped matrix as a result. Thus,
+\verb;(⍳3)∘.×⍳3; gives a small multiplication table:
 
 \begin{verbatim}
       (⍳3)∘.×⍳3
@@ -620,7 +578,7 @@ written U ∘.f V giving a U V shaped matrix as a result. Thus,
 0 2 4
 \end{verbatim}
 
-If we use = instead, we have a Boolean identity matrix:
+If we use \verb;=; instead, we have a Boolean identity matrix:
 
 \begin{verbatim}
       (⍳3)∘.=⍳3
@@ -629,7 +587,7 @@ If we use = instead, we have a Boolean identity matrix:
 0 0 1
 \end{verbatim}
 
-If we use ∘.= on the depth vector and its set of depths instead,
+If we use \verb;∘.=; on the depth vector and its set of depths instead,
 we see an expanded Boolean representation of the depth vector:
 
 \begin{verbatim}
@@ -658,7 +616,7 @@ we see an expanded Boolean representation of the depth vector:
 
 These matrices let us see the nesting features of each tree more
 visually, but also suggest another step. We can compute a sum scan
-with +⍀, also called a prefix sum, along the first axis. Applying
+with \verb;+⍀;, also called a prefix sum, along the first axis. Applying
 this function on the above matrices leads to an interesting result:
 
 \begin{verbatim}
@@ -691,8 +649,8 @@ coordinates. Only the spurious digits at the end of each coordinate
 prevent these matrices from meeting all our requirements for valid
 node coordinates.
 
-The expression V f⍤¯1⊢M applies f to corresponding elements of
-V and rows of M:
+The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements of
+\verb;V; and rows of \verb;M;:
 
 \begin{verbatim}
       3 3⍴⍳9
@@ -705,11 +663,11 @@ V and rows of M:
 8 9 10
 \end{verbatim}
 
-If n↑V takes the first n elements of V, then we can obtain coordinate
+If \verb;n↑V; takes the first \verb;n; elements of \verb;V;, then we can obtain coordinate
 matrices from the prefix sums by noting that the spurious digits
-all come after column d+1 where d is the depth corresponding to that
+all come after column \verb;d+1; where \verb;d; is the depth corresponding to that
 coordinate. The following gives a complete expression for computing
-a node coordinate matrix from a depth vector, shown using Fd and Fe:
+a node coordinate matrix from a depth vector, shown using \verb;Fd; and \verb;Fe;:
 
 \begin{verbatim}
       ⊢Fc←(1+Fd)↑⍤¯1⊢+⍀Fd∘.=⍳1+⌈⌿Fd
@@ -746,7 +704,7 @@ encoded to have desirable properties relative to other paths.
 \subsubsection{Operations on Node Coordinates}
 
 The simplest operation over a node coordinate is to extract the depth
-of the node. The expression C⍳0 finds the first occurrence of 0 in C
+of the node. The expression \verb;C⍳0; finds the first occurrence of \verb;0; in \verb;C;
 and returns the index of that occurrence. (The application of ⍳ here
 is its dyadic form, meaning that it receives two arguments. Previous
 uses of ⍳ have used its monadic form, which generates all indices,
@@ -767,13 +725,13 @@ of this computation determines whether one node is a child of another
 based on their node coordinates. This amounts to computing whether
 one node is a prefix of another, ignoring zeros.
 
-We write (f g h) to represent the composition of functions f, g,
-and h as a function train. This i s used with another shorthand of
+We write \verb;(f g h); to represent the composition of functions \verb;f;, \verb;g;,
+and \verb;h; as a function train. This is used with another shorthand of
 composition according to the following equivalences:
 
 \begin{verbatim}
 A(f g h)B ←→ (A f B) g (A h B)
-A(0 f h)B ←→ 0 f (A h B) ⍝ 0 is a constant
+A(0 f h)B ←→ 0 f (A h B) ⍝ Constant Case
 A(f g)B   ←→ f (A g B)
 \end{verbatim}
 
@@ -788,14 +746,14 @@ coordinate is a prefix of another.
 1
 \end{verbatim}
 
-Here P is the coordinate we wish to check against C, to determine
-whether C is a descendant. The functions are all standard logical
+Here \verb;P; is the coordinate we wish to check against \verb;C;, to determine
+whether \verb;C; is a descendant. The functions are all standard logical
 functions extended to apply point-wise over arrays. The function
-⊢ always returns its right argument. The function (=∨0=⊢)
-reads intuitively as, “equal or right element is zero.” In this
-case to make this a predicate we combine this with the “for all”
-reduction using ∧⌿. This particular pattern is a special case
-of inner product, which we can compute using f.g. Thus, +.× is a
+\verb;⊢; always returns its right argument. The function \verb;(=∨0=⊢);
+reads intuitively as, ``equal or right element is zero.'' In this
+case to make this a predicate we combine this with the ``for all''
+reduction using \verb;∧⌿;. This particular pattern is a special case
+of inner product, which we can compute using \verb;f.g;. Thus, \verb;+.×; is a
 function that computes traditional matrix-matrix multiplication when
 applied to two matrices. However, we can also use it to compute the
 above reduction and application:
@@ -806,16 +764,16 @@ above reduction and application:
 \end{verbatim}
 
 This extends the reduction to allow us to use matrix values for
-C and P instead of vectors, and thus determine whether rows in C
-are descendants of multiple candidates given by P. This becomes
+\verb;C; and \verb;P; instead of vectors, and thus determine whether rows in \verb;C;
+are descendants of multiple candidates given by \verb;P;. This becomes
 important to using the prefix function. In our examples, we want
 to determine the nearest ancestor of a certain node type to which a
 node belongs. In the case of function lifting, we want to determine
 the nearest ancestor function, in the case of expression flattening,
 we want to determine the nearest ancestor expression node. We can
-extract the rows we care about for each example using ⌷, where i⌷M
-returns the i-th row of M. In the following expressions, we use 0 2
-rather than ¯1 in ⍤ to indicate that ⌷ will receive the entire
+extract the rows we care about for each example using \verb;⌷;, where \verb;i⌷M;
+returns the i-th row of \verb;M;. In the following expressions, we use \verb;0 2;
+rather than \verb;¯1; in \verb;⍤; to indicate that \verb;⌷; will receive the entire
 matrix on the right for each scalar index on the left.
 
 \begin{verbatim}
@@ -828,15 +786,15 @@ matrix on the right for each scalar index on the left.
 1 3 0
 \end{verbatim}
 
-The matrices Fp and Ep correspond to the function and expression
+The matrices \verb;Fp; and \verb;Ep; correspond to the function and expression
 node coordinates in our two examples, respectively. We could now
-use Fp and Ep to compare against Fc and Ec and determine which nodes
+use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec; and determine which nodes
 contained which nodes in the tree. However, our prefix function will
 return 1 when we ask whether a node is a prefix of itself. In this
 case we don’t want that. The solution to this is to drop the last
 non-zero element from the coordinate. This will not prevent it from
 matching against any of its ancestors, but will prevent matching
-against itself. We can use the depth vector with the ↑ function to
+against itself. We can use the depth vector with the \verb;↑; function to
 take all but the last non-zero element. We need to remember to extend
 the returned array with an extra zero column, since the shape will
 be too small otherwise.
@@ -865,7 +823,7 @@ be too small otherwise.
 1 3 0
 \end{verbatim}
 
-We can now use Fcp and Ecp to determine which Function and Expression
+We can now use \verb;Fcp; and \verb;Ecp; to determine which Function and Expression
 nodes match for each node:
 
 \begin{verbatim}
@@ -894,15 +852,15 @@ nodes match for each node:
 
 We use the ⍉ function, which computes the transpose of its right
 argument, to ensure that the row and column sizes match up. With the
-above, we can determine the “greatest” match, which is the closest.
+above, we can determine the ``greatest'' match, which is the closest.
 We can replace each 1 in the above matrices by their column numbers
 (the number of the column in which that 1 occurs), and then we can
 take the maximum column number in each row to determine an index in
-either Fp or Ep that is the appropriate “parent” coordinate for
-that node. This works because we have made sure to order the Ep and Fp
+either \verb;Fp; or \verb;Ep; that is the appropriate ``parent'' coordinate for
+that node. This works because we have made sure to order the \verb;Ep; and \verb;Fp;
 matrices lexicographically. The following shows this computation for
 the expression example; we elide the function example as redundant
-at this point. We also use ⌈/ instead of ⌈⌿ to reduce along
+at this point. We also use \verb;⌈/; instead of \verb;⌈⌿; to reduce along
 the last, rather than the first, axis.
 
 \begin{verbatim}
@@ -921,7 +879,7 @@ the last, rather than the first, axis.
 1 3 0
 \end{verbatim}
 
-At this point we have two values, Ek and Fk, which indicate the
+At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the
 closest containing node that we care about for each node in the tree,
 using its node coordinate.
 
@@ -945,8 +903,8 @@ many other operations which might be used throughout the compiler when
 we care about how nodes relate to each other. The use of operators
 like reduction, scan, inner and outer products allow us to obtain
 the necessary information from the node coordinate matrix. Sometimes
-these results might not be obvious, but the example of the “belongs
-to” relationship given above demonstrates a pattern that arises
+these results might not be obvious, but the example of the ``belongs
+to'' relationship given above demonstrates a pattern that arises
 repeatedly throughout our data parallel compiler, and is therefore
 particularly useful to understand.
 
@@ -995,6 +953,48 @@ Type Specialization & Specializes each function for a series of potential inputs
 \label{tab:passes}
 \end{table*}
 
+\subsection{The Key Operator}
+
+The Key operator (written \verb;⌸;), takes a single function
+that expects two arguments and returns a function which takes two
+arguments. The left argument is a set of keys, and the right argument
+is a set of corresponding elements associated with those keys. In our
+case, we provide matrices for both of these arguments, so each pair
+of rows corresponds to a key-value pair. A simple example of the key
+operation at work is to compute a histogram (\verb;≢; here can be thought
+of as ``tally'' or count):
+
+\begin{verbatim}
+       ⊢X←?10⍴5
+1 1 4 0 1 3 1 1 2 1
+      X(⊣,(≢⊢))⌸X
+1 6
+4 1
+0 1
+3 1
+2 1
+\end{verbatim}
+
+To understand a bit better how the Key operator applies its function,
+consider the function \verb;{⍺ ⍵}; which returns the pair of its right
+and left arguments. If we apply it to the same value as above, we
+get the following:
+
+\begin{verbatim}
+      X{⍺ ⍵}⌸X
+1  1 1 1 1 1 1 
+4  4           
+0  0           
+3  3           
+2  2
+\end{verbatim}
+
+In our case, we use either \verb;Fk; or \verb;Ek; as our keys applied to the
+corresponding AST. We also will drop off the first row in each AST
+using \verb;1↓; since this node ``contains'' everything. In a complete
+AST this is usually the Module boundary node which contains the entire
+set of functions and values in the module.
+
 \section{Case Studies}
 
 The following compiler passes are often found in any suitably complex 
@@ -1011,8 +1011,8 @@ expressions.
 
 \subsection{Function Lifting}
 
-If we use the key operator with Fk, we get the following (the monadic
-use of ↓ converts Fc from a matrix to a vector of vectors):
+If we use the key operator with \verb;Fk;, we get the following (the monadic
+use of \verb;↓; converts \verb;Fc; from a matrix to a vector of vectors):
 
 \begin{verbatim}
       (1↓Fk){⍺ ⍵}⌸1↓Fd,Ft,Fv,⍪↓Fc
@@ -1042,7 +1042,7 @@ use of ↓ converts Fc from a matrix to a vector of vectors):
 Notice that we have now grouped all of the relevant parts of the
 tree according to which nodes would appear in their respective
 functions after lifting. Refer to the original lifting example in
-the introduction to verify this. Indeed. The second row in the
+the introduction to verify this. Indeed, the second row in the
 above example shows the internal function complete and ready to
 name. Each element in the second column corresponds to the body of
 one of our lifted functions. In the case of the first function, the
@@ -1075,7 +1075,7 @@ a single top level.
 
 \subsection{Expression Flattening}
 
-If we use Ek as the key for the expression example, we get the
+If we use \verb;Ek; as the key for the expression example, we get the
 following:
 
 \begin{verbatim}
@@ -1231,20 +1231,22 @@ type-directed functional style.
 
 \section{Related Work}
 
-The J programming language [18] was the first practical,
+The J programming language \cite{hui2014key} was the first practical,
 general-purpose programming language to introduce the key operator as a
 primitive operator with the presumption of its general usefulness. The
 rank operator (⍤) used throughout this treatment also derives from
 the J traditional, receiving particular interest throughout the APL
-community [1, 17].
+community \cite{bernecky1987rank,hui1995rank}.
 
 Fritz Henglein demonstrated a class of operations, called
-discriminators, of which the Key operator is a member. [16] Namely,
+discriminators, of which the Key operator is a member.  
+\cite{henglein2013dd}
+Namely,
 a discriminator performs the same grouping computation as Key, but
 does not apply a function over these groups with their keys. Henglein
 provides a linear implementation of these operations.
 
-The EigenCFA effort [22] demonstrated significant performance
+The EigenCFA effort \cite{prabhu2011eigencfa} demonstrated significant performance
 improvements of a 0-CFA flow analysis by utilizing similar techniques
 to those demonstrated here. In particular, encoding the AST and using
 accessor functions have a very similar feel to the node coordinates and
@@ -1255,16 +1257,18 @@ were chosen for their clarity and directness, rather than their
 performance.
 
 Mendez-Lojo, et al. implemented a GPU version of Inclusion-based
-Points-to Analysis [20] that also focuses on adapting data structures
+Points-to Analysis \cite{mendez2012inclusion} that also focuses on 
+adapting data structures
 and algorithms to efficiently execute on the GPU. In particular,
 they use similar techniques of prefix sums and sorts to achieve some
 of their adaptation to the GPU, Additionally, they have clever and
 efficient methods of representing graphs on the GPU which enable
 dynamic rewriting of the graph.
 
-The APEX compiler [2] developed vectorized approaches to handling
+The APEX compiler \cite{bernecky1997apex} developed vectorized approaches to handling
 certain analyses to compile traditional APL, including a SIMD tokenizer
-[4]. It uses a SSA representation, and converts the dynamic scope of
+\cite{bernecky2003tokenizer}.
+ It uses a SSA representation, and converts the dynamic scope of
 traditional APL functions into a static form early on. It also uses
 a matrix format to represent the AST. Traditional APL did not have
 nested function definitions, however, and thus the APEX compiler does
@@ -1272,9 +1276,10 @@ not have any specific approaches to dealing with function lifting.
 
 Bernecky further identified methods of reducing or optimizing the
 computational complexity or cost of certain array operations, allowing
-improved performance of easy to understand array expressions [3].
+improved performance of easy to understand array expressions
+\cite{bernecky1999reducing}.
 
-Timothy Budd implemented a compiler [5, 6] for APL which targeted
+Timothy Budd implemented a compiler \cite{budd1984apl,budd2012apl} for APL which targeted
 vector processors as well as one for C code. They used a method of
 lazy evaluation to avoid intermediate data copying. Budd provided
 thoughts and some ideas on how the compiler might be implemented in
@@ -1282,16 +1287,18 @@ parallel as well.
 
 Walter Schwarz implemented an APL to C compiler for the ACORN system
 targeting the CM-2 machine, demonstrating performance potential for
-APL as a massively parallel language [21].
+APL as a massively parallel language \cite{schwarz1991acorn}.
 
 W. Ching and D. Ju have spent significant work on the ELI language
 and other APL-class language
- implementations, especially on parallelized code and optimization. [8,
- 9, 10, 11, 13, 14, 15]
+ implementations, especially on parallelized code and optimization. 
+\cite{ching2000design,ching1994experimental,ching1993primitive,
+ching1990automatic,hendriks1990sparse,ju1991exploitation,
+ju1991performance}
 
 J. D. Bunda and J. A. Gerth presented a method for doing table driven
 parsing of APL which suggested a parallel optimization for parsing,
-but did not elucidate the algorithm [7].
+but did not elucidate the algorithm \cite{bunda1984apl}.
 
 \section{Conclusion}
 
@@ -1315,8 +1322,7 @@ practices that underlie every other significant and general solution
 found in modern compilers today and replacing them with an entirely
 different paradigm centred on parallelism and aggregate operations.
 
-
-
-% Bibliography goes here
+\bibliographystyle{plain}
+\bibliography{biblio}
 
 \end{document}
