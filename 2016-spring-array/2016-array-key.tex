@@ -151,6 +151,7 @@ That is, the sample code given indented by 6 spaces, followed by the value
 of the expression without indent. All expressions are evaluated right to 
 left and all function application is unified and infix; that is, a function 
 application may apply a function (such as \verb;+;) to one or two arguments, 
+called monadic and dyadic application respectively,
 which must appear on the right and (optionally) on the left of the function 
 name, as in the above example. Tables \ref{tab:scalarprims} to 
 \ref{tab:conjunctions}
@@ -162,172 +163,24 @@ operate over arrays that we call simply functions. Operators take a function
 argument or two, and bind more strongly to the left than the right. An 
 operator may take one or two operands, either on the left, or on the 
 right and left, and will return a function. In the following 
-example, we apply a reduction operator to a function created using the 
-composition operator, as an example:
+example, we apply the reduction operator (\verb;/;) to a function created using the 
+composition operator (\verb;∘;), as an example:
 
 \begin{verbatim}
-      +∘-/1 2 3 4 5
-3
       +/1 2 3 4 5
 15
+      1+-(2+-(3+-(4+-(5))))
+3
+      1 +∘- 2 +∘- 3 +∘- 4 +∘- 5
+3
+      +∘-/1 2 3 4 5
+3
 \end{verbatim}
 
-Uses of the notation are introduced slowly throughout the treatment, so 
-the reader is encouraged to simply proceed through the treatment, referencing 
-the tables only when required. 
+We introduce notation as needed throughout the exposition, so the reader 
+is encouraged to refer to the tables as necessary to recall particular 
+operations.
 
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol                   & Monadic            & Dyadic \\
-\midrule
-\texttt{+}               & Identity           & Plus (Add) \\
-\texttt{-}               & Negative           & Minus (Subtract) \\
-\texttt{×}               & Direction (Signum) & Times (Multiply) \\
-\texttt{÷}               & Reciprocal         & Divide \\
-\texttt{|}               & Magnitude          & Residue (Modulo) \\
-\texttt{⌊}               & Floor              & Minimum \\
-\texttt{⌈}               & Ceiling            & Maximum \\
-\texttt{*}               & Exponential        & Power \\
-\texttt{⍟}               & Natural Logarithm  & Logarithm \\
-\texttt{○}               & Pi Times           & Circular (Trigonometric) \\
-\texttt{!}               & Factorial          & Binomial \\
-\texttt{\textasciitilde} & Not                & \\
-\texttt{?}               & Roll               & \\
-\texttt{∧}              &                    & And \\
-\texttt{∨}               &                    & Or \\
-\texttt{⍲}               &                    & Nand \\
-\texttt{⍱}               &                    & Nor \\
-\texttt{<}               &                    & Less \\
-\texttt{≤}               &                    & Less Or Equal \\
-\texttt{=}               &                    & Equal \\
-\texttt{≥}               &                    & Greater Or Equal \\
-\texttt{>}               &                    & Greater \\
-\texttt{≠}               &                    & Not Equal \\
-\end{tabular}
-\caption{Scalar Primitives}
-\label{tab:scalarprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic       & Dyadic \\
-\midrule
-\texttt{⍴} & Reshape       & \\
-\texttt{,} & Ravel         & Catenate/Laminate \\
-\texttt{⍪} & Table         & Catenate First/Laminate \\
-\texttt{⌽} & Reverse       & Rotate \\
-\texttt{⊖} & Reverse First & Rotate First \\
-\texttt{⍉} & Transpose     & Transpose \\
-\texttt{↑} & Mix           & \\
-\texttt{↓} & Split         & \\
-\texttt{⊂} & Enclose       & Partitioned Enclose \\
-\texttt{∊} & Enlist        & \\
-\end{tabular}
-\caption{Structural Mixed Primitives}
-\label{tab:structprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol                   & Monadic  & Dyadic \\
-\midrule
-\texttt{⊃}               & Disclose & Pick\\
-\texttt{↑}               &          & Take \\
-\texttt{↓}               &          & Drop \\
-\texttt{/}               &          & Replicate \\
-\texttt{⌿}               &          & Replicate First \\
-\texttt{\textbackslash}  &          & Expand \\
-\texttt{⍀}               &          & Expand First \\
-\texttt{\textasciitilde} &          & Without (Excluding) \\
-\texttt{∩}               &          & Intersection \\
-\texttt{∪}               & Unique   & Union \\
-\texttt{⊣}               & Same     & Left \\
-\texttt{⊢}               & Identity & Right\\
-\end{tabular}
-\caption{Selection Mixed Primitives}
-\label{tab:selprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic         & Dyadic \\
-\midrule
-\texttt{⍳} & Index Generator & Index Of \\
-\texttt{∊} &                 & Membership \\
-\texttt{⍋} & Grade Up        & Grade Up \\
-\texttt{⍒} & Grade Down      & Grade Down \\
-\texttt{?} &                 & Deal \\
-\texttt{⍷} &                 & Find \\
-\end{tabular}
-\caption{Selector Mixed Primitives}
-\label{tab:seltorprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic       & Dyadic \\
-\midrule
-\texttt{⍴} & Shape         & \\
-\texttt{≡} & Depth         & Match \\
-\texttt{≢} & Tally         & Not Match \\
-\texttt{⍎} & Execute       & Execute \\
-\texttt{⍕} & Format        & Format \\
-\texttt{⊥} &               & Decode (Base) \\
-\texttt{⊤} &               & Encode (Representation) \\
-\texttt{⌹} & Matrix Divide & Matrix Inverse \\
-\end{tabular}
-\caption{Miscellaneous Mixed Primitives}
-\label{tab:miscprims}
-\end{table}
-
-\begin{table*}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Name & Description \\
-\midrule
-\texttt{⍨} & Commute & Swaps arguments or distributes
- right argument to both sides \\
-\texttt{¨} & Each & Applies its operand point-wise over the left/right
- arguments \\
-\texttt{/} & Reduce & Reduce along the last axis \\
-\texttt{⌿} & Reduce First & Reduce along the first axis \\
-\texttt{\textbackslash} & Scan & Scan along the last axis \\
-\texttt{⍀} & Scan First & Scan along the first axis \\
-\texttt{⌸} & Key & Apply operand once for each sub-array grouped by key \\
-\end{tabular}
-\caption{Primitive Monadic/Unary Operators, each takes a single left
-operand and describes a function operating over one or two arguments}
-\label{tab:adverbs}
-\end{table*}
-
-\begin{table*}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Name & Description \\
-\midrule
-\texttt{∘} & Compose & Composes two operands as in traditional mathematics \\
-\texttt{.} & Inner Product & Inner product operation, e.g.
- \texttt{+.×} for matrix multiplication \\
-\texttt{∘.} & Outer Product & Cartesian product or ``function table'' \\
-\texttt{⍣} & Power & Iteration, Limited use only \\
-\texttt{⍤} & Rank & Apply a function along cells of an array \\
-\end{tabular}
-\caption{Primitive Dyadic/Binary Operators, each takes a left
- and right operand and describes a function operating over one or two arguments}
-\label{tab:conjunctions}
-\end{table*}
 
 \section{Data Parallel Sub-tree Computation}
 
@@ -338,21 +191,23 @@ point and return the modified tree, which will replace the previous
 sub-tree. More complicated transformations may involved moving the root 
 nodes around in the tree or other large, distant structural modifications. 
 
-We divide the work of sub-tree computation into three basic phases. Firstly, 
+We divide the work of sub-tree computation into three basic phases:  
 we maintain a node coordinate with each node that uniquely identifies it 
 relative to others, we use these coordinates to select and group nodes for 
 work as a single sub-tree, and then we operate over these groupings using 
-the key operator.
+the Key operator (\verb;⌸;).
 
 \subsection{Encoding the AST}
 
-We represent the AST as a matrix of 3 columns and n rows, one for
-each node in the tree. The first column contains the inter-node
+We represent the AST as a 3 column matrix with one row per node in the tree.
+The first column contains the inter-node
 relationships in the form of a depth vector. The second column is a
 vector of the node types, while the third contains the ``value''
 of the node, such as the name in a variable.
 
-Parsing the examples above gives the following ASTs:
+We will use the following two running examples throughout. The \verb;F; 
+tree is an example nested function, while the \verb;E; tree is an example 
+nested expression.
 
 \begin{verbatim}
       F(f)              E(v)
@@ -366,30 +221,30 @@ Parsing the examples above gives the following ASTs:
 V(⍵) P(+) V(⍵)
 \end{verbatim}
 
-The depth vector for these trees we name \verb;Fd; and \verb;Ed;, respectively:
+The depth vectors for these trees we name \verb;Fd; and \verb;Ed;, respectively:
 
 \begin{verbatim}
-Fd←0 1 2 3 4 4 4 2 2 3
+Fd←0 1 2 3 4 4 4 2 3
 Ed←0 1 2 2 2 1 1 2 2 2
 \end{verbatim}
 
 The node types we call \verb;Ft; and \verb;Et;:
 
 \begin{verbatim}
-Ft←’FEFEVPVAN’
-Et←’EEVPVPEVPV’
+Ft←'FEFEVPVAN'
+Et←'EEVPVPEVPV'
 \end{verbatim}
 
 And finally, we call the values vectors \verb;Fv; and \verb;Ev;:
 
 \begin{verbatim}
-Fv←’f’ 0 0 0 ‘⍵’ ‘+’ 0 7
-Ev←’v’ 0 ‘a’ ‘+’ ‘b’ ‘÷’ 0 ‘c’ ‘×’ ‘d’
+Fv←'f' 0 0 0 '⍵' '+' '⍵' 0 7
+Ev←'v' 0 'a' '+' 'b' '÷' 0 'c' '×' 'd'
 \end{verbatim}
 
 We combine these to form the respective AST matrices. We write \verb;A,B;
 to catenate arrays \verb;A; and \verb;B; along their last axes and \verb;⍪A; to turn a
-vector into a 1-column matrix. Thus, the two tree matrices are given
+vector into a 1-column matrix. Thus, the two AST matrices are given
 by the following expressions:
 
 \begin{verbatim}
@@ -416,14 +271,14 @@ by the following expressions:
 2 V d
 \end{verbatim}
 
-Note especially that all inter-node information lives in the depth
-vector, but that this information requires non-local access as
-described in the previous section to use it. Constructing node
-coordinates fixes this issue.
+The Depth Vector stores all edge information for the tree, but this information 
+requires non-local access to utilize, such as traversing potentially the 
+entire vector to determine the children of a specific node.
+Node Coordinates fix this issue.
 
 \subsection{Node Coordinates}
 
-Every node in an AST has a node coordinate, named because a coordinate
+Every node in an AST has a Node Coordinate, named because a coordinate
 is a precise location in a space.  We can imagine all the nodes
 arranged inside some multi-dimensional space, leading to a specific
 set of node coordinates. Many such arrangements exist, of varying
@@ -438,6 +293,7 @@ the following questions about any two arbitrary nodes in a tree:
 \item Is one an ancestor of another?
 \end{enumerate}
 
+\noindent
 In short, we care about the relative position of each node in a tree
 relative to any other. We define a node coordinate as follows.
 
@@ -454,21 +310,18 @@ is lexicographically greater than its left sibling and differs from
 it by exactly one non-zero element, and that this element is the last
 non-zero element in the coordinate.
 
-To understand how we construct these coordinates we must consider
-how we represent the AST.
 
 \subsubsection{Constructing Node Coordinates}
 
-In building the node coordinates, our goal is to build a matrix where
-each row is a node coordinate satisfying our previously described
-requirements. We end up with an n d shaped matrix where n is the number
-of rows and d the depth of the tree. As noted above, the depth vector
-contains all the necessary information, but in the wrong form.
+We construct the Node Coordinate Matrix from the depth vector, thereby encoding 
+the depth vector into a more useful format. The matrix has \verb;N; rows and 
+\verb;D; columns, where \verb;N; is the node count and \verb;D; is the depth 
+of the tree.
 
 We write \verb;f⌿A; to reduce the first axis of \verb;A; using function \verb;f;. Thus,
 \verb;+⌿V; is the sum of the elements in vector \verb;V;. The function \verb;x⌈y;
-gives the maximum of its two arguments. So, the depth of each tree
-is given by the following:
+gives the maximum of its two arguments.
+We compute the depth of each tree as follows:
 
 \begin{verbatim}
       1+⌈⌿Fd
@@ -477,6 +330,7 @@ is given by the following:
 3
 \end{verbatim}
 
+\noindent
 We can obtain the ordered sequence  by writing \verb;⍳n;:
 
 \begin{verbatim}
@@ -484,6 +338,7 @@ We can obtain the ordered sequence  by writing \verb;⍳n;:
 0 1 2
 \end{verbatim}
 
+\noindent
 So the depths of all nodes that appear in the depth vectors is thus:
 
 \begin{verbatim}
@@ -493,6 +348,7 @@ So the depths of all nodes that appear in the depth vectors is thus:
 0 1 2
 \end{verbatim}
 
+\noindent
 The function table or outer product of \verb;f; over vectors \verb;U; and \verb;V; is
 written \verb;U ∘.f V; giving a \verb;U V; shaped matrix as a result. Thus,
 \verb;(⍳3)∘.×⍳3; gives a small multiplication table:
@@ -504,6 +360,7 @@ written \verb;U ∘.f V; giving a \verb;U V; shaped matrix as a result. Thus,
 0 2 4
 \end{verbatim}
 
+\noindent
 If we use \verb;=; instead, we have a Boolean identity matrix:
 
 \begin{verbatim}
@@ -513,6 +370,7 @@ If we use \verb;=; instead, we have a Boolean identity matrix:
 0 0 1
 \end{verbatim}
 
+\noindent
 If we use \verb;∘.=; on the depth vector and its set of depths instead,
 we see an expanded Boolean representation of the depth vector:
 
@@ -540,6 +398,7 @@ we see an expanded Boolean representation of the depth vector:
 0 0 1
 \end{verbatim}
 
+\noindent
 These matrices let us see the nesting features of each tree more
 visually, but also suggest another step. We can compute a sum scan
 with \verb;+⍀;, also called a prefix sum, along the first axis. Applying
@@ -569,6 +428,7 @@ this function on the above matrices leads to an interesting result:
 1 3 6
 \end{verbatim}
 
+\noindent
 These matrices are lexicographically ordered, and each ancestor
 shares a common prefix with its descendants. They are also unique
 coordinates. Only the spurious digits at the end of each coordinate
@@ -589,6 +449,7 @@ The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements o
 8 9 10
 \end{verbatim}
 
+\noindent
 If \verb;n↑V; takes the first \verb;n; elements of \verb;V;, then we can obtain coordinate
 matrices from the prefix sums by noting that the spurious digits
 all come after column \verb;d+1; where \verb;d; is the depth corresponding to that
@@ -630,13 +491,10 @@ encoded to have desirable properties relative to other paths.
 \subsubsection{Operations on Node Coordinates}
 
 The simplest operation over a node coordinate is to extract the depth
-of the node. The expression \verb;C⍳0; finds the first occurrence of \verb;0; in \verb;C;
-and returns the index of that occurrence. (The application of ⍳ here
-is its dyadic form, meaning that it receives two arguments. Previous
-uses of ⍳ have used its monadic form, which generates all indices,
-instead of finding a specific index. Most APL functions have a
-dyadic and monadic form.)  Thus, the depth of a node is given by
-the following:
+of the node.
+The dyadic expression \verb;C⍳0; finds the first occurrence of \verb;0;
+in \verb;C; and returns the index of that occurrence.
+Thus, we compute the depth of a node as follows:
 
 \begin{verbatim}
       C←1 1 2 0 0
@@ -644,16 +502,14 @@ the following:
 2
 \end{verbatim}
 
-The primary calculation we care about in order to do function lifting,
-expression flattening, and other sorts of flattening transformations
-is to determine which nodes are ancestors of another node. The core
-of this computation determines whether one node is a child of another
-based on their node coordinates. This amounts to computing whether
-one node is a prefix of another, ignoring zeros.
-
+\noindent
+In many compiler passes, we primarily care about which nodes are ancestors 
+of other nodes. To determine whether one node is a child of another, we compute 
+whether one node is a prefix of the other, ignoring zeros.
 We write \verb;(f g h); to represent the composition of functions \verb;f;, \verb;g;,
-and \verb;h; as a function train. This is used with another shorthand of
-composition according to the following equivalences:
+and \verb;h; as a function train.
+Function trains obey the following equivalences, where \verb;A; and \verb;B;
+are arrays.
 
 \begin{verbatim}
 A(f g h)B ←→ (A f B) g (A h B)
@@ -661,8 +517,9 @@ A(0 f h)B ←→ 0 f (A h B) ⍝ Constant Case
 A(f g)B   ←→ f (A g B)
 \end{verbatim}
 
-With this, we can write a function to compute whether a given
-coordinate is a prefix of another.
+\noindent
+With this, we write a function to compute whether a given coordinate prefixes 
+another.
 
 \begin{verbatim}
       P←1 1 0 0 0
@@ -672,58 +529,47 @@ coordinate is a prefix of another.
 1
 \end{verbatim}
 
-Here \verb;P; is the coordinate we wish to check against \verb;C;, to determine
-whether \verb;C; is a descendant. The functions are all standard logical
-functions extended to apply point-wise over arrays. The function
-\verb;⊢; always returns its right argument. The function \verb;(=∨0=⊢);
-reads intuitively as, ``equal or right element is zero.'' In this
-case to make this a predicate we combine this with the ``for all''
-reduction using \verb;∧⌿;. This particular pattern is a special case
-of inner product, which we can compute using \verb;f.g;. Thus, \verb;+.×; is a
-function that computes traditional matrix-matrix multiplication when
-applied to two matrices. However, we can also use it to compute the
-above reduction and application:
- 
+\noindent
+The above determines whether \verb;P; is an ancestor to \verb;C;.
+The logical functions \verb;=;, \verb;∧;, and \verb;∨; are all extended 
+point-wise over arrays.
+The function \verb;⊢; returns its right argument.
+The function \verb;(=∨0=⊢); reads as, ``equal or a zero right argument.'' 
+We take this point-wise operation and reduce it with \verb;∧⌿; (For All).
+This pattern is a special case of inner product, written \verb;f.g;. 
+For example, \verb;+.×; is matrix multiplication. We transform our reduction and 
+boolean function to a single predicate with the inner product operator:
 \begin{verbatim}
       C∧.(=∨0=⊢)P
 1
 \end{verbatim}
 
-This extends the reduction to allow us to use matrix values for
-\verb;C; and \verb;P; instead of vectors, and thus determine whether rows in \verb;C;
-are descendants of multiple candidates given by \verb;P;. This becomes
-important to using the prefix function. In our examples, we want
-to determine the nearest ancestor of a certain node type to which a
-node belongs. In the case of function lifting, we want to determine
-the nearest ancestor function, in the case of expression flattening,
-we want to determine the nearest ancestor expression node. We can
-extract the rows we care about for each example using \verb;⌷;, where \verb;i⌷M;
-returns the i-th row of \verb;M;. In the following expressions, we use \verb;0 2;
-rather than \verb;¯1; in \verb;⍤; to indicate that \verb;⌷; will receive the entire
-matrix on the right for each scalar index on the left.
+The use of inner product extends to cases where \verb;C; or \verb;P; are matrices.
+For our examples, we want to lift the functions and flatten expressions, so we 
+will select the \verb;F; nodes and \verb;E; nodes, respectively, as our 
+parent/ancestor nodes in \verb;Fp; and \verb;Ep;. Given a boolean vector 
+\verb;BV;, the expression \verb;BV⌿M; selects rows from \verb;M; based on the 
+non-zero elements of \verb;BV;.
 
 \begin{verbatim}
-      ⊢Fp←0 2⌷⍤0 2⊢Fc
+      ⊢Fp←('F'=Ft)⌿Fc
 1 0 0 0 0
 1 1 1 0 0
-      ⊢Ep←0 1 6⌷⍤0 2⊢Ec
+      ⊢Ep←('E'=Et)⌿Ec
 1 0 0
 1 1 0
 1 3 0
 \end{verbatim}
 
-The matrices \verb;Fp; and \verb;Ep; correspond to the function and expression
-node coordinates in our two examples, respectively. We could now
-use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec; and determine which nodes
-contained which nodes in the tree. However, our prefix function will
-return 1 when we ask whether a node is a prefix of itself. In this
-case we don’t want that. The solution to this is to drop the last
-non-zero element from the coordinate. This will not prevent it from
-matching against any of its ancestors, but will prevent matching
-against itself. We can use the depth vector with the \verb;↑; function to
-take all but the last non-zero element. We need to remember to extend
-the returned array with an extra zero column, since the shape will
-be too small otherwise.
+\noindent
+We could use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec;
+to determine which nodes belong to which parent in \verb;Fp; or \verb;Ep;, 
+but our prefix function returns 1 when \verb;C≡P;. 
+Instead, we drop the last non-zero element from each coordinate.
+This will permit matching against all ancestors, but not against itself.
+We use the depth vector and the Take (\verb;↑;) function to take all but
+the last non-zero element. We extend the resulting array with an extra 
+zero column to ensure we have a compatible shape.
 
 \begin{verbatim}
       ⊢Fcp←(Fd↑⍤¯1⊢Fc),0
@@ -749,8 +595,9 @@ be too small otherwise.
 1 3 0
 \end{verbatim}
 
-We can now use \verb;Fcp; and \verb;Ecp; to determine which Function and Expression
-nodes match for each node:
+\noindent
+We use \verb;Fcp; and \verb;Ecp; to determine the \verb;F; and \verb;E; 
+ancestors for each node (\verb;⍉A; transposes \verb;A;):
 
 \begin{verbatim}
      Fcp∧.(=∨0=⊢)⍉Fp
@@ -776,22 +623,38 @@ nodes match for each node:
 1 0 1
 \end{verbatim}
 
-We use the ⍉ function, which computes the transpose of its right
-argument, to ensure that the row and column sizes match up. With the
-above, we can determine the ``greatest'' match, which is the closest.
-We can replace each 1 in the above matrices by their column numbers
-(the number of the column in which that 1 occurs), and then we can
-take the maximum column number in each row to determine an index in
-either \verb;Fp; or \verb;Ep; that is the appropriate ``parent'' coordinate for
-that node. This works because we have made sure to order the \verb;Ep; and \verb;Fp;
-matrices lexicographically. The following shows this computation for
-the expression example; we elide the function example as redundant
-at this point. We also use \verb;⌈/; instead of \verb;⌈⌿; to reduce along
-the last, rather than the first, axis.
+\noindent
+In the above, the closest ancestor is the rightmost 1 in each row.
+We can extract the column number of the rightmost 1 by replacing each 1 
+with its column number and selecting the maximum of each row with \verb;⌈/;. 
+For space we will show only the \verb;E; example.
+In the following, \verb;V×⍤1⊢M; gives a matrix where each row is given by 
+\verb;V×i⌷M; where \verb;i⌷M; is the $i$th row of \verb;M;.
 
 \begin{verbatim}
+      (⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
+0 0 0
+0 0 0
+0 1 0
+0 1 0
+0 1 0
+0 0 0
+0 0 0
+0 0 2
+0 0 2
+0 0 2
       ⊢Ei←⌈/(⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
 0 0 1 1 1 0 0 2 2 2
+\end{verbatim}
+
+\noindent
+We use these column numbers to index into \verb;Ep; to obtain an ancestor 
+matrix where the node coordinate of the closest ancestor is given for 
+each node, one per row. 
+The expression \verb;I⌷⍤0 2⊢M; gives a matrix, one row per index in \verb;I;, 
+consisting of rows of \verb;M; selected by row indices in \verb;I;.
+
+\begin{verbatim}
       ⊢Ek←Ei⌷⍤0 2⊢Ep 
 1 0 0
 1 0 0
@@ -805,12 +668,14 @@ the last, rather than the first, axis.
 1 3 0
 \end{verbatim}
 
+\noindent
 At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the
 closest containing node that we care about for each node in the tree,
 using its node coordinate.
 
 \begin{verbatim}
-      Fk
+      Fi←⌈/(⍳2)×⍤1⊢Fcp∧.(=∨0=⊢)⍉Fp
+      ⊢Fk←Fi⌷⍤0 2⊢Fp
 1 0 0 0 0
 1 0 0 0 0
 1 0 0 0 0
@@ -822,17 +687,13 @@ using its node coordinate.
 1 0 0 0 0
 \end{verbatim}
 
-We will use these keys to perform computation over the AST and
-accomplish our tasks of function lifting and expression flattening in
-the next section, but we make a final note here, that we can imagine
-many other operations which might be used throughout the compiler when
-we care about how nodes relate to each other. The use of operators
-like reduction, scan, inner and outer products allow us to obtain
-the necessary information from the node coordinate matrix. Sometimes
-these results might not be obvious, but the example of the ``belongs
-to'' relationship given above demonstrates a pattern that arises
-repeatedly throughout our data parallel compiler, and is therefore
-particularly useful to understand.
+\noindent
+We use these keys to compute over the AST, particularly for function lifting 
+and expression flattening as demonstrated in the next section. The repeating 
+pattern is to leverage node coordinates and array operations to do stackless 
+reasoning about inter-node relationships. This pattern occurs often in our 
+compiler and is particularly useful to enable straightforward data-parallel 
+transformations over an AST.
 
 \begin{table*}
 \centering
@@ -881,18 +742,21 @@ Type Specialization & Specializes each function for a series of potential inputs
 
 \subsection{The Key Operator}
 
-The Key operator (written \verb;⌸;), takes a single function
-that expects two arguments and returns a function which takes two
-arguments. The left argument is a set of keys, and the right argument
-is a set of corresponding elements associated with those keys. In our
-case, we provide matrices for both of these arguments, so each pair
-of rows corresponds to a key-value pair. A simple example of the key
-operation at work is to compute a histogram (\verb;≢; here can be thought
-of as ``tally'' or count):
+The Key operater (written \verb;⌸;) is central to our strategy for compilation.
+It allows us to use the Node Coordinates to their full effect. 
+The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding 
+keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in 
+\verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. 
+The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs.
+A simple example of this at work is to compute a histogram using Tally (\verb;≢;):
 
 \begin{verbatim}
+      10⍴5
+5 5 5 5 5 5 5 5 5 5
        ⊢X←?10⍴5
 1 1 4 0 1 3 1 1 2 1
+      ≢⍳5
+5
       X(⊣,(≢⊢))⌸X
 1 6
 4 1
@@ -923,21 +787,17 @@ set of functions and values in the module.
 
 \section{Case Studies}
 
-The following compiler passes are often found in any suitably complex 
-language being compiled, and represent a difficult problem for anyone attempting 
-to do data-parallel computation. Indeed, they were the primary motivating 
-factor for the development of the node coordinate matrix and its associated 
-techniques. They demonstrate how we can operate on highly nested structures, 
-usually with the intent of eliminating that structure to more closely map 
-the intended output language. 
-
-These case studies come from the Co-dfns compiler, which is compiling a 
-lexically scoped language that contains both nested functions and 
-expressions. 
+The following compiler passes are found in any compiler from a nested function, 
+nested expression language to a language without nested functions 
+or expressions. They were the chief motivating examples for developing the 
+techniques presented above as a part of developing the Co-dfns compiler, 
+and represent a challenging problem to data-parallel compilation without 
+the above techniques, but fall out almost effortlessly once the above patterns 
+are available. 
 
 \subsection{Function Lifting}
 
-If we use the key operator with \verb;Fk;, we get the following (the monadic
+If we use the Key operator with \verb;Fk;, we get the following (the monadic
 use of \verb;↓; converts \verb;Fc; from a matrix to a vector of vectors):
 
 \begin{verbatim}
@@ -998,6 +858,16 @@ to correspond to those of a function lifted to the top-level, and
 to attach a function node to the top of each of the bodies. At that
 point, we simply recombine all of the newly created functions into
 a single top level.
+
+This function lifting works even with lexically scoped functions, 
+as is the case for the Co-dfns compiler.
+We can do this because the node coordinates maintain the lexical information 
+for each variable reference, enabling us to construct the appropriate lexical 
+binding for each variable much later than would normally be done in a 
+compiler. 
+In other words, the above lifting operation loses no information that would 
+prevent us from handling lexical scoping, but decouples lexical scoping 
+from the act of lifting functions.
 
 \subsection{Expression Flattening}
 
@@ -1158,7 +1028,7 @@ type-directed functional style.
 \section{Related Work}
 
 The J programming language \cite{hui2014key} was the first practical,
-general-purpose programming language to introduce the key operator as a
+general-purpose programming language to introduce the Key operator as a
 primitive operator with the presumption of its general usefulness. The
 rank operator (⍤) used throughout this treatment also derives from
 the J traditional, receiving particular interest throughout the APL
@@ -1251,5 +1121,158 @@ different paradigm centred on parallelism and aggregate operations.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
+
+\begin{table}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol                   & Monadic            & Dyadic \\
+\midrule
+\texttt{+}               & Identity           & Plus (Add) \\
+\texttt{-}               & Negative           & Minus (Subtract) \\
+\texttt{×}               & Direction (Signum) & Times (Multiply) \\
+\texttt{÷}               & Reciprocal         & Divide \\
+\texttt{|}               & Magnitude          & Residue (Modulo) \\
+\texttt{⌊}               & Floor              & Minimum \\
+\texttt{⌈}               & Ceiling            & Maximum \\
+\texttt{*}               & Exponential        & Power \\
+\texttt{⍟}               & Natural Logarithm  & Logarithm \\
+\texttt{○}               & Pi Times           & Circular (Trigonometric) \\
+\texttt{!}               & Factorial          & Binomial \\
+\texttt{\textasciitilde} & Not                & \\
+\texttt{?}               & Roll               & \\
+\texttt{∧}              &                    & And \\
+\texttt{∨}               &                    & Or \\
+\texttt{⍲}               &                    & Nand \\
+\texttt{⍱}               &                    & Nor \\
+\texttt{<}               &                    & Less \\
+\texttt{≤}               &                    & Less Or Equal \\
+\texttt{=}               &                    & Equal \\
+\texttt{≥}               &                    & Greater Or Equal \\
+\texttt{>}               &                    & Greater \\
+\texttt{≠}               &                    & Not Equal \\
+\end{tabular}
+\caption{Scalar Functions}
+\label{tab:scalarprims}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol     & Monadic       & Dyadic \\
+\midrule
+\texttt{⍴} & Reshape       & \\
+\texttt{,} & Ravel         & Catenate/Laminate \\
+\texttt{⍪} & Table         & Catenate First/Laminate \\
+\texttt{⌽} & Reverse       & Rotate \\
+\texttt{⊖} & Reverse First & Rotate First \\
+\texttt{⍉} & Transpose     & Transpose \\
+\texttt{↑} & Mix           & \\
+\texttt{↓} & Split         & \\
+\texttt{⊂} & Enclose       & Partitioned Enclose \\
+\texttt{∊} & Enlist        & \\
+\end{tabular}
+\caption{Structural Mixed Functions}
+\label{tab:structprims}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol                   & Monadic  & Dyadic \\
+\midrule
+\texttt{⊃}               & Disclose & Pick\\
+\texttt{↑}               &          & Take \\
+\texttt{↓}               &          & Drop \\
+\texttt{/}               &          & Replicate \\
+\texttt{⌿}               &          & Replicate First \\
+\texttt{\textbackslash}  &          & Expand \\
+\texttt{⍀}               &          & Expand First \\
+\texttt{\textasciitilde} &          & Without (Excluding) \\
+\texttt{∩}               &          & Intersection \\
+\texttt{∪}               & Unique   & Union \\
+\texttt{⊣}               & Same     & Left \\
+\texttt{⊢}               & Identity & Right\\
+\end{tabular}
+\caption{Selection Mixed Functions}
+\label{tab:selprims}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol     & Monadic         & Dyadic \\
+\midrule
+\texttt{⍳} & Index Generator & Index Of \\
+\texttt{∊} &                 & Membership \\
+\texttt{⍋} & Grade Up        & Grade Up \\
+\texttt{⍒} & Grade Down      & Grade Down \\
+\texttt{?} &                 & Deal \\
+\texttt{⍷} &                 & Find \\
+\end{tabular}
+\caption{Selector Mixed Functions}
+\label{tab:seltorprims}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol     & Monadic       & Dyadic \\
+\midrule
+\texttt{⍴} & Shape         & \\
+\texttt{≡} & Depth         & Match \\
+\texttt{≢} & Tally         & Not Match \\
+\texttt{⍎} & Execute       & Execute \\
+\texttt{⍕} & Format        & Format \\
+\texttt{⊥} &               & Decode (Base) \\
+\texttt{⊤} &               & Encode (Representation) \\
+\texttt{⌹} & Matrix Divide & Matrix Inverse \\
+\end{tabular}
+\caption{Miscellaneous Mixed Functions}
+\label{tab:miscprims}
+\end{table}
+
+\begin{table*}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol     & Name & Description \\
+\midrule
+\texttt{⍨} & Commute & Swaps arguments or distributes
+ right argument to both sides \\
+\texttt{¨} & Each & Applies its operand point-wise over the left/right
+ arguments \\
+\texttt{/} & Reduce & Reduce along the last axis \\
+\texttt{⌿} & Reduce First & Reduce along the first axis \\
+\texttt{\textbackslash} & Scan & Scan along the last axis \\
+\texttt{⍀} & Scan First & Scan along the first axis \\
+\texttt{⌸} & Key & Apply operand once for each sub-array grouped by key \\
+\end{tabular}
+\caption{Primitive Monadic/Unary Operators, each takes a single left
+operand and describes a function operating over one or two arguments}
+\label{tab:adverbs}
+\end{table*}
+
+\begin{table*}
+\centering
+\begin{tabular}{cll}
+\toprule
+Symbol     & Name & Description \\
+\midrule
+\texttt{∘} & Compose & Composes two operands as in traditional mathematics \\
+\texttt{.} & Inner Product & Inner product operation, e.g.
+ \texttt{+.×} for matrix multiplication \\
+\texttt{∘.} & Outer Product & Cartesian product or ``function table'' \\
+\texttt{⍣} & Power & Iteration, Limited use only \\
+\texttt{⍤} & Rank & Apply a function along cells of an array \\
+\end{tabular}
+\caption{Primitive Dyadic/Binary Operators, each takes a left
+ and right operand and describes a function operating over one or two arguments}
+\label{tab:conjunctions}
+\end{table*}
 
 \end{document}
