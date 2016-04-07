@@ -106,7 +106,9 @@ AST selected by parent-child relationships in the manner often seen in
 compiler transformations. These ideas have been further implemented and tested 
 through the implementation of a complete data-parallel by construction 
 compiler, called Co-dfns, that compiles a lexically scoped, functionally 
-oriented dialect of APL with nested functions. The compiler targets both the 
+oriented dialect of APL with nested functions. 
+\cite{hsu2014co,hsu2015accelerating}
+The compiler targets both the
 GPU and the CPU, and its core compiler is implemented in this pure, restricted 
 language that uses only function composition over data-parallel primitives. 
 
@@ -956,7 +958,8 @@ a flatter form that does not require complex analysis to traverse.
 \section{The Co-dfns Compiler}
 
 The Co-dfns compiler is an experimental commercial compiler funded by 
-Dyalog, Ltd. It is intended to provide increased scaling and performance
+Dyalog, Ltd. \cite{hsu2014co,hsu2015accelerating}
+It is intended to provide increased scaling and performance
 for APL programmers using the dfns syntax (lexically scoped, functionally 
 oriented APL). These techniques form one of the foundational elements to 
 the architecture of the compiler, which is built in the style of a Nanopass 
