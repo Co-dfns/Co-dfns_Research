@@ -149,9 +149,9 @@ All code examples are given in the following form:
 35
 \end{verbatim}
 
-That is, the sample code given indented by 6 spaces, followed by the value 
+That is, we indent the expression by 6 spaces, followed by the value
 of the expression without indent. All expressions are evaluated right to 
-left and all function application is unified and infix; that is, a function 
+left and all function application is infix; that is, a function 
 application may apply a function (such as \verb;+;) to one or two arguments, 
 called monadic and dyadic application respectively,
 which must appear on the right and (optionally) on the left of the function 
@@ -602,7 +602,7 @@ We use \verb;Fcp; and \verb;Ecp; to determine the \verb;F; and \verb;E;
 ancestors for each node (\verb;⍉A; transposes \verb;A;):
 
 \begin{verbatim}
-     Fcp∧.(=∨0=⊢)⍉Fp
+      Fcp∧.(=∨0=⊢)⍉Fp
 0 0
 1 0
 1 0
@@ -701,7 +701,7 @@ transformations over an AST.
 \centering
 \begin{tabular}{l p{2.8in} l l l}
 \toprule
-Pass & Description & Core Patterns & Coordinate? \\
+Pass & Description & Core Traversal Pattern & Uses coordinates? \\
 \midrule
 Record Node Coordinates & Adds a new field to each node containing that node's 
  node coordinate. & Outer Product/Scan & Yes \\
@@ -755,7 +755,7 @@ A simple example of this at work is to compute a histogram using Tally (\verb;�
 \begin{verbatim}
       10⍴5
 5 5 5 5 5 5 5 5 5 5
-       ⊢X←?10⍴5
+      ⊢X←?10⍴5
 1 1 4 0 1 3 1 1 2 1
       ≢⍳5
 5
@@ -922,40 +922,7 @@ simply reverse these orders and this fixes that problem. More work
 would be required to take into consideration a specific precedence
 hierarchy.
 
-\section{Other Passes}
-
-Table \ref{tab:passes} contains a selection of passes from the
-Co-dfns compiler and breaks down their features based on how they
-traverse the tree and whether or not they use the Key operator or
-Node Coordinates. They are oriented with front-end passes higher in
-the table and passes further down the compiler chain at the bottom
-of the table. These passes give a good idea of how the Key operator
-plays a part in the complete compiler as well as how Node Coordinates
-help to deal with complex sub-tree selections.
-
-We make a few notes on the table and the analysis. The Key operator
-can be used with or without the node coordinates structure. In cases
-where the AST is sufficiently flat and arranged in a sufficiently
-convenient order, the grouping operations are very simple. In these
-cases, the Key operator amounts to a map operation over some selected
-sub-trees selected at a specific depth. These occur later in the
-compiler where the reader will note appearences of the Key operator
-without the use of Node Coordinates.
-
-Likewise, node coordinates find their place early on in the compiler
-where it is necessary to deal with the more highly nested AST. They
-are useful for identifying this information regardless of whether the
-Key operator is used to handle the grouping or not. Thus passes like
-``Drop Unreachable Code'' that remove whole sub-trees from the AST
-may use the Node Coordinates to do the grouping once the correct
-parent node has been identified.
-
-In short, the goal of the structure and design of the compiler passes
-given in table \ref{tab:passes} is to utilize Node Coordinates to
-remove as quickly as possible the nested structure of the AST into
-a flatter form that does not require complex analysis to traverse.
-
-\section{The Co-dfns Compiler}
+\section{The Co-dfns Compiler and Other Passes}
 
 The Co-dfns compiler is an experimental commercial compiler funded by 
 Dyalog, Ltd. \cite{hsu2014co,hsu2015accelerating}
@@ -963,6 +930,7 @@ It is intended to provide increased scaling and performance
 for APL programmers using the dfns syntax (lexically scoped, functionally 
 oriented APL). These techniques form one of the foundational elements to 
 the architecture of the compiler, which is built in the style of a Nanopass 
+\cite{keep2013nanopass}
 compiler, with very small passes chained together through composition, with 
 the added requirements that each compiler pass must be fully data parallel. 
 
@@ -992,28 +960,61 @@ logic comes in at around 150 lines of code.
 The entire compiler, together with its runtime libraries, parser, generator, 
 and core, comes in at around 1500 lines of commented code. 
 
+Table \ref{tab:passes} contains a selection of passes from the
+Co-dfns compiler and breaks down their features based on how they
+traverse the tree and whether or not they use the Key operator or
+Node Coordinates.
+The traversal pattern indicates the primary operator used to traverse the AST 
+and perform the transformation, most of which are primitives; the Amend pattern 
+is a ``replacement'' pattern where specific nodes are replaced in the AST with 
+other nodes, and can be thought of as a slightly modified filter and map.
+The table orders the passes with front-end passes higher in
+the table and passes further down the compiler chain at the bottom
+of the table. These passes give a good idea of how the Key operator
+plays a part in the complete compiler as well as how Node Coordinates
+help to deal with complex sub-tree selections.
+
+We make a few notes on the table and the analysis. The Key operator
+can be used with or without the node coordinates structure. In cases
+where the AST is sufficiently flat and arranged in a sufficiently
+convenient order, the grouping operations are very simple. In these
+cases, the Key operator amounts to a map operation over some selected
+sub-trees selected at a specific depth. These occur later in the
+compiler where the reader will note appearences of the Key operator
+without the use of Node Coordinates.
+
+Likewise, node coordinates find their place early on in the compiler
+where it is necessary to deal with the more highly nested AST. They
+are useful for identifying this information regardless of whether the
+Key operator is used to handle the grouping or not. Thus passes like
+``Drop Unreachable Code'' that remove whole sub-trees from the AST
+may use the Node Coordinates to do the grouping once the correct
+parent node has been identified.
+
+In short, the goal of the structure and design of the compiler passes
+given in Table \ref{tab:passes} is to utilize Node Coordinates to
+remove as quickly as possible the nested structure of the AST into
+a flatter form that does not require complex analysis to traverse.
+
 \section{Future Work}
 
-Work remains on expanding the features and capabilities of the compiler, 
-to demonstrate the scalability of these techniques on more sophisticated 
-optimizations. The current compiler represents a non-trivial instance of 
+The current compiler represents a non-trivial instance of
 the successful application of these techniques, but it focuses on an untyped, 
 functionally oriented language. The type inference in the current version 
 of the compiler is somewhat naive. More work is required to expand the 
-type inferencer to include more sophisticated type inference. Likewise, 
-the compiler does not currently handle error handling such as signals or 
-exceptions. 
-
+type inferencer to include more sophisticated type inference. 
+The compiler does not currently handle errors such as signals or 
+exceptions, nor does it implement some more sophisticated compiler optimizations.
 Further work remains to implement these techniques on an imperative and 
 object-oriented language instead of a functional one. It would also be 
 educational to implement a version for a lazy language. 
 
-The performance of these techniques has not been a problem in practice, but 
-we do not have a large scale understanding of the performance characteristics 
-of these techniques in real life. Further implementation and analysis is 
+We do not have a large scale understanding of the performance characteristics 
+of these techniques in real life outside of daily use of the compiler.
+Further analysis is
 required to understand what sort of compiler optimizations and analyses are 
 necessary to compile the Co-dfns compiler efficiently for the GPU and CPU. 
-We current lack a good comparison against existing techniques for the same 
+We currently lack a good comparison against existing techniques for the same 
 language, since the current compiler is relatively unique in that no other 
 compilers to our knowledge compile the same language to the same targets 
 with the same sorts of optimizations. We intend to implement other paradigms 
