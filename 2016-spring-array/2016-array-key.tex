@@ -97,6 +97,7 @@ Matrix, and using data-parallel primitives, we are able to tame the recursive
 and nested nature of the AST into something that can be processed handily 
 using only data-parallel, data-flow programs, without requiring branching 
 or other forms of non-data parallel control flow. 
+The methods are general and independent of the language being compiled.
 
 In the following sections we describe the core methods and idioms surrounding 
 the AST encoding, construction of the Node Coordinate Matrix, and the use 
@@ -122,8 +123,8 @@ using the Key operator and Node Coordinates.
 
 \item We situation this technique into a broader, language-driven 
 strategy for compiler construction that enables the development of parallel 
-by construction compilers that are high-level in their implementation and 
-exceptionally concise.
+by construction compilers that are high-level in their implementation, 
+exceptionally concise, and independent of the language being compiled.
 
 \item We provide analysis of these techniques as used in a commercial
 compiler project called Co-dfns and report on the results,
@@ -744,13 +745,14 @@ Type Specialization & Specializes each function for a series of potential inputs
 
 \subsection{The Key Operator}
 
-The Key operater (written \verb;⌸;) is central to our strategy for compilation.
+First introduced in the J language \cite{hui2014key},
+the Key operator (written \verb;⌸;) is central to our strategy for compilation.
 It allows us to use the Node Coordinates to their full effect. 
 The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding 
 keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in 
 \verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. 
 The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs.
-A simple example of this at work is to compute a histogram using Tally (\verb;≢;):
+Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
 
 \begin{verbatim}
       10⍴5
@@ -980,7 +982,7 @@ where the AST is sufficiently flat and arranged in a sufficiently
 convenient order, the grouping operations are very simple. In these
 cases, the Key operator amounts to a map operation over some selected
 sub-trees selected at a specific depth. These occur later in the
-compiler where the reader will note appearences of the Key operator
+compiler where the reader will note appearances of the Key operator
 without the use of Node Coordinates.
 
 Likewise, node coordinates find their place early on in the compiler
@@ -1034,14 +1036,14 @@ type-directed functional style.
 The J programming language \cite{hui2014key} was the first practical,
 general-purpose programming language to introduce the Key operator as a
 primitive operator with the presumption of its general usefulness. The
-rank operator (⍤) used throughout this treatment also derives from
+rank operator (\verb;⍤;) used throughout this treatment also derives from
 the J traditional, receiving particular interest throughout the APL
 community \cite{bernecky1987rank,hui1995rank}.
 
 Fritz Henglein demonstrated a class of operations, called
-discriminators, of which the Key operator is a member.  
+discriminators, of which the Key operator is a member  
 \cite{henglein2013dd}
-Namely,
+, namely,
 a discriminator performs the same grouping computation as Key, but
 does not apply a function over these groups with their keys. Henglein
 provides a linear implementation of these operations.
@@ -1104,7 +1106,7 @@ but did not elucidate the algorithm \cite{bunda1984apl}.
 
 We have derived a method of performing computation over sub-trees
 selected on the basis of inter-node properties through the use of the
-Key (⌸) operator and node coordinates, which enable local computation
+Key (\verb;⌸;) operator and node coordinates, which enable local computation
 of these inter-node properties. This method is both general and direct,
 and when combined with traditional and more mundane array programming,
 suffices to implement the complete core of a compiler, modulo parsing
@@ -1121,7 +1123,7 @@ data structures involved. It presents a solution to a very old and
 traditional problem in a very uncommon light, by eschewing the common
 practices that underlie every other significant and general solution
 found in modern compilers today and replacing them with an entirely
-different paradigm centred on parallelism and aggregate operations.
+different paradigm centered on parallelism and aggregate operations.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
