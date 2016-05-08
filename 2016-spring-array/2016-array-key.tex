@@ -1016,12 +1016,14 @@ of these techniques in real life outside of daily use of the compiler.
 Further analysis is
 required to understand what sort of compiler optimizations and analyses are 
 necessary to compile the Co-dfns compiler efficiently for the GPU and CPU. 
-We currently lack a good comparison against existing techniques for the same 
-language, since the current compiler is relatively unique in that no other 
-compilers to our knowledge compile the same language to the same targets 
-with the same sorts of optimizations. We intend to implement other paradigms 
-and other languages which do have existing compiler implementations to compare 
-relative performance on multiple platforms. 
+We currently lack a good comparison against existing techniques both for 
+the compiler design and the generated code. Some existing compilers are able 
+to compile variants of APL to target the GPU and the CPU, but there are subtle 
+differences that require care when comparing generated code, and the 
+architecture of these compilers is often quite different. Comparing the 
+relative performance both of the compiler designs (human factors and execution 
+speed) and generated code is important to understanding these techniques more 
+fully.
 
 While we have found this method of compiler construction to be very compact 
 and to permit working with a data-parallel compiler as easily or nearly as 
@@ -1033,12 +1035,25 @@ type-directed functional style.
 
 \section{Related Work}
 
+Iverson introduced the idea of the Rank operator while at Sharp Associates 
+\cite{iverson1983rationalized} as a part of ``Rationalized APL.'' 
+The rank operator (\verb;⍤;) used here derived from the J language, a 
+continuation of the rationalized APL idea, with many ideas such as rank 
+percolating back into APL implementations. \cite{bernecky1987rank,hui1995rank}
 The J programming language \cite{hui2014key} was the first practical,
 general-purpose programming language to introduce the Key operator as a
-primitive operator with the presumption of its general usefulness. The
-rank operator (\verb;⍤;) used throughout this treatment also derives from
-the J traditional, receiving particular interest throughout the APL
-community \cite{bernecky1987rank,hui1995rank}.
+primitive operator with the presumption of its general usefulness.
+
+Bernecky \cite{bernecky2015abstract} argues that the increased programmability 
+and desirable human factors of APL-style array programming can be implemented 
+with competitive performance relative to more traditional techniques. This 
+suggests that programs written in this highly abstract style may not suffer the 
+performance gap traditionally assumed to go with their desirable features. 
+This work is bolstered by previous work on the high-performance implemenation 
+of array-oriented languages. 
+\cite{ching1994experimental,ching1993primitive,
+ching1990automatic,ju1991exploitation,
+ju1991performance,bernecky1999reducing,schwarz1991acorn}
 
 Fritz Henglein demonstrated a class of operations, called
 discriminators, of which the Key operator is a member  
@@ -1070,33 +1085,15 @@ dynamic rewriting of the graph.
 The APEX compiler \cite{bernecky1997apex} developed vectorized approaches to handling
 certain analyses to compile traditional APL, including a SIMD tokenizer
 \cite{bernecky2003tokenizer}.
- It uses a SSA representation, and converts the dynamic scope of
-traditional APL functions into a static form early on. It also uses
+It also uses 
 a matrix format to represent the AST. Traditional APL did not have
 nested function definitions, however, and thus the APEX compiler does
 not have any specific approaches to dealing with function lifting.
 
-Bernecky further identified methods of reducing or optimizing the
-computational complexity or cost of certain array operations, allowing
-improved performance of easy to understand array expressions
-\cite{bernecky1999reducing}.
-
 Timothy Budd implemented a compiler \cite{budd1984apl,budd2012apl} for APL which targeted
-vector processors as well as one for C code. They used a method of
-lazy evaluation to avoid intermediate data copying. Budd provided
+vector processors as well as C. Budd provided 
 thoughts and some ideas on how the compiler might be implemented in
 parallel as well.
-
-Walter Schwarz implemented an APL to C compiler for the ACORN system
-targeting the CM-2 machine, demonstrating performance potential for
-APL as a massively parallel language \cite{schwarz1991acorn}.
-
-W. Ching and D. Ju have spent significant work on the ELI language
-and other APL-class language
- implementations, especially on parallelized code and optimization. 
-\cite{ching2000design,ching1994experimental,ching1993primitive,
-ching1990automatic,hendriks1990sparse,ju1991exploitation,
-ju1991performance}
 
 J. D. Bunda and J. A. Gerth presented a method for doing table driven
 parsing of APL which suggested a parallel optimization for parsing,
