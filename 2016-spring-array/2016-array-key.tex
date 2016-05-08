@@ -107,10 +107,10 @@ AST selected by parent-child relationships in the manner often seen in
 compiler transformations. These ideas have been further implemented and tested 
 through the implementation of a complete data-parallel by construction 
 compiler, called Co-dfns, that compiles a lexically scoped, functionally 
-oriented dialect of APL with nested functions. 
-\cite{hsu2014co,hsu2015accelerating}
+oriented dialect of APL with nested functions 
+\cite{hsu2014co,hsu2015accelerating}.
 The compiler targets both the
-GPU and the CPU, and its core compiler is implemented in this pure, restricted 
+GPU and the CPU, and its core is implemented in this pure, restricted 
 language that uses only function composition over data-parallel primitives. 
 
 \paragraph{Contributions}
@@ -150,6 +150,7 @@ All code examples are given in the following form:
 35
 \end{verbatim}
 
+\noindent
 That is, we indent the expression by 6 spaces, followed by the value
 of the expression without indent. All expressions are evaluated right to 
 left and all function application is infix; that is, a function 
@@ -180,6 +181,7 @@ composition operator (\verb;∘;), as an example:
 3
 \end{verbatim}
 
+\noindent
 We introduce notation as needed throughout the exposition, so the reader 
 is encouraged to refer to the tables as necessary to recall particular 
 operations.
@@ -224,6 +226,7 @@ nested expression.
 V(⍵) P(+) V(⍵)
 \end{verbatim}
 
+\noindent
 The depth vectors for these trees we name \verb;Fd; and \verb;Ed;, respectively:
 
 \begin{verbatim}
@@ -231,6 +234,7 @@ Fd←0 1 2 3 4 4 4 2 3
 Ed←0 1 2 2 2 1 1 2 2 2
 \end{verbatim}
 
+\noindent
 The node types we call \verb;Ft; and \verb;Et;:
 
 \begin{verbatim}
@@ -238,6 +242,7 @@ Ft←'FEFEVPVAN'
 Et←'EEVPVPEVPV'
 \end{verbatim}
 
+\noindent
 And finally, we call the values vectors \verb;Fv; and \verb;Ev;:
 
 \begin{verbatim}
@@ -245,6 +250,7 @@ Fv←'f' 0 0 0 '⍵' '+' '⍵' 0 7
 Ev←'v' 0 'a' '+' 'b' '÷' 0 'c' '×' 'd'
 \end{verbatim}
 
+\noindent
 We combine these to form the respective AST matrices. We write \verb;A,B;
 to catenate arrays \verb;A; and \verb;B; along their last axes and \verb;⍪A; to turn a
 vector into a 1-column matrix. Thus, the two AST matrices are given
@@ -274,7 +280,8 @@ by the following expressions:
 2 V d
 \end{verbatim}
 
-The Depth Vector stores all edge information for the tree, but this information 
+\noindent
+The depth vector stores all edge information for the tree, but this information 
 requires non-local access to utilize, such as traversing potentially the 
 entire vector to determine the children of a specific node.
 Node Coordinates fix this issue.
@@ -541,7 +548,7 @@ The function \verb;(=∨0=⊢); reads as, ``equal or a zero right argument.''
 We take this point-wise operation and reduce it with \verb;∧⌿; (For All).
 This pattern is a special case of inner product, written \verb;f.g;. 
 For example, \verb;+.×; is matrix multiplication. We transform our reduction and 
-boolean function to a single predicate with the inner product operator:
+Boolean function to a single predicate with the inner product operator:
 \begin{verbatim}
       C∧.(=∨0=⊢)P
 1
@@ -713,27 +720,27 @@ Drop Unnamed Functions & Eliminates some code that will not be evaluated at
 Drop Unreachable Code & Eliminates some unreachable code. &
  Filter/Inner Product & Yes \\
 Lift Functions & Moves all functions to the top-level. & Key & Yes \\
-Drop Redundant Nodes & Eliminates unnecessary nodes/nesting & Filter & No \\
+Drop Redundant Nodes & Eliminates unnecessary nodes/nesting. & Filter & No \\
 Flatten Expressions & Removes nesting from expressions. & Key & Yes \\
-Compress Atomic Nodes & Atomizes nested atom nodes & Amend & No \\
+Compress Atomic Nodes & Atomizes nested atom nodes. & Amend & No \\
 Propagate Constants & Inlines all references to literal values. &
  Amend/Rank & Yes \\
-Fold Constants & Converts constant expressions to literals & Amend & No \\
+Fold Constants & Converts constant expressions to literals. & Amend & No \\
 Compress Expressions & Converts expression sub-trees into single nodes. & 
  Amend & No \\
 Record Final Return Value & Records the value returned by each function. & 
  Key & No \\
 Normalize Values Field & Normalizes the shape and size of the values field. &
  Amend & No \\
-Lift Type-checking & Infers some type information at compile time &
+Lift Type-checking & Infers some type information at compile time. &
  Power Limit/Rank & No \\
-Allocate Value Slots & Does a form of frame allocation for variables &
+Allocate Value Slots & Does a form of frame allocation for variables. &
  Key & No \\
-Anchor Variables & Resolves lexically scoped variables &
+Anchor Variables & Resolves lexically scoped variables. &
  Key & Yes \\
 Record Live Variables & Records the variables that are live at each point of 
  execution. & Key & No \\
-Fuse Scalar Loops & Identifies Fusion opportunities and fuses expressions &
+Fuse Scalar Loops & Identifies Fusion opportunities and fuses expressions. &
  Key & No \\
 Type Specialization & Specializes each function for a series of potential inputs. 
  & Key & No \\
@@ -769,6 +776,7 @@ Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
 2 1
 \end{verbatim}
 
+\noindent
 To understand a bit better how the Key operator applies its function,
 consider the function \verb;{⍺ ⍵}; which returns the pair of its right
 and left arguments. If we apply it to the same value as above, we
@@ -783,6 +791,7 @@ get the following:
 2  2
 \end{verbatim}
 
+\noindent
 In our case, we use either \verb;Fk; or \verb;Ek; as our keys applied to the
 corresponding AST. We also will drop off the first row in each AST
 using \verb;1↓; since this node ``contains'' everything. In a complete
@@ -858,7 +867,7 @@ execution of function lifting.
 
 The final task to complete function lifting of each function
 body before lifting is to shift the depths in the depth vectors
-to correspond to those of a function lifted to the top-level, and
+to correspond to those of a function lifted to the top-level and
 to attach a function node to the top of each of the bodies. At that
 point, we simply recombine all of the newly created functions into
 a single top level.
@@ -946,7 +955,8 @@ The compiler itself is composed of three main parts: the core compiler,
 the parser, and the code generator. The code generator includes the runtime 
 library of the compiler. Parsing APL code in parallel is a well-studied 
 problem. The compiler currently uses parsing combinators to do its parsing, 
-though we plan to implement the Two-by-Two parser given in the literature. 
+though we plan to implement the Two-by-Two parser given in the literature
+\cite{bunda1984apl}. 
 The code generator itself is a simple parallel map over each node, as 
 each node may be generated independent from the other nodes, leading to a 
 fully parallel generator, though there are some branching elements in the 
@@ -1003,7 +1013,7 @@ a flatter form that does not require complex analysis to traverse.
 The current compiler represents a non-trivial instance of
 the successful application of these techniques, but it focuses on an untyped, 
 functionally oriented language. The type inference in the current version 
-of the compiler is somewhat naive. More work is required to expand the 
+of the compiler is somewhat na\"ive. More work is required to expand the 
 type inferencer to include more sophisticated type inference. 
 The compiler does not currently handle errors such as signals or 
 exceptions, nor does it implement some more sophisticated compiler optimizations.
