@@ -1,4 +1,4 @@
-\documentclass[numbers,preprint]{sigplanconf}
+\documentclass[numbers]{sigplanconf}
 % \usepackage[utf8]{inputenc}
 \usepackage{array}
 \usepackage{fontspec}
@@ -1135,119 +1135,86 @@ different paradigm centered on parallelism and aggregate operations.
 \bibliographystyle{plain}
 \bibliography{biblio}
 
-\begin{table}
+\begin{table*}
 \centering
-\begin{tabular}{cll}
+\begin{tabular}{cllcll}
 \toprule
-Symbol                   & Monadic            & Dyadic \\
+Symbol                   & Monadic            & Dyadic  &
+Symbol                   & Monadic            & Dyadic  \\
 \midrule
-\texttt{+}               & Identity           & Plus (Add) \\
-\texttt{-}               & Negative           & Minus (Subtract) \\
-\texttt{×}               & Direction (Signum) & Times (Multiply) \\
-\texttt{÷}               & Reciprocal         & Divide \\
-\texttt{|}               & Magnitude          & Residue (Modulo) \\
-\texttt{⌊}               & Floor              & Minimum \\
-\texttt{⌈}               & Ceiling            & Maximum \\
-\texttt{*}               & Exponential        & Power \\
-\texttt{⍟}               & Natural Logarithm  & Logarithm \\
-\texttt{○}               & Pi Times           & Circular (Trigonometric) \\
-\texttt{!}               & Factorial          & Binomial \\
+\multicolumn{6}{c}{Scalar Functions} \\ 
+\midrule
+\texttt{+}               & Identity           & Plus (Add) &
 \texttt{\textasciitilde} & Not                & \\
+\texttt{-}               & Negative           & Minus (Subtract) &
 \texttt{?}               & Roll               & \\
-\texttt{∧}              &                    & And \\
+\texttt{×}               & Direction (Signum) & Times (Multiply) &
+\texttt{∧}               &                    & And \\
+\texttt{÷}               & Reciprocal         & Divide &
 \texttt{∨}               &                    & Or \\
+\texttt{|}               & Magnitude          & Residue (Modulo) &
 \texttt{⍲}               &                    & Nand \\
+\texttt{⌊}               & Floor              & Minimum &
 \texttt{⍱}               &                    & Nor \\
+\texttt{⌈}               & Ceiling            & Maximum &
 \texttt{<}               &                    & Less \\
+\texttt{*}               & Exponential        & Power &
 \texttt{≤}               &                    & Less Or Equal \\
+\texttt{⍟}               & Natural Logarithm  & Logarithm &
 \texttt{=}               &                    & Equal \\
+\texttt{○}               & Pi Times           & Circular (Trigonometric) &
 \texttt{≥}               &                    & Greater Or Equal \\
+\texttt{!}               & Factorial          & Binomial &
 \texttt{>}               &                    & Greater \\
 \texttt{≠}               &                    & Not Equal \\
-\end{tabular}
-\caption{Scalar Functions}
-\label{tab:scalarprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic       & Dyadic \\
 \midrule
+\multicolumn{3}{c}{Selection Mixed Functions} &
+\multicolumn{3}{c}{Structural Mixed Functions} \\
+\cmidrule(r){1-3} \cmidrule(l){4-6}
+\texttt{⊃}               & Disclose & Pick &
 \texttt{⍴} & Reshape       & \\
+\texttt{↑}               &          & Take &
 \texttt{,} & Ravel         & Catenate/Laminate \\
+\texttt{↓}               &          & Drop &
 \texttt{⍪} & Table         & Catenate First/Laminate \\
+\texttt{/}               &          & Replicate &
 \texttt{⌽} & Reverse       & Rotate \\
+\texttt{⌿}               &          & Replicate First &
 \texttt{⊖} & Reverse First & Rotate First \\
+\texttt{\textbackslash}  &          & Expand &
 \texttt{⍉} & Transpose     & Transpose \\
+\texttt{⍀}               &          & Expand First &
 \texttt{↑} & Mix           & \\
+\texttt{\textasciitilde} &          & Without (Excluding) &
 \texttt{↓} & Split         & \\
+\texttt{∩}               &          & Intersection &
 \texttt{⊂} & Enclose       & Partitioned Enclose \\
+\texttt{∪}               & Unique   & Union &
 \texttt{∊} & Enlist        & \\
-\end{tabular}
-\caption{Structural Mixed Functions}
-\label{tab:structprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol                   & Monadic  & Dyadic \\
-\midrule
-\texttt{⊃}               & Disclose & Pick\\
-\texttt{↑}               &          & Take \\
-\texttt{↓}               &          & Drop \\
-\texttt{/}               &          & Replicate \\
-\texttt{⌿}               &          & Replicate First \\
-\texttt{\textbackslash}  &          & Expand \\
-\texttt{⍀}               &          & Expand First \\
-\texttt{\textasciitilde} &          & Without (Excluding) \\
-\texttt{∩}               &          & Intersection \\
-\texttt{∪}               & Unique   & Union \\
 \texttt{⊣}               & Same     & Left \\
 \texttt{⊢}               & Identity & Right\\
-\end{tabular}
-\caption{Selection Mixed Functions}
-\label{tab:selprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic         & Dyadic \\
 \midrule
-\texttt{⍳} & Index Generator & Index Of \\
-\texttt{∊} &                 & Membership \\
-\texttt{⍋} & Grade Up        & Grade Up \\
-\texttt{⍒} & Grade Down      & Grade Down \\
-\texttt{?} &                 & Deal \\
-\texttt{⍷} &                 & Find \\
-\end{tabular}
-\caption{Selector Mixed Functions}
-\label{tab:seltorprims}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{cll}
-\toprule
-Symbol     & Monadic       & Dyadic \\
-\midrule
+\multicolumn{3}{c}{Selector Mixed Functions} &
+\multicolumn{3}{c}{Miscellaneous Mixed Functions} \\
+\cmidrule(r){1-3} \cmidrule(l){4-6}
+\texttt{⍳} & Index Generator & Index Of &
 \texttt{⍴} & Shape         & \\
+\texttt{∊} &                 & Membership &
 \texttt{≡} & Depth         & Match \\
+\texttt{⍋} & Grade Up        & Grade Up &
 \texttt{≢} & Tally         & Not Match \\
+\texttt{⍒} & Grade Down      & Grade Down &
 \texttt{⍎} & Execute       & Execute \\
+\texttt{?} &                 & Deal &
 \texttt{⍕} & Format        & Format \\
+\texttt{⍷} &                 & Find &
 \texttt{⊥} &               & Decode (Base) \\
-\texttt{⊤} &               & Encode (Representation) \\
-\texttt{⌹} & Matrix Divide & Matrix Inverse \\
+& & & \texttt{⊤} &               & Encode (Representation) \\
+& & & \texttt{⌹} & Matrix Divide & Matrix Inverse \\
 \end{tabular}
-\caption{Miscellaneous Mixed Functions}
-\label{tab:miscprims}
-\end{table}
+\caption{Primitive Functions}
+\label{tab:scalarprims}
+\end{table*}
 
 \begin{table*}
 \centering
