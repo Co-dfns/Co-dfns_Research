@@ -1,4 +1,4 @@
-\documentclass[numbers]{sigplanconf}
+\documentclass[numbers,9pt]{sigplanconf}
 % \usepackage[utf8]{inputenc}
 \usepackage{array}
 \usepackage{fontspec}
@@ -8,7 +8,7 @@
 \usepackage{url}                  % format URLs
 \usepackage{listings}          % format code
 \usepackage{enumitem}      % adjust spacing in enums
-\usepackage[colorlinks=true,allcolors=blue,breaklinks,draft=false]{hyperref}   % hyperlinks, including DOIs and URLs in bibliography
+\usepackage[colorlinks=false,allcolors=blue,breaklinks,draft=false]{hyperref}   % hyperlinks, including DOIs and URLs in bibliography
 % known bug: http://tex.stackexchange.com/questions/1522/pdfendlink-ended-up-in-different-nesting-level-than-pdfstartlink
 \newcommand{\doi}[1]{doi:~\href{http://dx.doi.org/#1}{\Hurl{#1}}}   % print a hyperlinked DOI
 \usepackage{booktabs}
@@ -17,8 +17,7 @@
 
 \title{The Key to a Data Parallel Compiler}
 
-\conferenceinfo{ARRAY '16}{June, 2016, Santa Barbara, CA, USA}
-\copyrightyear{2016}
+\toappear{}
 
 \authorinfo{Aaron W. Hsu}{Indiana University}{awhsu@indiana.edu}
 
@@ -36,6 +35,12 @@ the use of these techniques when applied to an experimental commercial
 compiler called Co-dfns, which is a fully data-parallel compiler developed 
 using the techniques discussed here.
 \end{abstract}
+
+\category{D.3.4}{Programming Languages}{Processors}[Compilers]
+
+\keywords
+APL, Parallel, Compilers, Key, Node Coordinates
+
 
 % Proposed new outline:
 % 
@@ -142,7 +147,6 @@ established in the array community (it is a limited subset of APL). This is
 in fact the same notation used within the Co-dfns compiler itself, whose 
 source code is available online and provides a complete example of the use 
 of both these algorithms and this notation in the large. 
-
 All code examples are given in the following form:
 
 \begin{verbatim}
@@ -257,27 +261,17 @@ vector into a 1-column matrix. Thus, the two AST matrices are given
 by the following expressions:
 
 \begin{verbatim}
-      Fd,Ft,⍪Fv
-0 F f
-1 E 0
-2 F 0
-3 E 0
-4 V ⍵
-4 P +
-4 V ⍵
-2 A 0
-3 N 7
-      Ed,Et,⍪Ev
-0 E v
-1 E 0
-2 V a
-2 P +
-2 V b
-1 P ÷
-1 E 0
-2 V c
-2 P ×
-2 V d
+      Fd,Ft,⍪Fv  │        Ed,Et,⍪Ev
+0 F f            │  0 E v
+1 E 0            │  1 E 0
+2 F 0            │  2 V a
+3 E 0            │  2 P +
+4 V ⍵            │  2 V b
+4 P +            │  1 P ÷
+4 V ⍵            │  1 E 0
+2 A 0            │  2 V c
+3 N 7            │  2 P ×
+                 │  2 V d
 \end{verbatim}
 
 \noindent
@@ -1132,7 +1126,10 @@ practices that underlie every other significant and general solution
 found in modern compilers today and replacing them with an entirely
 different paradigm centered on parallelism and aggregate operations.
 
-\bibliographystyle{plain}
+\balancecolumns
+
+
+\bibliographystyle{abbrvnat}
 \bibliography{biblio}
 
 \begin{table*}
