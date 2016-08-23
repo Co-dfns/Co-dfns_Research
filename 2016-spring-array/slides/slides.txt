@@ -1,0 +1,133 @@
+The Key to a
+Data Parallel Compiler
+    Aaron W. Hsu
+    Indiana University, USA
+    awhsu@indiana.edu
+    ARRAY '16, Santa Barbara, CA
+
+Dyalog, Ltd.
+
+Parallel
+  vs.
+Parallelizing
+
+Fine-grained
+
+Graph Algorithms
+
+Traversals
+Transformations
+
+Complete Compiler
+
+Co-dfns → OpenACC
+
+High-level
+Restricted
+Data Parallel
+Co-dfns Subset
+
+Algebraic
+
+No looping
+No branching
+No recursion
+No pattern matching
+
+~200-300 lines of code
+
+Flattening Passes
+
+Sub-tree Computation
+
+Parent-Child Relationships
+
+Node Coordinates
+
+Node-Node Inquiry
+
+⌸ Key
+
+Function Lifting
+Expression Flattening
+
+Frame/Array Allocation
+Lexical Scoping
+Dead-code Elimination
+
+What is a
+Node Coordinate?
+
+@tree_unnamed.png
+
+@tree_depths.png
+
+d←0 1 2 2 1
+
+      1+⌈/d ⍝ Max Depth
+3
+      ⍳1+⌈/d
+0 1 2
+
+      d∘.=⍳1+⌈/d
+1 0 0
+0 1 0
+0 0 1
+0 0 1
+0 1 0
+
+@scan_tree.png
+
+@three_trees.png
+
+Using Node Coordinates
+
+@subtree_box.png
+
+@tree_coords.png
+
+=∨0=⊢
+
+      1 1 2 (=∨0=⊢) 1 1 0
+1 1 1
+      1 2 0 (=∨0=⊢) 1 1 0
+1 0 1
+
+      ncm
+1 0 0
+1 1 0
+1 1 1 
+1 1 2
+1 2 0
+
+      ncm ∧.(=∨0=⊢) 1 1 0
+0 1 1 1 0
+
+      0 1 1 1 0 ,∘≢⌸ d←0 1 2 2 1
+0 2
+1 3
+
+General
+
+Related Work
+
+Kepner and Gilbert
+Iverson
+
+Future Work
+
+Profiling/Benchmarks
+Compiler Features
+Additional Passes
+
+Array Programming
+       +
+   Key Operator
+       +
+Node Coordinates
+       =
+Data Parallel Compiler
+
+Thank You
+http://arcfide.github.io/Co-dfns/
+
