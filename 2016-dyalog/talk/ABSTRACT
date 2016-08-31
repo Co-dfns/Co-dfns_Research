@@ -1,0 +1,8 @@
+Co-dfns Report: GPU Performance, Workflow, and Usability
+
+The Co-dfns compiler is now showing improved performance on GPUs for a variety
+of test applications. We give a report on the performance improvements 
+available through using the compiler and demonstrate the workflow for migrating
+applications to utilize the compiler. We also provide information on the current
+features supported in the compiler and how to track future releases. 
+
