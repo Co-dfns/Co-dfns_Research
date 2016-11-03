@@ -6,3 +6,6 @@
 *.bbl
 *.blg
 Thumbs.db
+*.dwf
+*.exe
+*.pdb
