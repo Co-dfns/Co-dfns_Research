@@ -8,6 +8,9 @@
 
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
+#include <thrust/for_each.h>
+#include <thrust/iterator/zip_iterator.h>
+#include <thrust/sequence.h>
 
 using namespace std;
 
@@ -49,7 +52,7 @@ ostream& operator<<(ostream& os, const CPUNode& node)
 	return os;
 }
 
-void print_tree(CPUNode& node, int depth)
+void print_cpu_tree(CPUNode& node, int depth)
 {
 	for (int i = 0; i < depth; i++)
 		cout << " ";
@@ -57,7 +60,7 @@ void print_tree(CPUNode& node, int depth)
 	cout << node << endl;
 
 	for (CPUNode& kid : node.kids)
-		print_tree(kid, depth + 1);
+		print_cpu_tree(kid, depth + 1);
 }
 
 void help(void) 
@@ -90,7 +93,6 @@ void cpu_flatten(CPUNode& node)
 void benchmark_cpu(int depth, int width, bool print)
 {
 	cout << "Benchmarking CPU algorithm (Depth: " << depth << " Width: " << width << ")" << endl;
-
 	cout << "Creating AST...";
 
 	int id = 0;
@@ -100,7 +102,7 @@ void benchmark_cpu(int depth, int width, bool print)
 
 	if (print) {
 		cout << endl << "Before: " << endl;
-		print_tree(node, 1);
+		print_cpu_tree(node, 1);
 		cout << endl;
 	}
 
@@ -115,13 +117,101 @@ void benchmark_cpu(int depth, int width, bool print)
 
 	if (print) {
 		cout << endl << "After: " << endl;
-		print_tree(node, 1);
+		print_cpu_tree(node, 1);
 	}
+}
+
+struct print_gpu_node {
+	template <typename Tuple>
+	__host__
+	void operator()(Tuple t) 
+	{
+		for (int i = 0; i <= thrust::get<1>(t); i++)
+			cout << " ";
+
+		cout << thrust::get<2>(t) << " " << thrust::get<0>(t) << " ";
+
+		for (int v : thrust::get<3>(t))
+			cout << " " << v;
+
+		cout << endl;
+	}
+};
+
+void print_gpu_tree(thrust::host_vector<int> depths,
+	thrust::host_vector<long long> ids,
+	thrust::host_vector<short> types,
+	thrust::host_vector<vector<int>> coords)
+{
+	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(ids.begin(), depths.begin(), types.begin(), coords.begin())),
+		thrust::make_zip_iterator(thrust::make_tuple(ids.end(), depths.end(), types.end(), coords.end())),
+		print_gpu_node());
 }
 
 void benchmark_gpu(int depth, int width, bool print)
 {
 	cout << "Benchmarking GPU algorithm (Depth: " << depth << " Width: " << width << ")..." << endl;
+	cout << "Creating AST...";
+
+	long long count = 0;
+
+	for (int i = 0; i <= depth; i++) {
+		count += pow(width, i);
+	}
+
+	thrust::host_vector<int> depths(count);
+	thrust::host_vector<long long> ids(count);
+	thrust::host_vector<short> types(count);
+	thrust::host_vector<vector<int>> coords(count);
+
+	int cur_depth = 0;
+	int cur_width = 0;
+	vector<int> cur_coord(depth+1, 0);
+
+	for (int i = 0; i < count; i++) {
+		if (cur_width >= width) {
+			cur_coord[cur_depth] = 0;
+			cur_depth--;
+			cur_width = cur_coord[cur_depth];
+			i--;
+			continue;
+		}
+
+		depths[i] = cur_depth;
+		types[i] = cur_depth == depth ? 1 : 0;
+		cur_coord[cur_depth]++;
+		coords[i] = cur_coord;
+		cur_width++;
+
+		if (cur_depth < depth) {
+			cur_depth++;
+			cur_width = 0;
+		}
+	}
+
+	thrust::sequence(ids.begin(), ids.end());
+
+	cout << "done." << endl;
+
+	if (print) {
+		cout << endl << "Before: " << endl;
+		print_gpu_tree(depths, ids, types, coords);
+		cout << endl;
+	}
+
+	cout << "Flattening AST...";
+
+	auto start = chrono::high_resolution_clock::now();
+	
+	auto end = chrono::high_resolution_clock::now();
+
+	cout << "took " << chrono::duration_cast<chrono::milliseconds>(end - start).count()
+		<< " milliseconds." << endl;
+
+	if (print) {
+		cout << endl << "After: " << endl;
+		print_gpu_tree(depths, ids, types, coords);
+	}
 }
 
 int main(int argc, char *argv[])
