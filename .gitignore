@@ -9,3 +9,7 @@ Thumbs.db
 *.dwf
 *.exe
 *.pdb
+/2017-spring-pldi/Benchmark/.vs/Benchmark/v14
+/2017-spring-pldi/Benchmark/Benchmark/x64/Debug/Benchmark.tlog
+/2017-spring-pldi/Benchmark/Benchmark/x64/Debug
+/2017-spring-pldi/Benchmark/x64/Debug
