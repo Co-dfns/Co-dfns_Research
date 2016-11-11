@@ -10,7 +10,11 @@
 #include <thrust/device_vector.h>
 #include <thrust/for_each.h>
 #include <thrust/iterator/zip_iterator.h>
+#include <thrust/remove.h>
 #include <thrust/sequence.h>
+#include <thrust/inner_product.h>
+#include <thrust/functional.h>
+#include <thrust/sort.h>
 
 using namespace std;
 
@@ -121,6 +125,56 @@ void benchmark_cpu(int depth, int width, bool print)
 	}
 }
 
+struct GPUNode {
+	int depth;
+	int width;
+	int count;
+	thrust::host_vector<int> depths;
+	thrust::host_vector<long long> ids;
+	thrust::host_vector<short> types;
+	thrust::host_vector<vector<int>> coords;
+	GPUNode(int depth, int width);
+};
+
+GPUNode::GPUNode(int depth, int width)
+	: depth(depth), width(width)
+{
+	count = 0;
+
+	for (int i = 0; i <= depth; i++)
+		count += pow(width, i);
+
+	depths = thrust::host_vector<int>(count);
+	ids = thrust::host_vector<long long>(count);
+	types = thrust::host_vector<short>(count);
+	coords = thrust::host_vector<vector<int>>(count);
+
+	int cur_width = 0;
+	vector<int> cur_coord(1, 0);
+
+	for (int i = 0; i < count; i++) {
+		if (cur_width >= width) {
+			cur_coord.pop_back();
+			cur_width = cur_coord.back();
+			i--;
+			continue;
+		}
+
+		depths[i] = cur_coord.size() - 1;
+		types[i] = cur_coord.size() > depth ? 1 : 0;
+		cur_coord.back()++;
+		coords[i] = cur_coord;
+		cur_width++;
+
+		if (cur_coord.size() <= depth) {
+			cur_width = 0;
+			cur_coord.push_back(0);
+		}
+	}
+
+	thrust::sequence(ids.begin(), ids.end());
+}
+
 struct print_gpu_node {
 	template <typename Tuple>
 	__host__
@@ -138,14 +192,89 @@ struct print_gpu_node {
 	}
 };
 
-void print_gpu_tree(thrust::host_vector<int> depths,
-	thrust::host_vector<long long> ids,
-	thrust::host_vector<short> types,
-	thrust::host_vector<vector<int>> coords)
+void print_gpu_tree(GPUNode& ast)
 {
-	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(ids.begin(), depths.begin(), types.begin(), coords.begin())),
-		thrust::make_zip_iterator(thrust::make_tuple(ids.end(), depths.end(), types.end(), coords.end())),
+	thrust::for_each(
+		thrust::make_zip_iterator(
+			thrust::make_tuple(ast.ids.begin(), ast.depths.begin(), ast.types.begin(), ast.coords.begin())),
+		thrust::make_zip_iterator(
+			thrust::make_tuple(ast.ids.end(), ast.depths.end(), ast.types.end(), ast.coords.end())),
 		print_gpu_node());
+}
+
+struct print_gpu_reference {
+	__host__
+	void operator()(vector<int>& ref)
+	{
+		for (int& v : ref)
+			cout << v << " ";
+		cout << endl;
+	}
+};
+
+struct coord_prefix_index {
+	template <typename Tuple>
+	__host__
+	long long operator()(Tuple t)
+	{
+		vector<int>& eref = thrust::get<1>(t);
+		vector<int>& coord = thrust::get<2>(t);
+
+		if (eref.size() >= coord.size())
+			return 0;
+
+		for (int i = 0; i < eref.size(); i++)
+			if (eref[i] != coord[i])
+				return 0;
+
+		return thrust::get<0>(t);
+	}
+};
+
+struct coord_parent_index {
+	thrust::detail::normal_iterator<vector<int>*> first;
+	thrust::detail::normal_iterator<vector<int>*> last;
+	__host__
+	long long operator()(vector<int>& ref)
+	{
+		long long ecount = last - first;
+		thrust::counting_iterator<long long> count(0);
+		thrust::constant_iterator<vector<int>&> coord(ref);
+
+		return thrust::transform_reduce(
+			thrust::make_zip_iterator(thrust::make_tuple(count, first, coord)),
+			thrust::make_zip_iterator(thrust::make_tuple(count + ecount, last, coord + ecount)),
+			coord_prefix_index(), 0, thrust::maximum<int>());
+	}
+};
+
+void gpu_flatten(GPUNode& ast)
+{
+	thrust::host_vector<vector<int>> ecs(ast.count);
+	auto ecs_end = 
+		thrust::remove_copy_if(
+			ast.coords.begin(), ast.coords.end(), ast.types.begin(), ecs.begin(), 
+			thrust::identity<int>());
+
+	thrust::host_vector<long long> keys(ast.count);
+	thrust::transform(ast.coords.begin(), ast.coords.end(), keys.begin(), coord_parent_index{ ecs.begin(), ecs_end });
+	thrust::host_vector<long long> perm(ast.count);
+	thrust::sequence(perm.begin(), perm.end());
+	thrust::stable_sort_by_key(keys.begin(), keys.end(), perm.begin());
+
+	cout << endl;
+	auto ast_tuple = thrust::make_zip_iterator(
+		thrust::make_tuple(
+			ast.ids.begin(), ast.depths.begin(), ast.types.begin(), ast.coords.begin()));
+	thrust::for_each(
+		thrust::make_permutation_iterator(ast_tuple, perm.begin()),
+		thrust::make_permutation_iterator(ast_tuple, perm.end()),
+		print_gpu_node());
+	cout << endl;
+
+	// Sort nodes
+	// Scatter Nodes?
+	// Adjust depths, set types, set ref
 }
 
 void benchmark_gpu(int depth, int width, bool print)
@@ -153,56 +282,20 @@ void benchmark_gpu(int depth, int width, bool print)
 	cout << "Benchmarking GPU algorithm (Depth: " << depth << " Width: " << width << ")..." << endl;
 	cout << "Creating AST...";
 
-	long long count = 0;
-
-	for (int i = 0; i <= depth; i++) {
-		count += pow(width, i);
-	}
-
-	thrust::host_vector<int> depths(count);
-	thrust::host_vector<long long> ids(count);
-	thrust::host_vector<short> types(count);
-	thrust::host_vector<vector<int>> coords(count);
-
-	int cur_depth = 0;
-	int cur_width = 0;
-	vector<int> cur_coord(depth+1, 0);
-
-	for (int i = 0; i < count; i++) {
-		if (cur_width >= width) {
-			cur_coord[cur_depth] = 0;
-			cur_depth--;
-			cur_width = cur_coord[cur_depth];
-			i--;
-			continue;
-		}
-
-		depths[i] = cur_depth;
-		types[i] = cur_depth == depth ? 1 : 0;
-		cur_coord[cur_depth]++;
-		coords[i] = cur_coord;
-		cur_width++;
-
-		if (cur_depth < depth) {
-			cur_depth++;
-			cur_width = 0;
-		}
-	}
-
-	thrust::sequence(ids.begin(), ids.end());
+	GPUNode ast(depth, width);
 
 	cout << "done." << endl;
 
 	if (print) {
 		cout << endl << "Before: " << endl;
-		print_gpu_tree(depths, ids, types, coords);
+		print_gpu_tree(ast);
 		cout << endl;
 	}
 
 	cout << "Flattening AST...";
 
 	auto start = chrono::high_resolution_clock::now();
-	
+	gpu_flatten(ast);
 	auto end = chrono::high_resolution_clock::now();
 
 	cout << "took " << chrono::duration_cast<chrono::milliseconds>(end - start).count()
@@ -210,7 +303,7 @@ void benchmark_gpu(int depth, int width, bool print)
 
 	if (print) {
 		cout << endl << "After: " << endl;
-		print_gpu_tree(depths, ids, types, coords);
+		print_gpu_tree(ast);
 	}
 }
 
