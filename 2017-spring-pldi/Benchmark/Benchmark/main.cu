@@ -10,11 +10,16 @@
 #include <thrust/device_vector.h>
 #include <thrust/for_each.h>
 #include <thrust/iterator/zip_iterator.h>
+#include <thrust/iterator/transform_iterator.h>
 #include <thrust/remove.h>
 #include <thrust/sequence.h>
 #include <thrust/inner_product.h>
 #include <thrust/functional.h>
 #include <thrust/sort.h>
+#include <thrust/fill.h>
+#include <thrust/execution_policy.h>
+#include <thrust/reduce.h>
+#include <thrust/tuple.h>
 
 using namespace std;
 
@@ -128,11 +133,10 @@ void benchmark_cpu(int depth, int width, bool print)
 struct GPUNode {
 	int depth;
 	int width;
-	int count;
-	thrust::host_vector<int> depths;
-	thrust::host_vector<long long> ids;
-	thrust::host_vector<short> types;
-	thrust::host_vector<vector<int>> coords;
+	long long count;
+	thrust::device_vector<int> depths;
+	thrust::device_vector<short> types;
+	thrust::device_vector<int> coords;
 	GPUNode(int depth, int width);
 };
 
@@ -141,13 +145,12 @@ GPUNode::GPUNode(int depth, int width)
 {
 	count = 0;
 
-	for (int i = 0; i <= depth; i++)
-		count += pow(width, i);
+	for (int i = 0; i < depth; i++)
+		count += (long long)pow(width, i);
 
-	depths = thrust::host_vector<int>(count);
-	ids = thrust::host_vector<long long>(count);
-	types = thrust::host_vector<short>(count);
-	coords = thrust::host_vector<vector<int>>(count);
+	thrust::host_vector<int> host_depths(count);
+	thrust::host_vector<short> host_types(count);
+	thrust::host_vector<int> host_coords(count * depth, 0);
 
 	int cur_width = 0;
 	vector<int> cur_coord(1, 0);
@@ -160,33 +163,48 @@ GPUNode::GPUNode(int depth, int width)
 			continue;
 		}
 
-		depths[i] = cur_coord.size() - 1;
-		types[i] = cur_coord.size() > depth ? 1 : 0;
+		host_depths[i] = (int)cur_coord.size() - 1;
+		host_types[i] = cur_coord.size() >= depth ? 1 : 0;
 		cur_coord.back()++;
-		coords[i] = cur_coord;
+		for (int j = 0; j < cur_coord.size(); j++)
+			host_coords[i*depth + j] = cur_coord[j];
 		cur_width++;
 
-		if (cur_coord.size() <= depth) {
+		if (cur_coord.size() < depth) {
 			cur_width = 0;
 			cur_coord.push_back(0);
 		}
 	}
 
-	thrust::sequence(ids.begin(), ids.end());
+	depths = host_depths;
+	types = host_types;
+	coords = host_coords;
 }
 
 struct print_gpu_node {
+	int max_depth;
+	thrust::host_vector<int>& coords;
+
 	template <typename Tuple>
 	__host__
 	void operator()(Tuple t) 
 	{
-		for (int i = 0; i <= thrust::get<1>(t); i++)
+		int depth = thrust::get<0>(t) + 1;
+
+		for (int i = 0; i < depth; i++)
 			cout << " ";
 
-		cout << thrust::get<2>(t) << " " << thrust::get<0>(t) << " ";
+		cout << thrust::get<1>(t) << " ";
 
-		for (int v : thrust::get<3>(t))
-			cout << " " << v;
+		long long i = thrust::get<2>(t);
+
+		for (int j = 0; j < max_depth; j++) {
+			int c = coords[i*max_depth + j];
+			if (c)
+				cout << " " << c;
+			else
+				break;
+		}
 
 		cout << endl;
 	}
@@ -194,87 +212,167 @@ struct print_gpu_node {
 
 void print_gpu_tree(GPUNode& ast)
 {
-	thrust::for_each(
+	thrust::host_vector<int> host_depths = ast.depths;
+	thrust::host_vector<short> host_types = ast.types;
+	thrust::host_vector<int> host_coords = ast.coords;
+	thrust::counting_iterator<long long> row(0);
+
+	thrust::for_each(thrust::host,
 		thrust::make_zip_iterator(
-			thrust::make_tuple(ast.ids.begin(), ast.depths.begin(), ast.types.begin(), ast.coords.begin())),
+			thrust::make_tuple(host_depths.begin(), host_types.begin(), row)),
 		thrust::make_zip_iterator(
-			thrust::make_tuple(ast.ids.end(), ast.depths.end(), ast.types.end(), ast.coords.end())),
-		print_gpu_node());
+			thrust::make_tuple(host_depths.end(), host_types.end(), row + ast.count)),
+		print_gpu_node{ ast.depth, host_coords});
 }
 
-struct print_gpu_reference {
-	__host__
-	void operator()(vector<int>& ref)
-	{
-		for (int& v : ref)
-			cout << v << " ";
-		cout << endl;
-	}
-};
-
-struct coord_prefix_index {
-	template <typename Tuple>
-	__host__
-	long long operator()(Tuple t)
-	{
-		vector<int>& eref = thrust::get<1>(t);
-		vector<int>& coord = thrust::get<2>(t);
-
-		if (eref.size() >= coord.size())
-			return 0;
-
-		for (int i = 0; i < eref.size(); i++)
-			if (eref[i] != coord[i])
-				return 0;
-
-		return thrust::get<0>(t);
-	}
-};
+typedef thrust::tuple<long long, long long> cpitype;
 
 struct coord_parent_index {
-	thrust::detail::normal_iterator<vector<int>*> first;
-	thrust::detail::normal_iterator<vector<int>*> last;
-	__host__
-	long long operator()(vector<int>& ref)
-	{
-		long long ecount = last - first;
-		thrust::counting_iterator<long long> count(0);
-		thrust::constant_iterator<vector<int>&> coord(ref);
+	int max_depth;
+	long long exp_count;
+	thrust::device_ptr<int> coords;
+	thrust::device_ptr<long long> eids;
 
-		return thrust::transform_reduce(
-			thrust::make_zip_iterator(thrust::make_tuple(count, first, coord)),
-			thrust::make_zip_iterator(thrust::make_tuple(count + ecount, last, coord + ecount)),
-			coord_prefix_index(), 0, thrust::maximum<int>());
+	coord_parent_index(int md, long long ec, thrust::device_ptr<int> cs, thrust::device_ptr<long long> eids)
+		: max_depth(md), exp_count(ec), coords(cs), eids(eids)
+	{}
+
+	__host__ __device__
+	bool test(const cpitype& t)
+	{
+		long long ci = thrust::get<0>(t);
+		long long ei = thrust::get<1>(t);
+
+		for (int j = 0; j < max_depth - 1; j++) {
+			int ref = coords[ei*max_depth + j];
+			int cor = coords[ci*max_depth + j];
+			int nxt = coords[ci*max_depth + j + 1];
+
+			if (!nxt) {
+				if (ref) return false;
+				else break;
+			}
+			if (!ref) break;
+			if (ref != cor) return false;
+		}
+
+		return true;
+	}
+
+	__host__ __device__
+	cpitype operator()(const cpitype& t1, const cpitype& t2)
+	{
+		long long v1 = thrust::get<1>(t1);
+		long long v2 = thrust::get<1>(t2);
+
+		if (v1 >= v2) {
+			if (test(t1))
+				return t1;
+			else if (test(t2))
+				return t2;
+			else
+				return thrust::make_tuple<long long, long long>(0, 0);
+		}
+		else {
+			if (test(t2))
+				return t2;
+			else if (test(t1))
+				return t1;
+			else
+				return thrust::make_tuple<long long, long long>(0, 0);
+		}
+	}
+};
+
+struct copy_coord {
+	thrust::device_ptr<int> new_coords;
+	thrust::device_ptr<int> old_coords;
+	int max_depth;
+
+	template <typename Tuple>
+	__host__ __device__
+	void operator()(Tuple t)
+	{
+		long long ci = thrust::get<0>(t);
+		long long ei = thrust::get<1>(t);
+		for (int j = 0; j < max_depth; j++)
+			new_coords[ci*max_depth + j] = old_coords[ei*max_depth + j];
+	}
+};
+
+struct get_ci {
+	long long C;
+
+	__host__ __device__
+	long long operator()(long long i)
+	{
+		return 1 + i / C;
+	}
+};
+
+struct get_ei {
+	long long C;
+	thrust::device_ptr<long long> eids;
+
+	__host__ __device__
+	long long operator()(long long i)
+	{
+		return eids[i % C];
 	}
 };
 
 void gpu_flatten(GPUNode& ast)
 {
-	thrust::host_vector<vector<int>> ecs(ast.count);
-	auto ecs_end = 
-		thrust::remove_copy_if(
-			ast.coords.begin(), ast.coords.end(), ast.types.begin(), ecs.begin(), 
-			thrust::identity<int>());
+	thrust::device_vector<long long> eids(ast.count);
+	thrust::sequence(eids.begin(), eids.end());
 
-	thrust::host_vector<long long> keys(ast.count);
-	thrust::transform(ast.coords.begin(), ast.coords.end(), keys.begin(), coord_parent_index{ ecs.begin(), ecs_end });
-	thrust::host_vector<long long> perm(ast.count);
-	thrust::sequence(perm.begin(), perm.end());
-	thrust::stable_sort_by_key(keys.begin(), keys.end(), perm.begin());
+	auto eids_begin = eids.begin();
+	auto eids_end = thrust::remove_if(eids_begin, eids.end(), ast.types.begin(), 
+		thrust::identity<short>());
 
-	cout << endl;
-	auto ast_tuple = thrust::make_zip_iterator(
-		thrust::make_tuple(
-			ast.ids.begin(), ast.depths.begin(), ast.types.begin(), ast.coords.begin()));
+	long long exp_count = eids_end - eids_begin;
+	long long result_count = ast.count + exp_count - 1;
+
+	thrust::device_vector<int> new_depths(result_count);
+	thrust::device_vector<short> new_types(result_count);
+	thrust::device_vector<int> new_coords(result_count * ast.depth);
+	thrust::device_vector<long long> refids(result_count);
+	thrust::device_vector<long long> keys(result_count);
+	thrust::counting_iterator<long long> cids_begin(1);
+	thrust::counting_iterator<long long> newids(0);
+
+	thrust::fill(new_depths.begin(), new_depths.begin() + exp_count, 0);
+	thrust::fill(new_depths.begin() + exp_count, new_depths.end(), 1);
+	thrust::fill(new_types.begin(), new_types.begin() + exp_count, 0);
+	thrust::fill(new_types.begin() + exp_count, new_types.end(), 1);
+
+	auto keys_first = keys.begin() + exp_count;
+
+	thrust::copy(eids_begin, eids_end, keys.begin());
+	thrust::reduce_by_key(
+		thrust::make_transform_iterator(newids, get_ci{ exp_count }),
+		thrust::make_transform_iterator(newids + exp_count * (ast.count - 1), get_ci{ exp_count }),
+		thrust::make_zip_iterator(thrust::make_tuple(
+			thrust::make_transform_iterator(newids, get_ci{ exp_count }),
+			thrust::make_transform_iterator(newids, get_ei{ exp_count, eids.data() }))),
+		thrust::make_discard_iterator(),
+		thrust::make_zip_iterator(thrust::make_tuple(refids.begin(), keys_first)),
+		thrust::equal_to<long long>(),
+		coord_parent_index(ast.depth, exp_count, ast.coords.data(), eids.data()));
+	thrust::copy(eids_begin, eids_end, refids.begin());
+	thrust::sequence(refids.begin() + exp_count, refids.end(), 1);
+	thrust::stable_sort_by_key(keys.begin(), keys.end(),
+		thrust::make_zip_iterator(
+			thrust::make_tuple(new_depths.begin(), new_types.begin(), refids.begin())));
 	thrust::for_each(
-		thrust::make_permutation_iterator(ast_tuple, perm.begin()),
-		thrust::make_permutation_iterator(ast_tuple, perm.end()),
-		print_gpu_node());
-	cout << endl;
+		thrust::make_zip_iterator(thrust::make_tuple(newids, refids.begin())),
+		thrust::make_zip_iterator(thrust::make_tuple(newids + result_count, refids.end())),
+		copy_coord{ new_coords.data(), ast.coords.data(), ast.depth });
 
-	// Sort nodes
-	// Scatter Nodes?
-	// Adjust depths, set types, set ref
+	ast.count = result_count;
+	ast.types = new_types;
+	ast.coords = new_coords;
+	ast.depths = new_depths;
 }
 
 void benchmark_gpu(int depth, int width, bool print)
@@ -282,7 +380,7 @@ void benchmark_gpu(int depth, int width, bool print)
 	cout << "Benchmarking GPU algorithm (Depth: " << depth << " Width: " << width << ")..." << endl;
 	cout << "Creating AST...";
 
-	GPUNode ast(depth, width);
+	GPUNode ast(depth+1, width);
 
 	cout << "done." << endl;
 
