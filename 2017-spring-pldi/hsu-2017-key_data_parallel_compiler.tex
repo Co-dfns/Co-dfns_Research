@@ -3,6 +3,7 @@
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX]{Times New Roman}
 \setmonofont{APL385 Unicode}
+\usepackage{graphicx}
 \usepackage[scaled]{helvet} % see www.ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
 \usepackage{url}                  % format URLs
 \usepackage{listings}          % format code
@@ -633,9 +634,18 @@ Likewise, node coordinates find their place early on in the compiler where it is
 
 In short, the goal of the structure and design of the compiler passes given in Table \ref{tab:passes} is to utilize Node Coordinates to remove as quickly as possible the nested structure of the AST into a flatter form that does not require complex analysis to traverse.
 
+\begin{figure*}
+\begin{center}
+\includegraphics[width=3.3in]{fnc_gpu_3d}
+\includegraphics[width=3.3in]{mut_gpu_3d}
+\includegraphics[width=3.3in]{fnc_gpu_2d}
+\includegraphics[width=3.3in]{mut_gpu_2d}
+\end{center}
+\caption{Performance of Key-based Expression Flattening compared to traditional methods}
+\label{fig-3d}
+\end{figure*}
+
 \section{Performance}
-
-
 
 \section{Discussion}
 
