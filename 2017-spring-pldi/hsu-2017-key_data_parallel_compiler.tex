@@ -216,103 +216,56 @@ So the depths of all nodes that appear in the depth vectors is thus:
                    │ 0 0 1
 \end{verbatim}
 
-\noindent
-These matrices let us see the nesting features of each tree more
-visually, but also suggest another step. We can compute a sum scan
-with \verb;+⍀;, also called a prefix sum, along the first axis. Applying
-this function on the above matrices leads to an interesting result:
+\noindent These matrices let us see the nesting features of each tree more visually, but also suggest another step. We can compute a sum scan with \verb;+⍀;, also called a prefix sum, along the first axis. Applying this function on the above matrices leads to an interesting result:
 
 \begin{verbatim}
-      +⍀Fd∘.=⍳1+⌈⌿Fd
-1 0 0 0 0
-1 1 0 0 0
-1 1 1 0 0
-1 1 1 1 0
-1 1 1 1 1
-1 1 1 1 2
-1 1 1 1 3
-1 1 2 1 3
-1 1 2 2 3
-      +⍀Ed∘.=⍳1+⌈⌿Ed
-1 0 0
-1 1 0
-1 1 1
-1 1 2
-1 1 3
-1 2 3
-1 3 3
-1 3 4
-1 3 5
-1 3 6
+    +⍀Fd∘.=⍳1+⌈⌿Fd  │     +⍀Ed∘.=⍳1+⌈⌿Ed
+1 0 0 0 0           │ 1 0 0
+1 1 0 0 0           │ 1 1 0
+1 1 1 0 0           │ 1 1 1
+1 1 1 1 0           │ 1 1 2
+1 1 1 1 1           │ 1 1 3
+1 1 1 1 2           │ 1 2 3
+1 1 1 1 3           │ 1 3 3
+1 1 2 1 3           │ 1 3 4
+1 1 2 2 3           │ 1 3 5
+                    │ 1 3 6
 \end{verbatim}
 
-\noindent
-These matrices are lexicographically ordered, and each ancestor
-shares a common prefix with its descendants. They are also unique
-coordinates. Only the spurious digits at the end of each coordinate
-prevent these matrices from meeting all our requirements for valid
-node coordinates.
+\noindent These matrices are lexicographically ordered, and each ancestor shares a common prefix with its descendants. They are also unique coordinates. Only the spurious digits at the end of each coordinate prevent these matrices from meeting all our requirements for valid node coordinates.
 
-The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements of
-\verb;V; and rows of \verb;M;:
+The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements of \verb;V; and rows of \verb;M;:
 
 \begin{verbatim}
-      3 3⍴⍳9
-0 1 2
-3 4 5
-6 7 8
-      (⍳3)+⍤¯1⊢3 3⍴⍳9
-0 1  2
-4 5  6
-8 9 10
+      3 3⍴⍳9 │       (⍳3)+⍤¯1⊢3 3⍴⍳9
+0 1 2        │ 0 1  2
+3 4 5        │ 4 5  6
+6 7 8        │ 8 9 10
 \end{verbatim}
 
-\noindent
-If \verb;n↑V; takes the first \verb;n; elements of \verb;V;, then we can obtain coordinate
-matrices from the prefix sums by noting that the spurious digits
-all come after column \verb;d+1; where \verb;d; is the depth corresponding to that
-coordinate. The following gives a complete expression for computing
-a node coordinate matrix from a depth vector, shown using \verb;Fd; and \verb;Fe;:
+\noindent If \verb;n↑V; takes the first \verb;n; elements of \verb;V;, then we can obtain coordinate matrices from the prefix sums by noting that the spurious digits all come after column \verb;d+1; where \verb;d; is the depth corresponding to that coordinate. The following gives a complete expression for computing a node coordinate matrix from a depth vector, shown using \verb;Fd; and \verb;Fe;:
 
 \begin{verbatim}
-      ⊢Fc←(1+Fd)↑⍤¯1⊢+⍀Fd∘.=⍳1+⌈⌿Fd
-1 0 0 0 0
-1 1 0 0 0
-1 1 1 0 0
-1 1 1 1 0
-1 1 1 1 1
-1 1 1 1 2
-1 1 1 1 3
-1 1 2 0 0
-1 1 2 2 0
-      ⊢Ec←(1+Ed)↑⍤¯1⊢+⍀Ed∘.=⍳1+⌈⌿Ed
-1 0 0
-1 1 0
-1 1 1
-1 1 2
-1 1 3
-1 2 0
-1 3 0
-1 3 4
-1 3 5
-1 3 6
+      Fc←(1+Fd)↑⍤¯1⊢+⍀Fd∘.=⍳1+⌈⌿Fd
+      Ec←(1+Ed)↑⍤¯1⊢+⍀Ed∘.=⍳1+⌈⌿Ed
+      Fc   │        Ec
+1 0 0 0 0  │  1 0 0
+1 1 0 0 0  │  1 1 0
+1 1 1 0 0  │  1 1 1
+1 1 1 1 0  │  1 1 2
+1 1 1 1 1  │  1 1 3
+1 1 1 1 2  │  1 2 0
+1 1 1 1 3  │  1 3 0
+1 1 2 0 0  │  1 3 4
+1 1 2 2 0  │  1 3 5
+           │  1 3 6
 \end{verbatim}
 
-A careful study of the definition of a node coordinate and the
-above construction should reveal why this works. Intuitively, we are
-creating a multi-dimensional space or a number system in which each
-digit place or dimension contains or circumscribes a smaller space
-in which are contained all the descendant nodes that appear lower in
-the tree. Each coordinate is a sort of special path through the tree
-encoded to have desirable properties relative to other paths.
+A careful study of the definition of a node coordinate and the above construction should reveal why this works. Intuitively, we are creating a multi-dimensional space or a number system in which each digit place or dimension contains or circumscribes a smaller space in which are contained all the descendant nodes that appear lower in the tree. Each coordinate is a sort of special path through the tree encoded to have desirable properties relative to other paths.
 
 \subsubsection{Operations on Node Coordinates}
 
-The simplest operation over a node coordinate is to extract the depth
-of the node.
-The dyadic expression \verb;C⍳0; finds the first occurrence of \verb;0;
-in \verb;C; and returns the index of that occurrence.
-Thus, we compute the depth of a node as follows:
+The simplest operation over a node coordinate is to extract the depth of the node. The dyadic expression \verb;C⍳0; finds the first occurrence of \verb;0; in \verb;C; and returns the index of that occurrence. Thus, we compute the depth of a node as follows:
 
 \begin{verbatim}
       C←1 1 2 0 0
@@ -320,14 +273,7 @@ Thus, we compute the depth of a node as follows:
 2
 \end{verbatim}
 
-\noindent
-In many compiler passes, we primarily care about which nodes are ancestors 
-of other nodes. To determine whether one node is a child of another, we compute 
-whether one node is a prefix of the other, ignoring zeros.
-We write \verb;(f g h); to represent the composition of functions \verb;f;, \verb;g;,
-and \verb;h; as a function train.
-Function trains obey the following equivalences, where \verb;A; and \verb;B;
-are arrays.
+\noindent In many compiler passes, we primarily care about which nodes are ancestors of other nodes. To determine whether one node is a child of another, we compute whether one node is a prefix of the other, ignoring zeros. We write \verb;(f g h); to represent the composition of functions \verb;f;, \verb;g;, and \verb;h; as a function train. Function trains obey the following equivalences, where \verb;A; and \verb;B; are arrays.
 
 \begin{verbatim}
 A(f g h)B ←→ (A f B) g (A h B)
@@ -335,9 +281,7 @@ A(0 f h)B ←→ 0 f (A h B) ⍝ Constant Case
 A(f g)B   ←→ f (A g B)
 \end{verbatim}
 
-\noindent
-With this, we write a function to compute whether a given coordinate prefixes 
-another.
+\noindent With this, we write a function to compute whether a given coordinate prefixes another.
 
 \begin{verbatim}
       P←1 1 0 0 0
@@ -347,107 +291,59 @@ another.
 1
 \end{verbatim}
 
-\noindent
-The above determines whether \verb;P; is an ancestor to \verb;C;.
-The logical functions \verb;=;, \verb;∧;, and \verb;∨; are all extended 
-point-wise over arrays.
-The function \verb;⊢; returns its right argument.
-The function \verb;(=∨0=⊢); reads as, ``equal or a zero right argument.'' 
-We take this point-wise operation and reduce it with \verb;∧⌿; (For All).
-This pattern is a special case of inner product, written \verb;f.g;. 
-For example, \verb;+.×; is matrix multiplication. We transform our reduction and 
-Boolean function to a single predicate with the inner product operator:
+\noindent The above determines whether \verb;P; is an ancestor to \verb;C;. The logical functions \verb;=;, \verb;∧;, and \verb;∨; are all extended point-wise over arrays. The function \verb;⊢; returns its right argument. The function \verb;(=∨0=⊢); reads as, ``equal or a zero right argument.'' We take this point-wise operation and reduce it with \verb;∧⌿; (For All). This pattern is a special case of inner product, written \verb;f.g;. For example, \verb;+.×; is matrix multiplication. We transform our reduction and Boolean function to a single predicate with the inner product operator:
+
 \begin{verbatim}
       C∧.(=∨0=⊢)P
 1
 \end{verbatim}
 
-The use of inner product extends to cases where \verb;C; or \verb;P; are matrices.
-For our examples, we want to lift the functions and flatten expressions, so we 
-will select the \verb;F; nodes and \verb;E; nodes, respectively, as our 
-parent/ancestor nodes in \verb;Fp; and \verb;Ep;. Given a boolean vector 
-\verb;BV;, the expression \verb;BV⌿M; selects rows from \verb;M; based on the 
-non-zero elements of \verb;BV;.
+The use of inner product extends to cases where \verb;C; or \verb;P; are matrices. For our examples, we want to lift the functions and flatten expressions, so we will select the \verb;F; nodes and \verb;E; nodes, respectively, as our parent/ancestor nodes in \verb;Fp; and \verb;Ep;. Given a boolean vector \verb;BV;, the expression \verb;BV⌿M; selects rows from \verb;M; based on the non-zero elements of \verb;BV;.
 
 \begin{verbatim}
-      ⊢Fp←('F'=Ft)⌿Fc
-1 0 0 0 0
-1 1 1 0 0
-      ⊢Ep←('E'=Et)⌿Ec
-1 0 0
-1 1 0
-1 3 0
+      Fp←('F'=Ft)⌿Fc
+      Ep←('E'=Et)⌿Ec
+      Fp   │        Ep
+1 0 0 0 0  │  1 0 0
+1 1 1 0 0  │  1 1 0
+           │  1 3 0
 \end{verbatim}
 
-\noindent
-We could use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec;
-to determine which nodes belong to which parent in \verb;Fp; or \verb;Ep;, 
-but our prefix function returns 1 when \verb;C≡P;. 
-Instead, we drop the last non-zero element from each coordinate.
-This will permit matching against all ancestors, but not against itself.
-We use the depth vector and the Take (\verb;↑;) function to take all but
-the last non-zero element. We extend the resulting array with an extra 
-zero column to ensure we have a compatible shape.
+\noindent We could use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec; to determine which nodes belong to which parent in \verb;Fp; or \verb;Ep;, but our prefix function returns 1 when \verb;C≡P;. Instead, we drop the last non-zero element from each coordinate. This will permit matching against all ancestors, but not against itself. We use the depth vector and the Take (\verb;↑;) function to take all but the last non-zero element. We extend the resulting array with an extra zero column to ensure we have a compatible shape.
 
 \begin{verbatim}
-      ⊢Fcp←(Fd↑⍤¯1⊢Fc),0
-0 0 0 0 0
-1 0 0 0 0
-1 1 0 0 0
-1 1 1 0 0
-1 1 1 1 0
-1 1 1 1 0
-1 1 1 1 0
-1 1 0 0 0
-1 1 2 0 0
-      ⊢Ecp←(Ed↑⍤¯1⊢Ec),0
-0 0 0
-1 0 0
-1 1 0
-1 1 0
-1 1 0
-1 0 0
-1 0 0
-1 3 0
-1 3 0
-1 3 0
+      Fcp←(Fd↑⍤¯1⊢Fc),0
+      Ecp←(Ed↑⍤¯1⊢Ec),0
+      Fcp  │        Ecp
+0 0 0 0 0  │  0 0 0
+1 0 0 0 0  │  1 0 0
+1 1 0 0 0  │  1 1 0
+1 1 1 0 0  │  1 1 0
+1 1 1 1 0  │  1 1 0
+1 1 1 1 0  │  1 0 0
+1 1 1 1 0  │  1 0 0
+1 1 0 0 0  │  1 3 0
+1 1 2 0 0  │  1 3 0
+           │  1 3 0
 \end{verbatim}
 
-\noindent
-We use \verb;Fcp; and \verb;Ecp; to determine the \verb;F; and \verb;E; 
-ancestors for each node (\verb;⍉A; transposes \verb;A;):
+\noindent We use \verb;Fcp; and \verb;Ecp; to determine the \verb;F; and \verb;E; ancestors for each node (\verb;⍉A; transposes \verb;A;):
 
 \begin{verbatim}
-      Fcp∧.(=∨0=⊢)⍉Fp
-0 0
-1 0
-1 0
-1 1
-1 1
-1 1
-1 1
-1 0
-1 0
-      Ecp∧.(=∨0=⊢)⍉Ep
-0 0 0
-1 0 0
-1 1 0
-1 1 0
-1 1 0
-1 0 0
-1 0 0
-1 0 1
-1 0 1
-1 0 1
+   Fcp∧.(=∨0=⊢)⍉Fp │    Ecp∧.(=∨0=⊢)⍉Ep
+0 0                │ 0 0 0
+1 0                │ 1 0 0
+1 0                │ 1 1 0
+1 1                │ 1 1 0
+1 1                │ 1 1 0
+1 1                │ 1 0 0
+1 1                │ 1 0 0
+1 0                │ 1 0 1
+1 0                │ 1 0 1
+                   │ 1 0 1
 \end{verbatim}
 
-\noindent
-In the above, the closest ancestor is the rightmost 1 in each row.
-We can extract the column number of the rightmost 1 by replacing each 1 
-with its column number and selecting the maximum of each row with \verb;⌈/;. 
-For space we will show only the \verb;E; example.
-In the following, \verb;V×⍤1⊢M; gives a matrix where each row is given by 
-\verb;V×i⌷M; where \verb;i⌷M; is the $i$th row of \verb;M;.
+\noindent In the above, the closest ancestor is the rightmost 1 in each row. We can extract the column number of the rightmost 1 by replacing each 1 with its column number and selecting the maximum of each row with \verb;⌈/;. For space we will show only the \verb;E; example. In the following, \verb;V×⍤1⊢M; gives a matrix where each row is given by \verb;V×i⌷M; where \verb;i⌷M; is the $i$th row of \verb;M;.
 
 \begin{verbatim}
       (⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
@@ -463,55 +359,29 @@ In the following, \verb;V×⍤1⊢M; gives a matrix where each row is given by
 0 0 2
       ⊢Ei←⌈/(⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
 0 0 1 1 1 0 0 2 2 2
+      ⊢Fi←⌈/(⍳2)×⍤1⊢Fcp∧.(=∨0=⊢)⍉Fp
+0 0 0 1 1 1 1 0 0
 \end{verbatim}
 
-\noindent
-We use these column numbers to index into \verb;Ep; to obtain an ancestor 
-matrix where the node coordinate of the closest ancestor is given for 
-each node, one per row. 
-The expression \verb;I⌷⍤0 2⊢M; gives a matrix, one row per index in \verb;I;, 
-consisting of rows of \verb;M; selected by row indices in \verb;I;.
+\noindent We use these column numbers to index into \verb;Ep; to obtain an ancestor matrix where the node coordinate of the closest ancestor is given for each node, one per row. The expression \verb;I⌷⍤0 2⊢M; gives a matrix, one row per index in \verb;I;, consisting of rows of \verb;M; selected by row indices in \verb;I;.
 
 \begin{verbatim}
-      ⊢Ek←Ei⌷⍤0 2⊢Ep 
-1 0 0
-1 0 0
-1 1 0
-1 1 0
-1 1 0
-1 0 0
-1 0 0
-1 3 0
-1 3 0
-1 3 0
+      Fk←Fi⌷⍤0 2⊢Fp
+      Ek←Ei⌷⍤0 2⊢Ep 
+      Fk   │        Ek
+1 0 0 0 0  │  1 0 0
+1 0 0 0 0  │  1 0 0
+1 0 0 0 0  │  1 1 0
+1 1 1 0 0  │  1 1 0
+1 1 1 0 0  │  1 1 0
+1 1 1 0 0  │  1 0 0
+1 1 1 0 0  │  1 0 0
+1 0 0 0 0  │  1 3 0
+1 0 0 0 0  │  1 3 0
+           │  1 3 0
 \end{verbatim}
 
-\noindent
-At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the
-closest containing node that we care about for each node in the tree,
-using its node coordinate.
-
-\begin{verbatim}
-      Fi←⌈/(⍳2)×⍤1⊢Fcp∧.(=∨0=⊢)⍉Fp
-      ⊢Fk←Fi⌷⍤0 2⊢Fp
-1 0 0 0 0
-1 0 0 0 0
-1 0 0 0 0
-1 1 1 0 0
-1 1 1 0 0
-1 1 1 0 0
-1 1 1 0 0
-1 0 0 0 0
-1 0 0 0 0
-\end{verbatim}
-
-\noindent
-We use these keys to compute over the AST, particularly for function lifting 
-and expression flattening as demonstrated in the next section. The repeating 
-pattern is to leverage node coordinates and array operations to do stackless 
-reasoning about inter-node relationships. This pattern occurs often in our 
-compiler and is particularly useful to enable straightforward data-parallel 
-transformations over an AST.
+\noindent At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the closest containing node that we care about for each node in the tree, using its node coordinate. We use these keys to compute over the AST, particularly for function lifting and expression flattening as demonstrated in the next section. The repeating pattern is to leverage node coordinates and array operations to do stackless reasoning about inter-node relationships. This pattern occurs often in our compiler and is particularly useful to enable straightforward data-parallel transformations over an AST.
 
 \begin{table*}
 \centering
@@ -560,14 +430,7 @@ Type Specialization & Specializes each function for a series of potential inputs
 
 \subsection{The Key Operator}
 
-First introduced in the J language \cite{hui2014key},
-the Key operator (written \verb;⌸;) is central to our strategy for compilation.
-It allows us to use the Node Coordinates to their full effect. 
-The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding 
-keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in 
-\verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. 
-The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs.
-Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
+First introduced in the J language \cite{hui2014key}, the Key operator (written \verb;⌸;) is central to our strategy for compilation. It allows us to use the Node Coordinates to their full effect. The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in \verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs. Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
 
 \begin{verbatim}
       10⍴5
@@ -584,11 +447,7 @@ Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
 2 1
 \end{verbatim}
 
-\noindent
-To understand a bit better how the Key operator applies its function,
-consider the function \verb;{⍺ ⍵}; which returns the pair of its right
-and left arguments. If we apply it to the same value as above, we
-get the following:
+\noindent To understand a bit better how the Key operator applies its function, consider the function \verb;{⍺ ⍵}; which returns the pair of its right and left arguments. If we apply it to the same value as above, we get the following:
 
 \begin{verbatim}
       X{⍺ ⍵}⌸X
@@ -599,30 +458,29 @@ get the following:
 2  2
 \end{verbatim}
 
-\noindent
-In our case, we use either \verb;Fk; or \verb;Ek; as our keys applied to the
-corresponding AST. We also will drop off the first row in each AST
-using \verb;1↓; since this node ``contains'' everything. In a complete
-AST this is usually the Module boundary node which contains the entire
-set of functions and values in the module.
+\noindent In our case, we use either \verb;Fk; or \verb;Ek; as our keys applied to the corresponding AST. We also will drop off the first row in each AST using \verb;1↓; since this node ``contains'' everything. In a complete AST this is usually the Module boundary node which contains the entire set of functions and values in the module.
 
 \section{Case Studies}
 
-The following compiler passes are found in any compiler from a nested function, 
-nested expression language to a language without nested functions 
-or expressions. They were the chief motivating examples for developing the 
-techniques presented above as a part of developing the Co-dfns compiler, 
-and represent a challenging problem to data-parallel compilation without 
-the above techniques, but fall out almost effortlessly once the above patterns 
-are available. 
+The following compiler passes are found in any compiler from a nested function, nested expression language to a language without nested functions or expressions. They were the chief motivating examples for developing the techniques presented above as a part of developing the Co-dfns compiler, and represent a challenging problem to data-parallel compilation without the above techniques, but fall out almost effortlessly once the above patterns are available.
+
+Each of the following passes operates over an AST that we represent as the catenation of the field vectors above including the Node Coordinates.
+
+\begin{verbatim}
+Fast←Fd,Ft,Fv,⍪↓Fc
+East←Ed,Et,Ev,⍪↓Ec
+\end{verbatim}
+
+\noindent The function \verb;↓; converts the coordinate matrices from matrices to vectors of vectors, so that the coordinates can be catenated to the other fields, leading to a 4-column matrix for the ASTs, whose fourth column is a vector of vectors. 
 
 \subsection{Function Lifting}
 
-If we use the Key operator with \verb;Fk;, we get the following (the monadic
-use of \verb;↓; converts \verb;Fc; from a matrix to a vector of vectors):
+Function lifting takes an AST with nested functions (func-tions appearing inside of other functions) and lifts these functions out of their local scopes and puts them all at the top level. Normally, function lifting must consider both the core operation of lifting function as well as the lexical scop-ing of the functions and variables that appear inside of a function. As seen below, our treatment uses a slightly dif-ferent method. 
+
+If we use the Key operator (\verb;⌸;) with the pair function (\verb;{⍺ ⍵};) using \verb;Fk; as the keys and \verb;Fast; as the AST, we get the following:
 
 \begin{verbatim}
-      (1↓Fk){⍺ ⍵}⌸1↓Fd,Ft,Fv,⍪↓Fc
+      (1↓Fk){⍺ ⍵}⌸1↓Fast
 ┌─────────┬─────────────────┐
 │1 0 0 0 0│┌─┬─┬─┬─────────┐│
 │         ││1│E│0│1 1 0 0 0││
@@ -646,57 +504,54 @@ use of \verb;↓; converts \verb;Fc; from a matrix to a vector of vectors):
 └─────────┴─────────────────┘
 \end{verbatim}
 
-Notice that we have now grouped all of the relevant parts of the
-tree according to which nodes would appear in their respective
-functions after lifting. Refer to the original lifting example in
-the introduction to verify this. Indeed, the second row in the
-above example shows the internal function complete and ready to
-name. Each element in the second column corresponds to the body of
-one of our lifted functions. In the case of the first function, the
-outer function, we have a spurious function node in the body. This
-is intentional. When we lift these functions, we will replace
-each spurious function node with a variable node referring to the
-function’s generated name.
+Notice that we have now grouped all of the relevant parts of the tree according to which nodes would appear in their respective functions after lifting. Refer to the original lifting example in the introduction to verify this. Indeed, the second row in the above example shows the internal function complete and ready to name. Each element in the second column corresponds to the body of one of our lifted functions. In the case of the first function, the outer function, we have a spurious function node in the body. This is intentional. When we lift these functions, we will replace each spurious function node with a variable node referring to the function’s generated name.
 
-Each of these function bodies has a specific coordinate associated
-with it. Because these coordinates are uniquely identifying, we can
-use these as input into a name generator to generate names that we
-know are unique for each function body. Furthermore, because we
-retain this information in the corresponding function nodes that
-appear in the body of each function to be lifted, we know exactly
-what name that function has been given, and we can replace the
-function node with a variable node referencing that name instead,
-without referring to any state outside of the immediate information
-given to the function lifter. Indeed, each row in the above matrix
-represents a function lifting task that can be completed without any
-additional information. That is, there are no dependencies between
-rows to perform lifting. This gives us a straightforward parallel
-execution of function lifting.
+\begin{verbatim}
+      (1↓Fk){⊂(0 'F' 0 ⍺)⍪⍵}⌸1↓Fast
+┌─────────────────┬─────────────────┐
+│┌─┬─┬─┬─────────┐│┌─┬─┬─┬─────────┐│
+││0│F│0│1 0 0 0 0│││0│F│0│1 1 1 0 0││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││1│E│0│1 1 0 0 0│││3│E│0│1 1 1 1 0││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││2│F│0│1 1 1 0 0│││4│V│⍵│1 1 1 1 1││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││2│A│0│1 1 2 0 0│││4│P│+│1 1 1 1 2││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││3│N│7│1 1 2 2 0│││4│V│⍵│1 1 1 1 3││
+│└─┴─┴─┴─────────┘│└─┴─┴─┴─────────┘│
+└─────────────────┴─────────────────┘ 
+      hd←0 'F' 0,∘⊂⊣      ⍝ Func. Header
+      dp←(1+⊢-⊃)0⌷⍤1⊢     ⍝ New Depths
+      rf←'V'@('F'∘=)1⌷⍤1⊢ ⍝ F → V
+      (1↓Fk)(⊂hd⍪dp,rf,2↓⍤1⊢)⌸1↓Fast
+┌─────────────────┬─────────────────┐
+│┌─┬─┬─┬─────────┐│┌─┬─┬─┬─────────┐│
+││0│F│0│1 0 0 0 0│││0│F│0│1 1 1 0 0││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││1│E│0│1 1 0 0 0│││1│E│0│1 1 1 1 0││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││2│V│0│1 1 1 0 0│││2│V│⍵│1 1 1 1 1││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││2│A│0│1 1 2 0 0│││2│P│+│1 1 1 1 2││
+│├─┼─┼─┼─────────┤│├─┼─┼─┼─────────┤│
+││3│N│7│1 1 2 2 0│││2│V│⍵│1 1 1 1 3││
+│└─┴─┴─┴─────────┘│└─┴─┴─┴─────────┘│
+└─────────────────┴─────────────────┘
+\end{verbatim}
 
-The final task to complete function lifting of each function
-body before lifting is to shift the depths in the depth vectors
-to correspond to those of a function lifted to the top-level and
-to attach a function node to the top of each of the bodies. At that
-point, we simply recombine all of the newly created functions into
-a single top level.
+Each of these function bodies has a specific coordinate associated with it. Because these coordinates are uniquely identifying, we can use these as input into a name generator to generate names that we know are unique for each function body. Furthermore, because we retain this information in the corresponding function nodes that appear in the body of each function to be lifted, we know exactly what name that function has been given, and we can replace the function node with a variable node referencing that name instead, without referring to any state outside of the immediate information given to the function lifter. Indeed, each row in the above matrix represents a function lifting task that can be completed without any additional information. That is, there are no dependencies between rows to perform lifting. This gives us a straightforward parallel execution of function lifting.
 
-This function lifting works even with lexically scoped functions, 
-as is the case for the Co-dfns compiler.
-We can do this because the node coordinates maintain the lexical information 
-for each variable reference, enabling us to construct the appropriate lexical 
-binding for each variable much later than would normally be done in a 
-compiler. 
-In other words, the above lifting operation loses no information that would 
-prevent us from handling lexical scoping, but decouples lexical scoping 
-from the act of lifting functions.
+The final task to complete function lifting of each function body before lifting is to shift the depths in the depth vectors to correspond to those of a function lifted to the top-level and to attach a function node to the top of each of the bodies. At that point, we simply recombine all of the newly created functions into a single top level.
+
+This function lifting works even with lexically scoped functions, as is the case for the Co-dfns compiler. We can do this because the node coordinates maintain the lexical information for each variable reference, enabling us to construct the appropriate lexical binding for each variable much later than would normally be done in a compiler. In other words, the above lifting operation loses no information that would prevent us from handling lexical scoping, but decouples lexical scoping from the act of lifting functions.
 
 \subsection{Expression Flattening}
 
-If we use \verb;Ek; as the key for the expression example, we get the
-following:
+If we use \verb;Ek; as the key for the expression example, we get the following:
 
 \begin{verbatim}
-      (1↓Ek){⍺ ⍵}⌸1↓Ed,Et,Ev,⍪↓Ec
+      (1↓Ek){⍺ ⍵}⌸1↓East
 ┌─────┬─────────────┐
 │1 0 0│┌─┬─┬─┬─────┐│
 │     ││1│E│0│1 1 0││
@@ -722,223 +577,99 @@ following:
 │     ││2│V│d│1 3 6││
 │     │└─┴─┴─┴─────┘│
 └─────┴─────────────┘
+      hd←0'E'0,∘⊂⊣
+      rf←'V'@('E'∘=)1⌷⍤1⊢
+      ⊖(1↓Ek)(hd⍪dp,rf,2↓⍤1⊢)⌸1↓East
+┌─┬─┬─┬─────┐
+│0│E│0│1 3 0│
+├─┼─┼─┼─────┤
+│1│V│c│1 3 4│
+├─┼─┼─┼─────┤
+│1│P│×│1 3 5│
+├─┼─┼─┼─────┤
+│1│V│d│1 3 6│
+└─┴─┴─┴─────┘
+┌─┬─┬─┬─────┐
+│0│E│0│1 1 0│
+├─┼─┼─┼─────┤
+│1│V│a│1 1 1│
+├─┼─┼─┼─────┤
+│1│P│+│1 1 2│
+├─┼─┼─┼─────┤
+│1│V│b│1 1 3│
+└─┴─┴─┴─────┘
+┌─┬─┬─┬─────┐
+│0│E│0│1 0 0│
+├─┼─┼─┼─────┤
+│1│V│0│1 1 0│
+├─┼─┼─┼─────┤
+│1│P│÷│1 2 0│
+├─┼─┼─┼─────┤
+│1│V│0│1 3 0│
+└─┴─┴─┴─────┘
 \end{verbatim}
 
-Again, we can see immediately that we have grouped each set of nodes
-according to the expressions that are to be lifted. Just as in the
-case of function lifting, we can adjust the depths of each expression
-to the correct depth and we can replace each expression node with a
-variable reference based on that node’s coordinate. Each expression
-can be given a unique name based on its coordinate. A later compiler
-pass can reduce these names down to the minimum actually required to
-represent the expression if desired.
+Again, we can see immediately that we have grouped each set of nodes according to the expressions that are to be lifted. Just as in the case of function lifting, we can adjust the depths of each expression to the correct depth and we can replace each expression node with a variable reference based on that node’s coordinate. Each expression can be given a unique name based on its coordinate. A later compiler pass can reduce these names down to the minimum actually required to represent the expression if desired.
 
-The only extra issue involved here is to ensure that the order of
-evaluation matches. In our case, we are assuming that the order of
-evaluation is right to left, which means that the above order is
-actually backwards of the desired order. During recombination, we
-simply reverse these orders and this fixes that problem. More work
-would be required to take into consideration a specific precedence
-hierarchy.
+The only extra issue involved here is to ensure that the order of evaluation matches. In our case, we are assuming that the order of evaluation is right to left, which means that the above order is actually backwards of the desired order. During recombination, we simply reverse these orders and this fixes that problem. More work would be required to take into consideration a specific precedence hierarchy.
 
 \section{The Co-dfns Compiler and Other Passes}
 
-The Co-dfns compiler is an experimental commercial compiler funded by 
-Dyalog, Ltd. \cite{hsu2014co,hsu2015accelerating}
-It is intended to provide increased scaling and performance
-for APL programmers using the dfns syntax (lexically scoped, functionally 
-oriented APL). These techniques form one of the foundational elements to 
-the architecture of the compiler, which is built in the style of a Nanopass 
-\cite{keep2013nanopass}
-compiler, with very small passes chained together through composition, with 
-the added requirements that each compiler pass must be fully data parallel. 
+The Co-dfns compiler is an experimental commercial compiler funded by Dyalog, Ltd. \cite{hsu2014co,hsu2015accelerating} It is intended to provide increased scaling and performance for APL programmers using the dfns syntax (lexically scoped, functionally oriented APL). These techniques form one of the foundational elements to the architecture of the compiler, which is built in the style of a Nanopass \cite{keep2013nanopass} compiler, with very small passes chained together through composition, with the added requirements that each compiler pass must be fully data parallel.
 
-The compiler produces good code that performs closely with hand-written 
-C code for the same programs on the GPU and CPU. It produces platform 
-independent code, meaning that the compiler is able to target either the 
-GPU or CPU from the same program source and produce reasonable performance 
-on both. 
+The compiler produces good code that performs closely with hand-written C code for the same programs on the GPU and CPU. It produces platform independent code, meaning that the compiler is able to target either the GPU or CPU from the same program source and produce reasonable performance on both.
 
-The compiler itself is composed of three main parts: the core compiler, 
-the parser, and the code generator. The code generator includes the runtime 
-library of the compiler. Parsing APL code in parallel is a well-studied 
-problem. The compiler currently uses parsing combinators to do its parsing, 
-though we plan to implement the Two-by-Two parser given in the literature
-\cite{bunda1984apl}. 
-The code generator itself is a simple parallel map over each node, as 
-each node may be generated independent from the other nodes, leading to a 
-fully parallel generator, though there are some branching elements in the 
-generator that still remain, currently. 
+The compiler itself is composed of three main parts: the core compiler, the parser, and the code generator. The code generator includes the runtime library of the compiler. Parsing APL code in parallel is a well-studied problem. The compiler currently uses parsing combinators to do its parsing, though we plan to implement the Two-by-Two parser given in the literature \cite{bunda1984apl}. The code generator itself is a simple parallel map over each node, as each node may be generated independent from the other nodes, leading to a fully parallel generator, though there are some branching elements in the generator that still remain, currently.
 
-The core of the Co-dfns compiler is written entirely using function trains 
-and parallel operations in the style described above. We use these techniques 
-extensively throughout the compiler, and the code is publicly available 
-at our repository. The core of the compiler, including some of the large 
-tables comes in at around 250 lines of code. Without the tables, the core 
-logic comes in at around 150 lines of code. 
+The core of the Co-dfns compiler is written entirely using function trains and parallel operations in the style described above. We use these techniques extensively throughout the compiler, and the code is publicly available at our repository. The core of the compiler, including some of the large tables comes in at around 250 lines of code. Without the tables, the core logic comes in at around 150 lines of code.
 
-The entire compiler, together with its runtime libraries, parser, generator, 
-and core, comes in at around 1500 lines of commented code. 
+The entire compiler, together with its runtime libraries, parser, generator, and core, comes in at around 1500 lines of commented code.
 
-Table \ref{tab:passes} contains a selection of passes from the
-Co-dfns compiler and breaks down their features based on how they
-traverse the tree and whether or not they use the Key operator or
-Node Coordinates.
-The traversal pattern indicates the primary operator used to traverse the AST 
-and perform the transformation, most of which are primitives; the Amend pattern 
-is a ``replacement'' pattern where specific nodes are replaced in the AST with 
-other nodes, and can be thought of as a slightly modified filter and map.
-The table orders the passes with front-end passes higher in
-the table and passes further down the compiler chain at the bottom
-of the table. These passes give a good idea of how the Key operator
-plays a part in the complete compiler as well as how Node Coordinates
-help to deal with complex sub-tree selections.
+Table \ref{tab:passes} contains a selection of passes from the Co-dfns compiler and breaks down their features based on how they traverse the tree and whether or not they use the Key operator or Node Coordinates. The traversal pattern indicates the primary operator used to traverse the AST and perform the transformation, most of which are primitives; the Amend pattern is a ``replacement'' pattern where specific nodes are replaced in the AST with other nodes, and can be thought of as a slightly modified filter and map. The table orders the passes with front-end passes higher in the table and passes further down the compiler chain at the bottom of the table. These passes give a good idea of how the Key operator plays a part in the complete compiler as well as how Node Coordinates help to deal with complex sub-tree selections.
 
-We make a few notes on the table and the analysis. The Key operator
-can be used with or without the node coordinates structure. In cases
-where the AST is sufficiently flat and arranged in a sufficiently
-convenient order, the grouping operations are very simple. In these
-cases, the Key operator amounts to a map operation over some selected
-sub-trees selected at a specific depth. These occur later in the
-compiler where the reader will note appearances of the Key operator
-without the use of Node Coordinates.
+We make a few notes on the table and the analysis. The Key operator can be used with or without the node coordinates structure. In cases where the AST is sufficiently flat and arranged in a sufficiently convenient order, the grouping operations are very simple. In these cases, the Key operator amounts to a map operation over some selected sub-trees selected at a specific depth. These occur later in the compiler where the reader will note appearances of the Key operator without the use of Node Coordinates.
 
-Likewise, node coordinates find their place early on in the compiler
-where it is necessary to deal with the more highly nested AST. They
-are useful for identifying this information regardless of whether the
-Key operator is used to handle the grouping or not. Thus passes like
-``Drop Unreachable Code'' that remove whole sub-trees from the AST
-may use the Node Coordinates to do the grouping once the correct
-parent node has been identified.
+Likewise, node coordinates find their place early on in the compiler where it is necessary to deal with the more highly nested AST. They are useful for identifying this information regardless of whether the Key operator is used to handle the grouping or not. Thus passes like ``Drop Unreachable Code'' that remove whole sub-trees from the AST may use the Node Coordinates to do the grouping once the correct parent node has been identified.
 
-In short, the goal of the structure and design of the compiler passes
-given in Table \ref{tab:passes} is to utilize Node Coordinates to
-remove as quickly as possible the nested structure of the AST into
-a flatter form that does not require complex analysis to traverse.
+In short, the goal of the structure and design of the compiler passes given in Table \ref{tab:passes} is to utilize Node Coordinates to remove as quickly as possible the nested structure of the AST into a flatter form that does not require complex analysis to traverse.
+
+\section{Performance}
+
+
+
+\section{Discussion}
 
 \section{Future Work}
 
-The current compiler represents a non-trivial instance of
-the successful application of these techniques, but it focuses on an untyped, 
-functionally oriented language. The type inference in the current version 
-of the compiler is somewhat na\"ive. More work is required to expand the 
-type inferencer to include more sophisticated type inference. 
-The compiler does not currently handle errors such as signals or 
-exceptions, nor does it implement some more sophisticated compiler optimizations.
-Further work remains to implement these techniques on an imperative and 
-object-oriented language instead of a functional one. It would also be 
-educational to implement a version for a lazy language. 
+The current compiler represents a non-trivial instance of the successful application of these techniques, but it focuses on an untyped, functionally oriented language. The type inference in the current version of the compiler is somewhat na\"ive. More work is required to expand the type inferencer to include more sophisticated type inference. The compiler does not currently handle errors such as signals or exceptions, nor does it implement some more sophisticated compiler optimizations. Further work remains to implement these techniques on an imperative and object-oriented language instead of a functional one. It would also be educational to implement a version for a lazy language.
 
-We do not have a large scale understanding of the performance characteristics 
-of these techniques in real life outside of daily use of the compiler.
-Further analysis is
-required to understand what sort of compiler optimizations and analyses are 
-necessary to compile the Co-dfns compiler efficiently for the GPU and CPU. 
-We currently lack a good comparison against existing techniques both for 
-the compiler design and the generated code. Some existing compilers are able 
-to compile variants of APL to target the GPU and the CPU, but there are subtle 
-differences that require care when comparing generated code, and the 
-architecture of these compilers is often quite different. Comparing the 
-relative performance both of the compiler designs (human factors and execution 
-speed) and generated code is important to understanding these techniques more 
-fully.
+We do not have a large scale understanding of the performance characteristics of these techniques in real life outside of daily use of the compiler. Further analysis is required to understand what sort of compiler optimizations and analyses are necessary to compile the Co-dfns compiler efficiently for the GPU and CPU. We currently lack a good comparison against existing techniques both for the compiler design and the generated code. Some existing compilers are able to compile variants of APL to target the GPU and the CPU, but there are subtle differences that require care when comparing generated code, and the architecture of these compilers is often quite different. Comparing the relative performance both of the compiler designs (human factors and execution speed) and generated code is important to understanding these techniques more fully.
 
-While we have found this method of compiler construction to be very compact 
-and to permit working with a data-parallel compiler as easily or nearly as 
-easily as with a standard Nanopass compiler, we have not done extensive 
-studies to determine just how comparable in programmability, ease of 
-maintenance, or extensibility these techniques are with established 
-compiler construction methods, such as OOP Visitors, Nanopass, or the 
-type-directed functional style.
+While we have found this method of compiler construction to be very compact and to permit working with a data-parallel compiler as easily or nearly as easily as with a standard Nanopass compiler, we have not done extensive studies to determine just how comparable in programmability, ease of maintenance, or extensibility these techniques are with established compiler construction methods, such as OOP Visitors, Nanopass, or the type-directed functional style.
 
 \section{Related Work}
 
-Iverson introduced the idea of the Rank operator while at Sharp Associates 
-\cite{iverson1983rationalized} as a part of ``Rationalized APL.'' 
-The rank operator (\verb;⍤;) used here derived from the J language, a 
-continuation of the rationalized APL idea, with many ideas such as rank 
-percolating back into APL implementations. \cite{bernecky1987rank,hui1995rank}
-The J programming language \cite{hui2014key} was the first practical,
-general-purpose programming language to introduce the Key operator as a
-primitive operator with the presumption of its general usefulness.
+Iverson introduced the idea of the Rank operator while at Sharp Associates \cite{iverson1983rationalized} as a part of ``Rationalized APL.'' The rank operator (\verb;⍤;) used here derived from the J language, a continuation of the rationalized APL idea, with many ideas such as rank percolating back into APL implementations. \cite{bernecky1987rank,hui1995rank} The J programming language \cite{hui2014key} was the first practical, general-purpose programming language to introduce the Key operator as a primitive operator with the presumption of its general usefulness.
 
-Bernecky \cite{bernecky2015abstract} argues that the increased programmability 
-and desirable human factors of APL-style array programming can be implemented 
-with competitive performance relative to more traditional techniques. This 
-suggests that programs written in this highly abstract style may not suffer the 
-performance gap traditionally assumed to go with their desirable features. 
-This work is bolstered by previous work on the high-performance implementation 
-of array-oriented languages. 
-\cite{ching1994experimental,ching1993primitive,
-ching1990automatic,ju1991exploitation,
-ju1991performance,bernecky1999reducing,schwarz1991acorn}
+Bernecky \cite{bernecky2015abstract} argues that the increased programmability and desirable human factors of APL-style array programming can be implemented with competitive performance relative to more traditional techniques. This suggests that programs written in this highly abstract style may not suffer the performance gap traditionally assumed to go with their desirable features. This work is bolstered by previous work on the high-performance implementation of array-oriented languages. \cite{ching1994experimental,ching1993primitive, ching1990automatic,ju1991exploitation, ju1991performance,bernecky1999reducing,schwarz1991acorn}
 
-Fritz Henglein demonstrated a class of operations, called
-discriminators, of which the Key operator is a member  
-\cite{henglein2013dd}
-, namely,
-a discriminator performs the same grouping computation as Key, but
-does not apply a function over these groups with their keys. Henglein
-provides a linear implementation of these operations.
+Fritz Henglein demonstrated a class of operations, called discriminators, of which the Key operator is a member \cite{henglein2013dd} , namely, a discriminator performs the same grouping computation as Key, but does not apply a function over these groups with their keys. Henglein provides a linear implementation of these operations.
 
-The EigenCFA effort \cite{prabhu2011eigencfa} demonstrated significant performance
-improvements of a 0-CFA flow analysis by utilizing similar techniques
-to those demonstrated here. In particular, encoding the AST and using
-accessor functions have a very similar feel to the node coordinates and
-AST encoding given here, though they have a different formulation and
-spend considerable effort understanding the trade-offs of performance
-associated with the different encodings, whereas the encodings here
-were chosen for their clarity and directness, rather than their
-performance.
+The EigenCFA effort \cite{prabhu2011eigencfa} demonstrated significant performance improvements of a 0-CFA flow analysis by utilizing similar techniques to those demonstrated here. In particular, encoding the AST and using accessor functions have a very similar feel to the node coordinates and AST encoding given here, though they have a different formulation and spend considerable effort understanding the trade-offs of performance associated with the different encodings, whereas the encodings here were chosen for their clarity and directness, rather than their performance.
 
-Mendez-Lojo, et al. implemented a GPU version of Inclusion-based
-Points-to Analysis \cite{mendez2012inclusion} that also focuses on 
-adapting data structures
-and algorithms to efficiently execute on the GPU. In particular,
-they use similar techniques of prefix sums and sorts to achieve some
-of their adaptation to the GPU, Additionally, they have clever and
-efficient methods of representing graphs on the GPU which enable
-dynamic rewriting of the graph.
+Mendez-Lojo, et al. implemented a GPU version of Inclusion-based Points-to Analysis \cite{mendez2012inclusion} that also focuses on adapting data structures and algorithms to efficiently execute on the GPU. In particular, they use similar techniques of prefix sums and sorts to achieve some of their adaptation to the GPU, Additionally, they have clever and efficient methods of representing graphs on the GPU which enable dynamic rewriting of the graph.
 
-The APEX compiler \cite{bernecky1997apex} developed vectorized approaches to handling
-certain analyses to compile traditional APL, including a SIMD tokenizer
-\cite{bernecky2003tokenizer}.
-It also uses 
-a matrix format to represent the AST. Traditional APL did not have
-nested function definitions, however, and thus the APEX compiler does
-not have any specific approaches to dealing with function lifting.
+The APEX compiler \cite{bernecky1997apex} developed vectorized approaches to handling certain analyses to compile traditional APL, including a SIMD tokenizer \cite{bernecky2003tokenizer}. It also uses a matrix format to represent the AST. Traditional APL did not have nested function definitions, however, and thus the APEX compiler does not have any specific approaches to dealing with function lifting.
 
-Timothy Budd implemented a compiler \cite{budd1984apl,budd2012apl} for APL which targeted
-vector processors as well as C. Budd provided 
-thoughts and some ideas on how the compiler might be implemented in
-parallel as well.
+Timothy Budd implemented a compiler \cite{budd1984apl,budd2012apl} for APL which targeted vector processors as well as C. Budd provided thoughts and some ideas on how the compiler might be implemented in parallel as well.
 
-J. D. Bunda and J. A. Gerth presented a method for doing table driven
-parsing of APL which suggested a parallel optimization for parsing,
-but did not elucidate the algorithm \cite{bunda1984apl}.
+J. D. Bunda and J. A. Gerth presented a method for doing table driven parsing of APL which suggested a parallel optimization for parsing, but did not elucidate the algorithm \cite{bunda1984apl}.
 
 \section{Conclusion}
 
-We have derived a method of performing computation over sub-trees
-selected on the basis of inter-node properties through the use of the
-Key (\verb;⌸;) operator and node coordinates, which enable local computation
-of these inter-node properties. This method is both general and direct,
-and when combined with traditional and more mundane array programming,
-suffices to implement the complete core of a compiler, modulo parsing
-and code generation. The method requires no special operations or
-unique special casing primitives in the language. Moreover, it is
-strictly data-parallel and data-flow, without any complex control flow,
-which results in exceptionally concise code. These methods permit a 
-general, high-level approach to constructing a compiler that is 
-parallel by construction by constricting the language to only a data parallel 
-subset of a normal array language. 
+We have derived a method of performing computation over sub-trees selected on the basis of inter-node properties through the use of the Key (\verb;⌸;) operator and node coordinates, which enable local computation of these inter-node properties. This method is both general and direct, and when combined with traditional and more mundane array programming, suffices to implement the complete core of a compiler, modulo parsing and code generation. The method requires no special operations or unique special casing primitives in the language. Moreover, it is strictly data-parallel and data-flow, without any complex control flow, which results in exceptionally concise code. These methods permit a general, high-level approach to constructing a compiler that is parallel by construction by constricting the language to only a data parallel subset of a normal array language.
 
-We have demonstrated the technique and the core insights behind the
-data structures involved. It presents a solution to a very old and
-traditional problem in a very uncommon light, by eschewing the common
-practices that underlie every other significant and general solution
-found in modern compilers today and replacing them with an entirely
-different paradigm centered on parallelism and aggregate operations.
+We have demonstrated the technique and the core insights behind the data structures involved. It presents a solution to a very old and traditional problem in a very uncommon light, by eschewing the common practices that underlie every other significant and general solution found in modern compilers today and replacing them with an entirely different paradigm centered on parallelism and aggregate operations. 
 \balancecolumns
 
 \bibliographystyle{abbrvnat}
