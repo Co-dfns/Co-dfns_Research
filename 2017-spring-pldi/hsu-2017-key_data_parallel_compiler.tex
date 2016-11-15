@@ -642,10 +642,26 @@ In short, the goal of the structure and design of the compiler passes given in T
 \includegraphics[width=3.3in]{mut_gpu_2d}
 \end{center}
 \caption{Performance of Key-based Expression Flattening compared to traditional methods}
-\label{fig-3d}
+\label{fig-bench}
 \end{figure*}
 
 \section{Performance}
+
+To examine the performance characteristics of the above techniques, we prototyped a micro-benchmark that flattens expressions on an AST. This mimics the core functionality of both the function lifting and expression flattening passes described in more detail above and used in the Co-dfns compiler. It also serves to compare the performance of using Key (\verb;⌸;) based algorithms to perform tree transformation compared to recursively defined algorithms. We implemented the above lifting algorithm using CUDA 8.0 and Thrust primitives. 
+
+We implemented the same algorithm using two traditional recursive methods. The first is a ``Functional'' analogue, that avoids mutation of the result and instead uses a pure-functional interface to pass nodes to be lifted back up the call stack. This is a very common method, taught in compiler courses that teach flattening passes, as well as used in various compilers. The benefit of the functional algorithm is the concision with which it may be written in most higher-level languages, particularly those which eschew mutatoin and favor a pure coding style. The disadvantage is that it has a higher memory usage requirement and may copy data as it moves up through the call stack to reassemble various containers for child nodes.
+
+The second algorithm is a common optimization on the functional recursive style that makes use of an accumulator container that threads through the computation. The traversal functions will then mutate this accumulator as nodes are discovered that require lifting. The advantage over the functional method is that you can avoid excess copying overheads and in some languages that are more favorable to mutation, it may even be easier to write. A disadvantage is that you must be carefully aware of the order of traversal through the AST, since a change in the ordering of traversal can affect the order in which traversal functions write to the accumulator. This makes it less friendly to multi-threading. It can also be cumbersome or less desirable to write in this style in some programming languages in which the functional algorithm finds natural expression.
+
+Normally, one would test GPU oriented benchmarks based on their input sizes. However, in this case, the traditional algorithms and the GPU algorithms are written quite differently. Thus, we introduce two dimensions of input size in order to examine differences with more precision. Particularly, we benchmarked the GPU algorithm against the traditional methods by depth of the AST and Branching Factor. We chose to examine depth as a specific factor because the path matrix is inherently dependent on the depth. Furthermore, the mutation algorithm is optimized in such a way that fewer expression nodes may result in fewer writes to the accumulator, while our algorithm has no such optimization, and traverses the entire tree independent of the number of expression nodes. 
+
+We ran the benchmark to compute the time to flatten an AST on all combinations of depth and branching factor along the interval $[0,32)$ that were of a suitable size (that is, fit within the machine constraints). The GPU was an NVIDIA Tesla K40c, and the CPU was an Intel Xeon ..... 
+
+Figure \ref{fig-bench} shows the results of this experiment. It is interesting to note the difference in shapes between the functional and mutation algorithms relative to the GPU algorithms when mapped along both the depth and branching factor. As expected, the speedups against the functional algorithm are higher on the whole because of the higher memory demands of that algorithm. All these algorithms should be memory bound, so a reduction in overall memory traffic benefits the mutation algorithm quite a bit. 
+
+Our peak speedups are around 58× comparing against the functional algorithm, and around 9× when comparing against the mutation algorithm. However, the ``performance'' zone for the GPU algorithm is fairly similar in shape between the two. Particularly, this "curved mountain peak" represents the boundaries where the number of AST elements in the whole AST becomes large enough to attain sufficient parallelism on the GPU. 
+
+The second row of graphs in Figure \ref{fig-bench} highlights a single plane of the mountain where we fix the branching factor or the depth. This gives a better picture of the behavior of the algorithm along the most pronounced areas of the area graph. These are also of particular interest because they represent two common cases found in real code. When the branching factor is 2, we have a reasonable analogue of common expressions found in code such as APL or other mathematically intense code which may have long strings of dense expressions, leading to a higher depth, but a low branching factor (since most operators of this sort take one or two arguments). When the Depth is fixed at 5, but we increase the branching factor, this more closely simulates code that may have functions nested throughout the code that need to be lifted which contain many child statements, but may not be particularly deep. In such cases the branching factor would increase, but the ASTs themselves may be relatively low depth. 
 
 \section{Discussion}
 
