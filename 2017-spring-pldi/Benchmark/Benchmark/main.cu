@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <ctime>
@@ -20,6 +20,8 @@
 #include <thrust/execution_policy.h>
 #include <thrust/reduce.h>
 #include <thrust/tuple.h>
+#include <thrust/equal.h>
+#include <thrust/transform.h>
 
 using namespace std;
 
@@ -74,34 +76,36 @@ void print_cpu_tree(CPUNode& node, int depth)
 
 void help(void) 
 {
-	cout << "Benchmark <cpu|gpu> <print|quiet> [<depth> <width>]" << endl;
+	cout << "Benchmark <fnc|mut|gpu> <print|quiet> [<depth> <width>|<depth_start> <depth_end> <width_start> <width_end>]" << endl;
 }
 
-void cpu_flatten_helper(CPUNode& node, vector<CPUNode>& lifted)
+CPUNode functional_flatten(CPUNode& node)
 {
+	vector<CPUNode> nodes;
+
 	if (!node.type) {
-		for_each(node.kids.rbegin(), node.kids.rend(), [&lifted](CPUNode& kid) {
-			cpu_flatten_helper(kid, lifted);
-		});
+		vector<CPUNode> kids(node.kids.size());
 
-		lifted.push_back(node);
-		node.type = 1;
-		node.kids = vector<CPUNode>();
+		for (int i = 0; i < node.kids.size(); i++) {
+			kids[i].id = node.kids[i].id;
+			kids[i].type = 1;
+			kids[i].kids = vector<CPUNode>();
+		}
+
+		nodes.push_back(CPUNode(node.id, node.type, kids));
+
+		for (int i = 0; i < node.kids.size(); i++) {
+			auto f = functional_flatten(node.kids[i]);
+			for (auto k : f.kids) nodes.push_back(k);
+		}
 	}
+
+	return CPUNode(-1, 0, nodes);
 }
 
-void cpu_flatten(CPUNode& node)
+void benchmark_functional(int depth, int width, bool print)
 {
-	vector<CPUNode> lifted;
-
-	cpu_flatten_helper(node, lifted);
-
-	node = CPUNode{ -1, 0, lifted };
-}
-
-void benchmark_cpu(int depth, int width, bool print)
-{
-	cout << "Benchmarking CPU algorithm (Depth: " << depth << " Width: " << width << ")" << endl;
+	cout << "Benchmarking Functional algorithm (Depth: " << depth << " Width: " << width << ")" << endl;
 	cout << "Creating AST...";
 
 	int id = 0;
@@ -117,12 +121,88 @@ void benchmark_cpu(int depth, int width, bool print)
 
 	cout << "Flattening AST...";
 
-	auto start = chrono::high_resolution_clock::now();
-	cpu_flatten(node);
-	auto end = chrono::high_resolution_clock::now();
+	long long timing = 0;
 
-	cout << "took " << chrono::duration_cast<chrono::milliseconds>(end - start).count()
-		<< " milliseconds." << endl;
+	CPUNode temp;
+
+	for (int i = 0; i < 5; i++) {
+		auto start = chrono::high_resolution_clock::now();
+		temp = functional_flatten(node);
+		auto end = chrono::high_resolution_clock::now();
+		timing += chrono::duration_cast<chrono::microseconds>(end - start).count();
+	}
+
+	node = temp;
+
+	double average_timing = (double)timing / 5;
+
+	cout << "took an average of " << average_timing / 1000 << " milliseconds." << endl;
+	cout << "SET_TIMINGS 0 " << depth << " " << width << " " << average_timing / 1000 << endl;
+
+	if (print) {
+		cout << endl << "After: " << endl;
+		print_cpu_tree(node, 1);
+	}
+}
+
+void mutation_flatten_helper(CPUNode& node, vector<CPUNode>& lifted)
+{
+	if (!node.type) {
+		for_each(node.kids.rbegin(), node.kids.rend(), [&lifted](CPUNode& kid) {
+			mutation_flatten_helper(kid, lifted);
+		});
+
+		lifted.push_back(node);
+		node.type = 1;
+		node.kids = vector<CPUNode>();
+	}
+}
+
+void mutation_flatten(CPUNode& node)
+{
+	vector<CPUNode> lifted;
+
+	mutation_flatten_helper(node, lifted);
+
+	node = CPUNode{ -1, 0, lifted };
+}
+
+void benchmark_mutation(int depth, int width, bool print)
+{
+	cout << "Benchmarking Mutation algorithm (Depth: " << depth << " Width: " << width << ")" << endl;
+	cout << "Creating AST...";
+
+	int id = 0;
+	CPUNode node(depth, width, id);
+
+	cout << "done." << endl;
+
+	if (print) {
+		cout << endl << "Before: " << endl;
+		print_cpu_tree(node, 1);
+		cout << endl;
+	}
+
+	cout << "Flattening AST...";
+
+	long long timing = 0;
+
+	CPUNode temp;
+
+	for (int i = 0; i < 5; i++) {
+		temp = node;
+		auto start = chrono::high_resolution_clock::now();
+		mutation_flatten(temp);
+		auto end = chrono::high_resolution_clock::now();
+		timing += chrono::duration_cast<chrono::microseconds>(end - start).count();
+	}
+
+	node = temp;
+
+	double average_timing = (double)timing / 5;
+
+	cout << "took an average of " << average_timing / 1000 << " milliseconds." << endl;
+	cout << "SET_TIMINGS 1 " << depth << " " << width << " " << average_timing / 1000 << endl;
 
 	if (print) {
 		cout << endl << "After: " << endl;
@@ -136,43 +216,44 @@ struct GPUNode {
 	long long count;
 	thrust::device_vector<int> depths;
 	thrust::device_vector<short> types;
-	thrust::device_vector<int> coords;
+	thrust::device_vector<long long> coords;
 	GPUNode(int depth, int width);
 };
 
 GPUNode::GPUNode(int depth, int width)
-	: depth(depth), width(width)
+	: depth(depth), width(width), count(0)
 {
-	count = 0;
-
 	for (int i = 0; i < depth; i++)
 		count += (long long)pow(width, i);
 
 	thrust::host_vector<int> host_depths(count);
 	thrust::host_vector<short> host_types(count);
-	thrust::host_vector<int> host_coords(count * depth, 0);
+	thrust::host_vector<long long> host_coords(count * depth, 0);
 
-	int cur_width = 0;
-	vector<int> cur_coord(1, 0);
+	vector<int> cur_width(depth, 0);
+	vector<long long> cur_coord(depth, 0);
+	int cur_depth = 0;
 
 	for (int i = 0; i < count; i++) {
-		if (cur_width >= width) {
-			cur_coord.pop_back();
-			cur_width = cur_coord.back();
+		if (cur_width[cur_depth] >= width) {
+			cur_coord[cur_depth - 1] += cur_coord[cur_depth];
+			cur_coord[cur_depth] = 0;
+			cur_depth--;
 			i--;
 			continue;
 		}
 
-		host_depths[i] = (int)cur_coord.size() - 1;
-		host_types[i] = cur_coord.size() >= depth ? 1 : 0;
-		cur_coord.back()++;
-		for (int j = 0; j < cur_coord.size(); j++)
-			host_coords[i*depth + j] = cur_coord[j];
-		cur_width++;
+		host_depths[i] = cur_depth;
+		host_types[i] = cur_depth + 1 >= depth ? 1 : 0;
+		cur_coord[cur_depth]++;
+		cur_width[cur_depth]++;
 
-		if (cur_coord.size() < depth) {
-			cur_width = 0;
-			cur_coord.push_back(0);
+		host_coords[i*depth + cur_depth] = cur_coord[0];
+		for (int j = cur_depth - 1; j >= 0; j--)
+			host_coords[i*depth + j] = host_coords[i*depth + j + 1] + cur_coord[cur_depth - j];
+
+		if (cur_depth + 1 < depth) {
+			cur_width[++cur_depth] = 0;
 		}
 	}
 
@@ -183,7 +264,7 @@ GPUNode::GPUNode(int depth, int width)
 
 struct print_gpu_node {
 	int max_depth;
-	thrust::host_vector<int>& coords;
+	thrust::host_vector<long long>& coords;
 
 	template <typename Tuple>
 	__host__
@@ -199,7 +280,7 @@ struct print_gpu_node {
 		long long i = thrust::get<2>(t);
 
 		for (int j = 0; j < max_depth; j++) {
-			int c = coords[i*max_depth + j];
+			long long c = coords[i*max_depth + j];
 			if (c)
 				cout << " " << c;
 			else
@@ -214,7 +295,7 @@ void print_gpu_tree(GPUNode& ast)
 {
 	thrust::host_vector<int> host_depths = ast.depths;
 	thrust::host_vector<short> host_types = ast.types;
-	thrust::host_vector<int> host_coords = ast.coords;
+	thrust::host_vector<long long> host_coords = ast.coords;
 	thrust::counting_iterator<long long> row(0);
 
 	thrust::for_each(thrust::host,
@@ -225,68 +306,36 @@ void print_gpu_tree(GPUNode& ast)
 		print_gpu_node{ ast.depth, host_coords});
 }
 
-typedef thrust::tuple<long long, long long> cpitype;
-
-struct coord_parent_index {
+struct coord_parent_index : public thrust::unary_function<long long, long long> {
+	thrust::device_ptr<long long> coords;
+	thrust::device_ptr<int> depths;
+	thrust::device_ptr<short> types;
 	int max_depth;
-	long long exp_count;
-	thrust::device_ptr<int> coords;
-	thrust::device_ptr<long long> eids;
 
-	coord_parent_index(int md, long long ec, thrust::device_ptr<int> cs, thrust::device_ptr<long long> eids)
-		: max_depth(md), exp_count(ec), coords(cs), eids(eids)
+	coord_parent_index(
+		thrust::device_ptr<long long> cs, 
+		thrust::device_ptr<int> depths, 
+		thrust::device_ptr<short> types, 
+		int md)
+		: max_depth(md), depths(depths), types(types), coords(cs)
 	{}
 
 	__host__ __device__
-	bool test(const cpitype& t)
+	long long operator()(long long i) const
 	{
-		long long ci = thrust::get<0>(t);
-		long long ei = thrust::get<1>(t);
-
-		for (int j = 0; j < max_depth - 1; j++) {
-			int ref = coords[ei*max_depth + j];
-			int cor = coords[ci*max_depth + j];
-			int nxt = coords[ci*max_depth + j + 1];
-
-			if (!nxt) {
-				if (ref) return false;
-				else break;
-			}
-			if (!ref) break;
-			if (ref != cor) return false;
+		for (int j = 1; j <= depths[i]; j++) {
+			auto parent = coords[i * max_depth + j] - 1;
+			if (!types[parent])
+				return parent;
 		}
 
-		return true;
-	}
-
-	__host__ __device__
-	cpitype operator()(const cpitype& t1, const cpitype& t2)
-	{
-		long long v1 = thrust::get<1>(t1);
-		long long v2 = thrust::get<1>(t2);
-
-		if (v1 >= v2) {
-			if (test(t1))
-				return t1;
-			else if (test(t2))
-				return t2;
-			else
-				return thrust::make_tuple<long long, long long>(0, 0);
-		}
-		else {
-			if (test(t2))
-				return t2;
-			else if (test(t1))
-				return t1;
-			else
-				return thrust::make_tuple<long long, long long>(0, 0);
-		}
+		return 0;
 	}
 };
 
 struct copy_coord {
-	thrust::device_ptr<int> new_coords;
-	thrust::device_ptr<int> old_coords;
+	thrust::device_ptr<long long> new_coords;
+	thrust::device_ptr<long long> old_coords;
 	int max_depth;
 
 	template <typename Tuple>
@@ -297,27 +346,6 @@ struct copy_coord {
 		long long ei = thrust::get<1>(t);
 		for (int j = 0; j < max_depth; j++)
 			new_coords[ci*max_depth + j] = old_coords[ei*max_depth + j];
-	}
-};
-
-struct get_ci {
-	long long C;
-
-	__host__ __device__
-	long long operator()(long long i)
-	{
-		return 1 + i / C;
-	}
-};
-
-struct get_ei {
-	long long C;
-	thrust::device_ptr<long long> eids;
-
-	__host__ __device__
-	long long operator()(long long i)
-	{
-		return eids[i % C];
 	}
 };
 
@@ -335,11 +363,10 @@ void gpu_flatten(GPUNode& ast)
 
 	thrust::device_vector<int> new_depths(result_count);
 	thrust::device_vector<short> new_types(result_count);
-	thrust::device_vector<int> new_coords(result_count * ast.depth);
+	thrust::device_vector<long long> new_coords(result_count * ast.depth);
 	thrust::device_vector<long long> refids(result_count);
-	thrust::device_vector<long long> keys(result_count);
-	thrust::counting_iterator<long long> cids_begin(1);
 	thrust::counting_iterator<long long> newids(0);
+	thrust::device_vector<long long> keys(result_count);
 
 	thrust::fill(new_depths.begin(), new_depths.begin() + exp_count, 0);
 	thrust::fill(new_depths.begin() + exp_count, new_depths.end(), 1);
@@ -349,16 +376,8 @@ void gpu_flatten(GPUNode& ast)
 	auto keys_first = keys.begin() + exp_count;
 
 	thrust::copy(eids_begin, eids_end, keys.begin());
-	thrust::reduce_by_key(
-		thrust::make_transform_iterator(newids, get_ci{ exp_count }),
-		thrust::make_transform_iterator(newids + exp_count * (ast.count - 1), get_ci{ exp_count }),
-		thrust::make_zip_iterator(thrust::make_tuple(
-			thrust::make_transform_iterator(newids, get_ci{ exp_count }),
-			thrust::make_transform_iterator(newids, get_ei{ exp_count, eids.data() }))),
-		thrust::make_discard_iterator(),
-		thrust::make_zip_iterator(thrust::make_tuple(refids.begin(), keys_first)),
-		thrust::equal_to<long long>(),
-		coord_parent_index(ast.depth, exp_count, ast.coords.data(), eids.data()));
+	thrust::transform(newids + 1, newids + ast.count, keys_first,
+		coord_parent_index(ast.coords.data(), ast.depths.data(), ast.types.data(), ast.depth));
 	thrust::copy(eids_begin, eids_end, refids.begin());
 	thrust::sequence(refids.begin() + exp_count, refids.end(), 1);
 	thrust::stable_sort_by_key(keys.begin(), keys.end(),
@@ -377,8 +396,10 @@ void gpu_flatten(GPUNode& ast)
 
 void benchmark_gpu(int depth, int width, bool print)
 {
+	cudaSetDevice(1);
+
 	cout << "Benchmarking GPU algorithm (Depth: " << depth << " Width: " << width << ")..." << endl;
-	cout << "Creating AST...";
+	cout << "Creating AST ";
 
 	GPUNode ast(depth+1, width);
 
@@ -392,31 +413,57 @@ void benchmark_gpu(int depth, int width, bool print)
 
 	cout << "Flattening AST...";
 
-	auto start = chrono::high_resolution_clock::now();
-	gpu_flatten(ast);
-	auto end = chrono::high_resolution_clock::now();
+	long long timing = 0;
 
-	cout << "took " << chrono::duration_cast<chrono::milliseconds>(end - start).count()
-		<< " milliseconds." << endl;
+	GPUNode temp(1, 1);
+
+	for (int i = 0; i < 5; i++) {
+		GPUNode temp = ast;
+		auto start = chrono::high_resolution_clock::now();
+		gpu_flatten(temp);
+		auto end = chrono::high_resolution_clock::now();
+		timing += chrono::duration_cast<chrono::microseconds>(end - start).count();
+	}
+
+	double average_timing = (double)timing / 5;
+
+	cout << "took an average of " << average_timing / 1000 << " milliseconds." << endl;
+	cout << "SET_TIMINGS 2 " << depth << " " << width << " " << average_timing / 1000 << endl;
 
 	if (print) {
+		gpu_flatten(ast);
 		cout << endl << "After: " << endl;
 		print_gpu_tree(ast);
 	}
+}
+
+void print_count(int depth, int width)
+{
+	long long count = 0;
+
+	for (int i = 0; i <= depth; i++)
+		count += (long long)pow(width, i);
+
+	cout << "ASTs should have " << count << " elements." << endl << endl;
+
 }
 
 int main(int argc, char *argv[])
 {
 	int depth = 3;
 	int width = 2;
+	int depth_end = 4;
+	int width_end = 3;
 	bool print = true;
 
 	string print_str("print");
 	string quiet_str("quiet");
-	string cpu_str("cpu");
+	string bench_str("bench");
+	string fnc_str("fnc");
+	string mut_str("mut");
 	string gpu_str("gpu");
 
-	if (argc != 3 && argc != 5) {
+	if (argc != 3 && argc != 5 && argc != 7) {
 		help();
 		return 1;
 	}
@@ -424,6 +471,15 @@ int main(int argc, char *argv[])
 	if (argc == 5) {
 		depth = stoi(argv[3]);
 		width = stoi(argv[4]);
+		depth_end = depth + 1;
+		width_end = width + 1;
+	}
+
+	if (argc == 7) {
+		depth = stoi(argv[3]);
+		depth_end = stoi(argv[4]);
+		width = stoi(argv[5]);
+		width_end = stoi(argv[6]);
 	}
 
 	if (print_str == argv[2])
@@ -435,10 +491,42 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (cpu_str == argv[1])
-		benchmark_cpu(depth, width, print);
-	else if (gpu_str == argv[1])
-		benchmark_gpu(depth, width, print);
+	if (fnc_str == argv[1]) {
+		print_count(depth, width);
+		for (int i = depth; i < depth_end; i++) {
+			for (int j = width; j < width_end; j++) {
+				benchmark_functional(i, j, print);
+			}
+		}
+	}
+	else if (mut_str == argv[1]) {
+		print_count(depth, width);
+		for (int i = depth; i < depth_end; i++) {
+			for (int j = width; j < width_end; j++) {
+				benchmark_mutation(i, j, print);
+			}
+		}
+	}
+	else if (gpu_str == argv[1]) {
+		print_count(depth, width);
+		for (int i = depth; i < depth_end; i++) {
+			for (int j = width; j < width_end; j++) {
+				benchmark_gpu(i, j, print);
+			}
+		}
+	}
+	else if (bench_str == argv[1]) {
+		print_count(depth, width);
+		for (int i = depth; i < depth_end; i++) {
+			for (int j = width; j < width_end; j++) {
+				benchmark_functional(i, j, print);
+				cout << endl;
+				benchmark_mutation(i, j, print);
+				cout << endl;
+				benchmark_gpu(i, j, print);
+			}
+		}
+	}
 	else {
 		help();
 		return 1;
