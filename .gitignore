@@ -15,3 +15,11 @@ Thumbs.db
 /2017-spring-pldi/Benchmark/x64/Debug
 /2017-spring-pldi/Benchmark/Benchmark.VC.db
 /2017-spring-pldi/Benchmark/Benchmark.VC.VC.opendb
+2017-spring-pldi/Benchmark/Benchmark/Debug/Benchmark.tlog/unsuccessfulbuild
+*.cache
+2017-spring-pldi/Benchmark/Benchmark/Debug/main.cu.deps
+*.lastbuildstate
+2017-spring-pldi/Benchmark/Benchmark/Release/Benchmark.tlog/unsuccessfulbuild
+*.deps
+*.dll
+2017-spring-pldi/hsu-2017-key_data_parallel_compiler.synctex.gz
