@@ -1,0 +1,109 @@
+<svg version="1.1" baseProfile="full" width="100%" height="100%" viewBox="0 0 10240 7680"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" >
+ <title>Expression Flattening (Functional vs. GPU)</title>
+<desc>Created by Causeway SVG engine - SharpPlot v3.03</desc>
+<desc>Paint the paper =====</desc>
+ <g fill="White">
+  <rect x="0" y="0" width="10240" height="7680" />
+ </g>
+<desc>Border =====</desc>
+<desc>Heading, subheading and footnotes =====</desc>
+<desc>Heading</desc>
+ <g fill="Navy" font-family="Times New Roman" font-size="290" text-anchor="middle" >
+  <text x="5120" y="388" >Expression Flattening (Functional vs. GPU)</text>
+ </g>
+<desc>Subheading</desc>
+ <g fill="Navy" font-family="Times New Roman" font-size="250" text-anchor="middle" >
+  <text x="5120" y="760" >Branching Factor: 2</text>
+ </g>
+<desc>Region =====</desc>
+<desc>for X-axis labels</desc>
+ <g font-family="Times New Roman" font-size="190" text-anchor="middle" >
+  <text x="740" y="7187" >0</text>
+  <text x="1127" y="7187" >1</text>
+  <text x="1513" y="7187" >2</text>
+  <text x="1900" y="7187" >3</text>
+  <text x="2287" y="7187" >4</text>
+  <text x="2673" y="7187" >5</text>
+  <text x="3060" y="7187" >6</text>
+  <text x="3447" y="7187" >7</text>
+  <text x="3833" y="7187" >8</text>
+  <text x="4220" y="7187" >9</text>
+  <text x="4607" y="7187" >10</text>
+  <text x="4993" y="7187" >11</text>
+  <text x="5380" y="7187" >12</text>
+  <text x="5767" y="7187" >13</text>
+  <text x="6153" y="7187" >14</text>
+  <text x="6540" y="7187" >15</text>
+  <text x="6927" y="7187" >16</text>
+  <text x="7313" y="7187" >17</text>
+  <text x="7700" y="7187" >18</text>
+  <text x="8087" y="7187" >19</text>
+  <text x="8473" y="7187" >20</text>
+  <text x="8860" y="7187" >21</text>
+  <text x="9247" y="7187" >22</text>
+  <text x="9633" y="7187" >23</text>
+  <text x="10020" y="7187" >24</text>
+ </g>
+<desc>X-Caption: text and effects</desc>
+ <g fill="Teal" font-family="Times New Roman" font-size="250" text-anchor="end" >
+  <text x="10020" y="7537" >Depth</text>
+ </g>
+<desc>Y-axis labels</desc>
+ <g font-family="Times New Roman" font-size="190" text-anchor="end" >
+  <text x="660" y="6990" >0</text>
+  <text x="660" y="6490" >5</text>
+  <text x="660" y="5990" >10</text>
+  <text x="660" y="5490" >15</text>
+  <text x="660" y="4990" >20</text>
+  <text x="660" y="4490" >25</text>
+  <text x="660" y="3990" >30</text>
+  <text x="660" y="3490" >35</text>
+  <text x="660" y="2990" >40</text>
+  <text x="660" y="2490" >45</text>
+  <text x="660" y="1990" >50</text>
+  <text x="660" y="1490" >55</text>
+  <text x="660" y="990" >60</text>
+ </g>
+<desc>Y-Captions: text and effects</desc>
+ <g transform="translate(345 940) rotate(-90)" fill="Teal" font-family="Times New Roman" font-size="250" text-anchor="end" >
+  <text>Speedup</text>
+ </g>
+<desc>X-Axis Ticks =====</desc>
+<desc>X-Axis Grid</desc>
+ <path fill="none" stroke="Silver" stroke-width="3"  d="M 740,6940 L 740,940 M 1127,6940 L 1127,940 M 1513,6940 L 1513,940 M 1900,6940 L 1900,940 M 2287,6940 L 2287,940 M 2673,6940 L 2673,940 M 3060,6940 L 3060,940 M 3447,6940 L 3447,940 M 3833,6940 L 3833,940 M 4220,6940 L 4220,940 M 4607,6940 L 4607,940 M 4993,6940 L 4993,940 M 5380,6940 L 5380,940 M 5767,6940 L 5767,940 M 6153,6940 L 6153,940 M 6540,6940 L 6540,940 M 6927,6940 L 6927,940 M 7313,6940 L 7313,940 M 7700,6940 L 7700,940 M 8087,6940 L 8087,940 M 8473,6940 L 8473,940 M 8860,6940 L 8860,940 M 9247,6940 L 9247,940 M 9633,6940 L 9633,940 M 10020,6940 L 10020,940 " />
+<desc>X-Axis tickmarks</desc>
+ <path fill="none" stroke="Black" stroke-width="12"  d="M 740,6940 L 740,6997 M 1127,6940 L 1127,6997 M 1513,6940 L 1513,6997 M 1900,6940 L 1900,6997 M 2287,6940 L 2287,6997 M 2673,6940 L 2673,6997 M 3060,6940 L 3060,6997 M 3447,6940 L 3447,6997 M 3833,6940 L 3833,6997 M 4220,6940 L 4220,6997 M 4607,6940 L 4607,6997 M 4993,6940 L 4993,6997 M 5380,6940 L 5380,6997 M 5767,6940 L 5767,6997 M 6153,6940 L 6153,6997 M 6540,6940 L 6540,6997 M 6927,6940 L 6927,6997 M 7313,6940 L 7313,6997 M 7700,6940 L 7700,6997 M 8087,6940 L 8087,6997 M 8473,6940 L 8473,6997 M 8860,6940 L 8860,6997 M 9247,6940 L 9247,6997 M 9633,6940 L 9633,6997 M 10020,6940 L 10020,6997 " />
+<desc>Y-Axis Ticks =====</desc>
+<desc>Y grid</desc>
+ <path fill="none" stroke="Silver" stroke-width="3"  d="M 740,6940 L 10020,6940 M 740,6440 L 10020,6440 M 740,5940 L 10020,5940 M 740,5440 L 10020,5440 M 740,4940 L 10020,4940 M 740,4440 L 10020,4440 M 740,3940 L 10020,3940 M 740,3440 L 10020,3440 M 740,2940 L 10020,2940 M 740,2440 L 10020,2440 M 740,1940 L 10020,1940 M 740,1440 L 10020,1440 M 740,940 L 10020,940 " />
+<desc>Y-Axis tickmarks</desc>
+ <path fill="none" stroke="Black" stroke-width="12"  d="M 740,6940 L 697,6940 M 740,6440 L 697,6440 M 740,5940 L 697,5940 M 740,5440 L 697,5440 M 740,4940 L 697,4940 M 740,4440 L 697,4440 M 740,3940 L 697,3940 M 740,3440 L 697,3440 M 740,2940 L 697,2940 M 740,2440 L 697,2440 M 740,1940 L 697,1940 M 740,1440 L 697,1440 M 740,940 L 697,940 " />
+<desc>Start of X Bar Chart ==========</desc>
+ <g stroke="Black" stroke-width="4" fill="Navy">
+  <rect x="1413" y="6940" width="200" height="0" />
+  <rect x="1800" y="6940" width="200" height="0" />
+  <rect x="2187" y="6939" width="200" height="1" />
+  <rect x="2573" y="6938" width="200" height="2" />
+  <rect x="2960" y="6936" width="200" height="4" />
+  <rect x="3347" y="6932" width="200" height="8" />
+  <rect x="3733" y="6923" width="200" height="17" />
+  <rect x="4120" y="6903" width="200" height="37" />
+  <rect x="4507" y="6838" width="200" height="102" />
+  <rect x="4893" y="6723" width="200" height="217" />
+  <rect x="5280" y="6625" width="200" height="315" />
+  <rect x="5667" y="6320" width="200" height="620" />
+  <rect x="6053" y="5839" width="200" height="1101" />
+  <rect x="6440" y="5202" width="200" height="1738" />
+  <rect x="6827" y="4444" width="200" height="2496" />
+  <rect x="7213" y="3747" width="200" height="3193" />
+  <rect x="7600" y="2861" width="200" height="4079" />
+  <rect x="7987" y="2046" width="200" height="4894" />
+  <rect x="8373" y="1662" width="200" height="5278" />
+  <rect x="8760" y="1486" width="200" height="5454" />
+  <rect x="9147" y="1307" width="200" height="5633" />
+  <rect x="9533" y="1057" width="200" height="5883" />
+ </g>
+<desc>Axes =====</desc>
+ <path fill="none" stroke="Black" stroke-width="20"  d="M 740,6997 L 740,883 M 683,6940 L 10077,6940 " />
+<desc>Reset to original origin</desc>
+</svg>
