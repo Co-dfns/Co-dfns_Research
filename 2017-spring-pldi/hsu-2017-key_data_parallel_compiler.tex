@@ -81,9 +81,9 @@ We differentiate higher-order functions called operators, from functions that op
 
 \section{Data Parallel Sub-tree Computation}
 
-Computing over sub-trees normally involves recursing down the structure of the AST, identifying the root nodes of each sub-tree, and then dispatching to a handler for that sub-tree, which will continue the recursion at that point and return the modified tree, which will replace the previous sub-tree. More complicated transformations may involved moving the root nodes around in the tree or other large, distant structural modifications.
+Computing over sub-trees normally involves recursing down the structure of the AST, identifying the root nodes of each sub-tree, and then dispatching to a handler for that sub-tree, which will continue the recursion at that point and return the modified tree, which will replace the previous sub-tree. More complicated transformations may involve moving the root nodes around in the tree or other large, distant structural modifications.
 
-We divide the work of sub-tree computation into three basic phases: we maintain a node coordinate with each node that uniquely identifies it relative to others, we use these coordinates to select and group nodes for work as a single sub-tree, and then we operate over these groupings using the Key operator (\verb;⌸;).
+We divide the work of sub-tree computation into three basic phases: we maintain a Path Vector with each node that uniquely identifies it relative to others, we use these Paths to select and group nodes for work as a single sub-tree, and then we operate over these groupings using the Key operator (\verb;⌸;).
 
 \subsection{Encoding the AST}
 
@@ -143,11 +143,11 @@ Ev←'v' 0 'a' '+' 'b' '÷' 0 'c' '×' 'd'
                  │  2 V d
 \end{verbatim}
 
-\noindent The depth vector stores all edge information for the tree, but this information requires non-local access to utilize, such as traversing potentially the entire vector to determine the children of a specific node. Node Coordinates fix this issue.
+\noindent The depth vector stores all edge information for the tree, but this information requires non-local access to utilize, such as traversing potentially the entire vector to determine the children of a specific node. Path Vectors fix this issue.
 
-\subsection{Node Coordinates}
+\subsection{Path Matrix}
 
-Every node in an AST has a Node Coordinate, named because a coordinate is a precise location in a space.  We can imagine all the nodes arranged inside some multi-dimensional space, leading to a specific set of node coordinates. Many such arrangements exist, of varying usefulness. In our case, any arrangement should allow us to answer the following questions about any two arbitrary nodes in a tree:
+Every node in an AST has a Path Vector, together forming a matrix.  We can imagine all the nodes arranged inside some multi-dimensional space, leading to a specific set of Paths or coordinates. Many such arrangements exist, of varying usefulness. In our case, any arrangement should allow us to answer the following questions about any two arbitrary nodes in a tree:
 
 \begin{enumerate}[noitemsep]
 \item Are the nodes the same?
@@ -157,13 +157,11 @@ Every node in an AST has a Node Coordinate, named because a coordinate is a prec
 \item Is one an ancestor of another?
 \end{enumerate}
 
-\noindent In short, we care about the relative position of each node in a tree relative to any other. We define a node coordinate as follows.
+\noindent In short, we care about the relative position of each node in a tree relative to any other. We define a path vector as a vector whose length is the depth of the tree. Its elements are natural numbers.  The count of non-zero elements in the vector is equal to the depth of that node in the tree. All zero elements appear after the non-zero elements. That is, a path is zero-padded on the right. When ordered lexicographically, the nodes for each path appear in order according to a depth-first pre-order traversal of the tree. Each path uniquely identifies a single node. Every ancestor’s path is a prefix of any child’s path, ignoring zeros. From the above it follows that every node is lexicographically greater than its left sibling and differs from it by exactly one non-zero element, and that this element is the last non-zero element in the path.
 
-A node coordinate is a vector whose length is the depth of the tree. Its elements are natural numbers.  The count of non-zero elements in the vector is equal to the depth of that node in the tree. All zero elements appear after the non-zero elements. That is, a coordinate is zero-padded on the right. When ordered lexicographically, the nodes for each coordinate appear in order according to a depth-first pre-order traversal of the tree. Each coordinate uniquely identifies a single node. Every ancestor’s coordinate is a prefix of any child’s coordinate, ignoring zeros. From the above it follows that every node is lexicographically greater than its left sibling and differs from it by exactly one non-zero element, and that this element is the last non-zero element in the coordinate.
+\subsubsection{Constructing the Path Matrix}
 
-\subsubsection{Constructing Node Coordinates}
-
-We construct the Node Coordinate Matrix from the depth vector, thereby encoding the depth vector into a more useful format. The matrix has \verb;N; rows and \verb;D; columns, where \verb;N; is the node count and \verb;D; is the depth of the tree.
+We construct the Path Matrix from the depth vector, thereby encoding the depth vector into a more useful format. The matrix has \verb;N; rows and \verb;D; columns, where \verb;N; is the node count and \verb;D; is the depth of the tree.
 
 We write \verb;f⌿A; to reduce the first axis of \verb;A; using function \verb;f;. Thus, \verb;+⌿V; is the sum of the elements in vector \verb;V;. The function \verb;x⌈y; gives the maximum of its two arguments. We compute the depth of each tree as follows:
 
@@ -172,7 +170,7 @@ We write \verb;f⌿A; to reduce the first axis of \verb;A; using function \verb;
 5             │  3
 \end{verbatim}
 
-\noindent We can obtain the ordered sequence  by writing \verb;⍳n;:
+\noindent We can obtain an ordered sequence  by writing \verb;⍳n;:
 
 \begin{verbatim}
       ⍳3
@@ -208,7 +206,7 @@ So the depths of all nodes that appear in the depth vectors is thus:
 \noindent If we use \verb;∘.=; on the depth vector and its set of depths instead, we see an expanded Boolean representation of the depth vector:
 
 \begin{verbatim}
-      Fd∘.=⍳1+⌈⌿Fd │      Ed∘.=⍳1+⌈⌿Ed
+   Fb←Fd∘.=⍳1+⌈⌿Fd │   Eb←Ed∘.=⍳1+⌈⌿Ed
 1 0 0 0 0          │ 1 0 0
 0 1 0 0 0          │ 0 1 0
 0 0 1 0 0          │ 0 0 1
@@ -224,53 +222,67 @@ So the depths of all nodes that appear in the depth vectors is thus:
 \noindent These matrices let us see the nesting features of each tree more visually, but also suggest another step. We can compute a sum scan with \verb;+⍀;, also called a prefix sum, along the first axis. Applying this function on the above matrices leads to an interesting result:
 
 \begin{verbatim}
-    +⍀Fd∘.=⍳1+⌈⌿Fd  │     +⍀Ed∘.=⍳1+⌈⌿Ed
-1 0 0 0 0           │ 1 0 0
-1 1 0 0 0           │ 1 1 0
-1 1 1 0 0           │ 1 1 1
-1 1 1 1 0           │ 1 1 2
-1 1 1 1 1           │ 1 1 3
-1 1 1 1 2           │ 1 2 3
-1 1 1 1 3           │ 1 3 3
-1 1 2 1 3           │ 1 3 4
-1 1 2 2 3           │ 1 3 5
-                    │ 1 3 6
+    +⍀Fb   │     +⍀Fb
+1 0 0 0 0  │ 1 0 0
+1 1 0 0 0  │ 1 1 0
+1 1 1 0 0  │ 1 1 1
+1 1 1 1 0  │ 1 1 2
+1 1 1 1 1  │ 1 1 3
+1 1 1 1 2  │ 1 2 3
+1 1 1 1 3  │ 1 3 3
+1 1 2 1 3  │ 1 3 4
+1 1 2 2 3  │ 1 3 5
+           │ 1 3 6
 \end{verbatim}
 
-\noindent These matrices are lexicographically ordered, and each ancestor shares a common prefix with its descendants. They are also unique coordinates. Only the spurious digits at the end of each coordinate prevent these matrices from meeting all our requirements for valid node coordinates.
-
-The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements of \verb;V; and rows of \verb;M;:
+\noindent These matrices are lexicographically ordered, and each ancestor shares a common prefix with its descendants. They are also unique coordinates. Only the spurious digits at the end of each coordinate prevent these matrices from meeting all our requirements for valid node coordinates. We generate a mask to remove these spurious digits by using a different outer product on our original depth vector:
 
 \begin{verbatim}
-      3 3⍴⍳9 │       (⍳3)+⍤¯1⊢3 3⍴⍳9
-0 1 2        │ 0 1  2
-3 4 5        │ 4 5  6
-6 7 8        │ 8 9 10
+    Fm←Fd∘.≥⍳1+⌈⌿Fd │   Em←Ed∘.≥⍳1+⌈⌿Ed
+1 0 0 0 0           │  1 0 0
+1 1 0 0 0           │  1 1 0
+1 1 1 0 0           │  1 1 1
+1 1 1 1 0           │  1 1 1
+1 1 1 1 1           │  1 1 1
+1 1 1 1 1           │  1 1 0
+1 1 1 1 1           │  1 1 0
+1 1 1 0 0           │  1 1 1
+1 1 1 1 0           │  1 1 1
+                    │  1 1 1
 \end{verbatim}
 
-\noindent If \verb;n↑V; takes the first \verb;n; elements of \verb;V;, then we can obtain coordinate matrices from the prefix sums by noting that the spurious digits all come after column \verb;d+1; where \verb;d; is the depth corresponding to that coordinate. The following gives a complete expression for computing a node coordinate matrix from a depth vector, shown using \verb;Fd; and \verb;Fe;:
+%The expression \verb;V f⍤¯1⊢M; applies \verb;f; to corresponding elements of \verb;V; and rows of \verb;M;:
+%
+%\begin{verbatim}
+%      3 3⍴⍳9 │       (⍳3)+⍤¯1⊢3 3⍴⍳9
+%0 1 2        │ 0 1  2
+%3 4 5        │ 4 5  6
+%6 7 8        │ 8 9 10
+%\end{verbatim}
+
+\noindent We use this mask with the \verb;×; function to get a complete expression for computing a path matrix from a depth vector, shown using \verb;Fd; and \verb;Fe;:
 
 \begin{verbatim}
-      Fc←(1+Fd)↑⍤¯1⊢+⍀Fd∘.=⍳1+⌈⌿Fd
-      Ec←(1+Ed)↑⍤¯1⊢+⍀Ed∘.=⍳1+⌈⌿Ed
-      Fc   │        Ec
-1 0 0 0 0  │  1 0 0
-1 1 0 0 0  │  1 1 0
-1 1 1 0 0  │  1 1 1
-1 1 1 1 0  │  1 1 2
-1 1 1 1 1  │  1 1 3
-1 1 1 1 2  │  1 2 0
-1 1 1 1 3  │  1 3 0
-1 1 2 0 0  │  1 3 4
-1 1 2 2 0  │  1 3 5
-           │  1 3 6
+      Fc←Fm×+⍀Fb │        Ec←Fm×+⍀Fb
+1 0 0 0 0        │  1 0 0
+1 1 0 0 0        │  1 1 0
+1 1 1 0 0        │  1 1 1
+1 1 1 1 0        │  1 1 2
+1 1 1 1 1        │  1 1 3
+1 1 1 1 2        │  1 2 0
+1 1 1 1 3        │  1 3 0
+1 1 2 0 0        │  1 3 4
+1 1 2 2 0        │  1 3 5
+                 │  1 3 6
 \end{verbatim}
 
-A careful study of the definition of a node coordinate and the above construction should reveal why this works. Intuitively, we are creating a multi-dimensional space or a number system in which each digit place or dimension contains or circumscribes a smaller space in which are contained all the descendant nodes that appear lower in the tree. Each coordinate is a sort of special path through the tree encoded to have desirable properties relative to other paths.
+A careful study of the definition of a path vector and the above construction should reveal why this works. Intuitively, we are creating a multi-dimensional space or a number system in which each digit place or dimension contains or circumscribes a smaller space in which are contained all the descendant nodes that appear lower in the tree. Each vector is a path through the tree encoded to have desirable properties relative to other paths.
 
-\subsubsection{Operations on Node Coordinates}
+Note that there are other valid path matrix encodings. The one above is used throughout most of the rest of this paper because of its simplicity and easy of exposition. We use it to demonstrate the full generality of the structure. However, certain more complex matrix encodings permit certain operations at much lower cost while preserving the full generality. 
 
-The simplest operation over a node coordinate is to extract the depth of the node. The dyadic expression \verb;C⍳0; finds the first occurrence of \verb;0; in \verb;C; and returns the index of that occurrence. Thus, we compute the depth of a node as follows:
+\subsubsection{Operations on Path Vectors}
+
+The simplest operation over a Path Vector is to extract the depth of the node. The dyadic expression \verb;C⍳0; finds the first occurrence of \verb;0; in \verb;C; and returns the index of that occurrence. Thus, we compute the depth of a node as follows:
 
 \begin{verbatim}
       C←1 1 2 0 0
@@ -286,7 +298,7 @@ A(0 f h)B ←→ 0 f (A h B) ⍝ Constant Case
 A(f g)B   ←→ f (A g B)
 \end{verbatim}
 
-\noindent With this, we write a function to compute whether a given coordinate prefixes another.
+\noindent With this, we write a function to compute whether a given path vector prefixes another.
 
 \begin{verbatim}
       P←1 1 0 0 0
@@ -314,11 +326,11 @@ The use of inner product extends to cases where \verb;C; or \verb;P; are matrice
            │  1 3 0
 \end{verbatim}
 
-\noindent We could use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec; to determine which nodes belong to which parent in \verb;Fp; or \verb;Ep;, but our prefix function returns 1 when \verb;C≡P;. Instead, we drop the last non-zero element from each coordinate. This will permit matching against all ancestors, but not against itself. We use the depth vector and the Take (\verb;↑;) function to take all but the last non-zero element. We extend the resulting array with an extra zero column to ensure we have a compatible shape.
+\noindent We could use \verb;Fp; and \verb;Ep; to compare against \verb;Fc; and \verb;Ec; to determine which nodes belong to which parent in \verb;Fp; or \verb;Ep;, but our prefix function returns 1 when \verb;C≡P;. Instead, we drop the last non-zero element from each path. This will permit matching against all ancestors, but not against itself. We use the same masking technique as above, but adjust the comparison to use \verb;>; instead of \verb;≥; to leave off the last non-zero element of \verb;Fc; and \verb;Ec;:
 
 \begin{verbatim}
-      Fcp←(Fd↑⍤¯1⊢Fc),0
-      Ecp←(Ed↑⍤¯1⊢Ec),0
+      Fcp←Fc×Fd∘.>⍳1+⌈⌿Fd
+      Ecp←Ec×Ed∘.>⍳1+⌈⌿Ed
       Fcp  │        Ecp
 0 0 0 0 0  │  0 0 0
 1 0 0 0 0  │  1 0 0
@@ -348,45 +360,32 @@ The use of inner product extends to cases where \verb;C; or \verb;P; are matrice
                    │ 1 0 1
 \end{verbatim}
 
-\noindent In the above, the closest ancestor is the rightmost 1 in each row. We can extract the column number of the rightmost 1 by replacing each 1 with its column number and selecting the maximum of each row with \verb;⌈/;. For space we will show only the \verb;E; example. In the following, \verb;V×⍤1⊢M; gives a matrix where each row is given by \verb;V×i⌷M; where \verb;i⌷M; is the $i$th row of \verb;M;.
+\noindent In the above, the closest ancestor is the rightmost 1 in each row. We can extract the column number of the rightmost 1 by replacing each 1 with its column number and selecting the maximum of each row with \verb;⌈.×;. The function \verb;≢; gives the number of rows of its argument.
 
 \begin{verbatim}
-      (⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
-0 0 0
-0 0 0
-0 1 0
-0 1 0
-0 1 0
-0 0 0
-0 0 0
-0 0 2
-0 0 2
-0 0 2
-      ⊢Ei←⌈/(⍳3)×⍤1⊢Ecp∧.(=∨0=⊢)⍉Ep
+      ⊢Ei←(Ecp∧.(=∨0=⊢)⍉Ep)⌈.×⍳≢Ep
 0 0 1 1 1 0 0 2 2 2
-      ⊢Fi←⌈/(⍳2)×⍤1⊢Fcp∧.(=∨0=⊢)⍉Fp
+      ⊢Fi←(Fcp∧.(=∨0=⊢)⍉Fp)⌈.×⍳≢Fp
 0 0 0 1 1 1 1 0 0
 \end{verbatim}
 
-\noindent We use these column numbers to index into \verb;Ep; to obtain an ancestor matrix where the node coordinate of the closest ancestor is given for each node, one per row. The expression \verb;I⌷⍤0 2⊢M; gives a matrix, one row per index in \verb;I;, consisting of rows of \verb;M; selected by row indices in \verb;I;.
+\noindent We use these column numbers to index into \verb;Ep; to obtain an ancestor matrix where the path vector of the closest ancestor is given for each node, one per row.
 
 \begin{verbatim}
-      Fk←Fi⌷⍤0 2⊢Fp
-      Ek←Ei⌷⍤0 2⊢Ep 
-      Fk   │        Ek
-1 0 0 0 0  │  1 0 0
-1 0 0 0 0  │  1 0 0
-1 0 0 0 0  │  1 1 0
-1 1 1 0 0  │  1 1 0
-1 1 1 0 0  │  1 1 0
-1 1 1 0 0  │  1 0 0
-1 1 1 0 0  │  1 0 0
-1 0 0 0 0  │  1 3 0
-1 0 0 0 0  │  1 3 0
-           │  1 3 0
+      Fk←Fp[Fi;]   │        Ek←Ep[Ei;]
+1 0 0 0 0          │  1 0 0
+1 0 0 0 0          │  1 0 0
+1 0 0 0 0          │  1 1 0
+1 1 1 0 0          │  1 1 0
+1 1 1 0 0          │  1 1 0
+1 1 1 0 0          │  1 0 0
+1 1 1 0 0          │  1 0 0
+1 0 0 0 0          │  1 3 0
+1 0 0 0 0          │  1 3 0
+                   │  1 3 0
 \end{verbatim}
 
-\noindent At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the closest containing node that we care about for each node in the tree, using its node coordinate. We use these keys to compute over the AST, particularly for function lifting and expression flattening as demonstrated in the next section. The repeating pattern is to leverage node coordinates and array operations to do stackless reasoning about inter-node relationships. This pattern occurs often in our compiler and is particularly useful to enable straightforward data-parallel transformations over an AST.
+\noindent At this point we have two values, \verb;Ek; and \verb;Fk;, which indicate the closest containing node that we care about for each node in the tree, using its path vector. We use these keys to compute over the AST, particularly for function lifting and expression flattening as demonstrated in the next section. The repeating pattern is to leverage path vectors and array operations to do stackless reasoning about inter-node relationships. This pattern occurs often in our compiler and is particularly useful to enable straightforward data-parallel transformations over an AST.
 
 \begin{table*}
 \centering
