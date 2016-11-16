@@ -434,7 +434,7 @@ Type Specialization & Specializes each function for a series of potential inputs
 
 \subsection{The Key Operator}
 
-First introduced in the J language \cite{hui2014key}, the Key operator (written \verb;⌸;) is central to our strategy for compilation. It allows us to use the Node Coordinates to their full effect. The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in \verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs. Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
+First introduced in the J language \cite{hui2014key}, the Key operator (written \verb;⌸;) is central to our strategy for compilation. It allows us to use the path vectors to their full effect. The expression \verb;K f⌸ M; groups rows of \verb;M; by their corresponding keys in \verb;K; and computes \verb;k f m; for each unique key \verb;k; in \verb;K; and the matrix \verb;m; of rows of \verb;M; with key \verb;k;. The corresponding rows of matrices \verb;K; and \verb;M; form key-value pairs. Let's compute a histogram using Tally (\verb;≢;) and Key (\verb;⌸;):
 
 \begin{verbatim}
       10⍴5
@@ -479,7 +479,7 @@ East←Ed,Et,Ev,⍪↓Ec
 
 \subsection{Function Lifting}
 
-Function lifting takes an AST with nested functions (func-tions appearing inside of other functions) and lifts these functions out of their local scopes and puts them all at the top level. Normally, function lifting must consider both the core operation of lifting function as well as the lexical scop-ing of the functions and variables that appear inside of a function. As seen below, our treatment uses a slightly dif-ferent method. 
+Function lifting takes an AST with nested functions (functions appearing inside of other functions) and lifts these functions out of their local scopes and puts them all at the top level. Normally, function lifting must consider both the core operation of lifting function as well as the lexical scop-ing of the functions and variables that appear inside of a function. As seen below, our treatment uses a slightly different method. 
 
 If we use the Key operator (\verb;⌸;) with the pair function (\verb;{⍺ ⍵};) using \verb;Fk; as the keys and \verb;Fast; as the AST, we get the following:
 
@@ -566,7 +566,7 @@ Each of these grouped sub-trees will be given a new local root \verb;F; node tha
 └─────────────────┴─────────────────┘
 \end{verbatim}
 
-Each of these function bodies has a specific coordinate associated with it. Because these coordinates are uniquely identifying, we can use these as input into a name generator to generate names that we know are unique for each function body. Furthermore, because we retain this information in the corresponding function nodes that appear in the body of each function to be lifted, we know exactly what name that function has been given, and we can replace the function node with a variable node referencing that name instead, without referring to any state outside of the immediate information given to the function lifter. Indeed, each row in the above matrix represents a function lifting task that can be completed without any additional information. That is, there are no dependencies between rows to perform lifting. This gives us a straightforward parallel execution of function lifting.
+Each of these function bodies has a specific path vector associated with it. Because these paths are uniquely identifying, we can use these as input into a name generator to generate names that we know are unique for each function body. Furthermore, because we retain this information in the corresponding function nodes that appear in the body of each function to be lifted, we know exactly what name that function has been given, and we can replace the function node with a variable node referencing that name instead, without referring to any state outside of the immediate information given to the function lifter. Indeed, each row in the above matrix represents a function lifting task that can be completed without any additional information. That is, there are no dependencies between rows to perform lifting. This gives us a straightforward parallel execution of function lifting.
 
 This function lifting works even with lexically scoped functions, as is the case for the Co-dfns compiler. We can do this because the node coordinates maintain the lexical information for each variable reference, enabling us to construct the appropriate lexical binding for each variable much later than would normally be done in a compiler. In other words, the above lifting operation loses no information that would prevent us from handling lexical scoping, but decouples lexical scoping from the act of lifting functions.
 
