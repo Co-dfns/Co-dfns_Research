@@ -1,0 +1,31 @@
+Premature Abstraction is the root of all kinds of evil.
+	Filter Function as an Example.
+
+Generating MAC Addresses
+	Transparency, Data-focused design, Directness of Expression
+
+Sudoku Solver 
+
+Understanding the Difference between Shared Functionality
+	Anonymous Functions
+	Higher-order Functions
+	Map, Reduce, Filter
+	Closures
+	
+Data Type Abstractions
+	Graphs
+
+Problems
+	Filter Operator
+	N Primes
+	Pythagorean Triples
+	MAC Address
+	Prime Sieve
+	Connected Components on Graphs
+	Basic Tree Operators
+		Adding
+		Deleting
+		Wrapping
+		Lifting Nodes
+		Change Properties
+	Game of Life
