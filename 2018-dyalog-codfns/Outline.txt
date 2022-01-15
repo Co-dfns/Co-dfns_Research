@@ -1,0 +1,113 @@
+﻿Co-dfns in 2018: What's New?
+Aaron W. Hsu, Indiana University
+Dyalog '18, Belfast
+
+Trials and Tribulations of a Ph.D. *sigh*
+
+New Features?
+
+Bracket Indexing
+
+Simplified Installation
+
+Named Namespaces
+
+Improved Primitive Support
+
+Matrix Divide
+
+Matrix Inverse
+
+Table Improvements
+
+Complex Number (some)
+
+Parsing!
+
+Ambiguous Parse Trees
+
+User-defined Operators
+
+Indexed Assignment
+
+Bracket Indexing
+
+Code cleanup
+
+Parser is ready to be given a shakedown
+
+AGPL v. Closed License
+
+Low-level ArrayFire logging improvements
+
+Simplified installation on Windows
+
+User-command (!)
+
+Build Path is CWD
+
+Compiler Auto-detection (VS, GCC, Clang)
+
+Automatic Backend
+
+Performance improvements in Plot
+
+Dependency based Runtime Loading
+
+Better GCC compatibility on some Linux versions
+
+Duplicate bindings
+
+Binomial improvements (still incomplete)
+
+Empty dfns
+
+Lexical Binding Resolution
+
+Fast Code
+
+Dynamic
+
+[Examples]
+
+Novel solution
+
+Preserve Single-assignment goodies
+
+Avoid complex algorithms
+
+Mantis17 Approved
+
+More reliable recursion
+
+Better handling of global variables
+
+Global Variables now exported
+
+Significantly less overheads
+
+Better asymptotic and constant factors
+
+Better feedback when compiling
+
+Future possibilities of first-class procedures
+
+Prepping for Sparse Matrix support
+
+User-defined operators on the horizon
+
+Bug Fixes across the board
+
+Code to support parallel compilation of multiple namespaces
+
+Much easier to read/maintain
+
+Tree Pretty-printer (pp3)
+
+Smaller, Corrector, Betterer
+
+40 vs. 90 LoC
+
+Linear Memory, Log-Linear Time, Log Critical Path
+
+Tree Talk, Thursday
