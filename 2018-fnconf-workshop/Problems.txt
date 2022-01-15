@@ -1,0 +1,102 @@
+﻿Nested vs. Flat image representation
+
+Load an Image
+
+Crop an Image
+
+Flip Images
+
+Rotate an Image by 90 degrees and 180 degrees left and right
+
+Negate an Image
+
+Shift the color mappings
+
+Compute the magnitude of an image
+
+Greyscale an image
+
+Colorize an image
+
+Extract each color plane
+
+Obamify (0 51 76)(217 26 33)(112 150 158)(252 227 166)
+Use magnitude to map colors
+
+Create a black and white checkerboard
+
+Create a create a red and black checkerboard
+
+Draw a rectangle on the canvas
+
+Draw multiple rectangles on the canvas
+
+Draw a circle
+
+Draw multiple circles on a canvas
+
+Draw a pyramid of circles
+
+Voronoi Image (Random Colors, Random Points)
+
+Rotate an Image by an angle (atan2)
+
+Blur an image
+
+Scale an Image
+
+Game of Life
+
+GoL in Color
+
+Draw a car that drives on a road with a tree on it
+
+Circle Wars
+
+Draw a line between two points
+
+Tree algorithms
+
+Tree Drawing
+
+Enter the Matrix
+
+Graph a Function
+
+Animate a cannon
+
+Draw your own histogram function
+
+Line monitor (heartbeat, noise, audio, &c.)
+
+Clustering (k-Means?)
+
+Auto-crop
+
+Tag Cloud
+
+Tree Path/Distance
+
+Generating random adjacency graphs
+
+Visualizing Adjacency Graphs
+
+Connected Components
+
+Graph Single Source Shortest Path?
+
+Machine Learning
+
+Data Science (Running Average, Analytics)
+
+Symbol Interning
+
+Alpha channels
+
+Merging two images
+
+Keyword arguments
+
+Key-value stores
+
+Partition a matrix into X Y sub-matrices

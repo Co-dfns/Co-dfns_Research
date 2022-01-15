@@ -1,0 +1,121 @@
+﻿Nested vs. Flat image representation
+↓↑(H W 3)(3 H W) 2 0 1⍉
+
+Load an Image
+gfx.∆.LoadImage
+
+Crop an Image
+↑
+
+Flip Images
+⍉⊖⌽
+
+Rotate an Image by 90 degrees and 180 degrees left and right
+
+Negate an Image
+255-img
+
+Shift the color mappings
+(⊂2 0 1)⌷img
+2⊖img
+
+Compute the magnitude of an image
++⌿
+
+Greyscale an image
++⌿÷≢
+
+Colorize an image
+1 0 0∘.×+⌿÷≢
+
+Extract each color plane
+⌷
+
+Obamify 
+Use magnitude to map colors
+(⍉↑(0 51 76)(217 26 33)(112 150 158)(252 227 166))I⍤2 1⍨(⌊192÷⍨+⌿)
+
+Create a black and white checkerboard
+2|+⌿¨⍳12 12
+
+Create a create a red and black checkerboard
+
+Draw a rectangle on the canvas
+rgb⊣@((⊂xy)+⍳W H)⍤¯1⊢img
+
+Draw multiple rectangles on the canvas
+
+Draw a circle
+
+Draw multiple circles on a canvas
+
+Draw a pyramid of circles
+~⊖(⍳10)⌽(2×⍳10)⍴⍤0⊢1
+
+Voronoi Image (Random Colors, Random Points)
+(?3 50⍴256)I⍤1 2⊢(⊃∘⍋⍤1⍉.5*⍨(?50 2⍴s)+.(×⍨-)(⍉↑⍳s←1024 1024))
+
+Rotate an Image by an angle (atan2)
+
+Blur an image
+
+Scale an Image
+
+Game of Life
+
+GoL in Color
+
+Draw a car that drives on a road with a tree on it
+Car.dyalog
+
+Circle Wars
+S1.dyalog
+
+Draw a line between two points
+
+Tree algorithms
+
+Tree Drawing
+
+Enter the Matrix
+
+Graph a Function
+
+Animate a cannon
+
+Draw your own histogram function
+
+Line monitor (heartbeat, noise, audio, &c.)
+
+Clustering (k-Means?)
+
+Auto-crop
+
+Tag Cloud
+
+Tree Path/Distance
+
+Generating random adjacency graphs
+
+Visualizing Adjacency Graphs
+
+Connected Components
+
+Graph Single Source Shortest Path?
+
+Machine Learning
+
+Data Science (Running Average, Analytics)
+
+Symbol Interning
+
+Alpha channels
+
+Merging two images
+
+Keyword arguments
+
+Key-value stores
+
+Triangle Traversal
+s⍴⍋⍋,+⌿¨⍳s
