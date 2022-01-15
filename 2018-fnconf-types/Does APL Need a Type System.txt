@@ -1,0 +1,339 @@
+﻿Does APL Need a Type System?
+Aaron W. Hsu
+Functional Conf 2018, Bengaluru, India
+
+High-level
+
+APL
+
+Magic!
+
+"A light to lighten the gentiles..."
+
+"Thou shalt not commune with the spirits of the dead..."
+
+Weird
+
+FP
+
+Mainstream
+
+Type System?
+
+Spoiler Alert!
+
+Yes
+
+But
+
+You'll be sorry...
+
+Validation
+
+Weirder
+
+Why types?
+
+Well, duh.
+
+Why not?
+
+Weird
+
+Why?
+
+Beyond types for types' sake
+
+"Productivity!"
+
+What?
+
+Static Analysis
+
+Linters
+
+Static Type Systems
+
+Explicit
+
+Semantic Constraint
+
+Syntactic Burden
+
+Value Proposition?
+
+Past, Present, Future
+
+Past ←→ Intent
+
+Present ←→ Robustness/Performance
+
+Future ←→ Code Prediction
+
+Sold!
+
+APL's Value?
+
+Intent, Robustness, Performance, Time to Solution
+
+Wut?
+
+APL is a Tool of Thought (Problem Solving)
+
+Social Context
+
+Linguistic Context
+
+Human-Computer (HCI/d)
+
+Fatal flaw
+
+FP in C? ASM?
+
+APL in ___ fails
+
+Not Semantics, Syntax!
+
+Intent
+
+Readability
+
+Not about Comfort
+
+Change Confidence
+
+Wanna bet?
+
+Abstraction
+
+Directness
+
+Naming is Hard
+
+Types are a structural name
+
+Increased distance (Syntax & Semantics)
+
+Abstraction means that the code that does what you want isn't where you think it is.
+	-- Edward Amsden
+
+SumMultiplesOf3n5
++⌿∪,3 5×∘⍳⍤0⌈N÷3 5
++⌿(∨⌿0=X∘.|3 5)⌿X←⍳N
+
+PrimeNumbersFrom0toN
+(⊢~∘.×⍨)2↓⍳N
+(~X∊X∘.×X)⌿X←2↓⍳N
+(2=+⌿0=X∘.|X)⌿X←⍳N
+
+ConnectedComponents
+∨.∧
+
+GameOfLife
+3=s-⍵∧4=s←{+/,⍵}⌺3 3⊢⍵
+⊃1 ⍵∨.∧3 4=+⌿,1 0 ¯1∘.⊖1 0 ¯1⌽¨⊂⍵
+
+DeleteNodesByName
+(⍸M)(⊢-1+⍸)(~M)⌿P
+
+CreateBindingTable
+i@(p[i←⍸1=t[p]])⍳≢p
+
+RemoveBindingChains
+I@{1=t[⍵]}⍣≡⍨
+
+VariableMatchesBinding
+(t[⍵]=1)∧n[⍵]=⍺⍺
+
+LookupVariableBinding
+b+⍺×0=b←bv[×∘m⍨vl I@(~m)⍣≡l[⍵]]
+
+CollapseVariableAndBindingChains
+bv I@{t[0⌈⍵]=1}I@{t[0⌈⍵]=10}⍣≡⍨n
+
+Quiz: Types for the above?
+
+Improvement?
+
+APL is a Type System?
+
+We compute with "types"
+
+Rank
+Shape
+Index Spaces
+Pointers
+Data Types
+Enumerations
+Expressions
+
+Lisp: Code is Data
+
+APL: Types are Data
+
+Lenore Mullin. 1988. A Mathematics of Arrays.
+
+-typ⌿⍨m
+rgb[2+typ]
+
+Types Longer than Code
+
+Buggier, Harder to Read
+
+APL Types are Research Hard
+
+Robustness/Performance
+
+Infinite Tests Replaced
+
+Mechanical Guarantees
+
+Compiler Analysis
+
+Refactoring Ease
+
+Once upon a time...
+
+free() was feeling down
+
+Nobody liked him
+
+No one liked to call him
+
+But GC came to find him
+
+GC promised to take care of him
+
+GC took him to a tower
+
+Filled with joyful boys and girls
+
+Everyone was building happy memories
+
+And GC promised free()
+
+That he could play and share memories, too.
+
+But free() didn't notice
+
+Through all the boys and girls queuing for events
+
+The name of the tower
+
+Was Node.js... ;-(
+
+Tune in Next time for...
+
+The Perils of Lazy Par's Paralyzing Parallelization
+
+Big Picture, Little Details
+
+APL is High-level
+
+Ultra-instinct
+
+Mechanically sympathetic
+
+Modern architectures
+
+Nothing beats an array
+
+Nothing beats APL for arrays
+
+"Shorter code is easier to debug."
+  -- Arthur Whitney
+
+"This code fits on a slide, so maintaining it is kind of silly [trivial]."
+  -- Michael Snoyman
+
+The more you can see, 
+the more you can know.
+
+Orders of magnitude shorter
+
+More general, less specific
+
+Orders of magnitude faster iteration
+
+Hyper agile
+
+Deep knowledge, Memory
+
+Whole code rewrite
+
+Technical debt
+
+Compiler Analysis
+
+Trivial
+
+No Types Needed
+
+Simplify optimization
+
+Better high-level optimization
+
+Breaking the Abstraction
+
+Code Prediction
+
+Type-directed programming
+
+Funnel
+
+Systems Support
+
+Not-human optimized
+
+Suggestivity
+
+Fountain
+
+Serendipitous Transfer
+
+Cross-domain optimization
+
+Short Code
+
+Shared foundation
+
+Breakable Abstraction
+
+Transparent Implementation
+
+Existing Knowledge is More Powerful
+
+Leverages Human Thinking
+
+Concretized Domain Overlap
+
+Code Reuse
+
+via Abstraction
+
+via Transparency
+
+FP: Types help you document your code
+
+APL: Just write clearer, shorter code
+
+FP: Types help correctness
+
+APL: Just rewrite clearer, shorter code more often.
+
+FP: Types help performance
+
+APL: Just rewrite clearer, shorter code more often with a mechanically sympathetic language.
+
+FP: Types help you write new code more rigorously.
+
+APL: Just rewrite clearer, shorter code more often with a mechanically sympathetic language that optimizes suggestivity to reuse idioms in more places.
+
+FP: But Types!
+
+APL: But APL!
+
+We'd love a new type system!
+Do you have one that is more economical than APL? 
+
+Thank you.
