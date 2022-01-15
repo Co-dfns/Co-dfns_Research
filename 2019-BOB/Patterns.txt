@@ -1,0 +1,10 @@
+APL			Mainstream
+-----------------------------------
+Brevity			Verbosity
+Macro 			Micro
+Transparency		Abstraction
+Idioms			Libraries
+Data			Control Flow
+Structure		Names
+Implicit		Explicit
+Syntax			Semantics

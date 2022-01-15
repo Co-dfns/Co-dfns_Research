@@ -1,0 +1,11 @@
+Who has seen APL?
+Who is a compiler writer?
+Descriptivism v. Prescriptivism
+Write the compiler
+Game of Life
+Data Munging
+CamelCase
+Size of the AST
+Fusion + Scalar vs. Search
+Asymptotic Complexity
+Mechanical Sympathy
