@@ -1,0 +1,9 @@
+
+Code/gfx.cpp
+*.dll
+*.exp
+*.lib
+*.log
+*.pdb
+*.obj
+.DS_Store

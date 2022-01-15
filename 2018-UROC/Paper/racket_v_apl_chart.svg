@@ -1,0 +1,104 @@
+<svg version="1.1" baseProfile="full" width="100%" height="100%" viewBox="0 0 4320 3240"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" >
+ <title>Racket vs. APL (Big Bang)</title>
+<desc>Created by Causeway SVG engine - SharpPlot v3.58.0</desc>
+<g stroke-miterlimit="100">
+<desc>Paint the paper =====</desc>
+ <g fill="White" >
+  <rect x="0" y="0" width="4320" height="3240" />
+ </g>
+<desc>Border =====</desc>
+<desc>Y-axis labels</desc>
+ <g font-family="Calibri" font-size="90" text-anchor="end" >
+  <text x="335" y="2750" >-1</text>
+  <text x="335" y="2499" >-0.8</text>
+  <text x="335" y="2248" >-0.6</text>
+  <text x="335" y="1997" >-0.4</text>
+  <text x="335" y="1746" >-0.2</text>
+  <text x="335" y="1494" >0</text>
+  <text x="335" y="1243" >0.2</text>
+  <text x="335" y="992" >0.4</text>
+  <text x="335" y="741" >0.6</text>
+  <text x="335" y="490" >0.8</text>
+ </g>
+<desc>Heading, subheading and footnotes =====</desc>
+<desc>Heading</desc>
+ <g fill="#000000" font-family="Calibri" font-size="180" text-anchor="middle" >
+  <text x="2160" y="292" >Racket vs. APL (Big Bang)</text>
+ </g>
+<desc>Region =====</desc>
+<desc>for X-axis labels</desc>
+ <g font-family="Calibri" font-size="90" transform="translate(532 2798) rotate(-33.8)" text-anchor="end" >
+  <text>LoC</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(779 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Chars</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1026 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Tokens</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1272 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Nodes</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1519 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Vocab</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1766 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Forms</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2012 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Data</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2259 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Vars</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2506 2798) rotate(-33.8)" text-anchor="end" >
+  <text>UDF</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2752 2798) rotate(-33.8)" text-anchor="end" >
+  <text>GVars</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2999 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Conc</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3246 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Scaff</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3492 2798) rotate(-33.8)" text-anchor="end" >
+  <text>MDtU</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3739 2798) rotate(-33.8)" text-anchor="end" >
+  <text>SemDen</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3986 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Depth</text>
+ </g>
+<desc>X-Axis Ticks =====</desc>
+<desc>X-Axis tickmarks</desc>
+ <path fill="none" stroke-width="7.2" stroke="Black" d="M400 2720L400 2764M647 2720L647 2764M893 2720L893 2764M1140 2720L1140 2764M1387 2720L1387 2764M1633 2720L1633 2764M1880 2720L1880 2764M2127 2720L2127 2764M2373 2720L2373 2764M2620 2720L2620 2764M2867 2720L2867 2764M3113 2720L3113 2764M3360 2720L3360 2764M3607 2720L3607 2764M3853 2720L3853 2764M4100 2720L4100 2764"/>
+<desc>Y-Axis Ticks =====</desc>
+<desc>Y grid</desc>
+ <path fill="none" stroke-width="1.8" stroke="Silver" d="M400 2720L4100 2720M400 2469L4100 2469M400 2218L4100 2218M400 1967L4100 1967M400 1716L4100 1716M400 1464L4100 1464M400 1213L4100 1213M400 962L4100 962M400 711L4100 711M400 460L4100 460"/>
+<desc>Y-Axis tickmarks</desc>
+ <path fill="none" stroke-width="7.2" stroke="Black" d="M400 2720L367 2720M400 2469L367 2469M400 2218L367 2218M400 1967L367 1967M400 1716L367 1716M400 1464L367 1464M400 1213L367 1213M400 962L367 962M400 711L367 711M400 460L367 460"/>
+<desc>Start of Barchart ===========</desc>
+ <g stroke-width="4" stroke="#000000" fill="#D1D4ED" >
+  <rect x="447" y="1464" width="152" height="1126" />
+  <rect x="694" y="1464" width="152" height="942" />
+  <rect x="940" y="741" width="152" height="724" />
+  <rect x="1187" y="1464" width="152" height="176" />
+  <rect x="1434" y="1271" width="152" height="193" />
+  <rect x="1927" y="1464" width="152" height="942" />
+  <rect x="2174" y="1464" width="152" height="520" />
+  <rect x="2420" y="1464" width="152" height="209" />
+  <rect x="2667" y="1464" width="152" height="966" />
+  <rect x="2914" y="568" width="152" height="897" />
+  <rect x="3160" y="1464" width="152" height="1093" />
+  <rect x="3407" y="1464" width="152" height="1065" />
+  <rect x="3654" y="744" width="152" height="721" />
+  <rect x="3900" y="1464" width="152" height="251" />
+ </g>
+<desc>Axes =====</desc>
+ <path fill="none" stroke-width="12" stroke="Black" d="M400 2764L400 416M356 2720L4144 2720"/>
+<desc>Reset to original origin</desc>
+</g>
+</svg>

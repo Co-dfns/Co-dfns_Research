@@ -1,0 +1,95 @@
+<svg version="1.1" baseProfile="full" width="100%" height="100%" viewBox="0 0 4320 3240"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" >
+ <title>Scratch vs. APL (Circle Wars)</title>
+<desc>Created by Causeway SVG engine - SharpPlot v3.58.0</desc>
+<g stroke-miterlimit="100">
+<desc>Paint the paper =====</desc>
+ <g fill="White" >
+  <rect x="0" y="0" width="4320" height="3240" />
+ </g>
+<desc>Border =====</desc>
+<desc>Y-axis labels</desc>
+ <g font-family="Calibri" font-size="90" text-anchor="end" >
+  <text x="335" y="2750" >-1</text>
+  <text x="335" y="2468" >0</text>
+  <text x="335" y="2185" >1</text>
+  <text x="335" y="1903" >2</text>
+  <text x="335" y="1620" >3</text>
+  <text x="335" y="1338" >4</text>
+  <text x="335" y="1055" >5</text>
+  <text x="335" y="773" >6</text>
+  <text x="335" y="490" >7</text>
+ </g>
+<desc>Heading, subheading and footnotes =====</desc>
+<desc>Heading</desc>
+ <g fill="#000000" font-family="Calibri" font-size="180" text-anchor="middle" >
+  <text x="2160" y="292" >Scratch vs. APL (Circle Wars)</text>
+ </g>
+<desc>Region =====</desc>
+<desc>for X-axis labels</desc>
+ <g font-family="Calibri" font-size="90" transform="translate(551 2798) rotate(-33.8)" text-anchor="end" >
+  <text>LoC</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(836 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Tokens</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1121 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Nodes</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1405 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Vocab</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1690 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Forms</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(1974 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Data</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2259 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Vars</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2544 2798) rotate(-33.8)" text-anchor="end" >
+  <text>UDF</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(2828 2798) rotate(-33.8)" text-anchor="end" >
+  <text>GVars</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3113 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Conc</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3397 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Scaff</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3682 2798) rotate(-33.8)" text-anchor="end" >
+  <text>SemDen</text>
+ </g>
+ <g font-family="Calibri" font-size="90" transform="translate(3967 2798) rotate(-33.8)" text-anchor="end" >
+  <text>Depth</text>
+ </g>
+<desc>X-Axis Ticks =====</desc>
+<desc>X-Axis tickmarks</desc>
+ <path fill="none" stroke-width="7.2" stroke="Black" d="M400 2720L400 2764M685 2720L685 2764M969 2720L969 2764M1254 2720L1254 2764M1538 2720L1538 2764M1823 2720L1823 2764M2108 2720L2108 2764M2392 2720L2392 2764M2677 2720L2677 2764M2962 2720L2962 2764M3246 2720L3246 2764M3531 2720L3531 2764M3815 2720L3815 2764M4100 2720L4100 2764"/>
+<desc>Y-Axis Ticks =====</desc>
+<desc>Y grid</desc>
+ <path fill="none" stroke-width="1.8" stroke="Silver" d="M400 2720L4100 2720M400 2438L4100 2438M400 2155L4100 2155M400 1873L4100 1873M400 1590L4100 1590M400 1308L4100 1308M400 1025L4100 1025M400 743L4100 743M400 460L4100 460"/>
+<desc>Y-Axis tickmarks</desc>
+ <path fill="none" stroke-width="7.2" stroke="Black" d="M400 2720L367 2720M400 2438L367 2438M400 2155L367 2155M400 1873L367 1873M400 1590L367 1590M400 1308L367 1308M400 1025L367 1025M400 743L367 743M400 460L367 460"/>
+<desc>Start of Barchart ===========</desc>
+ <g stroke-width="4" stroke="#000000" fill="#D1D4ED" >
+  <rect x="454" y="2438" width="176" height="81" />
+  <rect x="739" y="1015" width="176" height="1422" />
+  <rect x="1024" y="678" width="176" height="1760" />
+  <rect x="1308" y="2254" width="176" height="184" />
+  <rect x="1593" y="2438" width="176" height="212" />
+  <rect x="1877" y="2438" width="176" height="226" />
+  <rect x="2162" y="954" width="176" height="1483" />
+  <rect x="2731" y="2296" width="176" height="141" />
+  <rect x="3016" y="2175" width="176" height="262" />
+  <rect x="3301" y="2438" width="176" height="260" />
+  <rect x="3585" y="2438" width="176" height="11" />
+  <rect x="3870" y="2438" width="176" height="57" />
+ </g>
+<desc>Axes =====</desc>
+ <path fill="none" stroke-width="12" stroke="Black" d="M400 2764L400 416M356 2720L4144 2720"/>
+<desc>Reset to original origin</desc>
+</g>
+</svg>
