@@ -24,3 +24,4 @@ Thumbs.db
 *.dll
 2017-spring-pldi/hsu-2017-key_data_parallel_compiler.synctex.gz
 *.gz
+*.obj
