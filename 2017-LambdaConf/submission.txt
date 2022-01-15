@@ -1,0 +1,48 @@
+﻿# Title: Functional Array Funhouse Intensive
+
+## Introduction (What is this session about?)
+
+How would your programs to be easier to write, inherently parallel, and high performance across GPUs and CPUs? How about a development methodology that make agile programming look sluggish and unreliable? How about shrinking the size and complexity of your code base by an order of magnitude, while increasing performance by an order of magnitude? 
+
+This intensive workshop is designed to demystify the strange and special world of array programming like you may never have seen it before. Iverson style array programming terrifies some, and amazes others, but no one can argue with their results in areas such as finance, energy, education, or medical research. New research has made array programming scalable across a wide array of parallel hardware architectures. Often renowned for remarkably short, concise code that does a tremendous amount of work with very little code, the area of production level array programming is an often misunderstood area.
+
+This workshop will bring you through a whirlwind of array programming concepts by example and case study, opening up the curtains on the original interactive functional programming language in its modern incarnation, showing you how you can make use of this sometimes mystical world, with an emphasis on the concepts and how to integrate these concepts into a practical, targeted development methodology and ecosystem for maximizing productivity and leveraging the benefits of notational thinking to their full effect. 
+
+The goal is to let you keep the magic and fun of programming alive, and let you use that magic for your benefit in the real world.
+
+## Relevancy (Why is this session relevant to a professional software developer?)
+
+Modern computing is parallel computing. Array programming presents a methodology and ecosystem of developmental ideologies that uniquely combine a human, data-driven focus on aesthetics that deliver remarkable productivity in production environments, while providing an accessibility and performance centered around parallel thinking through notation that breaks open machine scalability through parallel computing that few production languages can match. The result is production environments that are highly productive in both human and machine dimensions, often exceeding expectations of performance and productivity beyond what most development teams consider practical.
+
+## Benefits (How will this session help developers to better accomplish their job?)
+
+Programming Languages can expand your thought processes and give you new ways to explore and solve problems. Like Dependent Typing, Lisp, or C, array programming gives you a whole suite of tools, techniques, and methodologies for problem solving and working with data. In particular, Iverson style array programming gives a deceptively simple, but seemingly completely different approach that leverages human factors in programming and delivers a level of productivity, performance, and integration with broader development considerations that is rare in the development world, managing to straddle a line between aesthetics and pragmatic usefulness.
+
+## Concepts (What concepts will developers learn from the session?)
+
+Foundational Array Programming concepts
+Fundamental building blocks of array programming
+Notational Thinking
+Traditional to Array programming technique equivalencies
+Idioms, "phrases", and patterns that scale array thinking
+Exploratory and data-driven programming
+Direct Development as a methodology for leveraging array programming
+
+## Skills (What concrete skills will developers acquire from the session?)
+
+Tools for exploring arrays
+How to compile and target array programs to GPUs and CPUs
+Real-time debugging and exploratory programming with arrays
+Integrating direct development
+
+## Outline (Please xreate a brief outline how you intend to structure the session)
+
+Introduction
+Array Basics
+Learn by Example(s)
+Scaling (Human and Machine)
+Integrating Array Programming (Direct Development, &c.)
+
+## Pitch (What is the main reason developers should come to your session instead of other ones?)
+
+Array programming is a mystical niche in functional programming that scares some people and amazes others. The programs are shorter and smaller than any other real world programs, while being more scalable and higher performance. Let me demystify this world for you and teach you how to leverage these powerful techniques.

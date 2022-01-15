@@ -1,0 +1,23 @@
+﻿Notational Thinking
+
+## Introduction
+
+Ken Iverson's Turing Award Lecture focused on the idea of Notation as a Tool of Thought that empowers people to conquer problems with better facility than other methods. In this educational session, we will cover the idea of notational thinking, how Iverson implemented it, and how this concept has evolved in modern functional array programming.
+
+## Relevancy
+
+Modern parallel programming has presented difficult challenges of productivity and programmability. Notational thinking provides a practical, reified, and structured approach to solving the programmability problem of parallel program and has been doing so for years. The embodiment of Iverson style notational thinking is a family of functional array programming languages that are available for immediate use to solve issues of problems solving, education, productivity, and performance on modern hardware architectures and modern development environments.
+
+## Benefits
+
+This session will give developers a new way of thinking about problems, and importantly, a new way of thinking about their approach to solving problems. It will give them everything from the concept down to a real, production quality implementation of these ideas and demonstrate how they are used in the real world to great effect. 
+
+## Concepts
+
+Notational Thinking
+Functional Array Programming
+
+## Skills
+
+Tools and language skills for array programming and interactive exploration of data
+
