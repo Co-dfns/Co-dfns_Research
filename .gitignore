@@ -25,3 +25,10 @@ Thumbs.db
 *.gz
 *.obj
 *.lyx~
+2022-icfp-unet/Source/codfns.lib
+2022-icfp-unet/Source/codfns.exp
+2022-icfp-unet/Source/codfns.h
+2022-icfp-unet/Source/cdgfx.lib
+2022-icfp-unet/Source/cdgfx.exp
+2022-icfp-unet/Source/cdgfx.cpp
+2022-icfp-unet/Source/UNET.dws
