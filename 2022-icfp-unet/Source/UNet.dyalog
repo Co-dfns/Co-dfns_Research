@@ -1,5 +1,4 @@
-⍝ Copyright (c) 2020 Aaron W. Hsu. <arcfide@sacrideo.us>
-⍝ See LICENSE.txt and COPYING.txt for licensing information
+⍝ Copyright (c) 2022 Aaron W. Hsu. <arcfide@sacrideo.us>
 
 :Namespace UNET
 
@@ -8,9 +7,9 @@ gfx←#.cdgfx.∆
 FWD←{Z←(I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨W←⍉∘⍪¨¨⍺
  CV←{0⌈⊃(⍺⊃Z),←⊂(1 1 0↓¯1 ¯1 0↓{,⍵}⌺3 3⊃(⍺⊃Z)←⊂⍵)+.×⍺⊃W}  ⍝ Conv 3×3, RelU
  CC←{⍵,⍨p↓(-p)↓a⊣p←2÷⍨(⍴a←⍺⊃Z)-⍴⍵}                        ⍝ Copy and Crop
- MX←{{⌈⌿⌈⌿⍵}⌺(2 2⍴2)⊢(⍺⊃Z)←⍵}                              ⍝ Max 2×2, Stride 2
+ MX←{{⌈⌿⌈⌿⍵}⌺(2 2⍴2)⊢(⍺⊃Z)←⍵}                             ⍝ Max 2×2, Stride 2
  UP←{0⌈⊃(⍺⊃Z),←⊂({,⍵}⌺2 2⊢0⍪0,[1]2⌿2/[1]⊃(⍺⊃Z)←⊂⍵)+.×⍺⊃W} ⍝ Up, Conv 2×2, Relu
- C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←((⍺⊃Z)←⍵)+.×⍺⊃W}          ⍝ 1×1, Relu
+ C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←((⍺⊃Z)←⍵)+.×⍺⊃W}           ⍝ 1×1, Relu
  LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺ ⋄ I3 CC I0 UP⊃CV⌿I1 I2,⊂(1↓⍺)∇I3 MX⊃CV⌿I4 I5,⊂⍵}
  (⊂Z),⊂I0 C1⊃CV⌿I1 I2,⊂I LA ⍵}
 
@@ -34,30 +33,27 @@ K←{⍺←⊢ ⋄ I B S←⍺⊣3 64 2 ⋄ D←⍵
  N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
  N¨¨(⍬(3 3)(3 3),¨⍨↓3 2⍴2,FD[2,⍨4⍴1])({↓KS,⍨6 2⍴FD[LM+⍵]}⍤0⍳D)}
 
-RUN1←{img y←⍺ ⋄  X Y∆←⍵ FWD img ⋄ n m←2↑⍴Y∆ ⋄ y←n m↑y↓⍨2÷⍨(⍴y)-n m
+RUN1←{img y←⍵ ⋄  X Y∆←⍺ FWD img ⋄ n m←2↑⍴Y∆ ⋄ y←n m↑y↓⍨2÷⍨(⍴y)-n m
  #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←y E Y∆ ⋄ #.REFERENCE←y ⋄ #.MASK←Y∆[;;1]
- ∆W←⍵ X BCK Y∆ y}
+ ∆W←⍺ X BCK Y∆ y}
 
-∇TRAIN;DO;LR;MO
- LR MO←1e¯9 0.99
- DO←{img Y←⍵ ⋄ X Y∆←#.WEIGHTS FWD img ⋄ n m←2↑⍴Y∆ ⋄ Y←n m↑Y↓⍨2÷⍨(⍴Y)-n m
-  #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←Y E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
-  ⍬⊣#.WEIGHTS←#.WEIGHTS-LR×#.VELOCITY←(MO×#.VELOCITY)+#.WEIGHTS X BCK Y∆ Y}
- 0 0⍴{DO¨#.DATA⊣⎕←''}⍣100⊢⍬
-∇
+TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ LR MO←1e¯9 0.99 ⋄ data←⍵ ⎕FTIE 0
+ update←{#.WEIGHTS←#.WEIGHTS-LR×#.VELOCITY←⍵+MO×#.VELOCITY}
+ _←{update #.WEIGHTS RUN1 ⎕FREAD data ⍵}¨∊iter⍴{1+⍳⍵-⍺}⌿2↑⎕FSIZE data
+ 0⊣⎕FUNTIE data}
 
-IMG2CMP←{_←gfx.Init ⋄ ⎕←'Converting ',⍵ ⋄ T←0 ⎕FCREATE⍠'Z' 1⍨⊃{⍺,'\',⍵}⌿2↑⎕NPARTS ⍵
- ⎕FUNTIE T⊣T ⎕FAPPEND¨⍨{(⍉3↑⍵)(256÷⍨⍉3⌷⍵)}gfx.LoadImage ⍵}
+CONVERT←{fns2img←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
+ 0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE 0}
 
-DIR2CMP←{IMG2CMP¨⊃⎕NINFO⍠1⊢⍵,'\*.png'}
+PNGS2IMGS←{_←gfx.∆.Init ⋄ (256÷⍨+⌿÷≢)∘gfx.LoadImage¨⊆⍵}
 
-FILE←{tie←⍵ ⎕FTIE 0 ⋄ img y←⎕FREAD¨tie,¨1+⍳2 ⋄ _←⎕FUNTIE tie
- img y←1444÷⍨8 8∘↓¨{+⌿+⌿⍵}⌺(2 2⍴38)¨img y ⋄ y←⌊0.5+y ⋄ (img÷256)y}
+ISBI∆FILES←{ls←{⊃⎕NINFO⍠1⊢⍵} ⋄ (ls ⍵,'\images\*.png'),⍪ls ⍵,'\labels\*.png'}
 
-LOAD∆FILES←{FILE¨⊃⎕NINFO⍠1⊢⍵,'\*.dcf'}
-
-∇LOAD
- #.DATA←LOAD∆FILES #.PATH
+∇PLOT
+ gfx.Init
+ gfx.{⎕←'Stopped plot.'⊣{_←⎕DL .5 ⋄ ⍺ Plot #.ERRORS}Display{#.STOP}⍬}&⍬
+ gfx.{⎕←'Stopped reference.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.REFERENCE}Display{#.STOP}⍬}&⍬
+ gfx.{⎕←'Stopped mask.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.MASK}Display{#.STOP}⍬}&⍬
 ∇
 
 ∇INIT
@@ -65,13 +61,6 @@ LOAD∆FILES←{FILE¨⊃⎕NINFO⍠1⊢⍵,'\*.dcf'}
  #.ERRORS←⍉⍪0 15000
  #.WEIGHTS←K 4
  #.VELOCITY←⍴∘0∘⍴¨¨#.WEIGHTS
-∇
-
-∇PLOT
- gfx.Init
- gfx.{⎕←'Stopped plot.'⊣{_←⎕DL ÷10 ⋄ ⍺ Plot #.ERRORS}Display{#.STOP}⍬}&⍬
- gfx.{⎕←'Stopped reference.'⊣{_←⎕DL ÷10 ⋄ ⍺ Image #.REFERENCE}Display{#.STOP}⍬}&⍬
- gfx.{⎕←'Stopped mask.'⊣{_←⎕DL ÷10 ⋄ ⍺ Image #.MASK}Display{#.STOP}⍬}&⍬
 ∇
 
 :EndNamespace
