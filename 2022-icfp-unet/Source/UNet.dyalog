@@ -43,7 +43,7 @@ TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ LR MO←1e¯9 0.99 ⋄ data←⍵ ⎕FTIE 
  0⊣⎕FUNTIE data}
 
 CONVERT←{fns2imgs←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
- _←0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE 0}
+ _←0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE⍠'Z' 1⊢0}
 
 PNGS2IMGS←{_←gfx.Init ⋄ (256÷⍨+⌿÷≢)∘gfx.LoadImage¨⊆⍵}
 
