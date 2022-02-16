@@ -42,10 +42,10 @@ TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ LR MO←1e¯9 0.99 ⋄ data←⍵ ⎕FTIE 
  _←{update #.WEIGHTS RUN1 ⎕FREAD data ⍵}¨∊iter⍴{1+⍳⍵-⍺}⌿2↑⎕FSIZE data
  0⊣⎕FUNTIE data}
 
-CONVERT←{fns2img←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
- 0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE 0}
+CONVERT←{fns2imgs←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
+ _←0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE 0}
 
-PNGS2IMGS←{_←gfx.∆.Init ⋄ (256÷⍨+⌿÷≢)∘gfx.LoadImage¨⊆⍵}
+PNGS2IMGS←{_←gfx.Init ⋄ (256÷⍨+⌿÷≢)∘gfx.LoadImage¨⊆⍵}
 
 ISBI∆FILES←{ls←{⊃⎕NINFO⍠1⊢⍵} ⋄ (ls ⍵,'\images\*.png'),⍪ls ⍵,'\labels\*.png'}
 
