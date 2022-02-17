@@ -32,6 +32,7 @@ BCK←{Y∆ Y←⍵ ⋄ W X←⍺ ⋄ (I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨
  _←I ∆LA ⊃∆CV⌿I2 I1,⊂I0 ∆C1 Y∆ Y
  W}
 
+⍝ XXX Fix to handle the new UpConv format
 K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵ 
  FD←×⍀I B,(D⍴S),÷S ⋄ KS←2/⍪2 3 3 0 3 3 ⋄ LM←1 2 2 2 2 3 1 1 1 1 1 0
  N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
