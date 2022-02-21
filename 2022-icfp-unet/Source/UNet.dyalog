@@ -5,14 +5,14 @@
 gfx←#.cdgfx.∆
 
 FWD←{Z←(I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨W←⍉∘⍪¨¨⍺ ⋄ (1⊃W)←⍉(⊢⍴⍨(4÷⍨1↑⍴),2 2,1↓⍴)¨@0⍉1⊃W
- ST1←{(⍺⊃W)⍺⍺⊃(⍺⊃Z)←⊂⍵} ⋄ ST2←{⍺⍺⊃(⍺⊃Z),←⊂⍺ ⍵⍵ ST1 ⍵} ⋄ GT←{(⍺⊃Z) ⍺⍺ ⍵}
+ ST1←{(⍺⊃W)⍺⍺(⍺⊃Z)←⍵} ⋄ ST2←{⍺⍺(⍺⊃Z),⍥⊆←⍺ ⍵⍵ ST1 ⍵} ⋄ GT←{(⍺⊃Z) ⍺⍺ ⍵}
  CV←0∘⌈ ST2 {(1 1↓¯1 ¯1↓{,⍵}⌺3 3⊢⍵)+.×⍺}        ⍝ Conv 3×3, RelU
- CC←{⍵,⍨p↓(-p)↓⍺⊣p←2÷⍨⍺-⍤⍴⍵}GT                  ⍝ Copy and Crop
- MX←{⌈/{,⍵}⌺(2 2⍴2)⊢⍵}ST1                       ⍝ Max 2×2, Stride 2
+ CC←{⍵,⍨(⌈p)↓(-⌊p)↓⍺⊣p←2÷⍨⍺-⍥⍴⍵}GT              ⍝ Copy and Crop
+ MX←{{⌈⌿⌈⌿⍵}⌺(2 2⍴2)⊢⍵}ST1                      ⍝ Max 2×2, Stride 2
  UP←0∘⌈ ST2 {((2×¯1↓⍴⍵),¯1↑⍴⍺)⍴0 2 1 3 4⍉⍵+.×⍺} ⍝ Up Conv 2×2, RelU
  C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺}ST1        ⍝ 1×1, Relu
  LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺ ⋄ I3 CC I0 UP⊃CV⌿I1 I2,⊂(1↓⍺)∇I3 MX⊃CV⌿I4 I5,⊂⍵}
- (⊂Z),⊂I0 C1⊃CV⌿I1 I2,⊂I LA ⍵⍴⍨3↑1,⍨⍴⍵}
+ (⊂Z),⊂I0 C1⊃CV⌿I1 I2,⊂I LA ⍵⍴⍨3↑1,⍨⍴⍵⊣⍞←'↓'}
 
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 
@@ -29,7 +29,7 @@ BCK←{Y∆ Y←⍵ ⋄ W X←⍺ ⋄ (I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨
  ∆C1←{w←⍺⊃W ⋄ x←⍺⊃X ⋄ Y∆ Y←⍵ ⋄ ∆z←Y∆-Y ⋄ (⍺⊃W)←(⍪⍉∆z)+.×⍉⍪⍉x ⋄ ∆z+.×w}
  ∆LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺
   ⊃∆CV⌿I5 I4,⊂2÷⍨(I3 ∆CC ⍵)+I3 ∆MX(1↓⍺)∇⊃∆CV⌿I2 I1,⊂I0 ∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵}
- _←I ∆LA ⊃∆CV⌿I2 I1,⊂I0 ∆C1 Y∆ Y
+ _←I ∆LA ⊃∆CV⌿I2 I1,⊂I0 ∆C1 Y∆ Y⊣⍞←'↑'
  W}
 
 K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵ 
@@ -37,9 +37,9 @@ K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵
  N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
  N¨¨(⍬(3 3)(3 3),¨⍨↓3 2⍴2,FD[2,⍨4⍴1])({↓KS,⍨6 2⍴FD[LM+⍵]}⍤0⍳D)}
 
-RUN1←{img y←⍵ ⋄  X Y∆←⍺ FWD img ⋄ n m←2↑⍴Y∆ ⋄ y←n m↑y↓⍨2÷⍨(⍴y)-n m
+RUN1←{img y←⍵ ⋄  X Y∆←⍺ FWD img ⋄ n m←2↑⍴Y∆ ⋄ y←⌊0.5+n m↑y↓⍨2÷⍨(⍴y)-n m
  #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←y E Y∆ ⋄ #.REFERENCE←y ⋄ #.MASK←Y∆[;;1]
- ∆W←⍺ X BCK Y∆ y}
+ ∆W←(⎕←'')⊢⍺ X BCK Y∆ y}
 
 TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ LR MO←1e¯9 0.99 ⋄ data←⍵ ⎕FTIE 0
  update←{#.WEIGHTS←#.WEIGHTS-LR×#.VELOCITY←⍵+MO×#.VELOCITY}
