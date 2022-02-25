@@ -1,5 +1,12 @@
 :Namespace UNET_aux
 
- CV5 ← {Z←510 510 128⍴0 ⋄ K←⍺ ⋄ M←⍵ ⋄ Z⊣∘.{0⊣Z+←(510 510↑⍺ ⍵↓M)+.×K[⍺;⍵;;]}⍨⍳3}
+ CV5←{K←⍺ ⋄ M←⍵ ⋄ Z←0⍴⍨(S←¯2+2↑⍴M),¯1↑⍴K ⋄ Ks←⍴K
+  Z⊣(⍳Ks[0])∘.{0⊣Z+←(S↑⍺ ⍵↓M)+.×K[⍺;⍵;;]}⍳Ks[1]}
+
+ SF←{R←≢W←⍺ ⋄ Wx←W[0] ⋄ Wy←W[1] ⋄ A←⍵ ⋄ S←1+(R↑⍴A)-W ⋄ Ts←R↓⍴A
+  Zs←S,W,Ts ⋄ Z3←(Sc←×⌿S),(Wc←×⌿W),×⌿Ts ⋄ ST←Sc,×⌿Ts
+  Zs⍴1 0 2⍉{ST⍴S↑⍵↓A}⍤1⊢⍉W⊤⍳Wc}
+
+ CV2←{(,[2 3 4]3 3 SF ⍵)+.×,[0 1 2]⍺}
 
 :EndNamespace
