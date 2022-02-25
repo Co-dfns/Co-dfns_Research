@@ -32,3 +32,6 @@ Thumbs.db
 2022-icfp-unet/Source/cdgfx.exp
 2022-icfp-unet/Source/cdgfx.cpp
 2022-icfp-unet/Source/UNET.dws
+*.lib
+*.cpp
+*.exp

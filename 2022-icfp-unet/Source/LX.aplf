@@ -1,0 +1,6 @@
+ LX
+ ⎕FIX 'file://UNET_aux.apln'
+ ⎕FIX 'file://UNET.apln'
+ ⎕FIX 'file://codfns.dyalog'
+ ⎕EX 'UNET_cd'
+ UNET_cd←'UNET_cd' codfns.Fix ⎕SRC UNET_aux
