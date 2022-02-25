@@ -1,5 +1,5 @@
 :Namespace UNET_aux
 
- 
+ CV5 ← {Z←510 510 128⍴0 ⋄ K←⍺ ⋄ M←⍵ ⋄ Z⊣∘.{0⊣Z+←(510 510↑⍺ ⍵↓M)+.×K[⍺;⍵;;]}⍨⍳3}
 
 :EndNamespace
