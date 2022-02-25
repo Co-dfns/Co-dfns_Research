@@ -4,3 +4,4 @@
  ⎕FIX 'file://codfns.dyalog'
  ⎕EX 'UNET_cd'
  UNET_cd←'UNET_cd' codfns.Fix ⎕SRC UNET_aux
+ UNET_cd.∆.Init
