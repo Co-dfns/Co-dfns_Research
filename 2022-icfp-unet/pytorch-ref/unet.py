@@ -74,7 +74,7 @@ class Up(nn.Module):
         """Performs the forward pass by taking into account the cropped channels."""
 
         upped = self.upsampling(x_in)
-        cropped = torchvision.transforms.functional.center_crop(x_to_crop, upped.shape)
+        cropped = torchvision.transforms.functional.center_crop(x_to_crop, upped.shape[-2:])
         x = torch.cat([cropped, upped], dim=1)
         return self.convolutions(x)
 
@@ -89,24 +89,28 @@ class USegment(nn.Module):
 
     By using these segments, the u-net architecture can be built from the bottom up."""
 
-    def __init__(self, in_channels, bottom_u):
+    def __init__(self, in_channels, bottom_u=None):
         super().__init__()
+
+        # Default value for the bottom U.
+        if bottom_u is None:
+            bottom_u = lambda x: x
 
         self.down = Down(in_channels)
         self.bottom_u = bottom_u
-        self.up = Up(4 * in_channels)
+        self.up = Up(2 * in_channels)
 
     def forward(self, x):
-        x_to_crop = self.down(x)
-        x_in = self.bottom_u(x_to_crop)
-        return self.up(x_to_crop, x_in)
+        return self.up(x, self.bottom_u(self.down(x)))
 
 
 class UNet(nn.Module):
     """Represents the u-net architecture."""
 
     def __init__(self):
-        self.u = Down(512)
+        super().__init__()
+
+        self.u = USegment(512)
         self.u = USegment(256, self.u)
         self.u = USegment(128, self.u)
         self.u = USegment(64, self.u)
@@ -115,3 +119,10 @@ class UNet(nn.Module):
 
     def forward(self, x):
         return self.tail(self.u(self.head(x)))
+
+
+if __name__ == "__main__":
+    unet = UNet()
+    inp = torch.randn((1, 1, 572, 572))
+    out = unet(inp)
+    assert out.shape == torch.Size([1, 2, 388, 388])
