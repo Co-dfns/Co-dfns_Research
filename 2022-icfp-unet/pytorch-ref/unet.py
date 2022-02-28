@@ -74,7 +74,9 @@ class Up(nn.Module):
         """Performs the forward pass by taking into account the cropped channels."""
 
         upped = self.upsampling(x_in)
-        cropped = torchvision.transforms.functional.center_crop(x_to_crop, upped.shape[-2:])
+        cropped = torchvision.transforms.functional.center_crop(
+            x_to_crop, upped.shape[-2:]
+        )
         x = torch.cat([cropped, upped], dim=1)
         return self.convolutions(x)
 
@@ -114,11 +116,14 @@ class UNet(nn.Module):
         self.u = USegment(256, self.u)
         self.u = USegment(128, self.u)
         self.u = USegment(64, self.u)
-        self.head = TwoConv(1, 64)
-        self.tail = nn.Conv2d(64, 2, kernel_size=1, bias=False)
+        self.path = nn.Sequential(
+            TwoConv(1, 64),
+            self.u,
+            nn.Conv2d(64, 2, kernel_size=1, bias=False),
+        )
 
     def forward(self, x):
-        return self.tail(self.u(self.head(x)))
+        return self.path(x)
 
 
 if __name__ == "__main__":
