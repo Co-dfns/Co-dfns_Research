@@ -342,85 +342,116 @@ https://erasmusoic.nl/
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Ronneberger, O., Fischer, P., & Brox, T. (2015, October). U-net: Convolutional networks for biomedical image segmentation. In International Conference on Medical image computing and computer-assisted intervention (pp. 234-241). Springer, Cham."
 key "unet"
 literal "false"
 
 \end_inset
 
-
+ Ronneberger, O., Fischer, P., & Brox, T.
+ (2015, October).
+ U-net: Convolutional networks for biomedical image segmentation.
+ In International Conference on Medical image computing and computer-assisted
+ intervention (pp.
+ 234-241).
+ Springer, Cham.
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Iverson, K. E. (1962, May). A programming language. In Proceedings of the May 1-3, 1962, spring joint computer conference (pp. 345-351)."
 key "apl"
 literal "false"
 
 \end_inset
 
-
+ Iverson, K.
+ E.
+ (1962, May).
+ A programming language.
+ In Proceedings of the May 1-3, 1962, spring joint computer conference (pp.
+ 345-351).
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Roger K. W. Hui and Morten J. Kromberg. 2020. APL since 1978. Proc. ACM Program. Lang. 4, HOPL, Article 69 (June 2020), 108 pages. DOI:https://doi.org/10.1145/3386319"
 key "apl-since-78"
 literal "false"
 
 \end_inset
 
-
+ Roger K.
+ W.
+ Hui and Morten J.
+ Kromberg.
+ 2020.
+ APL since 1978.
+ Proc.
+ ACM Program.
+ Lang.
+ 4, HOPL, Article 69 (June 2020), 108 pages.
+ DOI:https://doi.org/10.1145/3386319
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Dumoulin, V., & Visin, F. (2016). A guide to convolution arithmetic for deep learning. arXiv preprint arXiv:1603.07285."
 key "conv-arithmetic-guide"
 literal "false"
 
 \end_inset
 
-
+ Dumoulin, V., & Visin, F.
+ (2016).
+ A guide to convolution arithmetic for deep learning.
+ arXiv preprint arXiv:1603.07285.
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Artjoms Šinkarovs, Robert Bernecky, and Sven-Bodo Scholz. 2019. Convolutional neural networks in APL. In <i>Proceedings of the 6th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming</i> (<i>ARRAY 2019</i>). Association for Computing Machinery, New York, NY, USA, 69–79. DOI:https://doi.org/10.1145/3315454.3329960"
 key "bernecky-cnn"
 literal "false"
 
 \end_inset
 
-
+ Artjoms Šinkarovs, Robert Bernecky, and Sven-Bodo Scholz.
+ 2019.
+ Convolutional neural networks in APL.
+ In Proceedings of the 6th ACM SIGPLAN International Workshop on Libraries,
+ Languages and Compilers for Array Programming (ARRAY 2019).
+ Association for Computing Machinery, New York, NY, USA, 69–79.
+ DOI:https://doi.org/10.1145/3315454.3329960
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Roger Hui (2020, June). Towards Improvements to Stencil. In Dyalog blog. URL:https://www.dyalog.com/blog/2020/06/towards-improvements-to-stencil/ (last visited March 2022)."
 key "SF-hui-blog"
 literal "false"
 
 \end_inset
 
-
+ Roger Hui (2020, June).
+ Towards Improvements to Stencil.
+ In Dyalog blog.
+ URL:https://www.dyalog.com/blog/2020/06/towards-improvements-to-stencil/
+ (last visited March 2022).
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "Ulman, V., Maška, M., Magnusson, K. et al. An objective comparison of cell-tracking algorithms. Nat Methods 14, 1141–1152 (2017). https://doi.org/10.1038/nmeth.4473"
 key "data-source-ctc"
 literal "false"
 
 \end_inset
 
-
+ Ulman, V., Maška, M., Magnusson, K.
+ et al.
+ An objective comparison of cell-tracking algorithms.
+ Nat Methods 14, 1141–1152 (2017).
+ https://doi.org/10.1038/nmeth.4473
 \end_layout
 
 \end_body
