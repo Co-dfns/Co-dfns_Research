@@ -11,13 +11,13 @@
 \language english
 \language_package default
 \inputencoding auto
-\fontencoding global
+\fontencoding utf8
 \font_roman "default" "default"
 \font_sans "default" "default"
-\font_typewriter "default" "default"
+\font_typewriter "default" "APL385 Unicode"
 \font_math "auto" "auto"
 \font_default_family default
-\use_non_tex_fonts false
+\use_non_tex_fonts true
 \font_sc false
 \font_osf false
 \font_sf_scale 100 100
@@ -45,7 +45,7 @@
 \use_package stmaryrd 1
 \use_package undertilde 1
 \cite_engine natbib
-\cite_engine_type default
+\cite_engine_type authoryear
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -253,7 +253,287 @@ Background
 \end_layout
 
 \begin_layout Standard
-TBW
+In this section, we provide the relevant background to understand the remainder
+ of this paper.
+ Work has been published on convolutional neural networks (CNNs) and APL
+ before
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bernecky-cnn"
+literal "false"
+
+\end_inset
+
+, but these are two topics that are not often together.
+ Because of that, we provide some superficial background on CNNs relevant
+ literature, then we provide some background on APL, and then we use APL
+ to help us flesh out the relevant details regarding CNNs and the way they
+ are used in this paper.
+\end_layout
+
+\begin_layout Subsection
+Convolutional neural networks
+\end_layout
+
+\begin_layout Standard
+The experiment this paper uses to produce its benchmarks is the reproduction
+ of a famous convolutional neural network architecture.
+ The use of CNNs in machine learning was widely popularised with the publication
+ of a paper
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cnns-imagenet"
+literal "false"
+
+\end_inset
+
+ that used CNNs to achieve state-of-the-art performance in labeling pictures
+ of the ImageNet
+\begin_inset CommandInset citation
+LatexCommand citep
+key "imagenet"
+literal "false"
+
+\end_inset
+
+ challenge.
+ However, a proeminent paper from 1998
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cnns-lecun-doc-recognition"
+literal "false"
+
+\end_inset
+
+ shows that the modern use of CNNs can be dated farther back.
+\end_layout
+
+\begin_layout Standard
+The use of convolutional neural networks, as we know them today, builds
+ on top of the convolutional layer
+\begin_inset CommandInset citation
+LatexCommand citep
+key "intro-to-cnn"
+literal "false"
+
+\end_inset
+
+.
+ Convolutional layers receive three-dimensional tensors as input and produce
+ three-dimensional tensors as output.
+ These inputs have a fixed number of channels
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+channel
+\begin_inset Quotes erd
+\end_inset
+
+ typically refers to the leading dimension of these inputs/outputs, a nomenclatu
+re that is derived from the fact that CNNs were popularised in the context
+ of image processing.
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $n_{in}$
+\end_inset
+
+ which are then transformed into 
+\begin_inset Formula $n_{out}$
+\end_inset
+
+ channels through means of discrete convolutions with a total of 
+\begin_inset Formula $n_{in}\times n_{out}$
+\end_inset
+
+ kernels, the learnable parameters of the convolutional layer.
+ One of the advantages of CNNs is that, although the total number of kernels
+ 
+\begin_inset Formula $n_{in}\times n_{out}$
+\end_inset
+
+ depends on the number of input and output channels, the sizes of the kernels
+ are independent of the size of the other two dimensions of the inputs.
+ Despite the fact that the main dynamics of a convolutional layer is governed
+ by discrete convolution with the learnable kernels, the exact behaviour
+ of a convolutional layer depends on layer parameters like the padding and
+ the stride used
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Given that CNNs were primarily used in image recognition-related tasks,
+ convolutional layers were often paired with pooling layers that ease the
+ recognition of features over small neighbourhoods
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pooling"
+literal "false"
+
+\end_inset
+
+.
+ The rationale behind these pooling layers, as seen from an image recognition-re
+lated context, can be interpreted as follows: the image features one is
+ typically interested in (e.g., the recognition or segmentation of objects,
+ or image labeling) are not contained in single pixels of the input images,
+ but in regions of said pixels.
+ Pooling layers are, thus, employed with the purpose of aggregating low-level
+ information that can then be used to recognise the larger features of interest
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pooling"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In 2015, three authors published a paper
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+ introducing the u-net architecture: a CNN with a non-trivial architecture
+ that won several biomedical image segmentation challenges when introduced.
+ Since its publication, the u-net architecture was reimplemented hundreds
+ of times
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+As noted by 
+\begin_inset CommandInset href
+LatexCommand href
+name "Papers with Code"
+target "https://paperswithcode.com/paper/u-net-convolutional-networks-for-biomedical"
+literal "false"
+
+\end_inset
+
+ as of March, 2022.
+\end_layout
+
+\end_inset
+
+, most notably through the use of deep-learning frameworks such as PyTorch
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+ or Caffe
+\begin_inset CommandInset citation
+LatexCommand citep
+key "caffe"
+literal "false"
+
+\end_inset
+
+ (in fact, the original u-net architecture resorted to one such framework,
+ Caffe).
+ For this paper, we reimplemented the u-net architecture, in APL, without
+ making use of any (machine learning) libraries of frameworks.
+ Now, we provide some background on APL, to ease the reader into the notation.
+\end_layout
+
+\begin_layout Subsection
+APL notation
+\end_layout
+
+\begin_layout Standard
+The intricate details of the behaviour of convolutional layers, the pooling
+ layers, and other details of the u-net architecture were delayed because
+ both the authors and the readers will benefit greatly from being able to
+ use APL to convey the relevant ideas.
+ APL
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl"
+literal "false"
+
+\end_inset
+
+ is a mathematical notation introduced by Turing award winner Kenneth E.
+ Iverson, that has since evolved into an executable mathematical notation
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl-since-78"
+literal "false"
+
+\end_inset
+
+.
+ In other words, APL is an alternative mathematical notation that can be
+ seen as a programming language.
+ APL being an 
+\begin_inset Quotes eld
+\end_inset
+
+alternative
+\begin_inset Quotes erd
+\end_inset
+
+ mathematical notation doesn't mean it changes everything the reader will
+ be accustomed to; in fact, the most well-established parts of the notation
+ were left intact, as can be seen by the two following examples of addition
+ and multiplication:
+\end_layout
+
+\begin_layout Verbatim
+
+      1 + 2
+\end_layout
+
+\begin_layout Verbatim
+
+3
+\end_layout
+
+\begin_layout Verbatim
+
+      73 × 104
+\end_layout
+
+\begin_layout Verbatim
+
+7592
+\end_layout
+
+\begin_layout Standard
+The format of the two examples above will be the same throughout the paper
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This format mimics that of the APL session, the interactive environment
+ in which one can use APL.
+\end_layout
+
+\end_inset
+
+: the notation typed by the user is indentend to the right and the computed
+ result is left-aligned on the following line(s).
 \end_layout
 
 \begin_layout Section
@@ -277,11 +557,38 @@ Discussion
 \end_layout
 
 \begin_layout Standard
-TBW
+Things to consider in the discussion (my own points of view):
+\end_layout
+
+\begin_layout Itemize
+something like PyTorch has very low barrier to entry, lets people do machine
+ learning with little insight into what is actually being done VS something
+ like the APL code written has a higher barrier to entry but allows full
+ and effortless control of what's being done
+\end_layout
+
+\begin_layout Itemize
+APL is great for those wanting to go off the beaten track and using APL
+ gets you insights into how things work
+\end_layout
+
+\begin_layout Itemize
+reading the APL code lets readers see exactly how things are done; in other
+ words, no implementation detail is hidden, so reproducing the results is
+ easier
+\end_layout
+
+\begin_layout Itemize
+studying the APL implementation led to a material influence on how the PyTorch
+ reference implementation was written
 \end_layout
 
 \begin_layout Section
 Conclusion
+\end_layout
+
+\begin_layout Standard
+TBW
 \end_layout
 
 \begin_layout Acknowledgments
@@ -359,6 +666,51 @@ literal "false"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+key "imagenet"
+literal "false"
+
+\end_inset
+
+ Deng, J., Dong, W., Socher, R., Li, L.-J., Li, K., & Fei-Fei, L.
+ (2009).
+ Imagenet: A large-scale hierarchical image database.
+ In 2009 IEEE conference on computer vision and pattern recognition (pp.
+ 248–255).
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "cnns-imagenet"
+literal "false"
+
+\end_inset
+
+ Krizhevsky, A., Sutskever, I., & Hinton, G.
+ E.
+ (2012).
+ Imagenet classification with deep convolutional neural networks.
+ Advances in neural information processing systems, 25.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "cnns-lecun-doc-recognition"
+literal "false"
+
+\end_inset
+
+ LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P.
+ (1998).
+ Gradient-based learning applied to document recognition.
+ Proceedings of the IEEE, 86(11), 2278-2324.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 key "apl"
 literal "false"
 
@@ -396,6 +748,20 @@ literal "false"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+key "intro-to-cnn"
+literal "false"
+
+\end_inset
+
+ O'Shea, K., & Nash, R.
+ (2015).
+ An introduction to convolutional neural networks.
+ arXiv preprint arXiv:1511.08458.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 key "conv-arithmetic-guide"
 literal "false"
 
@@ -405,6 +771,23 @@ literal "false"
  (2016).
  A guide to convolution arithmetic for deep learning.
  arXiv preprint arXiv:1603.07285.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "pooling"
+literal "false"
+
+\end_inset
+
+ Scherer, D., Müller, A., & Behnke, S.
+ (2010, September).
+ Evaluation of pooling operations in convolutional architectures for object
+ recognition.
+ In International conference on artificial neural networks (pp.
+ 92-101).
+ Springer, Berlin, Heidelberg.
 \end_layout
 
 \begin_layout Bibliography
@@ -452,6 +835,41 @@ literal "false"
  An objective comparison of cell-tracking algorithms.
  Nat Methods 14, 1141–1152 (2017).
  https://doi.org/10.1038/nmeth.4473
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "pytorch"
+literal "false"
+
+\end_inset
+
+ Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., … Chintala,
+ S.
+ (2019).
+ PyTorch: An Imperative Style, High-Performance Deep Learning Library.
+ In Advances in Neural Information Processing Systems 32 (pp.
+ 8024–8035).
+ Curran Associates, Inc.
+ Retrieved from http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-hi
+gh-performance-deep-learning-library.pdf 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "caffe"
+literal "false"
+
+\end_inset
+
+ Jia, Y., Shelhamer, E., Donahue, J., Karayev, S., Long, J., Girshick, R., … Darrell,
+ T.
+ (2014).
+ Caffe: Convolutional Architecture for Fast Feature Embedding.
+ arXiv preprint arXiv:1408.
+ 5093.
 \end_layout
 
 \end_body
