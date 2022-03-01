@@ -127,12 +127,16 @@ class UNet(nn.Module):
 
 
 if __name__ == "__main__":
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print(device)
+
     unet = UNet()
-    inp = torch.randn((1, 1, 572, 572))
+    unet.to(device)
+    inp = torch.randn((1, 1, 572, 572)).to(device)
     out = unet(inp)
     assert out.shape == torch.Size([1, 2, 388, 388])
 
-    expected_out = 0 * torch.randn((1, 2, 4, 4))
+    expected_out = 0 * torch.randn((1, 2, 4, 4)).to(device)
     criterion = nn.MSELoss()
 
     print("First pass on test data:")
@@ -149,7 +153,7 @@ if __name__ == "__main__":
     print("Training:")
     for _ in range(100):
         optimiser.zero_grad()
-        inp = torch.randn((1, 1, 188, 188))
+        inp = torch.randn((1, 1, 188, 188)).to(device)
         out = unet(inp)
         loss = criterion(out, expected_out)
         loss.backward()
