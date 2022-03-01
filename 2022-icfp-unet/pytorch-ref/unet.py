@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision
+import torchvision.transforms.functional
 
 
 class TwoConv(nn.Module):
@@ -148,6 +149,7 @@ if __name__ == "__main__":
     print(error)
 
     import torch.optim
+
     optimiser = torch.optim.SGD(unet.parameters(), lr=0.01, momentum=0.9)
 
     print("Training:")
