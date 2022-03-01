@@ -131,3 +131,33 @@ if __name__ == "__main__":
     inp = torch.randn((1, 1, 572, 572))
     out = unet(inp)
     assert out.shape == torch.Size([1, 2, 388, 388])
+
+    expected_out = 0 * torch.randn((1, 2, 4, 4))
+    criterion = nn.MSELoss()
+
+    print("First pass on test data:")
+    test_inp = [torch.randn((1, 1, 188, 188)) for _ in range(100)]
+    error = 0
+    for inp in test_inp:
+        out = unet(inp)
+        error += criterion(out, expected_out)
+    print(error)
+
+    import torch.optim
+    optimiser = torch.optim.SGD(unet.parameters(), lr=0.01, momentum=0.9)
+
+    print("Training:")
+    for _ in range(100):
+        optimiser.zero_grad()
+        inp = torch.randn((1, 1, 188, 188))
+        out = unet(inp)
+        loss = criterion(out, expected_out)
+        loss.backward()
+        optimiser.step()
+
+    print("Second pass on test data:")
+    error = 0
+    for inp in test_inp:
+        out = unet(inp)
+        error += criterion(out, expected_out)
+    print(error)
