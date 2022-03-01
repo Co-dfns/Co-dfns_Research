@@ -284,18 +284,139 @@ TBW
 Conclusion
 \end_layout
 
-\begin_layout Standard
-TBW
+\begin_layout Acknowledgments
+The authors would like to acknowledge the Cell Tracking Challenge
+\begin_inset CommandInset citation
+LatexCommand citep
+key "data-source-ctc"
+literal "false"
+
+\end_inset
+
+ as the data source
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://celltrackingchallenge.net/2d-datasets/
 \end_layout
 
-\begin_layout Acknowledgments
-TBW
+\end_inset
+
+ and the data providers that granted permission for their datasets to be
+ used:
+\end_layout
+
+\begin_layout Itemize
+the glioblastoma-astrocytoma U373 cells on a polyacrylamide substrate dataset
+ was provided by Dr.
+ S.
+ Kumar from the Department of Bioengineering
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+https://bioeng.berkeley.edu/
+\end_layout
+
+\end_inset
+
+, University of California at Berkeley, Berkeley CA (USA); and
+\end_layout
+
+\begin_layout Itemize
+the HeLa cells on a flat glass dataset was provided by Dr G.
+ van Cappellen from the Erasmus Medical Center
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+https://erasmusoic.nl/
+\end_layout
+
+\end_inset
+
+, Rotterdam, The Netherlands.
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "key-1"
+label "Ronneberger, O., Fischer, P., & Brox, T. (2015, October). U-net: Convolutional networks for biomedical image segmentation. In International Conference on Medical image computing and computer-assisted intervention (pp. 234-241). Springer, Cham."
+key "unet"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Iverson, K. E. (1962, May). A programming language. In Proceedings of the May 1-3, 1962, spring joint computer conference (pp. 345-351)."
+key "apl"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Roger K. W. Hui and Morten J. Kromberg. 2020. APL since 1978. Proc. ACM Program. Lang. 4, HOPL, Article 69 (June 2020), 108 pages. DOI:https://doi.org/10.1145/3386319"
+key "apl-since-78"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Dumoulin, V., & Visin, F. (2016). A guide to convolution arithmetic for deep learning. arXiv preprint arXiv:1603.07285."
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Artjoms Šinkarovs, Robert Bernecky, and Sven-Bodo Scholz. 2019. Convolutional neural networks in APL. In <i>Proceedings of the 6th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming</i> (<i>ARRAY 2019</i>). Association for Computing Machinery, New York, NY, USA, 69–79. DOI:https://doi.org/10.1145/3315454.3329960"
+key "bernecky-cnn"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Roger Hui (2020, June). Towards Improvements to Stencil. In Dyalog blog. URL:https://www.dyalog.com/blog/2020/06/towards-improvements-to-stencil/ (last visited March 2022)."
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Ulman, V., Maška, M., Magnusson, K. et al. An objective comparison of cell-tracking algorithms. Nat Methods 14, 1141–1152 (2017). https://doi.org/10.1038/nmeth.4473"
+key "data-source-ctc"
+literal "false"
 
 \end_inset
 
