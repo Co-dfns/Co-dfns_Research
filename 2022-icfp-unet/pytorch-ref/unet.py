@@ -140,7 +140,7 @@ if __name__ == "__main__":
     criterion = nn.MSELoss()
 
     print("First pass on test data:")
-    test_inp = [torch.randn((1, 1, 188, 188)) for _ in range(100)]
+    test_inp = [torch.randn((1, 1, 188, 188)).to(device) for _ in range(100)]
     error = 0
     for inp in test_inp:
         out = unet(inp)
