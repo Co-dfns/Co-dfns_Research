@@ -35,6 +35,17 @@ FWD_dwa←{Z←(I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨W←⍉∘⍪¨¨⍺ �
  LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺ ⋄ I3 CC I0 UP⊃CV⌿I1 I2,⊂(1↓⍺)∇I3 MX⊃CV⌿I4 I5,⊂⍵}
  (⊂Z),⊂I0 C1⊃CV⌿I1 I2,⊂I LA ⍵⍴⍨3↑1,⍨⍴⍵}
 
+BCK_dwa←{Y∆ Y←⍵ ⋄ W X←⍺ ⋄ (I0 I1 I2)I←(⍳2),∘⊂¨¨⍳∘⍴¨X ⋄ Y←(~Y),[1.5]Y
+ SW←{(⍺⊃W)←0⊃x←⍺ ⍺⍺ ⍵ ⋄ 1⊃x} ⋄ GT←{(⍺⊃W)(⍺⊃X)⍺⍺ ⍵}
+ ∆CV←#.UNET_cd.∆CV GT SW
+ ∆CC←#.UNET_cd.∆CC GT
+ ∆MX←#.UNET_cd.∆MX GT
+ ∆UP←#.UNET_cd.∆UP GT SW
+ ∆C1←#.UNET_cd.∆C1 GT SW
+ ∆LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺
+  ⊃∆CV⌿I5 I4,⊂(I3 ∆CC ⍵)+I3 ∆MX(1↓⍺)∇⊃∆CV⌿I2 I1,⊂I0 ∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵}
+ W⊣I ∆LA ⊃∆CV⌿I2 I1,⊂I0 ∆C1 Y∆-Y}
+
 K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵ 
  FD←×⍀I B,(D⍴S),÷S ⋄ KS←2/⍪2 3 3 0 3 3 ⋄ LM←1 2 2 2 2 3 1 1 1 1 1 0
  N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
@@ -46,9 +57,9 @@ RUN_dya←{img Y←⍵ ⋄  X Y∆←⍺ FWD img ⋄ n m←2↑⍴Y∆ ⋄ Y←�
  #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←Y E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
  ∆W←⍺ X BCK Y∆ Y}
 
-RUN_dwa←{img Y←⍵ ⋄  X Y∆←⍺ FWD_dwa img ⋄ n m←2↑⍴Y∆ ⋄ Y←⌊0.5+n m↑Y↓⍨2÷⍨(⍴Y)-n m
- #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←Y E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
- ∆W←⍺ X BCK Y∆ Y}
+RUN_dwa←{img Y←⍵ ⋄  X Y∆←⍺ FWD_dwa img ⋄ Y←Y #.UNET_cd.mk_Y Y∆
+ #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←Y #.UNET_cd.E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
+ ∆W←⍺ X BCK_dwa Y∆ Y}
 
 TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ LR MO←1e¯9 0.99 ⋄ data←OPEN ⍵ ⋄ RUN←⍺⍺
  update←{0⊣#.WEIGHTS-←LR×#.VELOCITY←⍵+MO×#.VELOCITY}
@@ -77,5 +88,22 @@ ISBI∆FILES←{ls←{⊃⎕NINFO⍠1⊢⍵} ⋄ (ls ⍵,'\images\*.png'),⍪ls 
  #.WEIGHTS←K 4
  #.VELOCITY←⍴∘0∘⍴¨¨#.WEIGHTS
 ∇
+
+ time←{                                  ⍝ Time function application.         
+   tfmt←{                              ⍝ elapsed time format hh:mm:ss.cc      
+     csec←{⌊0.5+0.1×⍵-⍺}             ⍝ elapsed centi-seconds.                 
+     tvec←{0 60 60 100⊤⍵}            ⍝ time vector: hours mins secs centi.    
+     pair←{(-2⌈⍴⍵)↑'0',⍵}∘⍕          ⍝ 2-digit time unit.                     
+     sepr←{1↓↑,/':::.',¨⍵}           ⍝ ':' or '.' separated pairs.            
+     trim←{(~{⌽∨\⌽⍵}¯2⌽'00:'⍷⍵)/⍵}   ⍝ leading 00:s removed.                  
+     trim sepr pair¨tvec ⍺ csec ⍵    ⍝ hh:mm:ss.cc                            
+   }                                                                          
+   0::(,↑⍬⍴⎕DM)⎕SIGNAL ⎕EN             ⍝ catchall: pass back error.           
+   fm←⍬⍴2↓⎕AI                          ⍝ start time.                          
+   6::{}⎕←fm tfmt ⍬⍴2↓⎕AI              ⍝ value error: fn didn't return result.
+   ⍺←⊢ ⋄ rslt←⍺ ⍺⍺ ⍵                   ⍝ apply function.                      
+   ⎕←fm tfmt ⍬⍴2↓⎕AI                   ⍝ display elapsed time.                
+   1:shy←rslt                          ⍝ pass on shy result.                  
+ }                                                                            
 
 :EndNamespace
