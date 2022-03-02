@@ -631,14 +631,14 @@ literal "false"
 \end_inset
 
  introducing the u-net architecture: a CNN with a non-trivial architecture
- that won several biomedical image segmentation challenges when introduced.
- Since its publication, the u-net architecture was reimplemented hundreds
- of times
+ that won several biomedical image segmentation challenges at the time of
+ its publication.
+ Since then, the u-net architecture was reimplemented hundreds of times
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-As noted by 
+Numbers by 
 \begin_inset CommandInset href
 LatexCommand href
 name "Papers with Code"
@@ -660,7 +660,7 @@ literal "false"
 
 \end_inset
 
- or Caffe
+, a deep-learning framework used in this work, or Caffe
 \begin_inset CommandInset citation
 LatexCommand citep
 key "caffe"
@@ -668,11 +668,13 @@ literal "false"
 
 \end_inset
 
- (in fact, the original u-net architecture resorted to one such framework,
- Caffe).
+, which is the deep learning framework in which the original u-net was implement
+ed.
  For this paper, we reimplemented the u-net architecture, in APL, without
- making use of any (machine learning) libraries of frameworks.
- Now, we provide some background on APL, to ease the reader into the notation.
+ making use of any (machine learning) libraries or frameworks.
+ Before we introduce our work on that implementation, and before discussing
+ the further background needed to understand the u-net architecture, we
+ give some background on APL.
 \end_layout
 
 \begin_layout Subsection
@@ -692,8 +694,10 @@ literal "false"
 
 \end_inset
 
- is a mathematical notation introduced by Turing award winner Kenneth E.
- Iverson, that has since evolved into an executable mathematical notation
+ is an alternative mathematical notation, introduced by Turing award winner
+ Kenneth E.
+ Iverson in the '60s, that has since evolved into an executable mathematical
+ notation
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl-since-78"
@@ -702,9 +706,17 @@ literal "false"
 \end_inset
 
 .
- In other words, APL is an alternative mathematical notation that can be
- seen as a programming language.
- APL being an 
+ In this section, we introduce the basics of the APL notation, but the reader
+ is directed to 
+\begin_inset CommandInset citation
+LatexCommand keyonly
+key "mdapl"
+literal "false"
+
+\end_inset
+
+ for a full tutorial.
+ APL is an 
 \begin_inset Quotes eld
 \end_inset
 
@@ -712,10 +724,10 @@ alternative
 \begin_inset Quotes erd
 \end_inset
 
- mathematical notation doesn't mean it changes everything the reader will
- be accustomed to; in fact, the most well-established parts of the notation
- were left intact, as can be seen by the two following examples of addition
- and multiplication, respectively:
+ mathematical notation because it differs from the traditional mathematical
+ notation in some ways.
+ However, not everything in APL is foreign, as demonstrated by the following
+ examples of addition and multiplication:
 \end_layout
 
 \begin_layout Verbatim
