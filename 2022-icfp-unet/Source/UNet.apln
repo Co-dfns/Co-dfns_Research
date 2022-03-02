@@ -2,96 +2,64 @@
 
 :Namespace UNET
 
-FWD←{Z←I(I0 I1 I2)←(⍳2),∘⊂¨¨⍳∘⍴¨W←⍺ ⋄ IN←⍵⍴⍨3↑1,⍨⍴⍵
- ST1←{(⍺⊃W)⍺⍺(⍺⊃Z)←⍵} ⋄ ST2←{⍺⍺(⍺⊃Z),⍥⊆←⍺ ⍵⍵ ST1 ⍵} ⋄ GT←{(⍺⊃Z) ⍺⍺ ⍵}
- CV←0∘⌈ ST2 {(1 1↓¯1 ¯1↓,⍤3{⍵}⌺3 3⊢⍵)+.×,[⍳3]⍺} ⍝ Conv 3×3, RelU
- CC←{⍵,⍨(⌊p)↓(-⌈p)↓⍺⊣p←2÷⍨⍺-⍥⍴⍵}GT              ⍝ Copy and Crop
- MX←{⌈⌿[2],[2 3]{⍵}⌺(2 2⍴2)⊢⍵}ST1               ⍝ Max 2×2, Stride 2
- UP←⊢ ST2 {((2×¯1↓⍴⍵),¯1↑⍴⍺)⍴0 2 1 3 4⍉⍵+.×⍺}   ⍝ Up Conv 2×2, RelU
- C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺}ST1        ⍝ 1×1, Relu
- LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺ ⋄ I2 CC I5 UP⊃CV⌿I4 I3,⊂(1↓⍺)∇I2 MX⊃CV⌿I1 I0,⊂⍵}
- (⊂Z),⊂I2 C1⊃CV⌿I1 I0,⊂I LA IN}
+ W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
 
-BCK←{Y∆ Y←⍵ ⋄ W X←⍺ ⋄ I(I0 I1 I2)←(⍳2),∘⊂¨¨⍳∘⍴¨X ⋄  ⋄ IN←Y∆-Y←(~Y),[1.5]Y
- SW←{(⍺⊃W)←0⊃x←⍺ ⍺⍺ ⍵ ⋄ 1⊃x} ⋄ GT←{(⍺⊃W)(⍺⊃X)⍺⍺ ⍵}
- ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⊃⍺ ⋄ x←⊃1⊃⍺ ⋄ ∆z←⍵×0<1⊃1⊃⍺
-  (3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]1 1↓¯1 ¯1↓{⍵}⌺3 3⊢x)(w+.×⍨,⍤3{⍵}⌺3 3⊢0⍪0⍪⍨0,[1]∆z,[1]0)}GT SW
- ∆CC←{x←1⊃⍺ ⋄ ∆z←⍵ ⋄ n m←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ n⊖m⌽[1](⍴x)↑∆z}GT
- ∆MX←{x←1⊃⍺ ⋄ ∆z←⍵ ⋄ x(⊢×=)(⍴x)↑2⌿2/[1]∆z}GT
- ∆UP←{w←⊃⍺ ⋄ x←⊃1⊃⍺ ⋄ ∆z←⍵
-  ((⍉,[⍳2]x)+.×,[⍳2]{⍵}⌺(2 2⍴2)⊢∆z)((,⍤3{⍵}⌺(2 2⍴2)⊢∆z)+.×⍉⍪w)}GT SW
- ∆C1←{w←⊃⍺ ⋄ x←1⊃⍺ ⋄ ∆z←⍵ ⋄ ((⍉,[⍳2]x)+.×,[⍳2]∆z)(∆z+.×⍉w)}GT SW
- ∆LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺
-  ⊃∆CV⌿I0 I1,⊂(I2 ∆CC ⍵)+I2 ∆MX(1↓⍺)∇⊃∆CV⌿I3 I4,⊂I5 ∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵}
- W⊣I ∆LA ⊃∆CV⌿I0 I1,⊂I2 ∆C1 IN}
+ FWD←{Z⊢←⍬⍴⍨≢W
+  CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]1 1↓¯1 ¯1↓{⍵}⌺3 3⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
+  CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
+  MX←{⌈⌿[2],[2 3]{⍵}⌺(2 2⍴2)⊃Z[⍺]←⊂⍵}
+  UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
+  C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
+  LA←{⍺≥≢Z:⍵ ⋄ (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵}
+  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 
-FWD_dwa←{Z←I(I0 I1 I2)←(⍳2),∘⊂¨¨⍳∘⍴¨W←⍺ ⋄ IN←⍵⍴⍨3↑1,⍨⍴⍵
- ST1←{(⍺⊃W)⍺⍺(⍺⊃Z)←⍵} ⋄ ST2←{⍺⍺(⍺⊃Z),⍥⊆←⍺ ⍵⍵ ST1 ⍵} ⋄ GT←{(⍺⊃Z) ⍺⍺ ⍵}
- CV←#.UNET_cd.RelU ST2 #.UNET_cd.CV
- CC←#.UNET_cd.CC GT
- MX←#.UNET_cd.MX ST1
- UP←⊢ ST2 #.UNET_cd.UP
- C1←#.UNET_cd.C1 ST1
- LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺ ⋄ I2 CC I5 UP⊃CV⌿I4 I3,⊂(1↓⍺)∇I2 MX⊃CV⌿I1 I0,⊂⍵}
- (⊂Z),⊂I2 C1⊃CV⌿I1 I0,⊂I LA IN}
+ BCK←{Y←⍺ ⋄ Y∆←⍵ ⋄ ∆←{0⊣W[⍺]-←LR×V[⍺]←(⊂⍵)+MO×V[⍺]}
+  ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z ⋄ ∆Z←0⍪0⍪⍨0,[1]∆z,[1]0
+   _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]1 1↓¯1 ¯1↓{⍵}⌺3 3⊢x ⋄ w+.×⍨,[2+⍳3]{⍵}⌺3 3⊢∆Z}
+  ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
+  ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
+  ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]{⍵}⌺(2 2⍴2)⊢∆z
+   (,[2+⍳3]{⍵}⌺(2 2⍴2)⊢∆z)+.×⍉⍪w}
+  ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w}
+  ∆LA←{⍺≥≢Z:⍵ ⋄ (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵}
+  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 
-BCK_dwa←{Y∆ Y←⍵ ⋄ W X←⍺ ⋄ I(I0 I1 I2)←(⍳2),∘⊂¨¨⍳∘⍴¨X ⋄ IN←Y∆-Y←(~Y),[1.5]Y
- SW←{(⍺⊃W)←0⊃x←⍺ ⍺⍺ ⍵ ⋄ 1⊃x} ⋄ GT←{(⍺⊃W)(⍺⊃X)⍺⍺ ⍵}
- ∆CV←#.UNET_cd.∆CV GT SW
- ∆CC←#.UNET_cd.∆CC GT 
- ∆MX←#.UNET_cd.∆MX GT 
- ∆UP←#.UNET_cd.∆UP GT SW
- ∆C1←#.UNET_cd.∆C1 GT SW
- ∆LA←{0=≢⍺:⍵ ⋄ I0 I1 I2 I3 I4 I5←0⌷⍺
-  ⊃∆CV⌿I0 I1,⊂(I2 ∆CC ⍵)+I2 ∆MX(1↓⍺)∇⊃∆CV⌿I3 I4,⊂I5 ∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵}
- W⊣I ∆LA ⊃∆CV⌿I0 I1,⊂I2 ∆C1 IN}
+ E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 
-K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵ 
- FD←×⍀I B,(D⍴S),÷S ⋄ KS←2/⍪3 3 0 3 3 2 ⋄ LM←0 1 1 1 1 1 3 2 2 2 2 1
- N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
- W←N¨¨({↓KS,6 2⍴FD[LM+⍵]}⍤0⍳D)((3 3)(3 3)⍬,¨↓3 2⍴FD[2,4⍴1],2)
- W⊣(⊃W)←⍉1 2 0 3∘⍉¨@5⍉⊃W}
+ RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 
-E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
+ K←{⍺←⊢ ⋄ I B S←⍺⊣1 64 2 ⋄ D←⍵ 
+  FD←×⍀I B,(D⍴S),÷S ⋄ KS←2/⍪3 3 0 3 3 2 ⋄ LM←0 1 1 1 1 1 3 2 2 2 2 1
+  N←{0=×⌿⍵:⍵⍴0 ⋄ (0.5*⍨2÷×⌿1↓⍵)×(0.5*⍨¯2×⍟?⍵⍴0)×1○○2×?⍵⍴0}
+  W←N¨¨({↓KS,6 2⍴FD[LM+⍵]}⍤0⍳D)((3 3)(3 3)⍬,¨↓3 2⍴FD[2,4⍴1],2)
+  W⊣(⊃W)←⍉1 2 0 3∘⍉¨@5⍉⊃W}
 
-LR MO←1e¯9 0.99
+ TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ data←OPEN ⍵ ⋄ RUN←⍺⍺ ⋄ W{(,1⊃⍵),,0⊃⍵}←#.WEIGHTS ⋄ V⊢←⍬⍴⍨≢W
+  update←{y ∆ e←⍵ ⋄ #.REFERENCE←y ⋄ #.MASK←∆ ⋄ #.ERRORS⍪←(1+⊃⊖#.ERRORS),⎕←e ⋄ 0}
+  _←{update ⊃RUN⌿⎕FREAD data ⍵}¨∊iter⍴{1+⍳⍵-⍺}⌿2↑⎕FSIZE data
+  0⊣⎕FUNTIE data}
 
-RUN_dya←{img Y←⍺⍵ ⋄  X Y∆←#.WEIGHTS FWD img ⋄ n m←2↑⍴Y∆ ⋄ Y←⌊0.5+n m↑Y↓⍨2÷⍨(⍴Y)-n m
- #.ERRORS⍪←(1+⊃⊖#.ERRORS),Z←Y E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
- Z⊣update #.WEIGHTS X BCK Y∆ Y}
+ OPEN←{3::'OPEN PATH MISMATCH'⎕SIGNAL 22 ⋄ 24::⎕FNUMS[⎕FNAMES⍳⍵] ⋄ ⍵ ⎕FTIE 0}
 
-RUN_dwa←{img Y←⍺⍵ ⋄  X Y∆←#.WEIGHTS FWD_dwa img ⋄ Y←Y #.UNET_cd.mk_Y Y∆
- #.ERRORS⍪←(1+⊃⊖#.ERRORS),Z←Y #.UNET_cd.E Y∆ ⋄ #.REFERENCE←Y ⋄ #.MASK←Y∆[;;1]
- Z⊣update #.WEIGHTS X BCK_dwa Y∆ Y}
+ CONVERT←{fns2imgs←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
+  _←0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE⍠'Z' 1⊢0}
 
-update←{0⊣#.WEIGHTS-←LR×#.VELOCITY←⍵+MO×#.VELOCITY}
+ PNGS2IMGS←{_←#.UNET_cd.∆.Init ⋄ (256÷⍨+⌿÷≢)∘#.UNET_cd.∆.LoadImage¨⊆⍵}
 
-TRAIN←{⍺←100 ⋄ iter←⍺ ⋄ data←OPEN ⍵ ⋄ RUN←⍺⍺
- _←{⎕←⊃RUN⌿⎕FREAD data ⍵}¨∊iter⍴{1+⍳⍵-⍺}⌿2↑⎕FSIZE data
- 0⊣⎕FUNTIE data}
+ ISBI∆FILES←{ls←{⊃⎕NINFO⍠1⊢⍵} ⋄ (ls ⍵,'\images\*.png'),⍪ls ⍵,'\labels\*.png'}
 
-OPEN←{3::'OPEN PATH MISMATCH'⎕SIGNAL 22 ⋄ 24::⎕FNUMS[⎕FNAMES⍳⍵] ⋄ ⍵ ⎕FTIE 0}
+ ∇PLOT
+  #.UNET_cd.∆.Init
+  #.UNET_cd.∆.{⎕←'Stopped plot.'⊣{_←⎕DL .5 ⋄ ⍺ Plot #.ERRORS}Display{#.STOP}⍬}&⍬
+  #.UNET_cd.∆.{⎕←'Stopped reference.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.REFERENCE}Display{#.STOP}⍬}&⍬
+  #.UNET_cd.∆.{⎕←'Stopped mask.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.MASK}Display{#.STOP}⍬}&⍬
+ ∇
 
-CONVERT←{fns2imgs←⍺⍺ ⋄ files←⍵⍵ ⋄ out←⍺ ⋄ in←⍵
- _←0⊣⎕FUNTIE tie⊣⎕FAPPEND∘tie∘fns2imgs⍤1⊢files in⊣tie←out ⎕FCREATE⍠'Z' 1⊢0}
-
-PNGS2IMGS←{_←#.UNET_cd.∆.Init ⋄ (256÷⍨+⌿÷≢)∘#.UNET_cd.∆.LoadImage¨⊆⍵}
-
-ISBI∆FILES←{ls←{⊃⎕NINFO⍠1⊢⍵} ⋄ (ls ⍵,'\images\*.png'),⍪ls ⍵,'\labels\*.png'}
-
-∇PLOT
- #.UNET_cd.∆.Init
- #.UNET_cd.∆.{⎕←'Stopped plot.'⊣{_←⎕DL .5 ⋄ ⍺ Plot #.ERRORS}Display{#.STOP}⍬}&⍬
- #.UNET_cd.∆.{⎕←'Stopped reference.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.REFERENCE}Display{#.STOP}⍬}&⍬
- #.UNET_cd.∆.{⎕←'Stopped mask.'⊣{_←⎕DL .5 ⋄ ⍺ Image #.MASK}Display{#.STOP}⍬}&⍬
-∇
-
-∇INIT
- #.STOP←0
- #.ERRORS←⍉⍪0 15000
- #.WEIGHTS←K 4
- #.VELOCITY←⍴∘0∘⍴¨¨#.WEIGHTS
-∇
+ ∇INIT
+  #.STOP←0
+  #.ERRORS←⍉⍪0 15000
+  #.WEIGHTS←K 4
+ ∇
 
  time←{                                  ⍝ Time function application.         
    tfmt←{                              ⍝ elapsed time format hh:mm:ss.cc      
