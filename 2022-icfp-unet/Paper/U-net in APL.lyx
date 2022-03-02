@@ -1113,8 +1113,56 @@ long right scope vs short left scope
 Implementation
 \end_layout
 
+\begin_layout Subsection
+Overview
+\end_layout
+
 \begin_layout Standard
-TBW
+Our implementation of U-net can be roughly divided into two significant
+ considerations: the implementation of the fundamental vocabulary of neural
+ networks, and the wiring of those operations into the actual U-net architecture.
+ We leveraged significant features of APL to implement both aspects of the
+ system, and so we will treat each in their own sub-section.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, because Co-dfns does not yet support the complete array of
+ Dyalog primitives and their semantics, some of the implementation techniques
+ that we use could be significantly enhanced through the use of a more rich
+ feature-set.
+ The effect of using these richer features is an increase in concision and
+ clarity, but we expect that such improvements would not significantly affect
+ the overall performance of the code, either positively or negatively.
+ We believe that the overall structure of the code is clear and simple enough
+ at the current state of Co-dfns to warrant inclusion almost verbatim here,
+ rather than use the richer features and require the reader to translate
+ those into the Co-dfns supported feature set in order to execute them.
+\end_layout
+
+\begin_layout Standard
+One area that deserves particular attention is the design of APL as a language
+ itself and the specific features that immediately present themselves as
+ particularly well-suited to expressing neural network computations.
+ Our exploration of these features uncovered a particular design tension
+ that is worth discussing in detail.
+ 
+\end_layout
+
+\begin_layout Subsection
+Design of APL Primitives for Neural Networks
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Subsection
+Neural Network Vocabulary
+\end_layout
+
+\begin_layout Subsection
+U-net Architecture
 \end_layout
 
 \begin_layout Section
