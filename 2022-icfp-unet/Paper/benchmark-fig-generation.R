@@ -15,7 +15,7 @@ for (i in (1:nrow(data))) {
     }
 }
 
-df <- data.frame(time = times, source = sources)
+df <- data.frame(time = as.numeric(times), source = sources)
 
 df %>% ggplot(aes(x = reorder(source, time), y = time)) +
     geom_boxplot() +
