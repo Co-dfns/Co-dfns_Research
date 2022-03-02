@@ -672,9 +672,271 @@ literal "false"
 ed.
  For this paper, we reimplemented the u-net architecture, in APL, without
  making use of any (machine learning) libraries or frameworks.
- Before we introduce our work on that implementation, and before discussing
- the further background needed to understand the u-net architecture, we
- give some background on APL.
+ Before we introduce our work on that implementation, we discuss the original
+ architecture that we work off of.
+\end_layout
+
+\begin_layout Subsection
+Original u-net architecture
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename u-net-architecture.png
+	width 60page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Original u-net architecture, as seen in the original paper
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+.
+ Arrows represent operations between the multi-channel feature maps represented
+ by the rectangles.
+ The number on top of a rectangle is the number of channels and the numbers
+ in the lower-left corner are the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ dimensions of the feature maps.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:unet-architecture"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the original figure that represents the u-net architecture
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+, which we cover now.
+ We will go through the figure from left to right, following the U-shape
+ of the diagram.
+\end_layout
+
+\begin_layout Standard
+The blue right arrows, labeled 
+\begin_inset Quotes eld
+\end_inset
+
+conv 3x3, ReLU
+\begin_inset Quotes erd
+\end_inset
+
+, represent unpadded convolutions with 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ kernels.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows that after each of these convolutions, the size of the feature maps
+ decreases by 
+\begin_inset Formula $2$
+\end_inset
+
+, from which it can be inferred that the stride
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+ is 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ After each convolution, we use the activation function rectified linear
+ unit (ReLU)
+\begin_inset CommandInset citation
+LatexCommand citep
+key "relu"
+literal "false"
+
+\end_inset
+
+.
+ Pairs of these convolutions are followed by max-pooling operations represented
+ by the red down arrows.
+ These max-pooling operations act on a 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ region and have a stride of 
+\begin_inset Formula $2$
+\end_inset
+
+, effectively downsampling each feature map to half the size.
+ Because of this repeated halving, the input size must be chosen carefully
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Specifically, the input dimensions must be congruent to 
+\begin_inset Formula $12\mod16$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ After every downsampling step, the first convolution doubles the number
+ of channels.
+ The pattern of two convolutions (with ReLUs) followed by downsampling via
+ max-pooling happens four times and makes up the contracting path of the
+ network, on the left of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Having reached the end of the contracting path (at the bottom of the diagram),
+ we start the expanding path.
+ The expanding path also makes use of unpadded convolutions with 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ kernels and stride 1, but these are now at the end of each step, instead
+ of at the beginning.
+ Each step of the expanding path starts with an upsampling operation (green
+ up arrows) that doubles the size of the feature maps while cutting their
+ number down in half.
+ For this upsampling, we infer that the original authors used a transposed
+ convolution (with 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ kernels) of stride 
+\begin_inset Formula $2$
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "up-transposed"
+literal "false"
+
+\end_inset
+
+.
+ These transpose convolutions produce half of the channels that are fed
+ as input to the regular convolutions.
+ The other half of the channels is copied and cropped from the corresponding
+ step in the contracting path, as represented by the gray right long arrows
+ in the middle of the diagram of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Because there is a slight mismatch between the size of the feature maps
+ that are copied and cropped and the other feature maps that resulted from
+ the upsampling step, the feature maps that are copied get cropped from
+ the centre of the larger feature maps of the contracting path.
+ It is after this copy and crop operation that we feed the feature maps
+ into the two convolution layers that are paired with their respective ReLU
+ activation functions.
+\end_layout
+
+\begin_layout Standard
+At the end of the contracting path, we have a 
+\begin_inset Formula $1\times1$
+\end_inset
+
+ unpadded convolution that reduces the 
+\begin_inset Formula $64$
+\end_inset
+
+ feature maps to 
+\begin_inset Formula $2$
+\end_inset
+
+ feature maps (one per class).
+\end_layout
+
+\begin_layout Standard
+To compute the loss of the output with respect to the expected labels, we
+ compute the softmax across the two output channels followed by the cross
+ entropy loss function.
 \end_layout
 
 \begin_layout Subsection
@@ -682,11 +944,7 @@ APL notation
 \end_layout
 
 \begin_layout Standard
-The intricate details of the behaviour of convolutional layers, the pooling
- layers, and other details of the u-net architecture were delayed because
- both the authors and the readers will benefit greatly from being able to
- use APL to convey the relevant ideas.
- APL
+APL
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl"
@@ -709,7 +967,7 @@ literal "false"
  In this section, we introduce the basics of the APL notation, but the reader
  is directed to 
 \begin_inset CommandInset citation
-LatexCommand keyonly
+LatexCommand citep
 key "mdapl"
 literal "false"
 
@@ -783,18 +1041,22 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
+
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
+
 3
 \end_layout
 
 \begin_layout Verbatim
+
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
+
 7592
 \end_layout
 
@@ -824,18 +1086,22 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
+
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
+
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
+
 50 25 10
 \end_layout
 
@@ -882,18 +1148,22 @@ minus
 \end_layout
 
 \begin_layout Verbatim
+
       (1 ⌈ 5) (10 ⌈ 5) (100 ⌈ 500) (1000 ⌈ 500)
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
+
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
@@ -1012,14 +1282,17 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
+
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
@@ -1089,10 +1362,12 @@ array
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
@@ -1127,26 +1402,32 @@ nested
 \end_layout
 
 \begin_layout Verbatim
+
       array
 \end_layout
 
 \begin_layout Verbatim
+
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
+
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
+
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 └───┴───┴───┘
 \end_layout
 
@@ -1208,26 +1489,32 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
+
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
+
 ¯14
 \end_layout
 
 \begin_layout Verbatim
+
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
 \begin_layout Verbatim
+
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
@@ -1473,6 +1760,122 @@ cuboid
 
 \end_layout
 
+\begin_layout Standard
+The 
+\emph on
+shape
+\emph default
+ of an array 
+\family typewriter
+arr
+\family default
+ is 
+\family typewriter
+⍴arr
+\family default
+.
+ The 
+\emph on
+rank
+\emph default
+ of an array is the 
+\emph on
+length
+\emph default
+ of its 
+\emph on
+shape
+\emph default
+ or, in APL vocabulary, the 
+\emph on
+tally
+\emph default
+ of its 
+\emph on
+shape
+\emph default
+, which is 
+\family typewriter
+≢⍴
+\family default
+.
+ Finally, the data of an array can be retrieved as a vector with the monadic
+ function 
+\emph on
+ravel
+\emph default
+ 
+\family typewriter
+,
+\family default
+ (comma).
+ These are illustrated below for a matrix.
+ We use the primitive 
+\emph on
+roll
+\emph default
+ 
+\family typewriter
+?
+\family default
+ to fill the matrix with random data and annotate the expressions with APL
+ comments 
+\family typewriter
+⍝
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+
+      mat ← ?2 3⍴0    ⍝ We create an array `mat` with random numbers.
+\end_layout
+
+\begin_layout Verbatim
+
+      mat
+\end_layout
+
+\begin_layout Verbatim
+
+0.999 0.00424 0.351
+\end_layout
+
+\begin_layout Verbatim
+
+0.967 0.92    0.821
+\end_layout
+
+\begin_layout Verbatim
+
+      ⍴mat            ⍝ `mat` has shape 2 3.
+\end_layout
+
+\begin_layout Verbatim
+
+2 3
+\end_layout
+
+\begin_layout Verbatim
+
+      ≢⍴mat           ⍝ `mat` has rank (tally of length) 2.
+\end_layout
+
+\begin_layout Verbatim
+
+2
+\end_layout
+
+\begin_layout Verbatim
+
+      ,mat            ⍝ `mat` contains the following data:
+\end_layout
+
+\begin_layout Verbatim
+
+0.999 0.00424 0.351 0.967 0.92 0.821
+\end_layout
+
 \begin_layout Subsubsection
 Operators
 \end_layout
@@ -1509,18 +1912,22 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
+
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
 \begin_layout Verbatim
+
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
@@ -1558,18 +1965,22 @@ sum
 \end_layout
 
 \begin_layout Verbatim
+
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
@@ -1635,34 +2046,42 @@ mat
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
       +/mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 12
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 5 7
 \end_layout
 
@@ -1764,58 +2183,72 @@ statement separator
 \end_layout
 
 \begin_layout Verbatim
+
       X ← 2 3⍴0 0 0 1 10 100 ⋄ Y ← 3 2⍴1 2 3 4 5 6
 \end_layout
 
 \begin_layout Verbatim
+
       X Y
 \end_layout
 
 \begin_layout Verbatim
+
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
+
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
+
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
+
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
+
   0   0
 \end_layout
 
 \begin_layout Verbatim
+
 531 642
 \end_layout
 
 \begin_layout Verbatim
+
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
+
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
+
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
+
 6 60 600
 \end_layout
 
@@ -1868,30 +2301,37 @@ A
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
+
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
+
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
+
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -1928,8 +2368,161 @@ mat
 User-defined functions and operators
 \end_layout
 
-\begin_layout Itemize
-dfns and dops
+\begin_layout Standard
+In APL, one can use the 
+\emph on
+direct functions (dfns)
+\emph default
+ syntax to create user-defined functions, which can then be named and reused
+ throughout the APL programs.
+ A dfn is enclosed by braces 
+\family typewriter
+{}
+\family default
+ and it can only take a right argument, or a left and right argument.
+ Inside a dfn, we use 
+\emph on
+omega
+\emph default
+ 
+\family typewriter
+⍵
+\family default
+ to refer to the right argument and 
+\emph on
+alpha
+\emph default
+ 
+\family typewriter
+⍺
+\family default
+ to refer to the left argument.
+ We provide a short example:
+\end_layout
+
+\begin_layout Verbatim
+
+      vec ← 0 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+      (+⌿vec)÷≢vec      ⍝ The sum of `vec` divided by its tally.
+\end_layout
+
+\begin_layout Verbatim
+
+1.5
+\end_layout
+
+\begin_layout Verbatim
+
+      avg ← {(+⌿⍵)÷≢⍵}  ⍝ The sum of the argument divided by its tally.
+\end_layout
+
+\begin_layout Verbatim
+
+      avg vec
+\end_layout
+
+\begin_layout Verbatim
+
+1.5
+\end_layout
+
+\begin_layout Standard
+Similarly, the 
+\emph on
+direct operators (dops)
+\emph default
+ syntax can be used to create user-defined operators.
+ A dop is also enclosed by braces 
+\family typewriter
+{}
+\family default
+ and it can only take a left operand 
+\family typewriter
+⍺⍺
+\family default
+ if it is a monadic operator, or a left 
+\family typewriter
+⍺⍺
+\family default
+ and right 
+\family typewriter
+⍵⍵
+\family default
+ operand if it is a dyadic operator.
+ Inside a dop, 
+\family typewriter
+⍵
+\family default
+ and 
+\family typewriter
+⍺
+\family default
+ still refer to the arguments of the derived function.
+ For example, given a dyadic function 
+\family typewriter
+f
+\family default
+ and a monadic function 
+\family typewriter
+g
+\family default
+, the pattern 
+\family typewriter
+(g X) f g Y
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A helpful interpretation of this pattern is 
+\begin_inset Quotes eld
+\end_inset
+
+preprocess the arguments to 
+\family typewriter
+f
+\family default
+ with the function 
+\family typewriter
+g
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\family default
+ can be abstracted away with the dop 
+\family typewriter
+{(⍵⍵ ⍺) ⍺⍺ ⍵⍵ ⍵}
+\family default
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This is a partial model of the operator 
+\emph on
+over
+\emph default
+ 
+\family typewriter
+⍥
+\family default
+ from APL.
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -2372,58 +2965,72 @@ Neural Network Vocabulary
 \end_layout
 
 \begin_layout Verbatim
+
 CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3 SF⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
 \end_layout
 
 \begin_layout Verbatim
+
 CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵} 
 \end_layout
 
 \begin_layout Verbatim
+
 MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
+
 UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
+
 C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
 ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
 \end_layout
 
 \begin_layout Verbatim
+
   ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
+
   _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3 SF x
 \end_layout
 
 \begin_layout Verbatim
+
   w+.×⍨,[2+⍳3]3 3 SF ∆Z}   
 \end_layout
 
 \begin_layout Verbatim
+
 ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}   
 \end_layout
 
 \begin_layout Verbatim
+
 ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
 \end_layout
 
 \begin_layout Verbatim
+
 ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2](2 2⍴2)SF ∆z
 \end_layout
 
 \begin_layout Verbatim
+
   (,[2+⍳3](2 2⍴2)SF ∆z)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Verbatim
+
 ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w} 
 \end_layout
 
@@ -2432,26 +3039,32 @@ U-net Architecture
 \end_layout
 
 \begin_layout Verbatim
+
 FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
 \end_layout
 
 \begin_layout Verbatim
+
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
@@ -2460,30 +3073,37 @@ FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
 BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
   ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   ∆LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
 \end_layout
 
 \begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -2492,6 +3112,7 @@ BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -2500,6 +3121,7 @@ E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
 \begin_layout Verbatim
+
 RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 \end_layout
 
@@ -2634,6 +3256,7 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
 :Namespace UNET
 \end_layout
 
@@ -2642,6 +3265,7 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
  W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
 \end_layout
 
@@ -2650,42 +3274,52 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
  FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
   CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
 \end_layout
 
 \begin_layout Verbatim
+
   CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
 \end_layout
 
 \begin_layout Verbatim
+
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
@@ -2694,62 +3328,77 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
  BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
   ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
 \end_layout
 
 \begin_layout Verbatim
+
    ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
+
    _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
 \end_layout
 
 \begin_layout Verbatim
+
    w+.×⍨,[2+⍳3]3 3⌺∆Z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2](2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
+
    (,[2+⍳3](2 2⍴2)⌺∆z)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
 \end_layout
 
 \begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -2758,6 +3407,7 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
  E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -2766,6 +3416,7 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
  RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 \end_layout
 
@@ -2774,6 +3425,7 @@ Appendix
 \end_layout
 
 \begin_layout Verbatim
+
 :EndNamespace
 \end_layout
 
