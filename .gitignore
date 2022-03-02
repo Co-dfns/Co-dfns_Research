@@ -36,3 +36,4 @@ Thumbs.db
 *.cpp
 *.exp
 **/.venv
+**/__pycache__
