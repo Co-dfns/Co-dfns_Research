@@ -23,4 +23,5 @@ df %>% ggplot(aes(x = reorder(source, time), y = time)) +
     ggtitle("Execution time of a forward and backward pass in several computational models.") +
     xlab("Computation model") +
     ylab("Execution time (s)") +
-    scale_y_continuous(trans="log2")
+    scale_y_continuous(trans = "log2")
+    # stat_summary(geom="text", fun.y = median, aes(label = sprintf("%2.2f", 2^..y..)), position=position_nudge(y=.2))
