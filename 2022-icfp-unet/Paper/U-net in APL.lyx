@@ -264,7 +264,7 @@ literal "false"
 
 \end_inset
 
-, but these are two topics that are not often together.
+, but these are two topics that are not often seen together.
  Because of that, we provide some superficial background on CNNs relevant
  literature, then we provide some background on APL, and then we use APL
  to help us flesh out the relevant details regarding CNNs and the way they
@@ -497,7 +497,7 @@ alternative
  mathematical notation doesn't mean it changes everything the reader will
  be accustomed to; in fact, the most well-established parts of the notation
  were left intact, as can be seen by the two following examples of addition
- and multiplication:
+ and multiplication, respectively:
 \end_layout
 
 \begin_layout Verbatim
@@ -534,6 +534,31 @@ This format mimics that of the APL session, the interactive environment
 
 : the notation typed by the user is indentend to the right and the computed
  result is left-aligned on the following line(s).
+ Subtraction and division are also represented by the usual glyphs:
+\end_layout
+
+\begin_layout Verbatim
+
+      10 - 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+9 8 7
+\end_layout
+
+\begin_layout Verbatim
+
+      100 50 20 ÷ 2
+\end_layout
+
+\begin_layout Verbatim
+
+50 25 10
+\end_layout
+
+\begin_layout Standard
+In APL, one is allowed to write multiple values next to each other,
 \end_layout
 
 \begin_layout Section
