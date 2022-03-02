@@ -37,3 +37,4 @@ Thumbs.db
 *.exp
 **/.venv
 **/__pycache__
+*.lyx#

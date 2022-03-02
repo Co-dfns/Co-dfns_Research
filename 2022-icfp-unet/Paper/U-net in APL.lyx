@@ -245,7 +245,59 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-TBW
+We make the following contributions:
+\end_layout
+
+\begin_layout Itemize
+A complete demonstration in APL of the popular U-net convolutional neural
+ network, which is non-trivial in vocabulary and architecture
+\end_layout
+
+\begin_layout Itemize
+A functional programming-friendly approach to neural network design and
+ implementation
+\end_layout
+
+\begin_layout Itemize
+An analysis and examination of the current language features within APL
+ that appear relevant to CNNs and machine learning
+\end_layout
+
+\begin_layout Itemize
+A critical discussion and design comparison of two different approaches
+ to supporting convolutions and similar operations in a general-purpose
+ array language with a recommendation for future implementation improvements
+\end_layout
+
+\begin_layout Itemize
+A grounded perspective on the applications of general-purpose array programming
+ languages like APL to the machine learning space from professional and
+ pedagogical angles and how APL compares to alternative, specialist framework
+ approaches
+\end_layout
+
+\begin_layout Itemize
+Performance results of two modern APL implementations, one compiled and
+ the other interpreted, on CPU and GPU hardware against a reference PyTorch
+ implementation for U-net
+\end_layout
+
+\begin_layout Itemize
+Performance observations and microbenchmark comparisons of specialized neural
+ network functionality exposed in more general purpose array frameworks
+ for GPU programming
+\end_layout
+
+\begin_layout Itemize
+Specific highlighting of low-hanging fruit for improving the current range
+ of APL implementations both in terms of language design and runtime implementat
+ion
+\end_layout
+
+\begin_layout Itemize
+A demonstration of the expressiveness and performance that careful language
+ design can enable without the need for complex implementation models or
+ theory
 \end_layout
 
 \begin_layout Section
