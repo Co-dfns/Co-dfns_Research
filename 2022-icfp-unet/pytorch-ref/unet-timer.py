@@ -22,41 +22,42 @@ if __name__ == "__main__":
         "-i",
         "--inputs",
         metavar="INPUTS_PATH",
-        help=f"Folder with input images (default={INPUTS}).",
+        help=f"Folder with input images (default={INPUTS})",
         default=INPUTS,
     )
     parser.add_argument(
         "-l",
         "--labels",
         metavar="LABELS_PATH",
-        help=f"Folder with label images (default={LABELS}).",
+        help=f"Folder with label images (default={LABELS})",
         default=LABELS,
     )
     parser.add_argument(
         "-n",
-        help="Number of passes to time.",
+        help=f"Number of passes to time (default={RUNS})",
         default=RUNS,
     )
     parser.add_argument(
         "-d",
         "--device",
-        help=f"Device to run on (default='cpu').",
+        help=f"Device to run on (default='cpu')",
         choices=["cpu", "cuda:0"],
         default="cpu",
     )
     args = parser.parse_args()
 
+    # Pick correct device.
+    device = args.device
+    if device.startswith("cuda") and not torch.cuda.is_available():
+        print("Forcing device='cpu'.")
+        device = "cpu"
+
     inputs_available = list(pathlib.Path(args.inputs).glob("*"))
     inputs_to_use = random.choices(inputs_available, k=args.n)
     labels_to_use = [(LABELS / input.name).resolve() for input in inputs_to_use]
 
-    inp = torchvision.io.read_image(
-        str(inputs_to_use[0]),
-        mode=torchvision.io.ImageReadMode.GRAY,
-    )
-
     # Initialise model, optimiser and loss criterion.
-    unet = UNet()
+    unet = UNet().to(device)
     criterion = torch.nn.CrossEntropyLoss()
     optimiser = torch.optim.SGD(unet.parameters(), lr=1e-9, momentum=0.99)
 
@@ -67,7 +68,7 @@ if __name__ == "__main__":
                 mode=torchvision.io.ImageReadMode.GRAY,
             ).unsqueeze(0)
             / 256
-        )
+        ).to(device)
 
         size = inp.shape[-1] - 188  # Final size computation simplifies to this.
         expected_out = (
@@ -76,7 +77,7 @@ if __name__ == "__main__":
                 mode=torchvision.io.ImageReadMode.GRAY,
             )
             == 255
-        ).long()
+        ).long().to(device)
         expected_out = torchvision.transforms.functional.center_crop(
             expected_out, [size, size]
         )
