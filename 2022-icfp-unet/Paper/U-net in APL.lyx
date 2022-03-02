@@ -1121,8 +1121,20 @@ TBW
 Performance
 \end_layout
 
-\begin_layout Standard
-TBW
+\begin_layout Subsection
+Overview
+\end_layout
+
+\begin_layout Subsection
+APL Stencil Primitives
+\end_layout
+
+\begin_layout Subsection
+U-net Performance
+\end_layout
+
+\begin_layout Subsection
+Microbenchmarks against other libraries
 \end_layout
 
 \begin_layout Section
