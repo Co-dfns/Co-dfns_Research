@@ -264,11 +264,13 @@ literal "false"
 
 \end_inset
 
-, but these are two topics that are not often seen together.
- Because of that, we provide some superficial background on CNNs relevant
- literature, then we provide some background on APL, and then we use APL
- to help us flesh out the relevant details regarding CNNs and the way they
- are used in this paper.
+, but these are two subjects that are not often seen together.
+ To cater for readers coming from each community, this section provides
+ provides some superficial background on CNNs and the relevant literature
+ and some background on APL.
+ Then, we provide further background information regarding the relevant
+ details of CNNs and the way they are used in this paper, aided by the APL
+ notation.
 \end_layout
 
 \begin_layout Subsection
@@ -558,7 +560,362 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Standard
-In APL, one is allowed to write multiple values next to each other,
+In APL, one is allowed to write multiple values next to each other, which
+ are then stranded together and interpreted as a vector.
+ Thus, 
+\family typewriter
+1 2 3
+\family default
+ represents the three-item vector whose elements are the first three positive
+ integers.
+ Then, the APL function 
+\begin_inset Quotes eld
+\end_inset
+
+minus
+\begin_inset Quotes erd
+\end_inset
+
+ takes the scalar 
+\family typewriter
+10
+\family default
+ as its left argument and the three-item vector 
+\family typewriter
+1 2 3
+\family default
+ as its right argument, and it subtracts each of the items of the right
+ argument vector from its left argument.
+ Similarly, the division example shows that vectors can also be used as
+ the left argument.
+ The natural progression is to wonder whether vectors can be used on the
+ left and on the right of a function, and typically they can:
+\end_layout
+
+\begin_layout Verbatim
+
+      1 10 100 1000 ⌈ 5 5 500 500
+\end_layout
+
+\begin_layout Verbatim
+
+5 10 500 1000
+\end_layout
+
+\begin_layout Standard
+
+The upstile glyph 
+\family typewriter
+⌈
+\family default
+ stands for the 
+\begin_inset Formula $max$
+\end_inset
+
+ function when used dyadically, that is, with two arguments: one on the
+ left and one on the right.
+ The result obtained above would be equivalent to computing the four maximum
+ operations one by one, and then stranding them together:
+\end_layout
+
+\begin_layout Verbatim
+
+      (1 ⌈ 5) (10 ⌈ 5) (100 ⌈ 500) (1000 ⌈ 500)
+\end_layout
+
+\begin_layout Verbatim
+
+5 10 500 1000
+\end_layout
+
+\begin_layout Standard
+
+Notice how each element of the left vector 
+\family typewriter
+1 10 100 1000
+\family default
+ got paired up with the respective element of the right vector 
+\family typewriter
+5 5 500 500
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+
+The dyadic functions 
+\emph on
+plus
+\emph default
+ 
+\family typewriter
++
+\family default
+, 
+\emph on
+minus
+\emph default
+ 
+\family typewriter
+-
+\family default
+, 
+\emph on
+times
+\emph default
+ 
+\family typewriter
+×
+\family default
+, 
+\emph on
+divide
+\emph default
+ 
+\family typewriter
+÷
+\family default
+, and 
+\emph on
+max
+\emph default
+ 
+\family typewriter
+⌈
+\family default
+, all share the property that allows them to accept vectors as arguments:
+ they are 
+\emph on
+scalar functions
+\emph default
+.
+ Scalar functions are functions that pervade the structure of the argument(s)
+ and apply directly to each of the scalars that make up said argument(s).
+ This becomes increasingly relevant when one understands that APL has first-clas
+s support for arrays of any dimension: 
+\emph on
+scalars
+\emph default
+ (arrays with no dimensions), 
+\emph on
+vectors
+\emph default
+ (arrays with a single dimension), 
+\emph on
+matrices
+\emph default
+ (arrays with two dimensions), 
+\emph on
+cuboids
+\emph default
+ (arrays with three dimensions), and more.
+ In the examples above, we have seen scalars such as 
+\family typewriter
+10
+\family default
+ and 
+\family typewriter
+73
+\family default
+, and vectors such as 
+\family typewriter
+1 10 100 1000
+\family default
+.
+ Scalars and vectors are the only types of arrays that can be typed directly.
+ Arrays of higher dimensions must be loaded from an external data source
+ or dynamically created by other means such as the 
+\emph on
+reshape
+\emph default
+ function.
+\end_layout
+
+\begin_layout Standard
+
+The reshape function is represented by the Greek letter rho 
+\family typewriter
+⍴
+\family default
+ and is a dyadic function that reshapes its right argument to have the shape
+ specified by the left argument.
+ For instance, if we want to create a 
+\begin_inset Formula $2\times3$
+\end_inset
+
+ matrix with the first six non-negative integers, we can do it like so:
+\end_layout
+
+\begin_layout Verbatim
+
+      2 3 ⍴ 0 1 2 3 4 5
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 5
+\end_layout
+
+\begin_layout Standard
+
+The left argument to the reshape function determines the final shape of
+ the result, where each non-negative integer specifies the length of the
+ result along the specified dimension.
+ So, if the left argument had been 
+\family typewriter
+5 9 7
+\family default
+, the resulting array would have been a cuboid (array with three dimensions)
+ composed of 
+\family typewriter
+5
+\family default
+ planes, 
+\family typewriter
+9
+\family default
+ rows, and 
+\family typewriter
+7
+\family default
+ columns, holding a total of 
+\begin_inset Formula $5\times9\times7=315$
+\end_inset
+
+ elements.
+\end_layout
+
+\begin_layout Standard
+
+One of the key propositions of APL is to be a notation that is completely
+ unambiguous.
+ This materialises in some key differences with traditional mathematical
+ notation, namely:
+\end_layout
+
+\begin_layout Itemize
+
+in traditional mathematical notation, the symbol 
+\begin_inset Formula $-$
+\end_inset
+
+ is used for subtraction and to indicate negative numbers.
+ However, in APL, we use the high-minus 
+\family typewriter
+¯
+\family default
+ to represent negative numbers.
+ If we didn't, it would be unclear whether 
+\family typewriter
+1 -3 5
+\family default
+ represented a three-element vector with the numbers one, minus three, and
+ five, or the result of the subtraction of 
+\family typewriter
+1
+\family default
+ and the two-element vector 
+\family typewriter
+3 5
+\family default
+.
+ APL disambiguates the two by representing the former case with 
+\family typewriter
+1 ¯3 5
+\family default
+ and the latter with 
+\family typewriter
+1 - 3 5;
+\end_layout
+
+\begin_layout Itemize
+
+in traditional mathematical notation, the symbol 
+\begin_inset Formula $=$
+\end_inset
+
+ is used for equality comparison and to assign values to variables.
+ However, in APL, we use the left arrow 
+\family typewriter
+←
+\family default
+ to represent assignment.
+ If we didn't, it would be unclear whether 
+\family typewriter
+x = 10
+\family default
+ meant we wanted to assign ten to the variable 
+\family typewriter
+x
+\family default
+, or if it meant we wanted to compare the value of the variable 
+\family typewriter
+x
+\family default
+ with ten.
+ Assigning ten to 
+\family typewriter
+x
+\family default
+ is written as 
+\family typewriter
+x ← 10
+\family default
+ whereas equality comparison is written as 
+\family typewriter
+x = 10
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+
+Another key difference between APL and mathematical notation (which also
+ translates into a key difference between APL and other programming languages)
+ is that APL normalises precedence rules to a single level: all functions
+ have the same precedence.
+ In APL, functions are said to have a 
+\emph on
+long right scope
+\emph default
+ and a 
+\emph on
+short left scope
+\emph default
+, which is why APL is loosely said to 
+\begin_inset Quotes eld
+\end_inset
+
+execute from right to left
+\begin_inset Quotes erd
+\end_inset
+
+.
+ A long right scope means that a function takes as right argument everything
+ to its right, whereas a short left scope means that a function only takes
+ as left argument the array that is immediately to its left.
+\end_layout
+
+\begin_layout Standard
+
+Things I still need to go through:
+\end_layout
+
+\begin_layout Itemize
+symbols as monadic/dyadic functions
+\end_layout
+
+\begin_layout Itemize
+operators modify functions
+\end_layout
+
+\begin_layout Itemize
+long right scope vs short left scope
 \end_layout
 
 \begin_layout Section
@@ -671,230 +1028,16 @@ https://erasmusoic.nl/
 , Rotterdam, The Netherlands.
 \end_layout
 
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "unet"
-literal "false"
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "bibliography"
+options "plain"
 
 \end_inset
 
- Ronneberger, O., Fischer, P., & Brox, T.
- (2015, October).
- U-net: Convolutional networks for biomedical image segmentation.
- In International Conference on Medical image computing and computer-assisted
- intervention (pp.
- 234-241).
- Springer, Cham.
-\end_layout
 
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "imagenet"
-literal "false"
-
-\end_inset
-
- Deng, J., Dong, W., Socher, R., Li, L.-J., Li, K., & Fei-Fei, L.
- (2009).
- Imagenet: A large-scale hierarchical image database.
- In 2009 IEEE conference on computer vision and pattern recognition (pp.
- 248–255).
- 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "cnns-imagenet"
-literal "false"
-
-\end_inset
-
- Krizhevsky, A., Sutskever, I., & Hinton, G.
- E.
- (2012).
- Imagenet classification with deep convolutional neural networks.
- Advances in neural information processing systems, 25.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "cnns-lecun-doc-recognition"
-literal "false"
-
-\end_inset
-
- LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P.
- (1998).
- Gradient-based learning applied to document recognition.
- Proceedings of the IEEE, 86(11), 2278-2324.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "apl"
-literal "false"
-
-\end_inset
-
- Iverson, K.
- E.
- (1962, May).
- A programming language.
- In Proceedings of the May 1-3, 1962, spring joint computer conference (pp.
- 345-351).
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "apl-since-78"
-literal "false"
-
-\end_inset
-
- Roger K.
- W.
- Hui and Morten J.
- Kromberg.
- 2020.
- APL since 1978.
- Proc.
- ACM Program.
- Lang.
- 4, HOPL, Article 69 (June 2020), 108 pages.
- DOI:https://doi.org/10.1145/3386319
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "intro-to-cnn"
-literal "false"
-
-\end_inset
-
- O'Shea, K., & Nash, R.
- (2015).
- An introduction to convolutional neural networks.
- arXiv preprint arXiv:1511.08458.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "conv-arithmetic-guide"
-literal "false"
-
-\end_inset
-
- Dumoulin, V., & Visin, F.
- (2016).
- A guide to convolution arithmetic for deep learning.
- arXiv preprint arXiv:1603.07285.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "pooling"
-literal "false"
-
-\end_inset
-
- Scherer, D., Müller, A., & Behnke, S.
- (2010, September).
- Evaluation of pooling operations in convolutional architectures for object
- recognition.
- In International conference on artificial neural networks (pp.
- 92-101).
- Springer, Berlin, Heidelberg.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "bernecky-cnn"
-literal "false"
-
-\end_inset
-
- Artjoms Šinkarovs, Robert Bernecky, and Sven-Bodo Scholz.
- 2019.
- Convolutional neural networks in APL.
- In Proceedings of the 6th ACM SIGPLAN International Workshop on Libraries,
- Languages and Compilers for Array Programming (ARRAY 2019).
- Association for Computing Machinery, New York, NY, USA, 69–79.
- DOI:https://doi.org/10.1145/3315454.3329960
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "SF-hui-blog"
-literal "false"
-
-\end_inset
-
- Roger Hui (2020, June).
- Towards Improvements to Stencil.
- In Dyalog blog.
- URL:https://www.dyalog.com/blog/2020/06/towards-improvements-to-stencil/
- (last visited March 2022).
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "data-source-ctc"
-literal "false"
-
-\end_inset
-
- Ulman, V., Maška, M., Magnusson, K.
- et al.
- An objective comparison of cell-tracking algorithms.
- Nat Methods 14, 1141–1152 (2017).
- https://doi.org/10.1038/nmeth.4473
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "pytorch"
-literal "false"
-
-\end_inset
-
- Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., … Chintala,
- S.
- (2019).
- PyTorch: An Imperative Style, High-Performance Deep Learning Library.
- In Advances in Neural Information Processing Systems 32 (pp.
- 8024–8035).
- Curran Associates, Inc.
- Retrieved from http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-hi
-gh-performance-deep-learning-library.pdf 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "caffe"
-literal "false"
-
-\end_inset
-
- Jia, Y., Shelhamer, E., Donahue, J., Karayev, S., Long, J., Girshick, R., … Darrell,
- T.
- (2014).
- Caffe: Convolutional Architecture for Fast Feature Embedding.
- arXiv preprint arXiv:1408.
- 5093.
 \end_layout
 
 \end_body
