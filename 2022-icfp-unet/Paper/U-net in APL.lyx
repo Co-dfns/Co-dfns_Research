@@ -503,22 +503,18 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
-
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
-
 3
 \end_layout
 
 \begin_layout Verbatim
-
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
-
 7592
 \end_layout
 
@@ -540,22 +536,18 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
-
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
-
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
-
 50 25 10
 \end_layout
 
@@ -593,17 +585,14 @@ minus
 \end_layout
 
 \begin_layout Verbatim
-
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
 \begin_layout Standard
-
 The upstile glyph 
 \family typewriter
 ⌈
@@ -619,17 +608,14 @@ The upstile glyph
 \end_layout
 
 \begin_layout Verbatim
-
       (1 ⌈ 5) (10 ⌈ 5) (100 ⌈ 500) (1000 ⌈ 500)
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
 \begin_layout Standard
-
 Notice how each element of the left vector 
 \family typewriter
 1 10 100 1000
@@ -642,7 +628,6 @@ Notice how each element of the left vector
 \end_layout
 
 \begin_layout Standard
-
 The dyadic functions 
 \emph on
 plus
@@ -732,7 +717,6 @@ reshape
 \end_layout
 
 \begin_layout Standard
-
 The reshape function is represented by the Greek letter rho 
 \family typewriter
 ⍴
@@ -747,22 +731,18 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
-
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
-
 3 4 5
 \end_layout
 
 \begin_layout Standard
-
 The left argument to the reshape function determines the final shape of
  the result, where each non-negative integer specifies the length of the
  result along the specified dimension.
@@ -791,7 +771,6 @@ The left argument to the reshape function determines the final shape of
 \end_layout
 
 \begin_layout Standard
-
 One of the key propositions of APL is to be a notation that is completely
  unambiguous.
  This materialises in some key differences with traditional mathematical
@@ -799,7 +778,6 @@ One of the key propositions of APL is to be a notation that is completely
 \end_layout
 
 \begin_layout Itemize
-
 in traditional mathematical notation, the symbol 
 \begin_inset Formula $-$
 \end_inset
@@ -834,7 +812,6 @@ in traditional mathematical notation, the symbol
 \end_layout
 
 \begin_layout Itemize
-
 in traditional mathematical notation, the symbol 
 \begin_inset Formula $=$
 \end_inset
@@ -874,7 +851,6 @@ x = 10
 \end_layout
 
 \begin_layout Standard
-
 Another key difference between APL and mathematical notation (which also
  translates into a key difference between APL and other programming languages)
  is that APL normalises precedence rules to a single level: all functions
@@ -902,7 +878,6 @@ execute from right to left
 \end_layout
 
 \begin_layout Standard
-
 Things I still need to go through:
 \end_layout
 
@@ -1033,7 +1008,7 @@ https://erasmusoic.nl/
 LatexCommand bibtex
 btprint "btPrintCited"
 bibfiles "bibliography"
-options "plain"
+options "acm"
 
 \end_inset
 
