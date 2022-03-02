@@ -3,6 +3,7 @@ import pathlib
 import random
 import time
 
+import torch
 import torch.nn
 import torch.optim
 import torchvision.io
@@ -46,6 +47,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    torch.set_default_dtype(torch.float64)  # Use 64 bit floats by default.
+
     # Pick correct device.
     device = args.device
     if device.startswith("cuda") and not torch.cuda.is_available():
@@ -68,7 +71,7 @@ if __name__ == "__main__":
                 mode=torchvision.io.ImageReadMode.GRAY,
             ).unsqueeze(0)
             / 256
-        ).to(device)
+        ).to(device)  # Use 64 bit floats.
 
         size = inp.shape[-1] - 188  # Final size computation simplifies to this.
         expected_out = (
