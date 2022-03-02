@@ -122,7 +122,7 @@ Ljubljana, Slovenia
 \end_layout
 
 \begin_layout Title
-U-net in APL
+U-net CNN in APL
 \end_layout
 
 \begin_layout Subtitle
@@ -245,12 +245,176 @@ Introduction
 \end_layout
 
 \begin_layout Standard
+Specialized machine learning frameworks dominate the present industrial
+ and educational spaces for deep learning applications.
+ A wide number of higly specialized and highly optimized libraries exist,
+ often built on top of one another, to support the modern wave of machine
+ learning architectures.
+ These systems are often more complex than your typical library, and they
+ might even be better classified as their own domain-specific languages
+ (DSLs).
+ While these libraries have supported the current explosion of machine learning
+ developers, a number of issues have emerged.
+\end_layout
+
+\begin_layout Standard
+First, because of their highly specialized nature, users of these systems
+ tend to become experts not in generalized programming or algorithmic skills,
+ but specialist toolkits and frameworks around a very specific model of
+ computation.
+ This specialized nature often mandates dedicated courses and even entire
+ academic specializations (even at the undergraduate level) focused on the
+ mastery of these particular concepts.
+ This can create a sharp fall off of skills transferrence, where machine
+ learning experts can use machine learning frameworks effectively, but may
+ be underdeveloped and underprepared to handle situations that require a
+ broader or more adaptive skillset.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+To someone who only has a hammer, everything looks like a nail.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Second, from a pedagogical perspective, when teaching machine learning,
+ one may often be able to implement simple networks in a general-purpose
+ programming language, but trying to teach machine learning through a typical
+ general purpose language can be difficult, because one quickly encounters
+ performance and scalability limitations that make any non-trivial and interesti
+ng applications likely beyond the competency and endurance of your typical
+ student.
+ This creates a sharp contrast in which one begins with simple systems that
+ can be programmed 
+\begin_inset Quotes eld
+\end_inset
+
+by hand
+\begin_inset Quotes erd
+\end_inset
+
+ but quickly transitions to highly opaque and complex frameworks that are
+ difficult to understand, modify, or intuit.
+ This can result in significant reductions in professional competency.
+\end_layout
+
+\begin_layout Standard
+Third, if a lack of profound and intuitive understanding of the underlying
+ mechanics of a deep learning system continues into professional life, the
+ result can be a type of 
+\begin_inset Quotes eld
+\end_inset
+
+programming by knob turning
+\begin_inset Quotes erd
+\end_inset
+
+ in which neural networks are programmed via trial and error rather than
+ through intentional design.
+ Machine Learning as a discipline is already opaque enough, with many cases
+ of unintended consequences (citation), without the added dangers inherent
+ in this sort of unintentional programming guesswork.
+\end_layout
+
+\begin_layout Standard
+Fourth, the specificity of machine learning frameworks can result in significant
+ amounts of code churn and a reduction in the stability of codebases for
+ enterprise use.
+ Switching hardware, architectures, operating systems, or the like can create
+ unstable conditions in which code must be rewritten, adapted, or thrown
+ away entirely.
+ Machine learning frameworks are often highly vendor-specific, and even
+ those which are more vendor-neutral tend to encode significantly greater
+ specificity than is historically warranted for code intended to last for
+ any long period of time.
+ This almost necessitates higher levels of programmer investment in order
+ to keep such systems running over a long period of time.
+\end_layout
+
+\begin_layout Standard
+Despite the above potential issues, specialist frameworks have proven highly
+ effective, in large part because of how important high-performance is to
+ the domain of machine learning.
+ However, in recent years, general-purpose array programming languages have
+ seen a resurgence, and naturally, they have been examined in the light
+ of machine learning.
+ Such languages were also popular during early exploration of neural network
+ programming during the 1980's (citation needed), but performance issues
+ of then-current hardware prevented further progression.
+\end_layout
+
+\begin_layout Standard
+APL, as a general-purpose array programming language, created by Kenneth
+ Iverson as an improved mathematical notation (cite), has seen an increase
+ in popularity over the past decades, in part because of the renewed interest
+ in parallel computation and a wider acceptance of the use of a variety
+ of programming languages.
+ However, only recently has significant new research into the use of APL
+ as a possible implementation language for machine learning begun to surface.
+ 
+\end_layout
+
+\begin_layout Standard
+The long history of APL, its origins as an pedagogical tool, and its reputation
+ for directness of algorithmic expression (cite knuth) help to address some
+ of the concerns above.
+ Furthermore, it is one of the most linguistically stable languages, while
+ also being exceptionally high level and high performance at the same time
+ (cite Co-dfns thesis), making it highly suitable for long lived code as
+ well as rapid prototyping.
+ Finally, the language itself defaults to a data-parallel semantics, making
+ its application to GPU programming an obvious conclusion.
+ 
+\end_layout
+
+\begin_layout Standard
+While the above advantages might suggest APL as a terrific tool for machine
+ learning, unfortunately, the vast majority of implementations have been
+ for the CPU only, and those have usually been entirely interpreted.
+ Traditionally, compiler implementors have considered APL a challenging
+ language to compile (cite), but recent innovations to the language (particularl
+y those with a functional programming focus) have made compilation much
+ more tractable, and the Co-dfns compiler now exists as an APL implementation
+ with native GPU support (cite).
+ 
+\end_layout
+
+\begin_layout Standard
+Given the available APL technology and the parsity of existing materials
+ on modern machine learning development in APL, we conducted an exploration
+ into the state of the art in APL, both from a language design and a runtime
+ implementation perspective.
+ To do this, we focused our efforts on the implementation and benchmarking
+ of the U-net convolutional neural network (cite).
+ This is a popular image segmentation architecture with a particularly interesti
+ng U-net design.
+ It makes use of a range of popular CNN vocabularies and functions while
+ having a clear architecture that is not so simple as to be trivial.
+ This makes it an ideal candidate for exploring APL's capabilities.
+\end_layout
+
+\begin_layout Standard
 We make the following contributions:
 \end_layout
 
 \begin_layout Itemize
 A complete demonstration in APL of the popular U-net convolutional neural
  network, which is non-trivial in vocabulary and architecture
+\end_layout
+
+\begin_layout Itemize
+Our U-net implementation is exceptionally simple, concise, transparent,
+ and direct
+\end_layout
+
+\begin_layout Itemize
+Our implementation was written with pure APL and no dependencies, frameworks,
+ libraries, or other supporting code outside of the APL implementation
 \end_layout
 
 \begin_layout Itemize
