@@ -7056,23 +7056,15 @@ literal "false"
 
 \end_inset
 
-, Python with Numpy (see 
+, and Python/ Numpy 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "python"
+key "python,numpy"
 literal "false"
 
 \end_inset
 
- and 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "numpy"
-literal "false"
-
-\end_inset
-
-), are not exceptionally performant on their own for machine learning, but
+, are not exceptionally performant on their own for machine learning, but
  often wrap libraries to do so.
  Unfortunately, many of these languages use a syntax that much more closely
  mirrors that of Python than APL.
