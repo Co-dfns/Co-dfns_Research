@@ -6569,6 +6569,18 @@ studying the APL implementation led to a material influence on how the PyTorch
 \end_layout
 
 \begin_layout Section
+Related Work
+\end_layout
+
+\begin_layout Standard
+Bernecky and SaC
+\end_layout
+
+\begin_layout Standard
+TAIL
+\end_layout
+
+\begin_layout Section
 Future Work
 \end_layout
 
@@ -6584,21 +6596,22 @@ There are a number of design elements of the current crop of APL implementations
 , including Co-dfns, which hamper performance for machine learning.
  Especially, the use of 64-bit floating points without any feature to reduce
  their size makes memory usage a concern.
+ Additionally, no optimization on the design of stencil has been done, while
+ optimizations related to lazy indexing, batch processing, and a number
+ of other features seem readily accessible.
  
 \end_layout
 
 \begin_layout Standard
-Better Co-dfns implementation (instead of naive version)
-\end_layout
-
-\begin_layout Standard
-Examining performance comparisons between generalized array languages more
- closely
-\end_layout
-
-\begin_layout Standard
-Explore the pedagogical impact of using something like APL to teach machine
- learning
+Additionally, we would like to explore the potential of using such systems
+ to improve machine learning pedagogy by encouraging students to have access
+ to high-performance, but also transparent, implementations of foundational
+ machine learning concepts.
+ There are still some challenges to recommending this approach at scale
+ for a large number of educational institutions, but we believe work on
+ exploring the pedagogical benefits of APL warrants further exploration
+ in addition to exploring APL in the professional space.
+ 
 \end_layout
 
 \begin_layout Section
