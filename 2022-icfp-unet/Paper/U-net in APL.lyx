@@ -3897,7 +3897,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="9">
+<lyxtabular version="3" rows="7" columns="11">
 <features booktabs="true" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0pt">
 <column alignment="right" valignment="top">
@@ -3906,6 +3906,8 @@ status open
 <column alignment="left" valignment="top">
 <column alignment="right" valignment="top">
 <column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top">
+<column alignment="left" valignment="top">
 <column alignment="right" valignment="top">
 <column alignment="right" valignment="top">
 <row>
@@ -3984,6 +3986,24 @@ Operation
 \end_inset
 </cell>
 <cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4081,13 +4101,31 @@ Operation
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 \begin_inset Formula $UP$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4197,7 +4235,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" usebox="none">
+<cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4206,6 +4244,24 @@ Depth
 \begin_inset Formula $\texttt{\ 128 2 2 \ 64}$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4312,7 +4368,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" usebox="none">
+<cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4321,6 +4377,24 @@ Depth
 \begin_inset Formula $\texttt{\ 256 2 2 128}$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4427,7 +4501,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" usebox="none">
+<cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4436,6 +4510,24 @@ Depth
 \begin_inset Formula $\texttt{\ 512 2 2 256}$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4542,7 +4634,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4551,6 +4643,24 @@ Depth
 \begin_inset Formula $\texttt{1024 2 2 512}$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4635,6 +4745,24 @@ Upward Pass
 \end_inset
 </cell>
 <cell multicolumn="2" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4952,6 +5080,169 @@ To examine the performance profile of our APL implementation, we primarily
 U-net Performance
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename benchmark-comp.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Performance results for U-net across a range of platforms
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Performance-results-for"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+We were primarily interested in the costs of executing a single run of the
+ U-net over a single image source in both the forwards and backwards directions.
+ We compared performance over the following platforms:
+\end_layout
+
+\begin_layout Itemize
+Dyalog APL 18.0 64-bit Windows interpreter
+\end_layout
+
+\begin_layout Itemize
+Co-dfns (v4.1.0 master branch) using the CUDA backend (AF v3.8.1)
+\end_layout
+
+\begin_layout Itemize
+Co-dfns (v4.1.0 master branch) using the CPU backend (AF v3.8.1)
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the CUDA gpu backend
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the multi-threaded CPU backend
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the single-threaded CPU backend
+\end_layout
+
+\begin_layout Standard
+The results of the execution can be seen in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Performance-results-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The timings do not include the cost of reading the image data from disk,
+ but they do include the costs of transferring the image input data and
+ the resulting error and forward propagation results back to the CPU main
+ memory.
+ In our testing, data transfer costs in Co-dfns accounted for significantly
+ less than 5% of the total runtime.
+ 
+\end_layout
+
+\begin_layout Standard
+The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
+ graphics memory.
+ We used NVIDIA driver version 511.65.
+ The CPU was an Intel Core i7-10870H with 16 logical cores @ 2.2GHz.
+ Main system memory was 32GB of DDR4 RAM.
+ The system was running an up to date release of Microsoft Windows 11.
+ 
+\end_layout
+
+\begin_layout Standard
+When running the benchmark, we computed the average of 10 runs, ensuring
+ that we discarded the first run each time, since these runs often contained
+ significant setup and bootstrapping code (PyTorch's optimizer, the JIT
+ optimization in Co-dfns, and so forth).
+ The figure includes information about the variance of the individual runs
+ as well as the average run time in seconds.
+ 
+\end_layout
+
+\begin_layout Standard
+Examining the data, it is clear why traditional APL implementations were
+ relatively unsuited to extensive use within the machine learning space.
+ Dyalog's interpreter preformed the slowest by a very large magnitude.
+ After this, the single-threaded CPU implementations in Co-dfns and PyTorch
+ are predictably the next slowest, with the Co-dfns implementation running
+ about a factor of 2.2 times slower than the equivalent PyTorch implementation.
+\end_layout
+
+\begin_layout Standard
+When acceleration techniques are imployed, the differences in execution
+ speed begin to shrink, with PyTorch's multi-threaded and GPU-based implementati
+ons coming in fasted, and Co-dfns' GPU backend running at roughly 2.4 times
+ slower than the PyTorch GPU execution.
+ 
+\end_layout
+
+\begin_layout Standard
+We observed the widest variance in performance results in the Co-dfns CPU
+ and Dyalog interpreter-based runs, and very little variance in the GPU-based
+ runs or in PyTorch itself.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Co-dfns runtime implementation
+\end_layout
+
+\begin_layout Standard
+The stencil function was modeled in APL and used to conduct the above benchmark.
+ The model, written in APL, is a naive implementation of the stencil function
+ and contains no special optimizations other than to distinguish between
+ sliding windows of step 1 and non-overlapping, adjacent windows (such as
+ used for the max pooling layers).
+ Additionally, no specialized code was used within Co-dfns that was specific
+ or specialized to neural network programming.
+ 
+\end_layout
+
+\begin_layout Standard
+The above benchmark therefore represents a comparison of the PyTorch implementat
+ion against a naive and unspecialized implementation in APL executed with
+ the general-purpose runtime used in Co-dfns that provides generalized GPU
+ computation but does not include domain-specific optimizations such as
+ those available in PyTorch.
+ 
+\end_layout
+
 \begin_layout Subsection
 APL Stencil Primitives
 \end_layout
@@ -5182,6 +5473,58 @@ noprefix "false"
 
 \begin_layout Subsection
 Microbenchmarks against other libraries
+\end_layout
+
+\begin_layout Standard
+It is worth noting that we also explored optimizing our U-net with specialized
+ functions available via the Co-dfns platform (specific max filters and
+ convolutions) that are domain-specific operations much like those available
+ in PyTorch.
+ This sort of operation can be done via 
+\begin_inset Quotes eld
+\end_inset
+
+idiom recognition
+\begin_inset Quotes erd
+\end_inset
+
+ and for our small convolution expressions, it is quite conceivable that
+ idiom recognition could apply and convert these functions to use domain-specifi
+c code under the hood for convolutions and maximum filters, &c.
+ 
+\end_layout
+
+\begin_layout Standard
+However, we aborted this line of inquiry for now because in microbenchmarking
+ the domain-specific functions against our naive implementation of the stencil
+ function, we discovered that the domain specific functions were actually
+ a factor of 2 
+\emph on
+slower
+\emph default
+ than our naive implementations in our primary sample inputs.
+ Given that the underlying specialized functions are supposed to wrap the
+ CuDNN library (citation), it is surprising that we achieved faster results
+ with the naive Stencil function implementation over the domain specific
+ implementations available within the general purpose array libraries leveraged
+ by Co-dfns.
+ 
+\end_layout
+
+\begin_layout Standard
+We are not sure of the cause of these slowdowns, and therefore, we did not
+ include a formal benchmark of these results here.
+ It is possible that a misconfiguration or some other element is causing
+ these degradations, and so we intend to explore these performance issues
+ in more detail, but we wished to at least note this effect, since this
+ represents a different result from our benchmarking here, which tests Co-dfns
+ against a specialized framework, rather than a more generalized array framework
+ with specialized functions within it.
+ The specialized frameworks appear to be clearly faster at the moment than
+ the naive Co-dfns implementations, but this is not true thus far in our
+ limited testing of specialized functions exposed within more generalized
+ array libraries.
+ 
 \end_layout
 
 \begin_layout Section
