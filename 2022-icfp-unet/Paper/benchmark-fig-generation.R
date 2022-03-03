@@ -25,7 +25,7 @@ df %>% group_by(source) %>%
     geom_col(aes(fill = source), show.legend = FALSE) +
     geom_pointrange(aes(ymin = min, ymax = max)) +
     geom_errorbar(aes(ymin = min, ymax = max), width = .3) +
-    geom_text(aes(label = round(meant, 2)), nudge_y = 4) +
+    geom_text(aes(label = round(meant, 2)), nudge_y = 6, size = 8) +
     coord_flip() +
     theme_bw() +
     theme(text = element_text(size = 20)) +
