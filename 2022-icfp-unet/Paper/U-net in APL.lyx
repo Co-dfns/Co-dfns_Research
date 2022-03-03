@@ -237,7 +237,39 @@ United Kingdom
 \end_layout
 
 \begin_layout Abstract
-TBW
+The APL notation would appear to be a clear match for convolutional neural
+ networks, but traditional implementations of APL have lagged behind the
+ performance of highly tuned, specialized frameworks designed to execute
+ CNNs on the GPU.
+ Moreover, most demonstrations of APL for neural networking have involved
+ relatively small examples.
+ We explore a more complex example in the U-net architecture and utilize
+ a modern APL compiler with GPU support, Co-dfns, to compare the state of
+ the art of APL against the current crop of specialized neural network framework
+s in the form of PyTorch.
+ We compare performance as well as the language design of APL for neural
+ network programming and the clarity and transparency of the resulting code.
+ 
+\end_layout
+
+\begin_layout Abstract
+We found that the complete 
+\begin_inset Quotes eld
+\end_inset
+
+from scratch
+\begin_inset Quotes erd
+\end_inset
+
+ APL source was on par with the complexity of the PyTorch reference implementati
+on, albeit much more foreign, while being more concise and complete.
+ We also found that when compiled with Co-dfns, despite the naïve implementation
+ both of Co-dfns and our own code, performance on the GPU and the CPU were
+ within a factor of 2.2 - 2.4 times that of the PyTorch implementation.
+ We believe this suggests significant avenues of future exploration for
+ machine learning language design, pedagogy, and implementation, both inside
+ and outside of the APL community.
+ 
 \end_layout
 
 \begin_layout Section
