@@ -1880,6 +1880,13 @@ roll
 
 \begin_layout Subsubsection
 Operators
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Operators"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2497,9 +2504,9 @@ Overview
 \end_layout
 
 \begin_layout Standard
-Our implementation of U-net can be roughly divided into two significant
+Our implementation of u-net can be roughly divided into two significant
  considerations: the implementation of the fundamental vocabulary of neural
- networks, and the wiring of those operations into the actual U-net architecture.
+ networks, and the wiring of those operations into the actual u-net architecture.
  We leveraged significant features of APL to implement both aspects of the
  system, and so we will treat each in their own sub-section.
  
@@ -2538,8 +2545,15 @@ Design of APL Primitives for Neural Networks
 The majority of APL primitives find fundamental use in computing neural
  networks, which isn't surprising given the array-oriented and numerical
  nature of the domain.
- However, the Stencil operator, introduced in Dyalog APL (citation), stands
- out as the most obviously aligned with convolutional neural networks.
+ However, the stencil operator, introduced in Dyalog APL 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stencil-lives"
+literal "false"
+
+\end_inset
+
+, stands out as the most obviously aligned with convolutional neural networks.
  The J programming language introduced an alternative implementation of
  the stencil operator earlier (citation), from which Dyalog derived inspiration
  for the implementation of their own stencil operator.
@@ -2570,7 +2584,7 @@ The stencil operator takes a function left operand and a specification array
 \end_inset
 
 .
- The two most common sliding window sizes for stencil in U-net are 
+ The two most common sliding window sizes for stencil in u-net are 
 \begin_inset Formula $3\,3$
 \end_inset
 
@@ -2600,12 +2614,12 @@ The stencil operator takes a function left operand and a specification array
 
 \begin_layout Standard
 When first implementing a convolution, almost everyone familiar with Dyalog
- APL and the Stencil operator immediate comes to some variation of the following
- expression for convolving a matrix 
+ APL and the stencil operator immediately comes to some variation of the
+ following expression for convolving a matrix 
 \begin_inset Formula $M$
 \end_inset
 
- with kernel 
+ with a kernel 
 \begin_inset Formula $K$
 \end_inset
 
@@ -2711,7 +2725,17 @@ The result of the above expression is an array of shape
 \end_inset
 
 .
- We make use here of the Rank operator.
+ We make use here of the rank operator, seen in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Operators"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  The expression 
 \begin_inset Formula $K f\texttt{⍤}3⊢A$
 \end_inset
