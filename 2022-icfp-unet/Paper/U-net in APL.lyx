@@ -1139,22 +1139,18 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
-
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
-
 3
 \end_layout
 
 \begin_layout Verbatim
-
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
-
 7592
 \end_layout
 
@@ -1184,22 +1180,18 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
-
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
-
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
-
 50 25 10
 \end_layout
 
@@ -1246,22 +1238,18 @@ minus
 \end_layout
 
 \begin_layout Verbatim
-
       (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
-
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
@@ -1380,17 +1368,14 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
-
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
-
 3 4 5
 \end_layout
 
@@ -1459,12 +1444,10 @@ array
 \end_layout
 
 \begin_layout Verbatim
-
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
-
 2 3
 \end_layout
 
@@ -1499,32 +1482,26 @@ nested
 \end_layout
 
 \begin_layout Verbatim
-
       array
 \end_layout
 
 \begin_layout Verbatim
-
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
-
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
-
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
-
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
-
 └───┴───┴───┘
 \end_layout
 
@@ -1585,32 +1562,26 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
-
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
-
 ¯14
 \end_layout
 
 \begin_layout Verbatim
-
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
-
 ¯34
 \end_layout
 
 \begin_layout Verbatim
-
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
-
 ¯34
 \end_layout
 
@@ -1924,72 +1895,58 @@ roll
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ Create random array mat
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← ?2 3⍴0    
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0.999 0.00424 0.351
 \end_layout
 
 \begin_layout Verbatim
-
 0.967 0.92    0.821
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ mat has shape 2 3.
 \end_layout
 
 \begin_layout Verbatim
-
       ⍴mat            
 \end_layout
 
 \begin_layout Verbatim
-
 2 3
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ mat has rank (tally shape) 2
 \end_layout
 
 \begin_layout Verbatim
-
       ≢⍴mat           
 \end_layout
 
 \begin_layout Verbatim
-
 2
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ mat contains this data:
 \end_layout
 
 \begin_layout Verbatim
-
       ,mat            
 \end_layout
 
 \begin_layout Verbatim
-
 0.999 0.00424 0.351 0.967 0.92 0.821
 \end_layout
 
@@ -2040,22 +1997,18 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
-
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
-
 315
 \end_layout
 
 \begin_layout Verbatim
-
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
-
 315
 \end_layout
 
@@ -2093,22 +2046,18 @@ sum
 \end_layout
 
 \begin_layout Verbatim
-
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
-
 10
 \end_layout
 
 \begin_layout Verbatim
-
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
-
 10
 \end_layout
 
@@ -2174,42 +2123,34 @@ mat
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
-
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
-
       +/mat
 \end_layout
 
 \begin_layout Verbatim
-
 3 12
 \end_layout
 
 \begin_layout Verbatim
-
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
-
 3 5 7
 \end_layout
 
@@ -2303,77 +2244,62 @@ matrix product
 \end_layout
 
 \begin_layout Verbatim
-
       X ← 2 3⍴0 0 0 1 10 100
 \end_layout
 
 \begin_layout Verbatim
-
       Y ← 3 2⍴1 2 3 4 5 6
 \end_layout
 
 \begin_layout Verbatim
-
       X Y
 \end_layout
 
 \begin_layout Verbatim
-
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
-
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
-
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
-
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
-
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
-
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
-
   0   0
 \end_layout
 
 \begin_layout Verbatim
-
 531 642
 \end_layout
 
 \begin_layout Verbatim
-
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
-
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
-
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
-
 6 60 600
 \end_layout
 
@@ -2426,37 +2352,30 @@ A
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
-
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
-
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
-
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -2526,42 +2445,34 @@ alpha
 \end_layout
 
 \begin_layout Verbatim
-
       vec ← 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ Sum of vec divided by its tally
 \end_layout
 
 \begin_layout Verbatim
-
       (+⌿vec)÷≢vec      
 \end_layout
 
 \begin_layout Verbatim
-
 1.5
 \end_layout
 
 \begin_layout Verbatim
-
       ⍝ Sum of arg divided by its tally
 \end_layout
 
 \begin_layout Verbatim
-
       avg ← {(+⌿⍵)÷≢⍵}  
 \end_layout
 
 \begin_layout Verbatim
-
       avg vec
 \end_layout
 
 \begin_layout Verbatim
-
 1.5
 \end_layout
 
@@ -3459,22 +3370,18 @@ Inside of the u-net architecture itself, we want to save the output of the
 \end_layout
 
 \begin_layout Verbatim
-
 CV←{
 \end_layout
 
 \begin_layout Verbatim
-
   z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
-
   0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -3578,42 +3485,34 @@ Since our stencil function does not pad its results, the expression
 \end_layout
 
 \begin_layout Verbatim
-
 ∆CV←{
 \end_layout
 
 \begin_layout Verbatim
-
   x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
-
   w←,[⍳3]⊖⌽[1]0 1 3 2⍉k
 \end_layout
 
 \begin_layout Verbatim
-
   ∆z←⍵×0<a
 \end_layout
 
 \begin_layout Verbatim
-
   ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
-
   ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
 \end_layout
 
 \begin_layout Verbatim
-
   ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -3764,17 +3663,14 @@ This leads to the following code for the forward and backpropagation passes:
 \end_layout
 
 \begin_layout Verbatim
-
 CC←{
 \end_layout
 
 \begin_layout Verbatim
-
   ⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -3783,22 +3679,18 @@ CC←{
 \end_layout
 
 \begin_layout Verbatim
-
 ∆CC←{
 \end_layout
 
 \begin_layout Verbatim
-
   x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z
 \end_layout
 
 \begin_layout Verbatim
-
   (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z
 \end_layout
 
 \begin_layout Verbatim
-
 }   
 \end_layout
 
@@ -3911,17 +3803,14 @@ y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
 \end_layout
 
 \begin_layout Verbatim
-
 MX←{
 \end_layout
 
 \begin_layout Verbatim
-
   ⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -3930,22 +3819,18 @@ MX←{
 \end_layout
 
 \begin_layout Verbatim
-
 ∆MX←{
 \end_layout
 
 \begin_layout Verbatim
-
   x←⍺⊃Z ⋄ ∆z←⍵ 
 \end_layout
 
 \begin_layout Verbatim
-
   y×x=y←(⍴x)↑2⌿2/[1]∆z
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -4153,22 +4038,18 @@ To compute the backpropagation pass, we compute the convolutions on a
 \end_layout
 
 \begin_layout Verbatim
-
 UP←{
 \end_layout
 
 \begin_layout Verbatim
-
   Z[⍺]←⊂⍵
 \end_layout
 
 \begin_layout Verbatim
-
   ,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -4177,27 +4058,22 @@ UP←{
 \end_layout
 
 \begin_layout Verbatim
-
 ∆UP←{
 \end_layout
 
 \begin_layout Verbatim
-
   w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
-
   ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
 \end_layout
 
 \begin_layout Verbatim
-
   ∆x←(,[2+⍳3]cz)+.×⍉⍪w
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -4266,22 +4142,18 @@ Computing the backpropagation is likewise a simplification of the more complex
 \end_layout
 
 \begin_layout Verbatim
-
 C1←{
 \end_layout
 
 \begin_layout Verbatim
-
   Z[⍺]←⊂⍵
 \end_layout
 
 \begin_layout Verbatim
-
   1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -4290,27 +4162,22 @@ C1←{
 \end_layout
 
 \begin_layout Verbatim
-
 ∆C1←{
 \end_layout
 
 \begin_layout Verbatim
-
    w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵
 \end_layout
 
 \begin_layout Verbatim
-
   ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z
 \end_layout
 
 \begin_layout Verbatim
-
   ∆x←∆z+.×⍉w
 \end_layout
 
 \begin_layout Verbatim
-
 } 
 \end_layout
 
@@ -5361,52 +5228,42 @@ Our forward pass function is responsible for initializing an appropriate
 \end_layout
 
 \begin_layout Verbatim
-
 FWD←{
 \end_layout
 
 \begin_layout Verbatim
-
   Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
-
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-
   LA←{
 \end_layout
 
 \begin_layout Verbatim
-
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
-
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -5437,77 +5294,62 @@ The backwards computation mirrors this pattern, except that it proceeds
 \end_layout
 
 \begin_layout Verbatim
-
 BCK←{
 \end_layout
 
 \begin_layout Verbatim
-
   Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
-
   ∆←{
 \end_layout
 
 \begin_layout Verbatim
-
     V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
-
     W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-
   ∆LA←{
 \end_layout
 
 \begin_layout Verbatim
-
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
     d←{(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵}
 \end_layout
 
 \begin_layout Verbatim
-
     c←{(⍺+2)∆CC ⍵}
 \end_layout
 
 \begin_layout Verbatim
-
     u←{(⍺+0)∆CV(⍺+1)∆CV(⍺c⍵)+(⍺+2)∆MX}
 \end_layout
 
 \begin_layout Verbatim
-
     ⍺ u (⍺+6)∇ ⍺ d ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5531,7 +5373,6 @@ literal "false"
 \end_layout
 
 \begin_layout Verbatim
-
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -5567,27 +5408,22 @@ Finally, we wire all of these functions together into a
 \end_layout
 
 \begin_layout Verbatim
-
 RUN←{
 \end_layout
 
 \begin_layout Verbatim
-
   Y∆←FWD ⍺
 \end_layout
 
 \begin_layout Verbatim
-
   Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆
 \end_layout
 
 \begin_layout Verbatim
-
   Y Y∆(Y E Y∆)⊣Y BCK Y∆
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -7185,9 +7021,16 @@ y.
 
 \begin_layout Standard
 Another approach to GPU-based array programming with an APL focus is the
- TAIL/Futhark system, which is a compiler chain taking APL to the TAIL (Typed
- Array Intermediate Language) and then compiling TAIL code using the Futhark
- GPU compiler backend.
+ TAIL/Futhark system 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "futhark"
+literal "false"
+
+\end_inset
+
+, which is a compiler chain taking APL to the TAIL (Typed Array Intermediate
+ Language) and then compiling TAIL code using the Futhark GPU compiler backend.
  While the authors are not aware of any work implementing complex neural
  networks with this chain, it represents an interesting approach to compilation
  of APL via typed intermediate languages, which have the potential to enhance
@@ -7197,9 +7040,24 @@ Another approach to GPU-based array programming with an APL focus is the
 
 \begin_layout Standard
 Other programming environments that are often categorized as array programming
- environments, such as Matlab, Julia, Python/Numpy, are not exceptionally
- performant on their own for machine learning, but often wrap libraries
- to do so.
+ environments, such as Matlab 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "matlab"
+literal "false"
+
+\end_inset
+
+, Julia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "julia"
+literal "false"
+
+\end_inset
+
+, Python/Numpy, are not exceptionally performant on their own for machine
+ learning, but often wrap libraries to do so.
  Unfortunately, many of these languages use a syntax that much more closely
  mirrors that of Python than APL.
  In our perspective, this reduces the value proposition of such languages
@@ -7324,7 +7182,6 @@ backgroundcolor "none"
 status open
 
 \begin_layout Section*
-
 Appendix A: Complete APL U-net implementation
 \end_layout
 
