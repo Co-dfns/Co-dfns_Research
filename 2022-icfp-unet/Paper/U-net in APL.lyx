@@ -263,7 +263,7 @@ from scratch
 
  APL source was on par with the complexity of the PyTorch reference implementati
 on, albeit more foreign, while being more concise and complete.
- We also found that when compiled with Co-dfns, despite the naïve implementation
+ We also found that when compiled with Co-dfns, despite the naive implementation
  both of Co-dfns and our own code, performance on the GPU and the CPU were
  within a factor of 2.2 - 2.4 times that of the PyTorch implementation.
  We believe this suggests significant avenues of future exploration for
@@ -1115,18 +1115,22 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
+
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
+
 3
 \end_layout
 
 \begin_layout Verbatim
+
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
+
 7592
 \end_layout
 
@@ -1156,18 +1160,22 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
+
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
+
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
+
 50 25 10
 \end_layout
 
@@ -1214,18 +1222,22 @@ minus
 \end_layout
 
 \begin_layout Verbatim
+
       (1 ⌈ 5) (10 ⌈ 5) (100 ⌈ 500) (1000 ⌈ 500)
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
+
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
@@ -1344,14 +1356,17 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
+
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
@@ -1420,10 +1435,12 @@ array
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
@@ -1458,26 +1475,32 @@ nested
 \end_layout
 
 \begin_layout Verbatim
+
       array
 \end_layout
 
 \begin_layout Verbatim
+
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
+
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
+
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 └───┴───┴───┘
 \end_layout
 
@@ -1538,26 +1561,32 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
+
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
+
 ¯14
 \end_layout
 
 \begin_layout Verbatim
+
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
 \begin_layout Verbatim
+
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
@@ -1870,42 +1899,52 @@ roll
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← ?2 3⍴0    ⍝ We create an array `mat` with random numbers.
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0.999 0.00424 0.351
 \end_layout
 
 \begin_layout Verbatim
+
 0.967 0.92    0.821
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴mat            ⍝ `mat` has shape 2 3.
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
 \begin_layout Verbatim
+
       ≢⍴mat           ⍝ `mat` has rank (tally of length) 2.
 \end_layout
 
 \begin_layout Verbatim
+
 2
 \end_layout
 
 \begin_layout Verbatim
+
       ,mat            ⍝ `mat` contains the following data:
 \end_layout
 
 \begin_layout Verbatim
+
 0.999 0.00424 0.351 0.967 0.92 0.821
 \end_layout
 
@@ -1956,18 +1995,22 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
+
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
 \begin_layout Verbatim
+
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
@@ -2005,18 +2048,22 @@ sum
 \end_layout
 
 \begin_layout Verbatim
+
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
@@ -2082,34 +2129,42 @@ mat
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
       +/mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 12
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 5 7
 \end_layout
 
@@ -2211,58 +2266,72 @@ statement separator
 \end_layout
 
 \begin_layout Verbatim
+
       X ← 2 3⍴0 0 0 1 10 100 ⋄ Y ← 3 2⍴1 2 3 4 5 6
 \end_layout
 
 \begin_layout Verbatim
+
       X Y
 \end_layout
 
 \begin_layout Verbatim
+
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
+
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
+
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
+
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
+
   0   0
 \end_layout
 
 \begin_layout Verbatim
+
 531 642
 \end_layout
 
 \begin_layout Verbatim
+
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
+
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
+
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
+
 6 60 600
 \end_layout
 
@@ -2315,30 +2384,37 @@ A
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
+
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
+
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
+
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -2408,26 +2484,32 @@ alpha
 \end_layout
 
 \begin_layout Verbatim
+
       vec ← 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
       (+⌿vec)÷≢vec      ⍝ The sum of `vec` divided by its tally.
 \end_layout
 
 \begin_layout Verbatim
+
 1.5
 \end_layout
 
 \begin_layout Verbatim
+
       avg ← {(+⌿⍵)÷≢⍵}  ⍝ The sum of the argument divided by its tally.
 \end_layout
 
 \begin_layout Verbatim
+
       avg vec
 \end_layout
 
 \begin_layout Verbatim
+
 1.5
 \end_layout
 
@@ -2586,8 +2668,16 @@ literal "false"
 
 , stands out as the most obviously aligned with convolutional neural networks.
  The J programming language introduced an alternative implementation of
- the stencil operator earlier (citation), from which Dyalog derived inspiration
- for the implementation of their own stencil operator.
+ the stencil operator earlier 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stencil-in-J"
+literal "false"
+
+\end_inset
+
+, from which Dyalog derived inspiration for the implementation of their
+ own stencil operator.
  
 \end_layout
 
@@ -2811,8 +2901,8 @@ noprefix "false"
 Unfortunately, the above expression has a number of design flaws.
  Firstly, the output has the channel count as the leading axis, while the
  expected input is to have the channel count as the trailing axis.
- This requires that we perform a transpotion of these dimensions after computing
- the convolution in order to return our result to the input format.
+ This requires that we perform a transposition of these dimensions after
+ computing the convolution in order to return our result to the input format.
  Furthermore, the nested structure of the computation results in two primary
  functions of non-primitive complexity, meaning that a more sophisticated
  analysis of this function would be required by a compile-time or run-time
@@ -2825,14 +2915,14 @@ On principle, APL is at its best when it can concisely describe operations
  over large arrays at a time, or large sub-arrays at a time.
  In particular, concise APL expressions are possible when the solution can
  be expressed as a composition of basic APL primitives.
- However, in the case of the Stencil operator, almost all interesting use
+ However, in the case of the stencil operator, almost all interesting use
  cases of the function come from complex, non-simple, non-primitive left
  operands.
  This is further exacerbated by the need to nest the stencil operation in
  an outer rank as above.
  Additionally, the input sizes provided to the left operand of the stencil
  operator are remarkably small, all things considered.
- This guarantees that a naïve implementation of stencil will be inefficient
+ This guarantees that a naive implementation of stencil will be inefficient
  and slow, especially on interpreters.
  
 \end_layout
@@ -2844,9 +2934,17 @@ n.
  this case.
  Idiom recognition has been implemented for the stencil operator, and there
  are a selected number of left operand inputs that are treated specially,
- so that their performance can be enhanced behind the scenes.
+ so that their performance can be enhanced behind the scenes 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+.
  However, because of the complex nature of the left operand inputs, recognizing
- the useful idioms for the Stencil operator is a particularly difficult
+ the useful idioms for the stencil operator is a particularly difficult
  task, and does not scale well to these sorts of problems.
  For instance, while the above stencil operator is considered an idiom,
  the following is not:
@@ -2861,30 +2959,38 @@ n.
 \end_inset
 
 This expression is one way to implement part of the max pooling layers in
- U-net.
+ u-net.
  However, there are many other obvious variations of this expression that
  would also have to be considered for idiom recognition, which would otherwise
  be missed even if this particular expression were handled.
- In the case of the design of the Stencil operator, trying to improve its
+ In the case of the design of the stencil operator, trying to improve its
  performance via idiom recognition or even compiler optimization is a relatively
  significant task.
- It is combinatorial and not-compositional.
+ It is combinatorial and not compositional.
  
 \end_layout
 
 \begin_layout Standard
 The result is that significant amounts of code would have to be implemented
- and maintained in order to support performance enhancements on the Stencil
+ and maintained in order to support performance enhancements on the stencil
  operator, with none of that work benefiting other parts of an APL runtime.
  
 \end_layout
 
 \begin_layout Standard
 We instead propose an alternative that was first suggested to us by the
- late Roger Hui, the Stencil 
+ late Roger Hui, the stencil 
 \emph on
 function
 \emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
 .
  The stencil function is a function whose left argument is the same as the
  right operand of the stencil operator, and which receives the same right
@@ -2914,9 +3020,17 @@ We found that using the stencil function was in fact, not only easier to
 \begin_inset Formula $SF$
 \end_inset
 
- is one, using the stencil function instead of the stencil operator was
- always at least as fast or faster, despite idiom recognition for the more
- complex uses of the stencil operator.
+ is one 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+, using the stencil function instead of the stencil operator was always
+ at least as fast or faster, despite idiom recognition for the more complex
+ uses of the stencil operator.
  
 \end_layout
 
@@ -2951,7 +3065,7 @@ The compositionality of
 \end_layout
 
 \begin_layout Standard
-To explore this further, a naïve implementation of the stencil function
+To explore this further, a naive implementation of the stencil function
  that did not pad its results was implemented in Co-dfns and used in the
  following implementations.
  In the following sections, we use 
@@ -3019,7 +3133,7 @@ name "subsec:Neural-Network-Vocabulary"
 \end_layout
 
 \begin_layout Standard
-The original U-net paper uses five distinct operations to describe the network
+The original u-net paper uses five distinct operations to describe the network
  (see 
 \begin_inset CommandInset ref
 LatexCommand formatted
@@ -3034,7 +3148,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Enumerate
-A 3×3 convolution with a RelU activation function is used as the primary
+A 3×3 convolution with a ReLU activation function is used as the primary
  operation
 \end_layout
 
@@ -3056,7 +3170,7 @@ down
 \end_layout
 
 \begin_layout Enumerate
-A 2×2 up-sampling convolution goes back 
+A 2×2 transposed convolution goes back 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3080,11 +3194,11 @@ In our implementation, we mirror this vocabulary by implementing the forward
 \end_layout
 
 \begin_layout Subsubsection
-Convolution (3×3) with Relu
+Convolution (3×3) with ReLU
 \end_layout
 
 \begin_layout Standard
-The primary U-net convolutional layer is a 3×3 convolution with a RelU activatio
+The primary u-net convolutional layer is a 3×3 convolution with a ReLU activatio
 n function.
  The convolution in the paper uses 
 \begin_inset Quotes eld
@@ -3187,7 +3301,7 @@ trailing
 \end_inset
 
 .
- In the case of a U-net layer, we have input kernels of shape 
+ In the case of a u-net layer, we have input kernels of shape 
 \begin_inset Formula $3\,3\,I\,O$
 \end_inset
 
@@ -3227,7 +3341,7 @@ CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\io
 
 \end_inset
 
-We include the RelU function 
+We include the ReLU function 
 \begin_inset Formula $0⌈\omega$
 \end_inset
 
@@ -3240,7 +3354,7 @@ We include the RelU function
 \begin_inset Formula $\omega$
 \end_inset
 
- with it's 3 trailing dimensions collapsed into a single dimension.
+ with its 3 trailing dimensions collapsed into a single dimension.
  We write 
 \begin_inset Formula $,[\iota3]\omega$
 \end_inset
@@ -3249,27 +3363,32 @@ We include the RelU function
 \begin_inset Formula $\omega$
 \end_inset
 
- with it's leading 3 dimensions likewise collapsed.
- In APL, the Inner Product operator generalizes matrix multiplication, but
- we use the standard form here and write 
-\begin_inset Formula $\alpha\mathnormal{+.×}\omega$
+ with its leading 3 dimensions likewise collapsed.
+ In 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Operators"
+plural "false"
+caps "false"
+noprefix "false"
+
 \end_inset
 
- to indicate the matrix multiplication between 
-\begin_inset Formula $\omega$
+ we presented 
+\begin_inset Formula $+.×$
 \end_inset
 
- and 
-\begin_inset Formula $\omega$
+ as the matrix product form of the operator inner product, and in 
+\begin_inset Formula $CV$
 \end_inset
 
- extended to arbitrary ranked arrays.
+ we use its extension to arrays of arbitrary rank.
 \end_layout
 
 \begin_layout Standard
-Inside of the U-net architecture itself, we want to save the output of the
- convolution and the input to facilitate back propagation, and we obtain
- our kernels from a single source containing all network kernels.
+Inside of the u-net architecture itself, we want to save the output of the
+ convolution and the input to facilitate the backpropagation pass, and we
+ obtain our kernels from a single source containing all network kernels.
  This results in the following source code implementation of 
 \begin_inset Formula $CV$
 \end_inset
@@ -3288,6 +3407,7 @@ Inside of the U-net architecture itself, we want to save the output of the
 \end_layout
 
 \begin_layout Verbatim
+
 CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
 \end_layout
 
@@ -3309,7 +3429,7 @@ Computing the backpropagation uses very similar approaches.
 \begin_inset Formula $\alpha$
 \end_inset
 
-, and incoming gradient (?) 
+, and the gradient backpropagated so far 
 \begin_inset Formula $\omega$
 \end_inset
 
@@ -3374,8 +3494,8 @@ Since our stencil function does not pad its results, the expression
 \begin_inset Formula $\obar[1]$
 \end_inset
 
- rotate an array along the 
-\begin_inset Formula $1th$
+ rotates an array along the 
+\begin_inset Formula $1st$
 \end_inset
 
  dimension while 
@@ -3391,26 +3511,32 @@ Since our stencil function does not pad its results, the expression
 \end_layout
 
 \begin_layout Verbatim
+
 ∆CV←{x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
+
   w←,[⍳3]⊖⌽[1]0 1 3 2⍉k
 \end_layout
 
 \begin_layout Verbatim
+
   ∆z←⍵×0<a
 \end_layout
 
 \begin_layout Verbatim
+
   ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
+
   ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3 SF x
 \end_layout
 
 \begin_layout Verbatim
+
   ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z}
 \end_layout
 
@@ -3442,7 +3568,7 @@ Copy and Crop
 
 \begin_layout Standard
 Conceptually, the copy and crop operation is the simplest of the functions
- in U-net.
+ in u-net.
  Its sole job is to take the output from one side of the U-shaped net and
  move it over to the other side, adjusting the dimensions to ensure that
  it fits.
@@ -3516,7 +3642,7 @@ CC & ← & \{((⌊p)↓(-⌈p)↓\alpha⊣p←((\rho\alpha)-\rho\omega)÷2),\ome
 For dimensions that are not evenly divisible by two, we choose to round
  up on the right and bottom sides and round down on the left and upper sides
  of the layer.
- Computing the back propagation of 
+ Computing the backpropagation of 
 \begin_inset Formula $CC$
 \end_inset
 
@@ -3530,7 +3656,7 @@ For dimensions that are not evenly divisible by two, we choose to round
 
  simply reverses this operation and expands the shape back to the original
  input size.
- This result is then added to the appropriate layer in the U-net architecture
+ This result is then added to the appropriate layer in the u-net architecture
  described in 
 \begin_inset CommandInset ref
 LatexCommand formatted
@@ -3554,15 +3680,16 @@ n\,m & ← & -⌊(2↑(\rho\alpha)-\rho\omega)÷2\nonumber \\
 
 \end_inset
 
-This leads to the following code for the forward and backwards propagation
- passes:
+This leads to the following code for the forward and backpropagation passes:
 \end_layout
 
 \begin_layout Verbatim
+
 CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 \end_layout
 
 \begin_layout Verbatim
+
 ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}   
 \end_layout
 
@@ -3603,17 +3730,17 @@ Max pooling is a shrinking convolution that computes the maximum value in
 \begin_inset Formula $(2\,2\rho2)\texttt{⌺}\omega$
 \end_inset
 
- is an rank 5 array of shape 
+ is a rank 5 array of shape 
 \begin_inset Formula $(N÷2)(M÷2)2\,2\,C$
 \end_inset
 
 .
  We then collapse the 
-\begin_inset Formula $2th$
+\begin_inset Formula $2nd$
 \end_inset
 
  and 
-\begin_inset Formula $3th$
+\begin_inset Formula $3rd$
 \end_inset
 
  dimensions to form an array of shape 
@@ -3621,7 +3748,7 @@ Max pooling is a shrinking convolution that computes the maximum value in
 \end_inset
 
  and subsequently find the maximum value for each vector along the 
-\begin_inset Formula $2th$
+\begin_inset Formula $2nd$
 \end_inset
 
  dimension, resulting in an array of shape 
@@ -3632,8 +3759,8 @@ Max pooling is a shrinking convolution that computes the maximum value in
 \end_layout
 
 \begin_layout Standard
-Computing the back propagation of this involves replicating each of the
- stencil dimensions, which are the two leading axes in our implementation.
+Computing the backpropagation of this involves replicating each of the stencil
+ dimensions, which are the two leading axes in our implementation.
  We write 
 \begin_inset Formula $n⌿A$
 \end_inset
@@ -3642,13 +3769,17 @@ Computing the back propagation of this involves replicating each of the
 \begin_inset Formula $n/[1]A$
 \end_inset
 
- to indicate the array A with each element duplicated or repeated along
- the first and second axes, respectively, 
+ to indicate the array 
+\begin_inset Formula $A$
+\end_inset
+
+ with each element duplicated or repeated along the first and second axes,
+ respectively, 
 \begin_inset Formula $n$
 \end_inset
 
  times.
- Given input 
+ Given an input 
 \begin_inset Formula $\alpha$
 \end_inset
 
@@ -3656,7 +3787,7 @@ Computing the back propagation of this involves replicating each of the
 \begin_inset Formula $\omega$
 \end_inset
 
- the following expression computes the back propagation:
+ the following expression computes the backpropagation:
 \end_layout
 
 \begin_layout Standard
@@ -3671,27 +3802,30 @@ y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
 \end_layout
 
 \begin_layout Verbatim
+
 MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
+
 ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
 \end_layout
 
 \begin_layout Subsubsection
-Up-convolution
+Transposed convolution (2×2)
 \end_layout
 
 \begin_layout Standard
-In the initial exploration of this implementation, the up-sampling convolution
- computation proved to be the most subtle and challenging, mostly in part
- to the opaqueness of implementations.
- The U-net paper was not immediately transparent regarding the exact operations
+In the initial exploration of this implementation, the upsampling computation
+ with convolution proved to be the most subtle and challenging, mostly in
+ part to the opaqueness of implementations.
+ The u-net paper was not immediately transparent regarding the exact operations
  used for this layer and there were a number of potential design decisions
  that could have been made.
- Moreover, for users reading about up-sampling convolutions, the descriptions
- are also the furthest removed from a reasonable implementation of the same.
- However, once the intuition of how an up-sampling convolution matches the
+ Moreover, for users reading about upsampling through convolutions, the
+ descriptions are also the furthest removed from a reasonable implementation
+ of the same.
+ However, once the intuition of how an upsampling convolution matches the
  shape and form of a non-overlapping sliding window in the output layer,
  expressed via the simple expression 
 \begin_inset Formula $K⊂\texttt{⍤}\times\texttt{⍤}2\,0⊢A$
@@ -3733,7 +3867,7 @@ For this convolution, we change the anticipated kernel shape from that used
 \begin_inset Formula $3\,3\,I\,O$
 \end_inset
 
-, for up convolutions we expect kernels of shape 
+, our transposed convolutions expect kernels of shape 
 \begin_inset Formula $I\,2\,2\,O$
 \end_inset
 
@@ -3750,7 +3884,7 @@ For this convolution, we change the anticipated kernel shape from that used
 \begin_inset Formula $N\,M\,I$
 \end_inset
 
-, this gives the following definition for the forward up convolution:
+, this gives the following definition for the upsampling pass.:
 \end_layout
 
 \begin_layout Standard
@@ -3821,7 +3955,7 @@ The key change here from the reliance on
 \end_inset
 
 .
- So, given targeting array 
+ So, given a targeting array 
 \begin_inset Formula $0\,2\,1\,3\,4$
 \end_inset
 
@@ -3856,7 +3990,7 @@ The key change here from the reliance on
 \end_layout
 
 \begin_layout Standard
-To compute the back propagation, we compute the convolutions on a 
+To compute the backpropagation pass, we compute the convolutions on a 
 \begin_inset Formula $2\times2$
 \end_inset
 
@@ -3877,22 +4011,26 @@ To compute the back propagation, we compute the convolutions on a
 
 \end_inset
 
- This gives the following source implementations for up-sampling convolutions:
+ This gives the following source implementations for transposed convolutions:
 \end_layout
 
 \begin_layout Verbatim
+
 UP←{,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
+
 ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
+
   ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
 \end_layout
 
 \begin_layout Verbatim
+
   ∆x←(,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
@@ -3940,8 +4078,8 @@ Additionally, the paper describes using a soft-max layer, which we include
 \end_layout
 
 \begin_layout Standard
-Computing the back propagation is likewise a simplification of the more
- complex 
+Computing the backpropagation is likewise a simplification of the more complex
+ 
 \begin_inset Formula $CV$
 \end_inset
 
@@ -3961,10 +4099,12 @@ Computing the back propagation is likewise a simplification of the more
 \end_layout
 
 \begin_layout Verbatim
+
 C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
 ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w} 
 \end_layout
 
@@ -4870,7 +5010,7 @@ Upward Pass
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-A rectangular arrangement of the U-net network
+A rectangular arrangement of the u-net network
 \begin_inset CommandInset label
 LatexCommand label
 name "tab:A-rectangular-arrangement"
@@ -4897,7 +5037,7 @@ noprefix "false"
 
 \end_inset
 
-, the remaining challenge with implementing U-net is to link together the
+, the remaining challenge with implementing u-net is to link together the
  appropriate layers and compositions to form the complete network as described
  by 
 \begin_inset CommandInset ref
@@ -4910,7 +5050,7 @@ noprefix "false"
 \end_inset
 
 .
- To do this, we observe that the structure of the U-net diagram is an almost
+ To do this, we observe that the structure of the u-net diagram is an almost
  symmetric pattern.
  The output layer computations form 3 operations which are not part of the
  pattern, but the rest of the pattern decomposes into 4 depths, each with
@@ -4958,7 +5098,7 @@ downward pass
 
  operations before recuring deeper into the network and finally computing
  the upwards passes on the return of its recursive call.
- We likewise implement back propagation in same way, but in the opposite
+ We likewise implement backpropagation in same way, but in the opposite
  direction.
  Assuming that 
 \begin_inset Formula $\alpha$
@@ -4991,9 +5131,9 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-Our forward propagation function is responsible for initializing an appropriate
- holding place for the intermediate layers produced by forward propagation
- for use by the backwards propagation function.
+Our forward pass function is responsible for initializing an appropriate
+ holding place for the intermediate results produced by forward propagation
+ for use by the backpropagation function.
  Additionally, after the recursive computation, there are the final three
  operations, 
 \begin_inset Formula $C1$
@@ -5015,26 +5155,32 @@ Our forward propagation function is responsible for initializing an appropriate
 \end_layout
 
 \begin_layout Verbatim
+
 FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
 \end_layout
 
 \begin_layout Verbatim
+
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
@@ -5065,30 +5211,37 @@ The backwards computation mirrors this pattern, except that it proceeds
 \end_layout
 
 \begin_layout Verbatim
+
 BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
   ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   ∆LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
 \end_layout
 
 \begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5099,7 +5252,7 @@ We also need to compute an error over the soft-max computed by
 
 .
  This is given by the following function, which is based off of the error
- function given in the original U-net paper by 
+ function given in the original u-net paper by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "unet"
@@ -5112,6 +5265,7 @@ literal "false"
 \end_layout
 
 \begin_layout Verbatim
+
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -5120,8 +5274,8 @@ Finally, we wire all of these functions together into a
 \begin_inset Formula $RUN$
 \end_inset
 
- function that runs the forwards and backwards functions and returns three
- values, the expected inputs 
+ function that runs the forward pass and backward pass functions and returns
+ three values, the expected inputs 
 \begin_inset Formula $Y$
 \end_inset
 
@@ -5147,6 +5301,7 @@ Finally, we wire all of these functions together into a
 \end_layout
 
 \begin_layout Verbatim
+
 RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 \end_layout
 
@@ -5192,9 +5347,16 @@ name "fig:Performance-results-for"
 \end_inset
 
 To examine the performance profile of our APL implementation, we primarily
- focused on comparing our U-net implementation against a reference implemented
- in PyTorch (citation), which is an easy to use Python framework with good
- performance.
+ focused on comparing our u-net implementation against a reference implemented
+ in PyTorch 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+, which is an easy to use Python framework with good performance.
  In addition to this primary performance analysis, we examined the performance
  of two varieties of stencil computations within the APL language.
  We also make note of some small exploratory effects that we discovered
@@ -6240,7 +6402,7 @@ Raw timings for each computing platform in seconds
 \end_inset
 
 We were primarily interested in the costs of executing a single run of the
- U-net over a single image source in both the forwards and backwards directions.
+ u-net over a single image source in both the forwards and backwards directions.
  We compared performance over the following platforms:
 \end_layout
 
@@ -6301,7 +6463,15 @@ The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
 
 \begin_layout Standard
 As input we used the original image data from the ISBI benchmark referenced
- in the U-net paper (citations).
+ in the u-net paper 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet,isbi-data"
+literal "false"
+
+\end_inset
+
+.
  These images are 
 \begin_inset Formula $512\times512$
 \end_inset
@@ -6348,7 +6518,7 @@ Examining the data, it is clear why traditional APL implementations were
 \end_layout
 
 \begin_layout Standard
-When acceleration techniques are imployed, the differences in execution
+When acceleration techniques are employed, the differences in execution
  speed begin to shrink, with PyTorch's multi-threaded and GPU-based implementati
 ons coming in fasted, and Co-dfns' GPU backend running at roughly 2.4 times
  slower than the PyTorch GPU execution.
@@ -6576,7 +6746,7 @@ Microbenchmarks against other libraries
 \end_layout
 
 \begin_layout Standard
-It is worth noting that we also explored optimizing our U-net with specialized
+It is worth noting that we also explored optimizing our u-net with specialized
  functions available via the Co-dfns platform (specific max filters and
  convolutions) that are domain-specific operations much like those available
  in PyTorch.
@@ -6605,7 +6775,7 @@ slower
  than our naive implementations in our primary sample inputs.
  Given that the underlying specialized functions are supposed to wrap the
  CuDNN library (citation), it is surprising that we achieved faster results
- with the naive Stencil function implementation over the domain specific
+ with the naive stencil function implementation over the domain specific
  implementations available within the general purpose array libraries leveraged
  by Co-dfns.
  
@@ -6656,14 +6826,14 @@ However, it has been argued (citation) that APL has two distinct advantages
  to many other programming domains, whereas in a more domain-specific, library-c
 entric approach, learning the particular API for one domain often does not
  transfer any skills beyond that domain directly.
- In the case of U-net, all of the operations used to build the U-net system
+ In the case of u-net, all of the operations used to build the u-net system
  are general array programming concepts that are widely applicable to many
  other domains, and are not restricted solely to convolutional neural networks.
  
 \end_layout
 
 \begin_layout Standard
-Second, a transparent and direction implementation of U-net in APL is somewhat
+Second, a transparent and direction implementation of u-net in APL is somewhat
  uniquely compact and simple, making it much easier to not only delve deeper
  into the CNN domain, but also to make adjustments and modifications to
  taste as one becomes more experienced.
@@ -6719,7 +6889,7 @@ Given that almost zero special optimization is taking place for the APL
  In more complex applications that leverage APL for other domain-intensive
  work, this suggests that APL might facilitate scaling such applications
  to integrate machine learning algorithms more easily and with less programmer
- effort than might be required to integrate a separate framework like Python.
+ effort than might be required to integrate a separate framework like PyTorch.
  
 \end_layout
 
@@ -6729,8 +6899,8 @@ Stencil Operator
 
 \begin_layout Standard
 The results we found regarding stencil operator performance vs.
- stencil function performance suggests to use that companies like Dyalog
- or implementors of Co-dfns should focus on implementing and improving the
+ stencil function performance suggest to us that companies like Dyalog or
+ implementors of Co-dfns should focus on implementing and improving the
  performance of a stencil function instead of continuing with the use of
  a stencil operator, which suffers from a number of design issues that makes
  it incongruous with the rest of an otherwise elegantly designed language.
@@ -6753,7 +6923,7 @@ APL vs.
 
 \begin_layout Standard
 We have demonstrated that APL itself, without libraries or additional dependenci
-es is exceptionally well suited to expressing neural network computations,
+es, is exceptionally well suited to expressing neural network computations,
  at a level of inherent complexity that is arguably equal or possibly even
  less than that of the reference PyTorch implementation.
  At the very least, it is less code with less underlying background code
@@ -6812,7 +6982,7 @@ We encountered significant difficulties in identifying exactly what the
 \end_layout
 
 \begin_layout Standard
-Finally, in the implementation of U-net in APL, we gained insights into
+Finally, in the implementation of u-net in APL, we gained insights into
  the architecture that had a direct and material influence on the PyTorch
  reference implementation that would not have emerged without first having
  studied the APL implementation.
@@ -6835,7 +7005,7 @@ literal "false"
 
 \end_inset
 
- have explored alternative implementations to CNNs, though not U-net specificall
+ have explored alternative implementations to CNNs, though not u-net specificall
 y.
  They focused specifically on APL as a productivity enhancement for CNN
  development, and only benchmarked the APL implementation on the CPU using
@@ -6853,7 +7023,7 @@ y.
 \begin_layout Standard
 Another approach to GPU-based array programming with an APL focus is the
  TAIL/Futhark system, which is a compiler chain taking APL to the TAIL (Typed
- Array Intermediate Language) and then compiler TAIL code using the Futhark
+ Array Intermediate Language) and then compiling TAIL code using the Futhark
  GPU compiler backend.
  While the authors are not aware of any work implementing complex neural
  networks with this chain, it represents an interesting approach to compilation
@@ -6904,7 +7074,7 @@ Additionally, we would like to explore the potential of using such systems
  machine learning concepts.
  There are still some challenges to recommending this approach at scale
  for a large number of educational institutions, but we believe work on
- exploring the pedagogical benefits of APL warrants further exploration
+ understanding the pedagogical benefits of APL warrants further research
  in addition to exploring APL in the professional space.
  
 \end_layout
@@ -6918,11 +7088,11 @@ Given the notational advantages of APL and the concision and clarity of
  expression that one can obtain, we explored the potential impact of using
  APL as a language for implementing convolutional neural networks of reasonable
  complexity.
- We found, though the traditional implementations of APL suffer from performance
- issues that would prevent widespread use in either academic, educational,
- or industrial contexts, that compilers such as Co-dfns are capable of compiling
- complete neural network programs (in our case, the U-net architecture)
- and producing much more competitive performance results (within a factor
+ We found that, though the traditional implementations of APL suffer from
+ performance issues that would prevent widespread use in either academic,
+ educational, or industrial contexts, compilers such as Co-dfns are capable
+ of compiling complete neural network programs (in our case, the u-net architect
+ure) and producing much more competitive performance results (within a factor
  of 2.2 - 2.4 times of our reference PyTorch implementation).
  This is despite the naive nature of our implementation and the naive optimizati
 on support for neural networks on the part of the Co-dfns compiler.
@@ -6930,7 +7100,7 @@ on support for neural networks on the part of the Co-dfns compiler.
 \end_layout
 
 \begin_layout Standard
-Furthermore, we found that our effort to implement U-net in APL resulted
+Furthermore, we found that our effort to implement u-net in APL resulted
  in a concise but fully unambiguous implementation that provided transparency
  over the entire source, without any frameworks or library dependencies.
  Despite being a complete 
@@ -6945,66 +7115,10 @@ by hand
  and other specialized frameworks, or even better, particularly in cases
  where more exploration and novel implementation is required, or when customized
  integrations may be called for.
- The insights that we gained from implementing U-net in APL affected our
+ The insights that we gained from implementing u-net in APL affected our
  implementation of a reference implementation in PyTorch directly, suggesting
  that APL may have significant pedagogical advantages for teaching neural
  network programming and machine learning in general.
- 
-\end_layout
-
-\begin_layout Acknowledgments
-The authors would like to acknowledge the Cell Tracking Challenge
-\begin_inset CommandInset citation
-LatexCommand citep
-key "data-source-ctc"
-literal "false"
-
-\end_inset
-
- as the data source
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-http://celltrackingchallenge.net/2d-datasets/
-\end_layout
-
-\end_inset
-
- and the data providers that granted permission for their datasets to be
- used:
-\end_layout
-
-\begin_layout Itemize
-the glioblastoma-astrocytoma U373 cells on a polyacrylamide substrate dataset
- was provided by Dr.
- S.
- Kumar from the Department of Bioengineering
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-https://bioeng.berkeley.edu/
-\end_layout
-
-\end_inset
-
-, University of California at Berkeley, Berkeley CA (USA); and
-\end_layout
-
-\begin_layout Itemize
-the HeLa cells on a flat glass dataset was provided by Dr G.
- van Cappellen from the Erasmus Medical Center
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-https://erasmusoic.nl/
-\end_layout
-
-\end_inset
-
-, Rotterdam, The Netherlands.
 \end_layout
 
 \begin_layout Standard
