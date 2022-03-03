@@ -3889,10 +3889,6 @@ name "subsec:U-net-Architecture"
 
 \end_layout
 
-\begin_layout Subsubsection
-Basic Strategy
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float table
 wide false
@@ -3901,14 +3897,15 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="8">
+<lyxtabular version="3" rows="7" columns="9">
 <features booktabs="true" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0pt">
 <column alignment="right" valignment="top">
 <column alignment="right" valignment="top">
 <column alignment="right" valignment="top">
+<column alignment="left" valignment="top">
 <column alignment="right" valignment="top">
-<column alignment="right" valignment="top">
+<column alignment="right" valignment="top" width="0pt">
 <column alignment="right" valignment="top">
 <column alignment="right" valignment="top">
 <row>
@@ -3930,13 +3927,22 @@ status open
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+<cell multicolumn="1" alignment="center" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 
 \noun on
 Operation
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -4030,13 +4036,22 @@ Operation
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 \begin_inset Formula $MX$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4131,7 +4146,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4146,6 +4161,15 @@ Depth
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4237,7 +4261,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4252,6 +4276,15 @@ Depth
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4343,7 +4376,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4358,6 +4391,15 @@ Depth
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4449,7 +4491,7 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="right" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4463,7 +4505,16 @@ Depth
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4554,6 +4605,15 @@ Downward Pass
 
 \end_inset
 </cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
 <cell multicolumn="1" alignment="center" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
@@ -4593,6 +4653,13 @@ Upward Pass
 
 \begin_layout Plain Layout
 A rectangular arrangement of the U-net network
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:A-rectangular-arrangement"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4631,10 +4698,102 @@ noprefix "false"
  pattern, but the rest of the pattern decomposes into 4 depths, each with
  6 operations each.
  
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ contains a visual arrangement of the kernel shapes used in our architecture
+ mirroring the overall structure of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
 \end_layout
 
-\begin_layout Subsubsection
-Forward Propagation
+\begin_layout Standard
+Additionally, we note that the U-shaped structure also mimicks the down
+ and up nature of a recursive program call-tree.
+ Thus, our overall strategy is to implement a recursive function 
+\begin_inset Formula $LA$
+\end_inset
+
+ that receives an index identifying a particular depth of the network, computes
+ the appropriate 
+\begin_inset Quotes eld
+\end_inset
+
+downward pass
+\begin_inset Quotes erd
+\end_inset
+
+ operations before recuring deeper into the network and finally computing
+ the upwards passes on the return of its recursive call.
+ We likewise implement back propagation in same way, but in the opposite
+ direction.
+ Assuming that 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ contains the computed depth offset for the network layer, we write 
+\begin_inset Formula $\alpha+i$
+\end_inset
+
+ to access the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of the network described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at the depth 
+\begin_inset Formula $\alpha\div6$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Our forward propagation function is responsible for initializing an appropriate
+ holding place for the intermediate layers produced by forward propagation
+ for use by the backwards propagation function.
+ Additionally, after the recursive computation, there are the final three
+ operations, 
+\begin_inset Formula $C1$
+\end_inset
+
+ and two 
+\begin_inset Formula $CV$
+\end_inset
+
+ operations, that must be called before returning.
+ We also assume that we may receive a rank 2 matrix instead of a rank 3
+ layer as input, and so we reshape the input to ensure that we always have
+ a rank 3 input to 
+\begin_inset Formula $LA$
+\end_inset
+
+.
+ This gives us the following function definition:
 \end_layout
 
 \begin_layout Verbatim
@@ -4661,12 +4820,30 @@ FWD←{Z⊢←(≢W)⍴⊂⍬
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
-\begin_layout Verbatim
+\begin_layout Standard
+The backwards computation mirrors this pattern, except that it proceeds
+ in the opposite direction and also defines an updater function 
+\begin_inset Formula $\Delta$
+\end_inset
 
-\end_layout
+ that will update the network weights in 
+\begin_inset Formula $W$
+\end_inset
 
-\begin_layout Subsubsection
-Backwards Propagation
+ and the velocities in 
+\begin_inset Formula $V$
+\end_inset
+
+ based on a given gradient 
+\begin_inset Formula $\omega$
+\end_inset
+
+ and index 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ pointing to a specific location in the network.
+ 
 \end_layout
 
 \begin_layout Verbatim
@@ -4697,16 +4874,58 @@ BCK←{Y←⍺ ⋄ Y∆←⍵
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
-\begin_layout Subsubsection
-Error computation
+\begin_layout Standard
+We also need to compute an error over the soft-max computed by 
+\begin_inset Formula $FWD$
+\end_inset
+
+.
+ This is given by the following function, which is based off of the error
+ function given in the original U-net paper by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "unet"
+literal "false"
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Verbatim
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
-\begin_layout Subsubsection
-Running a training iteration
+\begin_layout Standard
+Finally, we wire all of these functions together into a 
+\begin_inset Formula $RUN$
+\end_inset
+
+ function that runs the forwards and backwards functions and returns three
+ values, the expected inputs 
+\begin_inset Formula $Y$
+\end_inset
+
+, the computed results 
+\begin_inset Formula $Y\Delta$
+\end_inset
+
+ from 
+\begin_inset Formula $FWD$
+\end_inset
+
+, and the error given by 
+\begin_inset Formula $Y\,E\,Y\Delta$
+\end_inset
+
+.
+ We reshape the original reference input to match the size of 
+\begin_inset Formula $Y\Delta$
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Verbatim
