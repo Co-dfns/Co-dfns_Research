@@ -384,8 +384,15 @@ Despite the above potential issues, specialist frameworks have proven highly
  seen a resurgence, and naturally, they have been examined in the light
  of machine learning.
  Such languages were also popular during early exploration of neural network
- programming during the 1980's (citation needed), but performance issues
- of then-current hardware prevented further progression.
+ programming during the 20th century 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "alfonseca-1990-aplnn"
+literal "false"
+
+\end_inset
+
+, but performance issues of then-current hardware prevented further progression.
 \end_layout
 
 \begin_layout Standard
@@ -408,8 +415,15 @@ literal "false"
 
 \begin_layout Standard
 The long history of APL, its origins as an pedagogical tool, and its reputation
- for directness of algorithmic expression (cite knuth) help to address some
- of the concerns above.
+ for directness of algorithmic expression 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "knuth2007computer"
+literal "false"
+
+\end_inset
+
+ help to address some of the concerns above.
  Furthermore, it is one of the most linguistically stable languages, while
  also being exceptionally high level and high performance at the same time
  
@@ -431,10 +445,17 @@ While the above advantages might suggest APL as a terrific tool for machine
  learning, unfortunately, the vast majority of implementations have been
  for the CPU only, and those have usually been entirely interpreted.
  Traditionally, compiler implementors have considered APL a challenging
- language to compile (cite), but recent innovations to the language (particularl
-y those with a functional programming focus) have made compilation much
- more tractable, and the Co-dfns compiler now exists as an APL implementation
- with native GPU support 
+ language to compile 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+, but recent innovations to the language (particularly those with a functional
+ programming focus) have made compilation much more tractable, and the Co-dfns
+ compiler now exists as an APL implementation with native GPU support 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "hsu2019data"
@@ -544,7 +565,7 @@ In this section, we provide the relevant background pertaining to the machine
 \end_layout
 
 \begin_layout Subsection
-Convolutional neural networks
+Convolutional Neural Networks
 \end_layout
 
 \begin_layout Standard
@@ -737,7 +758,7 @@ ed.
 \end_layout
 
 \begin_layout Subsection
-Original u-net architecture
+Original U-net Architecture
 \end_layout
 
 \begin_layout Standard
@@ -1014,7 +1035,7 @@ To compute the loss of the output with respect to the expected labels, we
 \end_layout
 
 \begin_layout Subsection
-APL notation
+APL Notation
 \end_layout
 
 \begin_layout Standard
@@ -1096,7 +1117,7 @@ https://dyalog.com/download-zone.htm
 \end_layout
 
 \begin_layout Subsubsection
-Functions and arrays
+Functions and Arrays
 \end_layout
 
 \begin_layout Standard
@@ -1115,18 +1136,22 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
+
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
+
 3
 \end_layout
 
 \begin_layout Verbatim
+
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
+
 7592
 \end_layout
 
@@ -1156,18 +1181,22 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
+
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
+
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
+
 50 25 10
 \end_layout
 
@@ -1214,18 +1243,22 @@ minus
 \end_layout
 
 \begin_layout Verbatim
-      (1 ⌈ 5) (10 ⌈ 5) (100 ⌈ 500) (1000 ⌈ 500)
+
+      (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
+
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
@@ -1344,14 +1377,17 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
+
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
@@ -1420,10 +1456,12 @@ array
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
@@ -1458,26 +1496,32 @@ nested
 \end_layout
 
 \begin_layout Verbatim
+
       array
 \end_layout
 
 \begin_layout Verbatim
+
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
+
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
+
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 └───┴───┴───┘
 \end_layout
 
@@ -1538,26 +1582,32 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
+
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
+
 ¯14
 \end_layout
 
 \begin_layout Verbatim
+
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
 \begin_layout Verbatim
+
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
@@ -1603,7 +1653,7 @@ one, negative two
 \end_layout
 
 \begin_layout Subsubsection
-Shape, rank, data
+Shape, Rank, Data
 \end_layout
 
 \begin_layout Standard
@@ -1871,42 +1921,72 @@ roll
 \end_layout
 
 \begin_layout Verbatim
-      mat ← ?2 3⍴0    ⍝ We create an array `mat` with random numbers.
+
+      ⍝ Create random array mat
 \end_layout
 
 \begin_layout Verbatim
+
+      mat ← ?2 3⍴0    
+\end_layout
+
+\begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0.999 0.00424 0.351
 \end_layout
 
 \begin_layout Verbatim
+
 0.967 0.92    0.821
 \end_layout
 
 \begin_layout Verbatim
-      ⍴mat            ⍝ `mat` has shape 2 3.
+
+      ⍝ mat has shape 2 3.
 \end_layout
 
 \begin_layout Verbatim
+
+      ⍴mat            
+\end_layout
+
+\begin_layout Verbatim
+
 2 3
 \end_layout
 
 \begin_layout Verbatim
-      ≢⍴mat           ⍝ `mat` has rank (tally of length) 2.
+
+      ⍝ mat has rank (tally shape) 2
 \end_layout
 
 \begin_layout Verbatim
+
+      ≢⍴mat           
+\end_layout
+
+\begin_layout Verbatim
+
 2
 \end_layout
 
 \begin_layout Verbatim
-      ,mat            ⍝ `mat` contains the following data:
+
+      ⍝ mat contains this data:
 \end_layout
 
 \begin_layout Verbatim
+
+      ,mat            
+\end_layout
+
+\begin_layout Verbatim
+
 0.999 0.00424 0.351 0.967 0.92 0.821
 \end_layout
 
@@ -1957,18 +2037,22 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
+
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
 \begin_layout Verbatim
+
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
@@ -2006,18 +2090,22 @@ sum
 \end_layout
 
 \begin_layout Verbatim
+
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
@@ -2083,34 +2171,42 @@ mat
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
       +/mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 12
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 5 7
 \end_layout
 
@@ -2200,70 +2296,81 @@ in all its generality is outside the scope of this paper.
 \emph on
 matrix product
 \emph default
- below, with the help of the 
-\emph on
-statement separator
-\emph default
- 
-\family typewriter
-⋄
-\family default
- to create two matrices:
+ below:
 \end_layout
 
 \begin_layout Verbatim
-      X ← 2 3⍴0 0 0 1 10 100 ⋄ Y ← 3 2⍴1 2 3 4 5 6
+
+      X ← 2 3⍴0 0 0 1 10 100
 \end_layout
 
 \begin_layout Verbatim
+
+      Y ← 3 2⍴1 2 3 4 5 6
+\end_layout
+
+\begin_layout Verbatim
+
       X Y
 \end_layout
 
 \begin_layout Verbatim
+
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
+
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
+
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
+
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
+
   0   0
 \end_layout
 
 \begin_layout Verbatim
+
 531 642
 \end_layout
 
 \begin_layout Verbatim
+
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
+
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
+
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
+
 6 60 600
 \end_layout
 
@@ -2316,30 +2423,37 @@ A
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
+
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
+
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
+
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -2373,7 +2487,7 @@ mat
 \end_layout
 
 \begin_layout Subsubsection
-User-defined functions and operators
+User-defined Functions and Operators
 \end_layout
 
 \begin_layout Standard
@@ -2409,26 +2523,42 @@ alpha
 \end_layout
 
 \begin_layout Verbatim
+
       vec ← 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-      (+⌿vec)÷≢vec      ⍝ The sum of `vec` divided by its tally.
+
+      ⍝ Sum of vec divided by its tally
 \end_layout
 
 \begin_layout Verbatim
+
+      (+⌿vec)÷≢vec      
+\end_layout
+
+\begin_layout Verbatim
+
 1.5
 \end_layout
 
 \begin_layout Verbatim
-      avg ← {(+⌿⍵)÷≢⍵}  ⍝ The sum of the argument divided by its tally.
+
+      ⍝ Sum of arg divided by its tally
 \end_layout
 
 \begin_layout Verbatim
+
+      avg ← {(+⌿⍵)÷≢⍵}  
+\end_layout
+
+\begin_layout Verbatim
+
       avg vec
 \end_layout
 
 \begin_layout Verbatim
+
 1.5
 \end_layout
 
@@ -3326,7 +3456,23 @@ Inside of the u-net architecture itself, we want to save the output of the
 \end_layout
 
 \begin_layout Verbatim
-CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
+
+CV←{
+\end_layout
+
+\begin_layout Verbatim
+
+  z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+
+  0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
@@ -3429,27 +3575,43 @@ Since our stencil function does not pad its results, the expression
 \end_layout
 
 \begin_layout Verbatim
-∆CV←{x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
+
+∆CV←{
 \end_layout
 
 \begin_layout Verbatim
+
+  x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+
   w←,[⍳3]⊖⌽[1]0 1 3 2⍉k
 \end_layout
 
 \begin_layout Verbatim
+
   ∆z←⍵×0<a
 \end_layout
 
 \begin_layout Verbatim
+
   ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
-  ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3 SF x
+
+  ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
 \end_layout
 
 \begin_layout Verbatim
-  ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z}
+
+  ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
@@ -3546,7 +3708,10 @@ take
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-CC & ← & \{((⌊p)↓(-⌈p)↓\alpha⊣p←((\rho\alpha)-\rho\omega)÷2),\omega\}
+CC & ← & \left\{ \begin{aligned}p\leftarrow & ((\rho\alpha)-\rho\omega)÷2),\omega\\
+ & ((⌊p)↓(-⌈p)↓\alpha
+\end{aligned}
+\right\} 
 \end{eqnarray}
 
 \end_inset
@@ -3596,11 +3761,42 @@ This leads to the following code for the forward and backpropagation passes:
 \end_layout
 
 \begin_layout Verbatim
-CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
+
+CC←{
 \end_layout
 
 \begin_layout Verbatim
-∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}   
+
+  ⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+∆CC←{
+\end_layout
+
+\begin_layout Verbatim
+
+  x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z
+\end_layout
+
+\begin_layout Verbatim
+
+  (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z
+\end_layout
+
+\begin_layout Verbatim
+
+}   
 \end_layout
 
 \begin_layout Subsubsection
@@ -3712,15 +3908,46 @@ y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
 \end_layout
 
 \begin_layout Verbatim
-MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵} 
+
+MX←{
 \end_layout
 
 \begin_layout Verbatim
-∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
+
+  ⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+∆MX←{
+\end_layout
+
+\begin_layout Verbatim
+
+  x←⍺⊃Z ⋄ ∆z←⍵ 
+\end_layout
+
+\begin_layout Verbatim
+
+  y×x=y←(⍴x)↑2⌿2/[1]∆z
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsubsection
-Transposed convolution (2×2)
+Transposed Convolution (2×2)
 \end_layout
 
 \begin_layout Standard
@@ -3923,23 +4150,56 @@ To compute the backpropagation pass, we compute the convolutions on a
 \end_layout
 
 \begin_layout Verbatim
-UP←{,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
+
+UP←{
 \end_layout
 
 \begin_layout Verbatim
-∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
+
+  Z[⍺]←⊂⍵
 \end_layout
 
 \begin_layout Verbatim
+
+  ,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+∆UP←{
+\end_layout
+
+\begin_layout Verbatim
+
+  w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
+\end_layout
+
+\begin_layout Verbatim
+
   ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
 \end_layout
 
 \begin_layout Verbatim
-  ∆x←(,[2+⍳3]cz)+.×⍉⍪w}
+
+  ∆x←(,[2+⍳3]cz)+.×⍉⍪w
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsubsection
-Final 1×1 convolution
+Final 1×1 Convolution
 \end_layout
 
 \begin_layout Standard
@@ -4003,11 +4263,52 @@ Computing the backpropagation is likewise a simplification of the more complex
 \end_layout
 
 \begin_layout Verbatim
-C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
+
+C1←{
 \end_layout
 
 \begin_layout Verbatim
-∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w} 
+
+  Z[⍺]←⊂⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+∆C1←{
+\end_layout
+
+\begin_layout Verbatim
+
+   w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆x←∆z+.×⍉w
+\end_layout
+
+\begin_layout Verbatim
+
+} 
 \end_layout
 
 \begin_layout Subsection
@@ -4281,7 +4582,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size scriptsize
+\size small
 0
 \end_layout
 
@@ -4293,7 +4594,7 @@ Depth
 \begin_layout Plain Layout
 
 \family typewriter
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3\ 3\ \ \ 1\ \ 64}$
 \end_inset
 
@@ -4307,7 +4608,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 64 \ 64}$
 \end_inset
 
@@ -4321,7 +4622,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{0 0 \ 64 \ 64}$
 \end_inset
 
@@ -4344,7 +4645,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 256 \ 128}$
 \end_inset
 
@@ -4358,7 +4659,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 128 \ 128}$
 \end_inset
 
@@ -4372,7 +4673,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{\ 128 2 2 \ 64}$
 \end_inset
 
@@ -4415,7 +4716,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size scriptsize
+\size small
 1
 \end_layout
 
@@ -4426,7 +4727,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3\ 3\ \ 64\ 128}$
 \end_inset
 
@@ -4440,7 +4741,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 128 128}$
 \end_inset
 
@@ -4454,7 +4755,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{0 0 128 128}$
 \end_inset
 
@@ -4477,7 +4778,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 512 \ 256}$
 \end_inset
 
@@ -4491,7 +4792,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 256 \ 256}$
 \end_inset
 
@@ -4505,7 +4806,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{\ 256 2 2 128}$
 \end_inset
 
@@ -4548,7 +4849,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size scriptsize
+\size small
 2
 \end_layout
 
@@ -4559,7 +4860,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 128 256}$
 \end_inset
 
@@ -4573,7 +4874,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 256 256}$
 \end_inset
 
@@ -4587,7 +4888,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{0 0 256 256}$
 \end_inset
 
@@ -4610,7 +4911,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 1024 \ 512}$
 \end_inset
 
@@ -4624,7 +4925,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 512 \ 512}$
 \end_inset
 
@@ -4638,7 +4939,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{\ 512 2 2 256}$
 \end_inset
 
@@ -4681,7 +4982,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size scriptsize
+\size small
 3
 \end_layout
 
@@ -4692,7 +4993,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 256 512}$
 \end_inset
 
@@ -4706,7 +5007,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 512 512}$
 \end_inset
 
@@ -4720,7 +5021,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{0 0 512 512}$
 \end_inset
 
@@ -4743,7 +5044,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 \ 512 1024}$
 \end_inset
 
@@ -4757,7 +5058,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{3 3 1024 1024}$
 \end_inset
 
@@ -4771,7 +5072,7 @@ Depth
 
 \begin_layout Plain Layout
 
-\size tiny
+\size small
 \begin_inset Formula $\texttt{1024 2 2 512}$
 \end_inset
 
@@ -5057,27 +5358,53 @@ Our forward pass function is responsible for initializing an appropriate
 \end_layout
 
 \begin_layout Verbatim
-FWD←{Z⊢←(≢W)⍴⊂⍬
+
+FWD←{
 \end_layout
 
 \begin_layout Verbatim
+
+  Z⊢←(≢W)⍴⊂⍬
+\end_layout
+
+\begin_layout Verbatim
+
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-  LA←{⍺≥≢Z:⍵
+
+  LA←{
 \end_layout
 
 \begin_layout Verbatim
+
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
-    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
+
+    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
 \end_layout
 
 \begin_layout Verbatim
-  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
@@ -5107,30 +5434,77 @@ The backwards computation mirrors this pattern, except that it proceeds
 \end_layout
 
 \begin_layout Verbatim
-BCK←{Y←⍺ ⋄ Y∆←⍵
+
+BCK←{
 \end_layout
 
 \begin_layout Verbatim
-  ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
+
+  Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
+  ∆←{
+\end_layout
+
+\begin_layout Verbatim
+
+    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-  ∆LA←{⍺≥≢Z:⍵
+
+  ∆LA←{
 \end_layout
 
 \begin_layout Verbatim
-    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
+
+    ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
+
+    d←{(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵}
 \end_layout
 
 \begin_layout Verbatim
+
+    c←{(⍺+2)∆CC ⍵}
+\end_layout
+
+\begin_layout Verbatim
+
+    u←{(⍺+0)∆CV(⍺+1)∆CV(⍺c⍵)+(⍺+2)∆MX}
+\end_layout
+
+\begin_layout Verbatim
+
+    ⍺ u (⍺+6)∇ ⍺ d ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5154,6 +5528,7 @@ literal "false"
 \end_layout
 
 \begin_layout Verbatim
+
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -5189,7 +5564,28 @@ Finally, we wire all of these functions together into a
 \end_layout
 
 \begin_layout Verbatim
-RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
+
+RUN←{
+\end_layout
+
+\begin_layout Verbatim
+
+  Y∆←FWD ⍺
+\end_layout
+
+\begin_layout Verbatim
+
+  Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆
+\end_layout
+
+\begin_layout Verbatim
+
+  Y Y∆(Y E Y∆)⊣Y BCK Y∆
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Section
@@ -5264,7 +5660,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="13">
-<features booktabs="true" tabularvalignment="middle" tabularwidth="100text%">
+<features booktabs="true" tabularvalignment="middle">
 <column alignment="right" valignment="top" width="0pt">
 <column alignment="decimal" decimal_point="." valignment="top" width="0pt">
 <column alignment="decimal" decimal_point="." valignment="top" width="0pt">
@@ -5405,7 +5801,6 @@ Avg
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 Dyalog
 \end_layout
@@ -5416,8 +5811,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 80.90
 \end_layout
 
@@ -5427,8 +5820,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 77.56
 \end_layout
 
@@ -5438,8 +5829,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 78.32
 \end_layout
 
@@ -5449,8 +5838,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 81.33
 \end_layout
 
@@ -5460,8 +5847,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 77.95
 \end_layout
 
@@ -5471,8 +5856,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 80.51
 \end_layout
 
@@ -5482,8 +5865,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 81.08
 \end_layout
 
@@ -5493,8 +5874,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 81.87
 \end_layout
 
@@ -5504,8 +5883,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 80.23
 \end_layout
 
@@ -5515,8 +5892,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 79.42
 \end_layout
 
@@ -5535,8 +5910,6 @@ Dyalog
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 79.92
 \end_layout
 
@@ -5549,7 +5922,6 @@ Dyalog
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 Co-dfns (CPU)
 \end_layout
@@ -5560,8 +5932,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 34.11
 \end_layout
 
@@ -5571,8 +5941,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 33.66
 \end_layout
 
@@ -5582,8 +5950,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 35.98
 \end_layout
 
@@ -5593,8 +5959,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 37.72
 \end_layout
 
@@ -5604,8 +5968,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.20
 \end_layout
 
@@ -5615,8 +5977,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.64
 \end_layout
 
@@ -5626,8 +5986,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.11
 \end_layout
 
@@ -5637,8 +5995,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.46
 \end_layout
 
@@ -5648,8 +6004,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.57
 \end_layout
 
@@ -5659,8 +6013,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 38.76
 \end_layout
 
@@ -5679,8 +6031,6 @@ Co-dfns (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 37.22
 \end_layout
 
@@ -5693,7 +6043,6 @@ Co-dfns (CPU)
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 Co-dfns (GPU)
 \end_layout
@@ -5704,8 +6053,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.39
 \end_layout
 
@@ -5715,8 +6062,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.20
 \end_layout
 
@@ -5726,8 +6071,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.62
 \end_layout
 
@@ -5737,8 +6080,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.63
 \end_layout
 
@@ -5748,8 +6089,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.49
 \end_layout
 
@@ -5759,8 +6098,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.39
 \end_layout
 
@@ -5770,8 +6107,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.19
 \end_layout
 
@@ -5781,8 +6116,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.63
 \end_layout
 
@@ -5792,8 +6125,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.51
 \end_layout
 
@@ -5803,8 +6134,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.59
 \end_layout
 
@@ -5823,8 +6152,6 @@ Co-dfns (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 8.46
 \end_layout
 
@@ -5837,7 +6164,6 @@ Co-dfns (GPU)
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 PyTorch (CPU)
 \end_layout
@@ -5848,8 +6174,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.27
 \end_layout
 
@@ -5859,8 +6183,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.34
 \end_layout
 
@@ -5870,8 +6192,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.21
 \end_layout
 
@@ -5881,8 +6201,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 16.60
 \end_layout
 
@@ -5892,8 +6210,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.46
 \end_layout
 
@@ -5903,8 +6219,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.01
 \end_layout
 
@@ -5914,8 +6228,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.33
 \end_layout
 
@@ -5925,8 +6237,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.04
 \end_layout
 
@@ -5936,8 +6246,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.36
 \end_layout
 
@@ -5947,8 +6255,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.33
 \end_layout
 
@@ -5967,8 +6273,6 @@ PyTorch (CPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 17.22
 \end_layout
 
@@ -5981,7 +6285,6 @@ PyTorch (CPU)
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 PyTorch (SMP)
 \end_layout
@@ -5992,8 +6295,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.31
 \end_layout
 
@@ -6003,8 +6304,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.42
 \end_layout
 
@@ -6014,8 +6313,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.45
 \end_layout
 
@@ -6025,8 +6322,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.19
 \end_layout
 
@@ -6036,8 +6331,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.67
 \end_layout
 
@@ -6047,8 +6340,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.49
 \end_layout
 
@@ -6058,8 +6349,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.43
 \end_layout
 
@@ -6069,8 +6358,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.38
 \end_layout
 
@@ -6080,8 +6367,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.36
 \end_layout
 
@@ -6091,8 +6376,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.55
 \end_layout
 
@@ -6111,8 +6394,6 @@ PyTorch (SMP)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 6.42
 \end_layout
 
@@ -6125,7 +6406,6 @@ PyTorch (SMP)
 
 \begin_layout Plain Layout
 
-\size small
 \noun on
 PyTorch (GPU)
 \end_layout
@@ -6136,8 +6416,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.50
 \end_layout
 
@@ -6147,8 +6425,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.50
 \end_layout
 
@@ -6158,8 +6434,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.47
 \end_layout
 
@@ -6169,8 +6443,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.44
 \end_layout
 
@@ -6180,8 +6452,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.44
 \end_layout
 
@@ -6191,8 +6461,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.44
 \end_layout
 
@@ -6202,8 +6470,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.44
 \end_layout
 
@@ -6213,8 +6479,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.44
 \end_layout
 
@@ -6224,8 +6488,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.46
 \end_layout
 
@@ -6235,8 +6497,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.46
 \end_layout
 
@@ -6255,8 +6515,6 @@ PyTorch (GPU)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\size small
 3.46
 \end_layout
 
@@ -6420,7 +6678,7 @@ We observed the widest variance in performance results in the Co-dfns CPU
 \end_layout
 
 \begin_layout Subsubsection
-Co-dfns runtime implementation
+Co-dfns Runtime Implementation
 \end_layout
 
 \begin_layout Standard
@@ -6629,7 +6887,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Subsection
-Microbenchmarks against other libraries
+Microbenchmarks Against Other Libraries
 \end_layout
 
 \begin_layout Standard
@@ -6661,10 +6919,17 @@ slower
 \emph default
  than our naive implementations in our primary sample inputs.
  Given that the underlying specialized functions are supposed to wrap the
- CuDNN library (citation), it is surprising that we achieved faster results
- with the naive stencil function implementation over the domain specific
- implementations available within the general purpose array libraries leveraged
- by Co-dfns.
+ CuDNN library 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "arrayfire-release-cudnn"
+literal "false"
+
+\end_inset
+
+, it is surprising that we achieved faster results with the naive stencil
+ function implementation over the domain specific implementations available
+ within the general purpose array libraries leveraged by Co-dfns.
  
 \end_layout
 
@@ -6707,8 +6972,16 @@ Pedagogy is a concern for new approaches to solving problems both in academic
 \end_layout
 
 \begin_layout Standard
-However, it has been argued (citation) that APL has two distinct advantages
- from a pedagogical point of view that may warrant more interest.
+However, it has been argued 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "iverson2007notation"
+literal "false"
+
+\end_inset
+
+ that APL has two distinct advantages from a pedagogical point of view that
+ may warrant more interest.
  First, what one learns in APL tends to also have direct skills transferrence
  to many other programming domains, whereas in a more domain-specific, library-c
 entric approach, learning the particular API for one domain often does not
@@ -6898,7 +7171,7 @@ y.
  development, and only benchmarked the APL implementation on the CPU using
  the Dyalog APL interpreter.
  However, they indicated work in progress on a compiled version using the
- APEX compiler (citation) with a SaC (citation) backend.
+ APEX compiler with a SaC backend.
  Their conclusion regarding the performance of APL-based systems may have
  been premature given the results we found here, but they make a case for
  the usability of APL even with the performance numbers they achieved.
