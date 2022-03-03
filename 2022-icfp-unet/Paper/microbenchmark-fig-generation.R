@@ -14,7 +14,7 @@ data %>% mutate(size = as.factor(size), channels = as.factor(channels)) %>% grou
     xlab("Feature map size") +
     ylab("# of channels") +
     scale_fill_gradient(low = "#fce3ca", high = "#fc9732") +
-    geom_text(aes(label = round(speedup, 2)))
+    geom_text(aes(label = round(speedup, 2)), size = 6)
 
 data %>% mutate(size = as.factor(size)) %>%
     group_by(size, channels) %>%
