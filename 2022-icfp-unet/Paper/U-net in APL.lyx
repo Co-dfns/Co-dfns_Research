@@ -5,6 +5,9 @@
 \save_transient_properties true
 \origin unavailable
 \textclass acmart
+\begin_preamble
+\citestyle{acmauthoryear}
+\end_preamble
 \options format=acmsmall,sigplan,screen,review,anonymous
 \use_default_options false
 \maintain_unincluded_children false
@@ -46,7 +49,7 @@
 \use_package undertilde 1
 \cite_engine natbib
 \cite_engine_type authoryear
-\biblio_style plainnat
+\biblio_style ACM-Reference-Format
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -7286,7 +7289,7 @@ by hand
 LatexCommand bibtex
 btprint "btPrintCited"
 bibfiles "bibliography"
-options "acm"
+options "ACM-Reference-Format"
 
 \end_inset
 
@@ -7300,11 +7303,8 @@ options "acm"
 
 \end_layout
 
-\begin_layout Section*
-Appendix A: Complete APL U-net implementation
-\end_layout
-
 \begin_layout Standard
+\start_of_appendix
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -7321,7 +7321,12 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
+
+\begin_layout Section*
+
+Appendix A: Complete APL U-net implementation
+\end_layout
 
 \begin_layout Verbatim
 
@@ -7514,10 +7519,6 @@ status collapsed
 
 \end_layout
 
-\begin_layout Section*
-Appendix B: PyTorch Reference Implementation
-\end_layout
-
 \begin_layout Standard
 \begin_inset Box Frameless
 position "t"
@@ -7535,7 +7536,11 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
+
+\begin_layout Section*
+Appendix B: PyTorch Reference Implementation
+\end_layout
 
 \begin_layout Verbatim
 
