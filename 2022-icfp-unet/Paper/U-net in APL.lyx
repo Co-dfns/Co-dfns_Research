@@ -1620,19 +1620,6 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Array names according to 
-\emph on
-rank
-\emph default
-.
-\end_layout
-
-\end_inset
-
-
 \begin_inset CommandInset label
 LatexCommand label
 name "tab:rank-names"
@@ -1749,6 +1736,19 @@ cuboid
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Array names according to 
+\emph on
+rank
+\emph default
+.
+\end_layout
 
 \end_inset
 
@@ -2991,6 +2991,13 @@ noprefix "false"
 
 \begin_layout Subsection
 Neural Network Vocabulary
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Neural-Network-Vocabulary"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3975,6 +3982,676 @@ name "subsec:U-net-Architecture"
 
 \end_layout
 
+\begin_layout Subsubsection
+Basic Strategy
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="8">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\noun on
+Operation
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $MX$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $UP$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="center" valignment="top" rotate="90" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\noun on
+Depth
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\size tiny
+\begin_inset Formula $\texttt{3\ 3\ \ \ 1\ \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 64 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 \ 64 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 256 \ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 128 \ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 128 2 2 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="right" valignment="middle" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3\ 3\ \ 64\ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 128 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 128 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 \ 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 256 \ 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 256 2 2 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 128 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 256 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 256 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 1024 \ 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 \ 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 512 2 2 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 256 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 512 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 512 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 1024}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 1024 1024}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{1024 2 2 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A rectangular arrangement of the U-net network
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Given the core vocabularies defined in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:Neural-Network-Vocabulary"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the remaining challenge with implementing U-net is to link together the
+ appropriate layers and compositions to form the complete network as described
+ by 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ To do this, we observe that the structure of the U-net diagram is an almost
+ symmetric pattern.
+ The output layer computations form 3 operations which are not part of the
+ pattern, but the rest of the pattern decomposes into 4 depths, each with
+ 6 operations each.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Forward Propagation
+\end_layout
+
 \begin_layout Verbatim
 
 FWD←{Z⊢←(≢W)⍴⊂⍬
@@ -4007,6 +4684,10 @@ FWD←{Z⊢←(≢W)⍴⊂⍬
 
 \begin_layout Verbatim
 
+\end_layout
+
+\begin_layout Subsubsection
+Backwards Propagation
 \end_layout
 
 \begin_layout Verbatim
@@ -4044,8 +4725,8 @@ BCK←{Y←⍺ ⋄ Y∆←⍵
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
-\begin_layout Verbatim
-
+\begin_layout Subsubsection
+Error computation
 \end_layout
 
 \begin_layout Verbatim
@@ -4053,8 +4734,8 @@ BCK←{Y←⍺ ⋄ Y∆←⍵
 E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
-\begin_layout Verbatim
-
+\begin_layout Subsubsection
+Running a training iteration
 \end_layout
 
 \begin_layout Verbatim
