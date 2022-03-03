@@ -317,8 +317,16 @@ programming by knob turning
  in which neural networks are programmed via trial and error rather than
  through intentional design.
  Machine Learning as a discipline is already opaque enough, with many cases
- of unintended consequences (citation), without the added dangers inherent
- in this sort of unintentional programming guesswork.
+ of unintended consequences, without the added dangers inherent in this
+ sort of unintentional programming guesswork 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "domingos2012few"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -350,10 +358,17 @@ Despite the above potential issues, specialist frameworks have proven highly
 
 \begin_layout Standard
 APL, as a general-purpose array programming language, created by Kenneth
- Iverson as an improved mathematical notation (cite), has seen an increase
- in popularity over the past decades, in part because of the renewed interest
- in parallel computation and a wider acceptance of the use of a variety
- of programming languages.
+ Iverson as an improved mathematical notation 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl"
+literal "false"
+
+\end_inset
+
+, has seen an increase in popularity over the past decades, in part because
+ of the renewed interest in parallel computation and a wider acceptance
+ of the use of a variety of programming languages.
  However, only recently has significant new research into the use of APL
  as a possible implementation language for machine learning begun to surface.
  
@@ -365,8 +380,15 @@ The long history of APL, its origins as an pedagogical tool, and its reputation
  of the concerns above.
  Furthermore, it is one of the most linguistically stable languages, while
  also being exceptionally high level and high performance at the same time
- (cite Co-dfns thesis), making it highly suitable for long lived code as
- well as rapid prototyping.
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+, making it highly suitable for long lived code as well as rapid prototyping.
  Finally, the language itself defaults to a data-parallel semantics, making
  its application to GPU programming an obvious conclusion.
  
@@ -380,7 +402,15 @@ While the above advantages might suggest APL as a terrific tool for machine
  language to compile (cite), but recent innovations to the language (particularl
 y those with a functional programming focus) have made compilation much
  more tractable, and the Co-dfns compiler now exists as an APL implementation
- with native GPU support (cite).
+ with native GPU support 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -390,9 +420,17 @@ Given the available APL technology and the parsity of existing materials
  into the state of the art in APL, both from a language design and a runtime
  implementation perspective.
  To do this, we focused our efforts on the implementation and benchmarking
- of the U-net convolutional neural network (cite).
+ of the U-net convolutional neural network 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+.
  This is a popular image segmentation architecture with a particularly interesti
-ng U-net design.
+ng U-shaped design.
  It makes use of a range of popular CNN vocabularies and functions while
  having a clear architecture that is not so simple as to be trivial.
  This makes it an ideal candidate for exploring APL's capabilities.

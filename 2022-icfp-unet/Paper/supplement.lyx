@@ -4,19 +4,20 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass article
-\use_default_options true
+\textclass acmart
+\options format=acmsmall,authordraft
+\use_default_options false
 \maintain_unincluded_children false
 \language english
 \language_package default
 \inputencoding auto
-\fontencoding global
+\fontencoding utf8
 \font_roman "default" "default"
 \font_sans "default" "default"
-\font_typewriter "default" "default"
+\font_typewriter "default" "APL385 Unicode"
 \font_math "auto" "auto"
 \font_default_family default
-\use_non_tex_fonts false
+\use_non_tex_fonts true
 \font_sc false
 \font_osf false
 \font_sf_scale 100 100
@@ -29,9 +30,10 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -42,8 +44,9 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -75,6 +78,49 @@
 
 \begin_body
 
+\begin_layout ACM Conference
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+ICFP'22
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+International Conference on Functional Programming
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+Sep 11 - Sep 16, 2022
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Ljubljana, Slovenia
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Title
 Supplementary material for 
 \begin_inset Quotes eld
@@ -82,13 +128,6 @@ Supplementary material for
 
 U-net CNN in APL
 \begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
 \end_inset
 
 
