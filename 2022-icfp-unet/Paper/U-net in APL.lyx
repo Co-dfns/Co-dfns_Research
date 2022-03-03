@@ -6579,31 +6579,194 @@ We are not sure of the cause of these slowdowns, and therefore, we did not
 Discussion
 \end_layout
 
+\begin_layout Subsection
+Pedagogy
+\end_layout
+
 \begin_layout Standard
-Things to consider in the discussion (my own points of view):
+Pedagogy is a concern for new approaches to solving problems both in academic
+ as well as industrial spaces.
+ We believe that APL is a double-edged sword in this regard.
+ On one hand, there is significant institutional momentum around languages
+ like Python.
+ This creates a large base of prior knowledge which can be leveraged by
+ new users.
+ This results in users feeling like learning a Python based framework is
+ easier than learning a whole new language, and they are probably right,
+ in the short term.
+ 
 \end_layout
 
-\begin_layout Itemize
-something like PyTorch has very low barrier to entry, lets people do machine
- learning with little insight into what is actually being done VS something
- like the APL code written has a higher barrier to entry but allows full
- and effortless control of what's being done
+\begin_layout Standard
+However, it has been argued (citation) that APL has two distinct advantages
+ from a pedagogical point of view that may warrant more interest.
+ First, what one learns in APL tends to also have direct skills transferrence
+ to many other programming domains, whereas in a more domain-specific, library-c
+entric approach, learning the particular API for one domain often does not
+ transfer any skills beyond that domain directly.
+ In the case of U-net, all of the operations used to build the U-net system
+ are general array programming concepts that are widely applicable to many
+ other domains, and are not restricted solely to convolutional neural networks.
+ 
 \end_layout
 
-\begin_layout Itemize
-APL is great for those wanting to go off the beaten track and using APL
- gets you insights into how things work
+\begin_layout Standard
+Second, a transparent and direction implementation of U-net in APL is somewhat
+ uniquely compact and simple, making it much easier to not only delve deeper
+ into the CNN domain, but also to make adjustments and modifications to
+ taste as one becomes more experienced.
+ Starting with a transparent implementation enables programs to be enhanced
+ or adapted or optimized without requiring the inclusion of abstractions
+ that increase program indirection and opaqueness.
+ The notational aspects of APL facilitates this sort of expressive power
+ in a way that other languages do not, especially from a 
+\begin_inset Quotes eld
+\end_inset
+
+human factors
+\begin_inset Quotes erd
+\end_inset
+
+ perspective.
+ 
 \end_layout
 
-\begin_layout Itemize
-reading the APL code lets readers see exactly how things are done; in other
- words, no implementation detail is hidden, so reproducing the results is
- easier
+\begin_layout Standard
+However, the current learning materials for APL, particularly in a space
+ like neural networks, are clearly underdeveloped and in need of improvement.
+ We believe it is likely possible to make it as easy to reference a convolutiona
+l implementation in APL as an API reference for PyTorch, but the current
+ ecosystem is not there yet.
+ 
 \end_layout
 
-\begin_layout Itemize
-studying the APL implementation led to a material influence on how the PyTorch
- reference implementation was written
+\begin_layout Subsection
+Performance
+\end_layout
+
+\begin_layout Standard
+Clearly, specialized frameworks for deep neural networks are still the best
+ way to go in order to achieve the absolute maximum in performance at present.
+ However, our results indicate that the gap between reliance on specialized
+ frameworks and the freedom to use more general purpose and transferrable
+ programming languages while still achieving competitive performance is
+ not nearly as large as might have been the case even a few years ago.
+ 
+\end_layout
+
+\begin_layout Standard
+Given that almost zero special optimization is taking place for the APL
+ implementation executed under the Co-dfns runtime, it is impressive that
+ we are able to see results that come close to a factor of 2 of the specialized
+ frameworks.
+ Given some of the obvious design issues that would contribute to slower
+ performance, it seems more reasonable to be able to expect more general
+ purpose languages like APL to be able to reach performance parity with
+ specialized frameworks, without the requirement that the user learn a special
+ API, or import specialized dependencies.
+ In more complex applications that leverage APL for other domain-intensive
+ work, this suggests that APL might facilitate scaling such applications
+ to integrate machine learning algorithms more easily and with less programmer
+ effort than might be required to integrate a separate framework like Python.
+ 
+\end_layout
+
+\begin_layout Subsection
+Stencil Operator
+\end_layout
+
+\begin_layout Standard
+The results we found regarding stencil operator performance vs.
+ stencil function performance suggests to use that companies like Dyalog
+ or implementors of Co-dfns should focus on implementing and improving the
+ performance of a stencil function instead of continuing with the use of
+ a stencil operator, which suffers from a number of design issues that makes
+ it incongruous with the rest of an otherwise elegantly designed language.
+ 
+\end_layout
+
+\begin_layout Standard
+It is likely that scalable performance with the stencil function will be
+ easier to achieve and easier to maintain over the long term.
+ Moreover, the stencil function results in more compositional code that
+ it easier to work with using the rest of the APL language than the stencil
+ operator.
+ 
+\end_layout
+
+\begin_layout Subsection
+APL vs.
+ Frameworks
+\end_layout
+
+\begin_layout Standard
+We have demonstrated that APL itself, without libraries or additional dependenci
+es is exceptionally well suited to expressing neural network computations,
+ at a level of inherent complexity that is arguably equal or possibly even
+ less than that of the reference PyTorch implementation.
+ At the very least, it is less code with less underlying background code
+ and layers.
+ This comes at the admittedly heavy cost of being completely foreign and
+ alien to most programmers who are more familiar with languages like Python.
+ This certainly creates a fundamental and immediate learning cost to APL
+ over other frameworks, since other frameworks can assume a wider range
+ of pre-knowledge around their chosen language implementation.
+ 
+\end_layout
+
+\begin_layout Standard
+It remains unclear, however, whether, if this pre-knowledge were taken away,
+ APL would represent a compelling value proposition for such programming
+ tasks or not.
+ Indeed, it is exceptionally challenging to divorce the present reality
+ of prior background knowledge from such a question.
+ Even fundamental knowledge like what it means to do array programming and
+ how to structure problems in an array-style are rarely if ever taught at
+ universities, whereas most classes spend significant amounts of time teaching
+ students how to utilize the Python-style programming model of PyTorch.
+\end_layout
+
+\begin_layout Standard
+The argument that APL may be used more widely and broadly than PyTorch on
+ a wider range of problems using the same skillset may not matter to users
+ who are only interested in deep learning algorithms.
+ 
+\end_layout
+
+\begin_layout Standard
+APL presently has a higher barrier to entry, but rewards the user with full
+ and effortless control over what's being done in a way that other systems
+ do not.
+ This may present itself as a distinct advantage to users who are looking
+ to expand 
+\begin_inset Quotes eld
+\end_inset
+
+off the beaten track
+\begin_inset Quotes erd
+\end_inset
+
+ and utilize novel approaches that do not easily fit within existing frameworks.
+ 
+\end_layout
+
+\begin_layout Standard
+We encountered significant difficulties in identifying exactly what the
+ original authors did based on their paper alone because of many implementation
+ details that were omitted.
+ On the other hand, APL enables us to express our entire implementation
+ in a way that makes every implementation detail clear, improving the ability
+ of others to reproduce our work.
+\end_layout
+
+\begin_layout Standard
+Finally, in the implementation of U-net in APL, we gained insights into
+ the architecture that had a direct and material influence on the PyTorch
+ reference implementation that would not have emerged without first having
+ studied the APL implementation.
+ Thus, we gained significant insight simply from doing the APL implementation,
+ even if we were to re-implement that code in PyTorch.
+ 
 \end_layout
 
 \begin_layout Section
