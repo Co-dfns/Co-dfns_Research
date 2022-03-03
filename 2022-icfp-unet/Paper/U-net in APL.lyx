@@ -742,7 +742,7 @@ Original u-net architecture
 
 \begin_layout Standard
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -1663,48 +1663,29 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Array names according to 
-\emph on
-rank
-\emph default
-.
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:rank-names"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
 <features booktabs="true" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="left" valignment="top">
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\emph on
 Rank
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\emph on
 Name
 \end_layout
 
@@ -1792,6 +1773,26 @@ cuboid
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Array names according to 
+\emph on
+rank
+\emph default
+.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:rank-names"
 
 \end_inset
 
@@ -4022,7 +4023,7 @@ name "subsec:U-net-Architecture"
 
 \begin_layout Standard
 \begin_inset Float table
-wide false
+wide true
 sideways false
 status open
 
@@ -5197,7 +5198,7 @@ Performance
 
 \begin_layout Standard
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -5256,7 +5257,7 @@ U-net Performance
 
 \begin_layout Standard
 \begin_inset Float table
-wide false
+wide true
 sideways false
 status open
 
@@ -5824,7 +5825,7 @@ Co-dfns (GPU)
 \begin_layout Plain Layout
 
 \size small
-17.22
+8.46
 \end_layout
 
 \end_inset
@@ -5968,7 +5969,7 @@ PyTorch (CPU)
 \begin_layout Plain Layout
 
 \size small
-8.46
+17.22
 \end_layout
 
 \end_inset
@@ -6448,7 +6449,7 @@ APL Stencil Primitives
 
 \begin_layout Standard
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -6491,7 +6492,7 @@ name "fig:micro-cv"
 
 
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
