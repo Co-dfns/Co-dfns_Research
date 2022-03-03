@@ -5300,6 +5300,20 @@ The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
 \end_layout
 
 \begin_layout Standard
+As input we used the original image data from the ISBI benchmark referenced
+ in the U-net paper (citations).
+ These images are 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ images in grayscale with a binary mask for training.
+ Each run took one of these images and associated training mask and computed
+ the result of forward and backwards propagation and the error as well as
+ updating the weights for the network.
+ 
+\end_layout
+
+\begin_layout Standard
 When running the benchmark, we computed the average of 10 runs, ensuring
  that we discarded the first run each time, since these runs often contained
  significant setup and bootstrapping code (PyTorch's optimizer, the JIT
