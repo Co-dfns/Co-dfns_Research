@@ -6862,7 +6862,42 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-TBW
+Given the notational advantages of APL and the concision and clarity of
+ expression that one can obtain, we explored the potential impact of using
+ APL as a language for implementing convolutional neural networks of reasonable
+ complexity.
+ We found, though the traditional implementations of APL suffer from performance
+ issues that would prevent widespread use in either academic, educational,
+ or industrial contexts, that compilers such as Co-dfns are capable of compiling
+ complete neural network programs (in our case, the U-net architecture)
+ and producing much more competitive performance results (within a factor
+ of 2.2 - 2.4 times of our reference PyTorch implementation).
+ This is despite the naive nature of our implementation and the naive optimizati
+on support for neural networks on the part of the Co-dfns compiler.
+ 
+\end_layout
+
+\begin_layout Standard
+Furthermore, we found that our effort to implement U-net in APL resulted
+ in a concise but fully unambiguous implementation that provided transparency
+ over the entire source, without any frameworks or library dependencies.
+ Despite being a complete 
+\begin_inset Quotes eld
+\end_inset
+
+by hand
+\begin_inset Quotes erd
+\end_inset
+
+ implementation, its complexity of expression is on par with that of PyTorch
+ and other specialized frameworks, or even better, particularly in cases
+ where more exploration and novel implementation is required, or when customized
+ integrations may be called for.
+ The insights that we gained from implementing U-net in APL affected our
+ implementation of a reference implementation in PyTorch directly, suggesting
+ that APL may have significant pedagogical advantages for teaching neural
+ network programming and machine learning in general.
+ 
 \end_layout
 
 \begin_layout Acknowledgments
