@@ -2620,7 +2620,7 @@ The stencil operator takes a function left operand and a specification array
 \end_inset
 
  for each dimension, and 
-\begin_inset Formula $2\,2\texttt{⍴}2$
+\begin_inset Formula $2\,2\rho2$
 \end_inset
 
  for the max pooling layers and up convolutions, corresponding to a 
@@ -2652,7 +2652,7 @@ When first implementing a convolution, almost everyone familiar with Dyalog
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\{+/,K×\texttt{⍵}\}\texttt{⌺}3\,3⊢M
+\{+/,K×\omega\}\texttt{⌺}3\,3⊢M
 \end{equation}
 
 \end_inset
@@ -2662,7 +2662,7 @@ When first implementing a convolution, almost everyone familiar with Dyalog
 
 \begin_layout Standard
 Recall that 
-\begin_inset Formula $K×\texttt{⍵}$
+\begin_inset Formula $K×\omega$
 \end_inset
 
  is the pointwise multiplication of kernel 
@@ -2742,7 +2742,7 @@ leading axis biased
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-K\{k←\texttt{⍺}\,\texttt{⋄}\,\{+/,k×\texttt{⍵}\}\texttt{⌺}3\,3⊢\texttt{⍵}\}\texttt{⍤}3⊢A
+K\{k←\alpha\,\texttt{⋄}\,\{+/,k×\omega\}\texttt{⌺}3\,3⊢\omega\}\texttt{⍤}3⊢A
 \end{equation}
 
 \end_inset
@@ -2845,7 +2845,7 @@ n.
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\{⌈⌿⌈⌿\texttt{⍵}\}\texttt{⌺}(2 2\texttt{⍴}2)⊢A
+\{⌈⌿⌈⌿\omega\}\texttt{⌺}(2 2\rho2)⊢A
 \end{equation}
 
 \end_inset
@@ -2890,7 +2890,7 @@ function
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-SF←\{\{\texttt{⍵}\}\texttt{⌺}\texttt{⍺}⊢\texttt{⍵}\}
+SF←\{\{\omega\}\texttt{⌺}\alpha⊢\omega\}
 \end{equation}
 
 \end_inset
@@ -2964,34 +2964,404 @@ function
 Neural Network Vocabulary
 \end_layout
 
-\begin_layout Verbatim
+\begin_layout Standard
+The original U-net paper uses five distinct operations to describe the network
+ (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
 
-CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3 SF⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Enumerate
+A 3×3 convolution with a RelU activation function is used as the primary
+ operation
+\end_layout
+
+\begin_layout Enumerate
+A copy and crop operation is used to transfer data across one row of the
+ network
+\end_layout
+
+\begin_layout Enumerate
+Max pooling layers on a 2×2 window are used to compute 
+\begin_inset Quotes eld
+\end_inset
+
+down
+\begin_inset Quotes erd
+\end_inset
+
+ the network
+\end_layout
+
+\begin_layout Enumerate
+A 2×2 up-sampling convolution goes back 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ the network
+\end_layout
+
+\begin_layout Enumerate
+The final output has a single 1×1 convolution with a soft-max layer
+\end_layout
+
+\begin_layout Standard
+In our implementation, we mirror this vocabulary by implementing the forward
+ and back functions for each of these layers, one for each of the above
+ operations.
+ This results in a total of 10 functions grouped into 5 pairs, which we
+ will take in turn.
+\end_layout
+
+\begin_layout Subsubsection
+Convolution (3×3) with Relu
+\end_layout
+
+\begin_layout Standard
+The primary U-net convolutional layer is a 3×3 convolution with a RelU activatio
+n function.
+ The convolution in the paper uses 
+\begin_inset Quotes eld
+\end_inset
+
+valid
+\begin_inset Quotes erd
+\end_inset
+
+ convolutions, meaning that no padding is used.
+ This implies that the convolution dimensions of the output array shrink
+ by 2 for each dimension compared to the input.
+ We define the forward propagation function 
+\begin_inset Formula $CV$
+\end_inset
+
+ as a function over a set of kernels 
+\begin_inset Formula $\texttt{⍺}$
+\end_inset
+
+ and a layer 
+\begin_inset Formula $\texttt{⍵}$
+\end_inset
+
+ that obeys the following shape invariant:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\rho\,\alpha\,CV\,\omega & \leftrightarrow & (^{-}2+2↑\rho\omega),{}^{-}1↑\rho\alpha
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We write 
+\begin_inset Formula $S↑A$
+\end_inset
+
+ to describe the array derived from 
+\begin_inset Formula $A$
+\end_inset
+
+ whose shape is equal to the shape of 
+\begin_inset Formula $A$
+\end_inset
+
+ except that the leading dimensions of 
+\begin_inset Formula $S↑A$
+\end_inset
+
+ are 
+\begin_inset Formula $|S$
+\end_inset
+
+ (absolute value over 
+\begin_inset Formula $S$
+\end_inset
+
+), read as 
+\begin_inset Quotes eld
+\end_inset
+
+the S take of A.
+\begin_inset Quotes erd
+\end_inset
+
+ Negative values in 
+\begin_inset Formula $S$
+\end_inset
+
+ take from the 
+\begin_inset Quotes eld
+\end_inset
+
+far
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+trailing
+\begin_inset Quotes erd
+\end_inset
+
+ side of the dimension.
+ Thus, the resulting shape of 
+\begin_inset Formula $\alpha\,CV\,\omega$
+\end_inset
+
+ is the leading dimensions of the input 
+\begin_inset Formula $\omega$
+\end_inset
+
+ subtracted by 2 catenated with the final dimension (the output channels)
+ of kernel 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+ In the case of a U-net layer, we have input kernels of shape 
+\begin_inset Formula $3\,3\,I\,O$
+\end_inset
+
+ and input layer of shape 
+\begin_inset Formula $N M I$
+\end_inset
+
+ where 
+\begin_inset Formula $N M$
+\end_inset
+
+ are the image/layer dimensions, and 
+\begin_inset Formula $I O$
+\end_inset
+
+ are the input and output channel counts, respectively.
+ The resulting output layer has shape 
+\begin_inset Formula $(N-2) (M-2) O$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Using the stencil function, we define 
+\begin_inset Formula $CV$
+\end_inset
+
+ as follows for rank 4 kernel inputs and rank 3 layer inputs:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\iota3]\alpha\}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We include the RelU function 
+\begin_inset Formula $0⌈\omega$
+\end_inset
+
+ as the final operation following the convolution.
+ We write 
+\begin_inset Formula $,\texttt{⍤}3⊢\omega$
+\end_inset
+
+ to describe the value 
+\begin_inset Formula $\omega$
+\end_inset
+
+ with it's 3 trailing dimensions collapsed into a single dimension.
+ We write 
+\begin_inset Formula $,[\iota3]\omega$
+\end_inset
+
+ to describe the value 
+\begin_inset Formula $\omega$
+\end_inset
+
+ with it's leading 3 dimensions likewise collapsed.
+ In APL, the Inner Product operator generalizes matrix multiplication, but
+ we use the standard form here and write 
+\begin_inset Formula $\alpha\mathnormal{+.×}\omega$
+\end_inset
+
+ to indicate the matrix multiplication between 
+\begin_inset Formula $\omega$
+\end_inset
+
+ and 
+\begin_inset Formula $\omega$
+\end_inset
+
+ extended to arbitrary ranked arrays.
+\end_layout
+
+\begin_layout Standard
+Inside of the U-net architecture itself, we want to save the output of the
+ convolution and the input to facilitate back propagation, and we obtain
+ our kernels from a single source containing all network kernels.
+ This results in the following source code implementation of 
+\begin_inset Formula $CV$
+\end_inset
+
+ that does the appropriate saving of layers and extracting of kernel data
+ given a label index into the network as its left argument instead of a
+ kernel, where 
+\begin_inset Formula $Z$
+\end_inset
+
+ is our storage for back propagation and 
+\begin_inset Formula $W$
+\end_inset
+
+ contains the weights:
 \end_layout
 
 \begin_layout Verbatim
 
-CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵} 
+CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
+\end_layout
+
+\begin_layout Standard
+Computing the backpropagation uses very similar approaches.
+ Given the output layer 
+\begin_inset Formula $z$
+\end_inset
+
+, input layer 
+\begin_inset Formula $x$
+\end_inset
+
+, activation layer 
+\begin_inset Formula $a$
+\end_inset
+
+, weights 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, and incoming gradient (?) 
+\begin_inset Formula $\omega$
+\end_inset
+
+, we compute the transposed weights 
+\begin_inset Formula $w$
+\end_inset
+
+, the derivative output layer 
+\begin_inset Formula $∆z$
+\end_inset
+
+ , the weight gradient 
+\begin_inset Formula $∆w$
+\end_inset
+
+, padded output layer 
+\begin_inset Formula $\Delta Z$
+\end_inset
+
+, and the resulting back gradient 
+\begin_inset Formula $∆x$
+\end_inset
+
+ as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+w & ← & \ominus\obar[1]0\,1\,3\,2\obslash\alpha\nonumber \\
+∆z & ← & \omega×0<a\\
+∆w & ← & 3\,0\,1\,2\obslash(\obslash,[\iota2]\Delta z)\mathnormal{+.×},[\iota2]3\,3\texttt{⌺}x\\
+\Delta Z & ← & ^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z\nonumber \\
+∆x & ← & (,\texttt{⍤}3⊢3\,3\texttt{⌺}\Delta Z)\mathnormal{+.×},[\iota3]w
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since our stencil function does not pad its results, the expression 
+\begin_inset Formula $^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z$
+\end_inset
+
+ expands the shape of 
+\begin_inset Formula $\Delta z$
+\end_inset
+
+ to ensure that the output convolution dimensions are 2 greater than those
+ of 
+\begin_inset Formula $\Delta z$
+\end_inset
+
+, where the functions 
+\begin_inset Formula $\ominus$
+\end_inset
+
+ and 
+\begin_inset Formula $\obar$
+\end_inset
+
+ are functions to rotate an array.
+ The function 
+\begin_inset Formula $\obar[1]$
+\end_inset
+
+ rotate an array along the 
+\begin_inset Formula $1th$
+\end_inset
+
+ dimension while 
+\begin_inset Formula $\ominus$
+\end_inset
+
+ rotates along the leading axis.
+ The resulting function 
+\begin_inset Formula $\Delta CV$
+\end_inset
+
+ is written as follows:
 \end_layout
 
 \begin_layout Verbatim
 
-MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵} 
+∆CV←{x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
 \end_layout
 
 \begin_layout Verbatim
 
-UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
+  w←,[⍳3]⊖⌽[1]0 1 3 2⍉k
 \end_layout
 
 \begin_layout Verbatim
 
-C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
-\end_layout
-
-\begin_layout Verbatim
-
-∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
+  ∆z←⍵×0<a
 \end_layout
 
 \begin_layout Verbatim
@@ -3001,12 +3371,45 @@ C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 
 \begin_layout Verbatim
 
-  _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3 SF x
+  ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3 SF x
 \end_layout
 
 \begin_layout Verbatim
 
-  w+.×⍨,[2+⍳3]3 3 SF ∆Z}   
+  ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z}
+\end_layout
+
+\begin_layout Standard
+
+In the above code, we have a function 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ that updates the weights in 
+\begin_inset Formula $W$
+\end_inset
+
+, described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:U-net-Architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+
+Copy and Crop
+\end_layout
+
+\begin_layout Verbatim
+
+CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵} 
 \end_layout
 
 \begin_layout Verbatim
@@ -3014,9 +3417,27 @@ C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}   
 \end_layout
 
+\begin_layout Subsubsection
+Max Pooling
+\end_layout
+
+\begin_layout Verbatim
+
+MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵} 
+\end_layout
+
 \begin_layout Verbatim
 
 ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
+\end_layout
+
+\begin_layout Subsubsection
+Up-convolution
+\end_layout
+
+\begin_layout Verbatim
+
+UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
@@ -3029,6 +3450,15 @@ C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
   (,[2+⍳3](2 2⍴2)SF ∆z)+.×⍉⍪w}
 \end_layout
 
+\begin_layout Subsubsection
+Final 1×1 convolution
+\end_layout
+
+\begin_layout Verbatim
+
+C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
+\end_layout
+
 \begin_layout Verbatim
 
 ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w} 
@@ -3036,6 +3466,13 @@ C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 
 \begin_layout Subsection
 U-net Architecture
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:U-net-Architecture"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Verbatim
