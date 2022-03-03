@@ -2738,7 +2738,7 @@ leading axis biased
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-K\{k←\alpha\,\texttt{⋄}\,\{+/,k×\omega\}\texttt{⌺}3\,3⊢\omega\}\texttt{⍤}3⊢A
+K\{k←\alpha\,\texttt{⋄}\,\{+/,k×\omega\}\texttt{⌺}3\,3⊢\omega\}\texttt{⍤}3⊢A\label{eq:CV_op}
 \end{equation}
 
 \end_inset
@@ -2837,7 +2837,7 @@ n.
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\{⌈⌿⌈⌿\omega\}\texttt{⌺}(2 2\rho2)⊢A
+\{⌈⌿⌈⌿\omega\}\texttt{⌺}(2 2\rho2)⊢A\label{eq:MX_op}
 \end{equation}
 
 \end_inset
@@ -2945,6 +2945,47 @@ To explore this further, a naïve implementation of the stencil function
 function
 \emph default
  and not the stencil operator as it appears in Dyalog APL.
+ See 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:CV"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a stencil function implementation of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:CV_op"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:MX"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for the corresponding implementation of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:MX_op"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -2956,7 +2997,7 @@ Neural Network Vocabulary
 The original U-net paper uses five distinct operations to describe the network
  (see 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand formatted
 reference "fig:unet-architecture"
 plural "false"
 caps "false"
@@ -3156,7 +3197,7 @@ Using the stencil function, we define
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\iota3]\alpha\}
+CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\iota3]\alpha\}\label{eq:CV}
 \end{eqnarray}
 
 \end_inset
@@ -3367,7 +3408,7 @@ In the above code, we have a function
 
 , described in 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand formatted
 reference "subsec:U-net-Architecture"
 plural "false"
 caps "false"
@@ -3478,7 +3519,7 @@ For dimensions that are not evenly divisible by two, we choose to round
  This result is then added to the appropriate layer in the U-net architecture
  described in 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand formatted
 reference "subsec:U-net-Architecture"
 plural "false"
 caps "false"
@@ -3527,7 +3568,7 @@ Max pooling is a shrinking convolution that computes the maximum value in
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-⌈⌿[2],[2\,3](2\,2\rho2)\texttt{⌺}\omega
+⌈⌿[2],[2\,3](2\,2\rho2)\texttt{⌺}\omega\label{eq:MX}
 \end{equation}
 
 \end_inset
@@ -3648,6 +3689,66 @@ UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]
 
 \begin_layout Subsubsection
 Final 1×1 convolution
+\end_layout
+
+\begin_layout Standard
+The final convolution is a 1×1 convolution with 2 output channels, which
+ means that it collapses the final incoming channels into an output layer
+ with only two channels.
+ This gives the trivial simplification of our convolution code over layer
+ 
+\begin_inset Formula $\omega$
+\end_inset
+
+ and kernel 
+\begin_inset Formula $\alpha$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\omega+.\times\alpha
+\end{equation}
+
+\end_inset
+
+Additionally, the paper describes using a soft-max layer, which we include
+ at this phase:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+1e^{-}8+z\div[\iota2]\mathnormal{+/}z\leftarrow*\omega-[\iota2]\lceil/\omega
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Computing the back propagation is likewise a simplification of the more
+ complex 
+\begin_inset Formula $CV$
+\end_inset
+
+ code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\mathnormal{+.\times}\,\mathnormal{,}[\iota2]\Delta z\\
+\Delta x & \leftarrow & \Delta z\,\mathnormal{+.\times}\obslash w
+\end{eqnarray}
+
+\end_inset
+
+ Which leads to the following source implementations:
 \end_layout
 
 \begin_layout Verbatim
