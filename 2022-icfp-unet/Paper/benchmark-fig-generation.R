@@ -18,16 +18,17 @@ for (i in (1:nrow(data))) {
 df <- data.frame(time = as.numeric(times), source = sources)
 
 orig_sources <- c("Dyalog", "Co-dfns(CPU)", "PyTorch(CPU)", "Co-dfns(GPU)", "PyTorch(SMP)", "PyTorch(GPU)")
-colours <- c("#fc9732", "#4787e6", "#ff002b", "#284b80", "#cc0023", "#800016")
+colours <- c("#fc9732", "#b8cae6", "#e65c73", "#4772b3", "#a62137", "#4d000d")
 df %>% group_by(source) %>%
     summarise(meant = mean(time), min = min(time), max = max(time)) %>%
     ggplot(aes(x = reorder(source, meant), y = meant, min = min, max = max, nudge = max - min)) +
-    geom_col(aes(fill = source)) +
+    geom_col(aes(fill = source), show.legend = FALSE) +
     geom_pointrange(aes(ymin = min, ymax = max)) +
     geom_errorbar(aes(ymin = min, ymax = max), width = .3) +
     geom_text(aes(label = round(meant, 2)), nudge_y = 4) +
     coord_flip() +
     theme_bw() +
+    theme(text = element_text(size = 20)) +
     ggtitle("Execution time of a forward and backward pass in several computational models.") +
     xlab("Computation model") +
     ylab("Execution time (s)") +
