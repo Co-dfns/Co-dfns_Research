@@ -157,7 +157,7 @@ Researcher
 
 
 \begin_inset Flex Institution
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Dyalog, Ltd.
@@ -167,20 +167,20 @@ Dyalog, Ltd.
 
 
 \begin_inset Flex City
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Bramley
+Bloomington, IN
 \end_layout
 
 \end_inset
 
 
 \begin_inset Flex Country
-status collapsed
+status open
 
 \begin_layout Plain Layout
-United Kingdom
+United States
 \end_layout
 
 \end_inset
