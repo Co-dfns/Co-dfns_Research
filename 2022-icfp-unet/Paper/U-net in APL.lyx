@@ -2585,10 +2585,6 @@ When first implementing a convolution, almost everyone familiar with Dyalog
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Recall that 
 \begin_inset Formula $K×\omega$
 \end_inset
@@ -2675,10 +2671,6 @@ K\{k←\alpha\,\texttt{⋄}\,\{+/,k×\omega\}\texttt{⌺}3\,3⊢\omega\}\texttt{
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The result of the above expression is an array of shape 
 \begin_inset Formula $O M N$
 \end_inset
@@ -2778,10 +2770,6 @@ n.
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 This expression is one way to implement part of the max pooling layers in
  U-net.
  However, there are many other obvious variations of this expression that
@@ -2994,10 +2982,6 @@ valid
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 We write 
 \begin_inset Formula $S↑A$
 \end_inset
@@ -3105,10 +3089,6 @@ CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\io
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 We include the RelU function 
 \begin_inset Formula $0⌈\omega$
 \end_inset
@@ -3230,10 +3210,6 @@ w & ← & \ominus\obar[1]0\,1\,3\,2\obslash\alpha\nonumber \\
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Since our stencil function does not pad its results, the expression 
 \begin_inset Formula $^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z$
 \end_inset
@@ -3326,8 +3302,126 @@ noprefix "false"
 Copy and Crop
 \end_layout
 
+\begin_layout Standard
+Conceptually, the copy and crop operation is the simplest of the functions
+ in U-net.
+ Its sole job is to take the output from one side of the U-shaped net and
+ move it over to the other side, adjusting the dimensions to ensure that
+ it fits.
+ In the forward direction, the input layer will have a greater dimension
+ than the output layer, so we crop as evenly as possible around the edges
+ and then catenate the result at the head of the layer coming 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ from the network to form the output layer with twice the channels of the
+ 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ layer.
+ The following function 
+\begin_inset Formula $CC$
+\end_inset
+
+ computes the crop of 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ catenated with 
+\begin_inset Formula $\omega$
+\end_inset
+
+ using 
+\begin_inset Formula $↓$
+\end_inset
+
+ (read as 
+\begin_inset Quotes eld
+\end_inset
+
+drop
+\begin_inset Quotes erd
+\end_inset
+
+), which is the opposite function of the previously described 
+\begin_inset Formula $↑$
+\end_inset
+
+ (
+\begin_inset Quotes eld
+\end_inset
+
+take
+\begin_inset Quotes erd
+\end_inset
+
+) function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+CC & ← & \{((⌊p)↓(-⌈p)↓\alpha⊣p←((\rho\alpha)-\rho\omega)÷2),\omega\}
+\end{eqnarray}
+
+\end_inset
+
+For dimensions that are not evenly divisible by two, we choose to round
+ up on the right and bottom sides and round down on the left and upper sides
+ of the layer.
+ Computing the back propagation of 
+\begin_inset Formula $CC$
+\end_inset
+
+ given the input 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and output gradient 
+\begin_inset Formula $\omega$
+\end_inset
+
+ simply reverses this operation and expands the shape back to the original
+ input size.
+ This result is then added to the appropriate layer in the U-net architecture
+ described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:U-net-Architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+n\,m & ← & -⌊(2↑(\rho\alpha)-\rho\omega)÷2\nonumber \\
+\Delta x & ← & n\ominus m\obar[1](\rho\alpha)↑\omega
+\end{eqnarray}
+
+\end_inset
+
+This leads to the following code for the forward and backwards propagation
+ passes:
+\end_layout
+
 \begin_layout Verbatim
-CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵} 
+CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 \end_layout
 
 \begin_layout Verbatim
@@ -3336,6 +3430,106 @@ CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 
 \begin_layout Subsubsection
 Max Pooling
+\end_layout
+
+\begin_layout Standard
+Max pooling is a shrinking convolution that computes the maximum value in
+ a non-overlapping sliding window.
+ Given the stencil function, the max pool over a layer is given by the following
+ expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+⌈⌿[2],[2\,3](2\,2\rho2)\texttt{⌺}\omega
+\end{equation}
+
+\end_inset
+
+ Here we write 
+\begin_inset Formula $⌈⌿[2],[2\,3]\omega$
+\end_inset
+
+ to describe an array where we have collapsed dimensions 2 and 3 and computed
+ the maximum value reduction over the resulting dimension.
+ For example, given an input layer 
+\begin_inset Formula $\omega$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,M\,C$
+\end_inset
+
+, the result of 
+\begin_inset Formula $(2\,2\rho2)\texttt{⌺}\omega$
+\end_inset
+
+ is an rank 5 array of shape 
+\begin_inset Formula $(N÷2)(M÷2)2\,2\,C$
+\end_inset
+
+.
+ We then collapse the 
+\begin_inset Formula $2th$
+\end_inset
+
+ and 
+\begin_inset Formula $3th$
+\end_inset
+
+ dimensions to form an array of shape 
+\begin_inset Formula $(N÷2)(M÷2)4\,C$
+\end_inset
+
+ and subsequently find the maximum value for each vector along the 
+\begin_inset Formula $2th$
+\end_inset
+
+ dimension, resulting in an array of shape 
+\begin_inset Formula $(N\div2)(M\div2)C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Computing the back propagation of this involves replicating each of the
+ stencil dimensions, which are the two leading axes in our implementation.
+ We write 
+\begin_inset Formula $n⌿A$
+\end_inset
+
+ and 
+\begin_inset Formula $n/[1]A$
+\end_inset
+
+ to indicate the array A with each element duplicated or repeated along
+ the first and second axes, respectively, 
+\begin_inset Formula $n$
+\end_inset
+
+ times.
+ Given input 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and output layer 
+\begin_inset Formula $\omega$
+\end_inset
+
+ the following expression computes the back propagation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
+\end{equation}
+
+\end_inset
+
+ This leads to the following linked source implementation for max pooling:
 \end_layout
 
 \begin_layout Verbatim
