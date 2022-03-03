@@ -7297,31 +7297,21 @@ options "ACM-Reference-Format"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Newpage cleardoublepage
+\start_of_appendix
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+onecolumn
+\end_layout
+
 \end_inset
 
 
 \end_layout
-
-\begin_layout Standard
-\start_of_appendix
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100text%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
 
 \begin_layout Section*
 
@@ -7507,11 +7497,6 @@ Appendix A: Complete APL U-net implementation
 :EndNamespace
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
 \begin_inset Newpage clearpage
 \end_inset
@@ -7519,26 +7504,8 @@ Appendix A: Complete APL U-net implementation
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
 \begin_layout Section*
+
 Appendix B: PyTorch Reference Implementation
 \end_layout
 
@@ -7780,37 +7747,6 @@ class Up(nn.Module):
 
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage clearpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
 \begin_layout Verbatim
 
     def forward(self, x_to_crop, x_in):
@@ -8009,11 +7945,6 @@ class UNet(nn.Module):
 \begin_layout Verbatim
 
         return self.path(x)
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body
