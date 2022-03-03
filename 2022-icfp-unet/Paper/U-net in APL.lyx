@@ -517,9 +517,8 @@ Performance results of two modern APL implementations, one compiled and
 \end_layout
 
 \begin_layout Itemize
-Performance observations and microbenchmark comparisons of specialized neural
- network functionality exposed in more general purpose array frameworks
- for GPU programming
+Performance observations of specialized neural network functionality exposed
+ in more general purpose array frameworks for GPU programming
 \end_layout
 
 \begin_layout Itemize
