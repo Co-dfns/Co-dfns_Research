@@ -1,0 +1,26 @@
+∇ MicroMX
+ ;MX1;MX7;data;mx;size;channels;inp;⎕RL;row;time;cmpx;_;values
+
+ MX1←{{⌈⌿⌈⌿⍵}⌺(2 2⍴2)⊢⍵}
+ MX7←{⌈⌿[2],[2 3]{⍵}⌺(2 2⍴2)⊢⍵}
+
+ 'cmpx'⎕CY'dfns'
+
+ ⍝ For the MX functions, show that time/channel decreases if size is fixed:
+ data←0 5⍴0
+ :For mx :In 'MX1' 'MX7'
+     :For size :In 32 64 128 256 512
+         :For channels :In 16 32 64 128 256 512
+             ⎕RL←73 ⋄ inp←?size size channels⍴0
+             values ← ⍬
+             :For _ :In ⍳5
+                values ,← 1cmpx mx,' inp'
+             :EndFor
+             time ← ⌊⌿values
+             ⎕←row←mx size channels time(time÷channels)
+             data⍪←⍉⍪row
+         :EndFor
+     :EndFor
+ :EndFor
+ _←data('MX' 'size' 'channels' 's' 's/channel')(⎕CSV⍠'IfExists' 'Replace')'micro_mx.csv'
+ ∇

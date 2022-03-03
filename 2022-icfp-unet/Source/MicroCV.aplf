@@ -1,0 +1,28 @@
+∇ MicroCV
+ ;CV1;CV2;data;cv;size;channels;inp;⎕RL;ker;row;time;cmpx;_;values
+
+ CV1←{1 1↓¯1 ¯1↓2 0 1⍉⍺{A←⍺ ⋄ {+/,A×⍵}⌺3 3⊢⍵}⍤3⊢⍵}
+ CV2←{(,[⍳3]⍺)+.×⍨,⍤3⊢1 1↓¯1 ¯1↓{⍵}⌺3 3⊢⍵}
+
+ 'cmpx'⎕CY'dfns'
+
+ ⍝ For the MX functions, show that time/channel decreases if size is fixed:
+ data←0 4⍴0
+ :For cv :In 'CV1' 'CV2'
+     :For size :In 16 32 64 128 256
+         :For channels :In 16 32 64
+             ⎕RL←73 ⋄ inp←?size size channels⍴0
+             ker←?channels 3 3 channels⍴0
+             ker←3 0 1 2∘⍉⍣(cv≡'CV2')⊢ker
+             values ← ⍬
+             :For _ :In ⍳5
+                values ,← 1cmpx'ker ',cv,' inp'
+             :EndFor
+             time ← ⌊⌿values
+             ⎕←row←cv size channels time
+             data⍪←⍉⍪row
+         :EndFor
+     :EndFor
+ :EndFor
+ _←data('CV' 'size' 'channels' 's')(⎕CSV⍠'IfExists' 'Replace')'micro_cv.csv'
+ ∇
