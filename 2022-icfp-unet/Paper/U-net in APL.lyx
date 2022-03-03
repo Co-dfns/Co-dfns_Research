@@ -421,7 +421,7 @@ The long history of APL, its origins as an pedagogical tool, and its reputation
  for directness of algorithmic expression 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "knuth2007computer"
+key "knuth1993computer,knuth2007computer"
 literal "false"
 
 \end_inset
