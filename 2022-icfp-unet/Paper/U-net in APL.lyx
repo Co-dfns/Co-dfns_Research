@@ -262,7 +262,7 @@ from scratch
 \end_inset
 
  APL source was on par with the complexity of the PyTorch reference implementati
-on, albeit much more foreign, while being more concise and complete.
+on, albeit more foreign, while being more concise and complete.
  We also found that when compiled with Co-dfns, despite the naïve implementation
  both of Co-dfns and our own code, performance on the GPU and the CPU were
  within a factor of 2.2 - 2.4 times that of the PyTorch implementation.
