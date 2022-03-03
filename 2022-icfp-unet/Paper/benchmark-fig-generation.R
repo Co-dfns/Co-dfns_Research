@@ -25,8 +25,9 @@ df %>% group_by(source) %>%
     geom_col(aes(fill = source)) +
     geom_pointrange(aes(ymin = min, ymax = max)) +
     geom_errorbar(aes(ymin = min, ymax = max), width = .3) +
-    geom_text(aes(label = round(meant, 2)), nudge_y = 5) +
+    geom_text(aes(label = round(meant, 2)), nudge_y = 4) +
     coord_flip() +
+    theme_bw() +
     ggtitle("Execution time of a forward and backward pass in several computational models.") +
     xlab("Computation model") +
     ylab("Execution time (s)") +
