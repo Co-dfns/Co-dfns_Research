@@ -507,24 +507,9 @@ Background
 \end_layout
 
 \begin_layout Standard
-In this section, we provide the relevant background to understand the remainder
- of this paper.
- Work has been published on convolutional neural networks (CNNs) and APL
- before
-\begin_inset CommandInset citation
-LatexCommand citep
-key "bernecky-cnn"
-literal "false"
-
-\end_inset
-
-, but these are two subjects that are not often seen together.
- To cater for readers coming from each community, this section provides
- provides some superficial background on CNNs and the relevant literature
- and some background on APL.
- Then, we provide further background information regarding the relevant
- details of CNNs and the way they are used in this paper, aided by the APL
- notation.
+In this section, we provide the relevant background pertaining to the machine
+ learning concepts needed to work with CNNs, and the u-net in particular,
+ and to the APL language.
 \end_layout
 
 \begin_layout Subsection
@@ -533,9 +518,9 @@ Convolutional neural networks
 
 \begin_layout Standard
 The experiment this paper uses to produce its benchmarks is the reproduction
- of a famous convolutional neural network architecture.
+ of a well-known convolutional neural network architecture.
  The use of CNNs in machine learning was widely popularised with the publication
- of a paper
+ of a paper 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "cnns-imagenet"
@@ -544,7 +529,7 @@ literal "false"
 \end_inset
 
  that used CNNs to achieve state-of-the-art performance in labeling pictures
- of the ImageNet
+ of the ImageNet 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "imagenet"
@@ -553,7 +538,7 @@ literal "false"
 \end_inset
 
  challenge.
- However, a proeminent paper from 1998
+ However, a proeminent paper from 1998 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "cnns-lecun-doc-recognition"
@@ -566,7 +551,7 @@ literal "false"
 
 \begin_layout Standard
 The use of convolutional neural networks, as we know them today, builds
- on top of the convolutional layer
+ on top of the convolutional layer 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "intro-to-cnn"
@@ -619,7 +604,7 @@ re that is derived from the fact that CNNs were popularised in the context
  Despite the fact that the main dynamics of a convolutional layer is governed
  by discrete convolution with the learnable kernels, the exact behaviour
  of a convolutional layer depends on layer parameters like the padding and
- the stride used
+ the stride used 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "conv-arithmetic-guide"
@@ -633,7 +618,7 @@ literal "false"
 \begin_layout Standard
 Given that CNNs were primarily used in image recognition-related tasks,
  convolutional layers were often paired with pooling layers that ease the
- recognition of features over small neighbourhoods
+ recognition of features over small neighbourhoods 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "pooling"
@@ -649,6 +634,7 @@ lated context, can be interpreted as follows: the image features one is
  but in regions of said pixels.
  Pooling layers are, thus, employed with the purpose of aggregating low-level
  information that can then be used to recognise the larger features of interest
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "pooling"
@@ -661,6 +647,10 @@ literal "false"
 
 \begin_layout Standard
 In 2015, three authors published a paper
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet"
@@ -691,6 +681,7 @@ literal "false"
 \end_inset
 
 , most notably through the use of deep-learning frameworks such as PyTorch
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "pytorch"
@@ -698,7 +689,7 @@ literal "false"
 
 \end_inset
 
-, a deep-learning framework used in this work, or Caffe
+, a deep-learning framework used in this work, or Caffe 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "caffe"
@@ -711,7 +702,7 @@ ed.
  For this paper, we reimplemented the u-net architecture, in APL, without
  making use of any (machine learning) libraries or frameworks.
  Before we introduce our work on that implementation, we discuss the original
- architecture that we work off of.
+ architecture that we set out to replicate.
 \end_layout
 
 \begin_layout Subsection
@@ -738,7 +729,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Original u-net architecture, as seen in the original paper
+Original u-net architecture, as seen in the original paper 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet"
@@ -749,7 +740,7 @@ literal "false"
 .
  Arrows represent operations between the multi-channel feature maps represented
  by the rectangles.
- The number on top of a rectangle is the number of channels and the numbers
+ The number on top of each rectangle is its number of channels and the numbers
  in the lower-left corner are the 
 \begin_inset Formula $x$
 \end_inset
@@ -785,7 +776,11 @@ noprefix "false"
 
 \end_inset
 
- shows the original figure that represents the u-net architecture
+ shows the original diagram that represents the u-net architecture
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet"
@@ -827,7 +822,7 @@ noprefix "false"
 \begin_inset Formula $2$
 \end_inset
 
-, from which it can be inferred that the stride
+, from which it can be inferred that the stride 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "conv-arithmetic-guide"
@@ -841,7 +836,7 @@ literal "false"
 
 .
  After each convolution, we use the activation function rectified linear
- unit (ReLU)
+ unit (ReLU) 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "relu"
@@ -914,7 +909,7 @@ Having reached the end of the contracting path (at the bottom of the diagram),
 \begin_inset Formula $2$
 \end_inset
 
-
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "conv-arithmetic-guide"
@@ -935,7 +930,7 @@ literal "false"
 
 \end_inset
 
- for an informal discussion of this finding.
+ for an informal discussion of this inferrence.
 \end_layout
 
 \end_inset
@@ -992,7 +987,7 @@ APL notation
 \end_layout
 
 \begin_layout Standard
-APL
+APL 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl"
@@ -1003,7 +998,7 @@ literal "false"
  is an alternative mathematical notation, introduced by Turing award winner
  Kenneth E.
  Iverson in the '60s, that has since evolved into an executable mathematical
- notation
+ notation 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl-since-78"
@@ -1208,11 +1203,11 @@ The first example shows how parenthesis
 \family typewriter
 ()
 \family default
- can be used to create vectors whose items are the result of other expressions,
+ can be used to create vectors whose items are results of other expressions,
  given that the four expressions inside parenthesis produced the four items
  of the result vector.
  The second example shows that we can obtain the same result by collecting
- all the left arguments inside 
+ all the left arguments inside all 
 \family typewriter
 ()
 \family default
@@ -1220,7 +1215,7 @@ The first example shows how parenthesis
 \family typewriter
 ⌈
 \family default
-, and by collecting all the right arguments inside 
+, and by collecting all the right arguments inside all 
 \family typewriter
 ()
 \family default
@@ -1298,9 +1293,9 @@ scalars
 vectors
 \emph default
 .
- Scalars and vectors are the only types of arrays that can be typed directly.
- Arrays of higher dimensions must be loaded from an external data source
- or dynamically created through computations.
+ Scalars and vectors can be typed directly but arrays of higher dimensions
+ must be loaded from an external data source or created dynamically through
+ computations.
 \end_layout
 
 \begin_layout Standard
@@ -1330,9 +1325,8 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Standard
-The left argument to the reshape function determines the final shape of
- the result, where each non-negative integer specifies the length of the
- result along the specified dimension.
+Each non-negative integer of the left argument specifies the length of the
+ result along the corresponding dimension.
  So, if the left argument had been 
 \family typewriter
 5 9 7
@@ -1470,10 +1464,9 @@ The cells above each contain a two-item vector (
 \end_layout
 
 \begin_layout Standard
-Another key difference between APL and mathematical notation (which also
- translates into a key difference between APL and other programming languages)
- is that APL normalises precedence rules by saying that all functions have
- the same precedence: functions are said to have a 
+Another key difference between the APL notation and the traditional mathematical
+ notation is that APL normalises precedence rules by saying that all functions
+ have the same precedence: functions are said to have a 
 \emph on
 long right scope
 \emph default
@@ -1912,7 +1905,11 @@ reduce-first
 \family typewriter
 5 9 7
 \family default
- by inserting multiplies signs between the numbers.
+ by inserting the 
+\emph on
+times
+\emph default
+ function between each pair of numbers.
  With 
 \emph on
 reduce-first
@@ -1988,8 +1985,8 @@ sum
 \begin_layout Standard
 This highlights the versatility of APL in that operators combine with a
  variety of functions.
- Another source of versatility in APL comes from applying functions to arrays
- of different ranks.
+ Another source of versatility in APL comes from how functions get applied
+ to arrays of different ranks.
 \end_layout
 
 \begin_layout Standard
@@ -2137,11 +2134,11 @@ inner product
 .
 
 \family default
- (dot), which we use thoroughly for the 
+ (dot), which we use thoroughly for the derived function 
 \emph on
 matrix product
 \emph default
- derived function 
+ 
 \family typewriter
 +.×
 \family default
@@ -2150,7 +2147,7 @@ matrix product
 status open
 
 \begin_layout Plain Layout
-Sadly, presenting the operator 
+Presenting the operator 
 \emph on
 inner product 
 \emph default
@@ -2172,7 +2169,7 @@ statement separator
 \family typewriter
 ⋄
 \family default
-:
+ to create two matrices:
 \end_layout
 
 \begin_layout Verbatim
@@ -2414,7 +2411,7 @@ direct operators (dops)
 \family typewriter
 ⍺⍺
 \family default
- and right 
+ and a right 
 \family typewriter
 ⍵⍵
 \family default
