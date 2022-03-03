@@ -6771,11 +6771,53 @@ Related Work
 \end_layout
 
 \begin_layout Standard
-Bernecky and SaC
+Two particular avenues of research warrant particular mention here.
+ In addition to the Co-dfns compiler, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "bernecky-cnn"
+literal "false"
+
+\end_inset
+
+ have explored alternative implementations to CNNs, though not U-net specificall
+y.
+ They focused specifically on APL as a productivity enhancement for CNN
+ development, and only benchmarked the APL implementation on the CPU using
+ the Dyalog APL interpreter.
+ However, they indicated work in progress on a compiled version using the
+ APEX compiler (citation) with a SaC (citation) backend.
+ Their conclusion regarding the performance of APL-based systems may have
+ been premature given the results we found here, but they make a case for
+ the usability of APL even with the performance numbers they achieved.
+ While their code exhibits some material differences to that given here,
+ there are nonetheless some similarities that demonstrate some level of
+ convergence around implementing CNNs in APL.
 \end_layout
 
 \begin_layout Standard
-TAIL
+Another approach to GPU-based array programming with an APL focus is the
+ TAIL/Futhark system, which is a compiler chain taking APL to the TAIL (Typed
+ Array Intermediate Language) and then compiler TAIL code using the Futhark
+ GPU compiler backend.
+ While the authors are not aware of any work implementing complex neural
+ networks with this chain, it represents an interesting approach to compilation
+ of APL via typed intermediate languages, which have the potential to enhance
+ the fusion that can be done with an operation like the stencil function.
+ 
+\end_layout
+
+\begin_layout Standard
+Other programming environments that are often categorized as array programming
+ environments, such as Matlab, Julia, Python/Numpy, are not exceptionally
+ performant on their own for machine learning, but often wrap libraries
+ to do so.
+ Unfortunately, many of these languages use a syntax that much more closely
+ mirrors that of Python than APL.
+ In our perspective, this reduces the value proposition of such languages
+ over using specialized frameworks, since one does not obtain the particular
+ clarity and productivity benefits associated with the APL notation.
+ 
 \end_layout
 
 \begin_layout Section
