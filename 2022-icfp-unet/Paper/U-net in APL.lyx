@@ -3877,18 +3877,7 @@ To compute the back propagation, we compute the convolutions on a
 \end_layout
 
 \begin_layout Verbatim
-
-UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
-\end_layout
-
-\begin_layout Verbatim
-
-∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2](2 2⍴2)SF ∆z
-\end_layout
-
-\begin_layout Verbatim
-  (,[2+⍳3](2 2⍴2)SF ∆z)+.×⍉⍪w}=======UP←{,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
- 
+UP←{,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
@@ -3903,7 +3892,7 @@ UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]
 
 \begin_layout Verbatim
 
-  ∆x←(,[2+⍳3]cz)+.×⍉⍪w}>>>>>>> cf4e9749a4c0c15098bc41f629dfaee7b27aee2f
+  ∆x←(,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Subsubsection
