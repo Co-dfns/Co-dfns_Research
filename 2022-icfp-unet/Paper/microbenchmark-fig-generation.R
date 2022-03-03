@@ -1,7 +1,7 @@
 library(dplyr)
 library(ggplot2)
 
-data.file <- "./micro_mx.csv"
+data.file <- "./micro_cv.csv"
 data <- read.csv(data.file)
 
 data %>% mutate(size = as.factor(size), channels = as.factor(channels)) %>% group_by(size, channels) %>%
@@ -9,6 +9,7 @@ data %>% mutate(size = as.factor(size), channels = as.factor(channels)) %>% grou
     ggplot(aes(x = size, y = channels, fill = speedup)) +
     geom_tile() +
     theme_bw() +
+    theme(text = element_text(size = 20)) +
     ggtitle("Max pooling speedup of stencil function with respect to stencil operator.") +
     xlab("Feature map size") +
     ylab("# of channels") +
@@ -22,6 +23,7 @@ data %>% mutate(size = as.factor(size)) %>%
     geom_line(aes(linetype = size)) +
     geom_point(aes(shape = size)) +
     theme_bw() +
+    theme(text = element_text(size = 20)) +
     ggtitle("Convolution speedup of stencil function with respect to stencil operator.") +
     xlab("# of channels") +
     ylab("Relative speed difference") +
