@@ -1601,6 +1601,19 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Array names according to 
+\emph on
+rank
+\emph default
+.
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "tab:rank-names"
@@ -1717,19 +1730,6 @@ cuboid
 </cell>
 </row>
 </lyxtabular>
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Array names according to 
-\emph on
-rank
-\emph default
-.
-\end_layout
 
 \end_inset
 
@@ -1948,10 +1948,10 @@ sum
 \end_layout
 
 \begin_layout Standard
-This highlights the versatility of APL operators in that they combine with
- a variety of functions.
- Another source of versatility comes from applying functions to arrays of
- different ranks.
+This highlights the versatility of APL in that operators combine with a
+ variety of functions.
+ Another source of versatility in APL comes from applying functions to arrays
+ of different ranks.
 \end_layout
 
 \begin_layout Standard
