@@ -3672,19 +3672,222 @@ MX←{⌈⌿[2],[2 3](2 2⍴2)SF⊃Z[⍺]←⊂⍵}
 Up-convolution
 \end_layout
 
-\begin_layout Verbatim
+\begin_layout Standard
+In the initial exploration of this implementation, the up-sampling convolution
+ computation proved to be the most subtle and challenging, mostly in part
+ to the opaqueness of implementations.
+ The U-net paper was not immediately transparent regarding the exact operations
+ used for this layer and there were a number of potential design decisions
+ that could have been made.
+ Moreover, for users reading about up-sampling convolutions, the descriptions
+ are also the furthest removed from a reasonable implementation of the same.
+ However, once the intuition of how an up-sampling convolution matches the
+ shape and form of a non-overlapping sliding window in the output layer,
+ expressed via the simple expression 
+\begin_inset Formula $K⊂\texttt{⍤}\times\texttt{⍤}2\,0⊢A$
+\end_inset
 
-UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
+, the computation becomes much clearer.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "https://mathspp.com/blog/til/033"
+target "https://mathspp.com/blog/til/033"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For this convolution, we change the anticipated kernel shape from that used
+ for 
+\begin_inset Formula $CV$
+\end_inset
+
+ above.
+ Whereas 
+\begin_inset Formula $CV$
+\end_inset
+
+ expects kernels of shape 
+\begin_inset Formula $3\,3\,I\,O$
+\end_inset
+
+, for up convolutions we expect kernels of shape 
+\begin_inset Formula $I\,2\,2\,O$
+\end_inset
+
+ for input channels 
+\begin_inset Formula $I$
+\end_inset
+
+ and output channels 
+\begin_inset Formula $O$
+\end_inset
+
+.
+ Given a layer of our standard shape 
+\begin_inset Formula $N\,M\,I$
+\end_inset
+
+, this gives the following definition for the forward up convolution:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+UP & \leftarrow & \{\mathnormal{,}[\iota2]\,\mathnormal{,}[2\,3]\rho0\,2\,1\,3\,4\obslash\omega\,\mathnormal{+.\times}\,\alpha\}
+\end{eqnarray}
+
+\end_inset
+
+The key change here from the reliance on 
+\begin_inset Formula $+.\times$
+\end_inset
+
+ with 
+\begin_inset Formula $CV$
+\end_inset
+
+ is the use of a dyadic transpose 
+\begin_inset Formula $0\,2\,1\,3\,4\obslash$
+\end_inset
+
+.
+ Dyadic transpose is sometimes considered a somewhat challenging concept
+ in APL.
+ In brief, for a rank 
+\begin_inset Formula $r$
+\end_inset
+
+ array 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $S$
+\end_inset
+
+ and targeting array 
+\begin_inset Formula $D$
+\end_inset
+
+ where 
+\begin_inset Formula $(\rho D)\equiv\rho S$
+\end_inset
+
+, we write 
+\begin_inset Formula $D\obslash A$
+\end_inset
+
+ to describe a transposed array with shape 
+\begin_inset Formula $T$
+\end_inset
+
+ where 
+\begin_inset Formula $T[D]\leftarrow S$
+\end_inset
+
+, assuming that 
+\begin_inset Formula $\land⌿D\in\iota\rho S$
+\end_inset
+
+, that is, all dimensions of 
+\begin_inset Formula $S$
+\end_inset
+
+ are mentioned in 
+\begin_inset Formula $D$
+\end_inset
+
+.
+ So, given targeting array 
+\begin_inset Formula $0\,2\,1\,3\,4$
+\end_inset
+
+ and an input array 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,M\,2\,2\,O$
+\end_inset
+
+, the expression 
+\begin_inset Formula $0\,2\,1\,3\,4\obslash A$
+\end_inset
+
+ describes an array with elements from 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,2\,M\,2\,O$
+\end_inset
+
+.
+ As the final operation, we collapse the first two pairs of leading dimensions,
+ giving a final output array of shape 
+\begin_inset Formula $(N\times2)(M\times2)O$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To compute the back propagation, we compute the convolutions on a 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ sliding window with stride 
+\begin_inset Formula $2$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\,\mathnormal{+.\times}\,\mathnormal{,}[\iota2](2\,2\rho2)\texttt{⌺}\Delta z\\
+\Delta x & \leftarrow & (\mathnormal{,}[2+\iota3](2\,2\rho\,2)\texttt{⌺}\Delta z)\,\mathnormal{+.\times}\obslash\texttt{⍪}\alpha
+\end{eqnarray}
+
+\end_inset
+
+ This gives the following source implementations for up-sampling convolutions:
 \end_layout
 
 \begin_layout Verbatim
 
-∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2](2 2⍴2)SF ∆z
+UP←{,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵} 
 \end_layout
 
 \begin_layout Verbatim
 
-  (,[2+⍳3](2 2⍴2)SF ∆z)+.×⍉⍪w}
+∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆x←(,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Subsubsection
@@ -4103,12 +4306,17 @@ Appendix
 
 \begin_layout Verbatim
 
-  ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2](2 2⍴2)⌺∆z
+  ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
 
-   (,[2+⍳3](2 2⍴2)⌺∆z)+.×⍉⍪w}
+   _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
+\end_layout
+
+\begin_layout Verbatim
+
+   (,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Verbatim
