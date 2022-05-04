@@ -1,0 +1,297 @@
+ICFP 2022 Paper #103 Reviews and Comments
+===========================================================================
+Paper #103 U-net CNN in APL: Exploring zero-framework, zero-library machine
+learning
+
+
+Review #103A
+===========================================================================
+
+Overall merit
+-------------
+2. Reject (will argue to reject)
+
+Paper summary
+-------------
+The paper presents the implementation / case-study of a well-known
+convolutional neural network originally-proposed for image segmentation
+(U-net) in APL. The paper introduces first the essential concepts of
+APL that will be used in demonstrating the implementation; it also
+introduces the U-net architecture. It shows the implementation, discussing
+extensively aspects around efficiency and stencil operation. It demonstrates
+that the APL implementation is betwen 2.2-2.4x slower than a Pytorch
+reference implementation. The APL implementation is concise and gives
+all details but is also very dense.
+
+Comments for author
+-------------------
+Opinion
+=======
+
+This might have been a fun experience report, but I am afraid I got
+lost in the middle of the paper due to the inability to follow (and
+even parse) APL syntax. Not everything used in the code snippets is
+sufficiently explained and I am afraid that readers may have a lot of
+difficulty breaking in the notation and also the subtle discussion
+points around local functions, idioms, the intricacies of the stencil
+operations etc. Though, I'd like to stress that such experience
+reports would in my opinion be welcome in ICFP if they were to be made
+more accessible.
+
+I believe that the authors seeked to submit to ICFP precisely to
+achieve a broader reader base than a more specialized APL venue,
+however the paper needs more work to be made accessible and useful for
+a broader audience.
+
+
+Detailed comments
+==================
+
+* ln94: parsity -> sparsity?
+* ln106: it'd be good to say that you model *training* i.e. including gradient
+         computations, and have a discussion about differentiation.
+
+* I think the authors are slightly dismissive of programming against a framework (e.g. Pytorch) which is fine, however most model ML frameworks (e.g. Pytorch
+ or Jax) support the Numpy array model, and that is perhaps a more precise
+ characterization: numpy vs. APL - not Pytorch vs. APL. It's also interesting
+ that numpy and the "array" model originate in APL (e.g. it is
+ functional and numpy pretty much implements many APL operators, supports
+ forms of implicit broadcasting and more) so actually does share some concepts
+ with APL (but also is much more restricted in terms of higher-order programming
+ etc etc.)
+
+* Paragraph starting in ln433: I am afraid I did not fully understand how
+  the rank operator works. It'd be great to see/give the types of the
+  arrays involved (X, A, Y). E.g. must A be a boolean matrix with one
+  entry for each dimension of X? What if multiple dimensions are set?
+
+* Paragraph around ln501: I would have appreciated some types again
+  there.  Later on, in lin511 I am not sure we have been introduced to
+  the |- operator, so I am starting to get lost. The rest of Section 3.2
+  becomes inscrutable (e.g. I can't even parse (2)) and certainly do not
+  understand the discussion below around the design flaws of the proposed
+  solution. Later on, we get to learn about idioms without actually being
+  told what idioms and ``idiom recognition'' is. Nor is the discussion
+  about why the higher-order solution for having a stencil *function* helping
+  me understand why that solution is better. Is that implementation-spefific
+  or some more fundamental underlying principle here?
+
+* Do I understand correctly that the back-propagation code is written
+  manually instead of being derived with some form of AD?
+
+* The paper compares the performance against Pytorch, however it'd be nice
+  to also verify the correctness as well, given the complexity of these
+  stencil operations and the back-propagation code. Something that confirms
+  that the gradients are near each other for example.
+
+* ln1081: and direction -> and directed?
+
+
+
+Review #103B
+===========================================================================
+
+Overall merit
+-------------
+2. Reject (will argue to reject)
+
+Paper summary
+-------------
+This is a clean introduction to APL programming using a simple u-net neural network model as a running example. The paper describes the main syntactic features of APL, as well as how to express convolutions using stencil function support. The complete example fits on a page and the compiler produces code that has a reasonable runtime. However, there does not seem to be a key new idea or analysis suitable for inclusion as a regular ICFP paper. If there was more detail and discussion of the compiler implementation it might be reformulated a workable experience report.
+
+Comments for author
+-------------------
+p5. To help readers that are new to ML it would be good to include the intuition about why the UNet model is structured that way. The early layers in the encoder recognize features with high spatial resolution but low semantic resolution (number of channels), in the neck of the network there is much semantic depth but at low spatial detail, then the decoder uses the features from the encoder via skip connections to re-introduce the spatial detail.
+
+
+p15. Instead of using Transposed Convolution it might make a better example to use Bilinear Upsample or something equivalent. The functions presented so far (Convolution and so on) are very structural in nature, whereas Bilinear Upsample does an interpolation that has a different computational flavour.
+
+One could also perform an element-wise add across the skip connection, as per the paper "Fully Convolutional Networks for Semantic Segmentation", Long, Shelhamer, Darrell 2014.
+
+
+p18. Practical semantic segmentation networks need to be trained using a regularization method such as Dropout or Batch Normalization to prevent overfitting. These techniques are also interesting in a pedagogical sense because extra buffers need to be maintained during the forwards and backwards pass.
+
+p21. There should be some example images showing the input data (a picture of a cat or something) and the segmentation result. This would give the reader a solid feeling that the program works as described. At the moment there is only code and the benchmarks, which doesn't work as well for an introduction to new techniques.
+
+
+
+Review #103C
+===========================================================================
+
+Overall merit
+-------------
+3. Weak reject (will not argue to reject)
+
+Comments for author
+-------------------
+First of all, I must stress how little confidence I have in this
+review. I know next to nothing about neural networks and my
+familiarity with APL goes back to my master's degree, which is a long
+time ago. Therefore, my evaluation should have only a very marginal
+impact on the decision to accept or reject the submission.
+
+I ultimately opted for a weak reject, simply because I think the
+paper will be too obscure for most ICFP participants. That said, if
+reviewers who are able to understand the implementation presented in
+the article find it interesting, I will be more than happy to revise
+my review, as I feel that ICFP should look for submissions that are
+original, surprising, and off the beaten track. In my opinion, this
+submission is.
+
+Despite my best efforts and considering the amount of time I could
+spend reviewing this document, I cannot say that I understood the APL
+portion of the document. Understanding the APL portions of the
+paper would require a considerable investment that I cannot afford.
+
+The introduction given in section 2.3, is smooth and relatively easy
+to follow and it helps but understanding complex examples (e.g., line
+641) requires being accustomed to the syntax and language more deeply
+than the superficial understanding section 2.3 gives. Frankly, I don't
+think a reader who is not already familiar with the language has any
+chance of following the examples. The syntax is so cryptic and so
+different from any other programming language people use, that I think
+it's hard to expect most people to understand what's going on here,
+even for an ICFP audience. All of this is to say that I don't find the
+arguments in the introduction very compelling. To me, it is even a bit
+extreme to call APL a "general purpose array programming
+language". Typically, I am convinced that it would be incomparably
+easier for me to understand PyTorch programming than the
+implementation you describe in the article, although I am not very
+familiar with Python.
+
+Line 77, I'm not sure what the metric is, but the phrase "[APL] has
+seen an increase in popularity over the past few decades" seems a bit
+of a stretch to me, or you need to characterize what you mean by
+"increase" (what the starting and ending points are). For example, the
+fact that the APL Int'l conference ended in 2003 and was not replaced
+does not seem to be a good sign of an increase in popularity, at least
+in the academic sphere.
+
+Lines 511, 523, ... what exactly are these rules? Are they the
+expressions you assemble to form your final APL program? Some lines
+just seem duplicated (e.g., line 652 is duplicated at line 665) but
+some are different (e.g., line 656 vs. 668), so I'm not sure which is
+which.
+
+Line 850-862, a naive (of course) question: but how one debug such a program?
+
+Line 962, I don't understand your conclusion.
+  Co-dfns(CPU)/PyTorch(CPU) = 2.16
+  Co-dfns(CPY)/PyTorch(GPU) = 2.4
+
+When acceleration techniques are employed, the differences seem to increase, no?
+
+Line 975, Why didn't you optimize the APL version for a more
+accurate/significant comparison.
+
+Line 1019, I have no idea what this section is about!
+
+Line 1053, is that to say, that it is not clear how Co-dfns could be made
+faster than the "naive" implementation you are using for the PyTorch
+comparison?
+
+Line 1104, In the eyes of many readers, the requirement of learning APL will
+be heavier than the requirement of learning a special API, as you acknowledge
+at line 1128.
+
+
+
+Review #103D
+===========================================================================
+
+Overall merit
+-------------
+4. Weak accept (will not argue to accept)
+
+Paper summary
+-------------
+This paper is a programming exercise in APL: how to program a particular
+kind of "convolutional neural network" (CNN) application in APL. The paper
+discusses the application, describes how it was coded in APL, presents
+performance measurements comparing the APL version to standard alternatives
+(such as PyTorch), and discusses lessons learned from the experience.
+
+The authors measure their CNN implementation using multiple APL
+implementations: a commercial interpreter (from Dyalog), and a
+research compiler (co-Dfns) with a standard CPU back-end, and with an
+alternate GPU back-end. Likewise, the authors measure the performance
+of their reference implementation in PyTorch on multiple back-ends:
+single CPU, SMP and GPU. Although the Dyalog interpreter turns in
+disappointing numbers, the co-Dfns compiler does shockingly well: it's
+about twice as slow as PyTorch on a serial processor, and three times
+as slow when comparing the GPU implementations (which are the real test
+of performance -- serious neural-network applications *must* be run on
+SIMD-style architectures, such as GPUs and TPUs).
+
+These measurements are impressive for two reasons.
+- First, the authors are comparing a recent, research compiler (co-Dfns)
+  developed with tiny resources against a very mature implementation (PyTorch)
+  that has had a tremendous amount of industry resources invested in its
+  implementation. To be with a factor of 2-3 on such a comparison is a
+  statement that the authors' approach has merit.
+
+- The APL code works purely with full-precision 64-bit floating-point
+  numbers. The authors of the paper were not entirely sure how the
+  PyTorch implementation represented its numeric data, but it's pretty
+  standard in the machine-learning community to use reduced-precision
+  formats for speed of computation (e.g., 16-bit formats).
+
+The authors make the point that APL is a general computational language,
+which lends itself to more flexible, general programming, while Python-based
+machine-learning "frameworks" are more constrained in the computational
+architecture they provide. Yes, indeed.
+
+My dissatisfaction with this paper is that the heart of the paper,
+which is the development of the CNN application in APL, is pretty
+incomprehensible. APL is a tough language to explicate with clarity.
+The authors make a real effort to do so, but more is needed. I got
+pretty thoroughly lost, and I actually know APL: although it has been
+a while, I've written real applications in APL, not just a week's
+worth of code in a comparative-languages college course. I would not
+describe myself as a fluent master of the language in 2022, but I do
+still retain some command of the notation. Despite this prior
+experience, I had some specific gaps in my understanding of the
+application. Multiple operators, such as the diamond, subset &
+superset symbols, and the turnstile symbol, are unfamiliar to me, 
+are used in significant ways in the code, and are not explained.
+
+I also struggled with the code because I didn't have a good enough
+understanding of the application's algorithm. In particular, I
+understand what a 2D convolution is: informally, we have a small
+sliding window of weights (which we can assume add up to 1) that we
+slide over our data set. Fine. But I did *not* understand the
+additional and important notion of "channels." Is there any data flow
+between channels, or can I think of them as entirely independent data
+sets? And what is the final "1x1" convolution? I have no idea what
+such a thing is, at all.
+
+What I would like to see is a much more detailed explanation of the
+application and the program. This paper is essentially propaganda for
+a rather lovely programming language, making the case that APL is
+practically a domain-specific language for neural networks -- and I am
+using the term "propaganda" in a positive way. Such papers can be
+significant contributions to the practice of programming. I am
+fundamentally sympathetic with and supportive of the authors' message.
+But good propaganda needs to be widely understandable -- there's no
+point in converting the converted. You need to be aiming at the
+"outsiders."
+
+What is needed is more detail on the algorithm, for non-neural-network
+wizards. Then a *much* more detailed development of how the
+convolutions and other computational elements of the application are
+implemented in APL. Break it down into smaller pieces, show tiny
+concrete examples -- and write for a non-APL audience.
+
+I'm not sure that the necessary level of detail needed to explain this
+code well can be achieved in the limits of a short conference paper, but
+it is still what this topic needs.
+
+That all said, I liked the bottom-line message of the paper, which why
+I gave it, with all of its current limitations, a weak accept.
+
+Comments for author
+-------------------
+Spell check your paper. I've not bothered to list the specific items, but
+there are multiple typos that any spellchecker will catch.
+
+It would be good to say a bit more about the co-Dfns compiler, as it is your secret weapon.
