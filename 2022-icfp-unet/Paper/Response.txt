@@ -1,3 +1,5 @@
+# RESPONSE
+
 The authors thank the reviewers for their thoughtful responses. 
 
 Much like traditional math notation, recursion, static typing, or laziness, APL is cryptic and challenging to the uninitiated. We do not expect uninitiated readers to easily apprehend the APL expressions. We *do* expect readers to perceive the novelty and impact of our results. Ironically, while APL appears complex, PyTorch *is* complex. 
@@ -6,9 +8,61 @@ Calling the PyTorch API is easier than using APL, but it is not the comparison w
 
 Likewise, the APL code is more simple, concise, and well-defined than the equivalent traditional mathematical equations. We do not believe APL to be more cryptic to the uninitiated than the same expressions written in traditional math would be to someone uninitiated in traditional math notation. 
 
-APL is the only novel technique in our entire computational stack. The compiler uses no special optimizations and the runtime depends on no specialized machine learning code in order to see the runtime performance that we do.
+APL is the sole novelty in our entire stack. The compiler uses no special optimizations and the runtime depends on no specialized machine learning code in order to see the runtime performance that we do. Our key result is as much about what we didn't do as what we did.
 
-These results are surprising and remarkable; the reader can grasp these results without understanding the details of the APL expressions. That we did not use any novelty other than APL makes the novelty and impact of our results that much greater. We hope that such results inspire and motivate readers to spend the time and effort to dive more deeply into the APL with the help of external resources that we could not fit into the paper but intend to provide.  
+These results are surprising and remarkable; the reader can grasp these results without understanding the details of the APL expressions. That we did not use any novelty other than APL makes the novelty and impact of our results that much greater. We hope that such results inspire and motivate readers to spend the time and effort to dive more deeply into the APL with the help of external resources that we could not fit into the paper but intend to provide. 
 
 As the reviewers note, a paper of this size cannot do everything. It can neither teach the reader to rapidly comprehend APL nor elucidate the nuances of CNNs to those uninitiated in APL. We can, however, make the contribution of the paper and the exposition of our code as clear as space permits. Embracing the reviewers' salutary comments, we propose making the following changes in the final paper to improve the clarity of the paper's contribution and exposition:
 
+## PROPOSED CHANGES
+
+1. Remove all sections and discussions related to different implementations of the stencil function and operator. This is unnecessary to understand the main point of the paper and it is less accessible or interesting to a general audience. 
+
+2. Simplify the discussion of Rank since we do not use Rank in its full generality.
+
+3. Include fuller descriptions of the APL primitives used include those mentioned by the reviewers such as the turnstile ⊢. 
+
+4. We will include type signatures for APL primitives to help assist in building an intuition of the APL code.
+
+5. Discuss our verification of the correctness the APL version, which includes verifying the output of the APL code against the output of the PyTorch implementation.
+
+6. Provide references to external resources that provide a more expanded treatment of the APL code.
+
+7. Clarify the introduction and discussion to focus specifically on our key results and remove discussion around tangential topics. 
+
+8. Add an appendix with our APL code transliterated into a Python-esque pseudocode as an aid to parsing the expressions
+
+9. Make it clear that our primary contribution is not comparing the usability of PyTorch and its performance against APL.
+
+10. Make it clear that the compiler is not doing any special optimizations behind the scenes.
+
+## ADDITIONAL, SPECIFIC REVIEWER COMMENTS RESPONSES
+
+Additional comments on direct points made by reviewers:
+
+* Our back-propagation code was written manually, without auto-differentiation.
+
+* We avoided deviating from the U-net architecture and training practices found in the origional paper in order to maximize the applicability of external resources in understanding our architecture and to avoid introducing any novel CNN strategies that might conflate the point of the paper.
+
+* The use of bilinear upsampling would not materially alter the design and appearance of the transposed convolutional layers except to have a little more mathematical operations. In APL at least, they don't represent a fundamentally different computational flavor.
+
+* The rules and code are duplicates of one another with the rules describing the pure computation of the layer modulo any threading of values in and out of a layer-store. The source code given is the same expression but with the code that gets and sets the stored layers in the network included within the code
+
+* Re: Debugging. Dyalog APL includes a complete line-oriented debugger with traps, stops, restarting, stack inspection, frame-localized REPLs, and so forth. There are also specific display and graphics utilities for rendering the layers as bitmaps or graphs for tracking their progress during the debugging of the training process
+
+* We chose not to optimize the APL code because we were primarily interested in establishing a baseline of performance to see how the most direct and naive implemenations of the neural network in APL would look and perform without doing any sophisticated work to alter that behavior. 
+
+* Re: line 1019, this is part of the sections that we propose deleting in their entirety from the paper
+
+* re: line 1104, We will clarify that we are not trying to equate the APL code to calling PyTorch's API, but rather, comparing APL against what the underlying implementation of PyTorch looks like and its complexity.
+
+* "What is needed is more detail on the algorithm, for non-neural-network
+wizards. Then a *much* more detailed development of how the
+convolutions and other computational elements of the application are
+implemented in APL." 
+  --- We will include references to detailed expositions of the U-net architecture, since a detailed explanation of the algorithm if one is not familiar with neural network programming would not fit within the paper. Likewise, we will reference a much more detailed development of the APL code, too. Neither of these are appropriate within the paper itself, at the very least because of the space constraints. 
+
+* "My dissatisfaction with this paper is that the heart of the paper,
+which is the development of the CNN application in APL, is pretty
+incomprehensible. APL is a tough language to explicate with clarity."
+  --- The final paper will make the results and impact more accessible to those who do not fully grasp the APL. A full understanding of the APL involved is not something that the reader should expect to be fast or easy, and we recognize that it can take significant time to do so, more than would be expected of the time to read a paper in which one were more familiar with the languages and ideas. We think there is an inherent element of difficulty in this problem because of the nature of the language and programming paradigm that we cannot escape: motivated readers who wish to learn the APL will have to accept that doing so will take a longer time than they might first expect. We believe that the reader can still benefit without this heavy investment if they choose not to dive deeply into the APL. 
