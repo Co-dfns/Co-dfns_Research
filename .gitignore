@@ -38,3 +38,10 @@ Thumbs.db
 **/.venv
 **/__pycache__
 *.lyx#
+2023-array-unet/Source/codfns.lib
+2023-array-unet/Source/codfns.exp
+2023-array-unet/Source/codfns.h
+2023-array-unet/Source/cdgfx.lib
+2023-array-unet/Source/cdgfx.exp
+2023-array-unet/Source/cdgfx.cpp
+2023-array-unet/Source/UNET.dws

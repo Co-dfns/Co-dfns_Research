@@ -1,0 +1,7263 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass acmart
+\begin_preamble
+
+\end_preamble
+\options format=sigplan,screen
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding utf8
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "APL385 Unicode"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style ACM-Reference-Format
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout ACM Conference
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+ARRAY'23
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+ARRAY Workshop
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+Jun 17 - Jun 18, 2023
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Orlando, Florida, United States
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+U-net CNN in APL
+\end_layout
+
+\begin_layout Subtitle
+Exploring zero-framework, zero-library machine learning
+\end_layout
+
+\begin_layout Author
+Aaron W.
+ Hsu
+\end_layout
+
+\begin_layout Email
+aaron@dyalog.com
+\end_layout
+
+\begin_layout ORCID
+0000-0001-9292-7783
+\end_layout
+
+\begin_layout Affiliation
+\begin_inset Flex Position
+status collapsed
+
+\begin_layout Plain Layout
+Researcher
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Institution
+status open
+
+\begin_layout Plain Layout
+Dyalog, Ltd.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex City
+status open
+
+\begin_layout Plain Layout
+Bloomington, IN
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Country
+status open
+
+\begin_layout Plain Layout
+United States
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Rodrigo Girão Serrão
+\end_layout
+
+\begin_layout Email
+rodrigo@dyalog.com
+\end_layout
+
+\begin_layout Affiliation
+\begin_inset Flex Position
+status collapsed
+
+\begin_layout Plain Layout
+Consultant
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Institution
+status collapsed
+
+\begin_layout Plain Layout
+Dyalog, Ltd.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex City
+status collapsed
+
+\begin_layout Plain Layout
+Bramley
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Country
+status collapsed
+
+\begin_layout Plain Layout
+United Kingdom
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+The APL notation would appear to be a clear match for convolutional neural
+ networks, but traditional implementations of APL have lagged behind the
+ performance of highly tuned, specialized frameworks designed to execute
+ CNNs on the GPU.
+ Moreover, most demonstrations of APL for neural networking have involved
+ relatively small examples.
+ We explore a more complex example in the U-net architecture and utilize
+ a modern APL compiler with GPU support, Co-dfns, to compare the state of
+ the art of APL against the current crop of specialized neural network framework
+s in the form of PyTorch.
+ We compare performance as well as the language design of APL for neural
+ network programming and the clarity and transparency of the resulting code.
+ 
+\end_layout
+
+\begin_layout Abstract
+We found that the complete 
+\begin_inset Quotes eld
+\end_inset
+
+from scratch
+\begin_inset Quotes erd
+\end_inset
+
+ APL source was on par with the complexity of the PyTorch reference implementati
+on, albeit more foreign, while being more concise and complete.
+ We also found that when compiled with Co-dfns, despite the naive implementation
+ both of Co-dfns and our own code, performance on the GPU and the CPU were
+ within a factor of 2.2 - 2.4 times that of the PyTorch implementation.
+ We believe this suggests significant avenues of future exploration for
+ machine learning language design, pedagogy, and implementation, both inside
+ and outside of the APL community.
+ 
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Specialized machine learning frameworks dominate the present industrial
+ and educational spaces for deep learning applications.
+ A wide number of higly specialized and highly optimized libraries exist,
+ often built on top of one another, to support the modern wave of machine
+ learning architectures.
+ These systems are often more complex than your typical library, and they
+ might even be better classified as their own domain-specific languages
+ (DSLs).
+ While these libraries have supported the current explosion of machine learning
+ developers, a number of issues have emerged.
+\end_layout
+
+\begin_layout Standard
+First, because of their highly specialized nature, users of these systems
+ tend to become experts not in generalized programming or algorithmic skills,
+ but specialist toolkits and frameworks around a very specific model of
+ computation.
+ This specialized nature often mandates dedicated courses and even entire
+ academic specializations (even at the undergraduate level) focused on the
+ mastery of these particular concepts.
+ This can create a sharp fall off of skills transferrence, where machine
+ learning experts can use machine learning frameworks effectively, but may
+ be underdeveloped and underprepared to handle situations that require a
+ broader or more adaptive skillset.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+To someone who only has a hammer, everything looks like a nail.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Second, from a pedagogical perspective, when teaching machine learning,
+ one may often be able to implement simple networks in a general-purpose
+ programming language, but trying to teach machine learning through a typical
+ general purpose language can be difficult, because one quickly encounters
+ performance and scalability limitations that make any non-trivial and interesti
+ng applications likely beyond the competency and endurance of your typical
+ student.
+ This creates a sharp contrast in which one begins with simple systems that
+ can be programmed 
+\begin_inset Quotes eld
+\end_inset
+
+by hand
+\begin_inset Quotes erd
+\end_inset
+
+ but quickly transitions to highly opaque and complex frameworks that are
+ difficult to understand, modify, or intuit.
+ This can result in significant reductions in professional competency.
+\end_layout
+
+\begin_layout Standard
+Third, if a lack of profound and intuitive understanding of the underlying
+ mechanics of a deep learning system continues into professional life, the
+ result can be a type of 
+\begin_inset Quotes eld
+\end_inset
+
+programming by knob turning
+\begin_inset Quotes erd
+\end_inset
+
+ in which neural networks are programmed via trial and error rather than
+ through intentional design.
+ Machine Learning as a discipline is already opaque enough, with many cases
+ of unintended consequences, without the added dangers inherent in this
+ sort of unintentional programming guesswork 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "domingos2012few"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Fourth, the specificity of machine learning frameworks can result in significant
+ amounts of code churn and a reduction in the stability of codebases for
+ enterprise use.
+ Switching hardware, architectures, operating systems, or the like can create
+ unstable conditions in which code must be rewritten, adapted, or thrown
+ away entirely.
+ Machine learning frameworks are often highly vendor-specific, and even
+ those which are more vendor-neutral tend to encode significantly greater
+ specificity than is historically warranted for code intended to last for
+ any long period of time.
+ This almost necessitates higher levels of programmer investment in order
+ to keep such systems running over a long period of time.
+\end_layout
+
+\begin_layout Standard
+Despite the above potential issues, specialist frameworks have proven highly
+ effective, in large part because of how important high-performance is to
+ the domain of machine learning.
+ However, in recent years, general-purpose array programming languages have
+ seen a resurgence, and naturally, they have been examined in the light
+ of machine learning.
+ Such languages were also popular during early exploration of neural network
+ programming during the 20th century 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "alfonseca-1990-aplnn"
+literal "false"
+
+\end_inset
+
+, but performance issues of then-current hardware prevented further progression.
+\end_layout
+
+\begin_layout Standard
+APL, as a general-purpose array programming language, created by Kenneth
+ Iverson as an improved mathematical notation 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl"
+literal "false"
+
+\end_inset
+
+, has seen an increase in popularity over the past decades, in part because
+ of the renewed interest in parallel computation and a wider acceptance
+ of the use of a variety of programming languages.
+ However, only recently has significant new research into the use of APL
+ as a possible implementation language for machine learning begun to surface.
+ 
+\end_layout
+
+\begin_layout Standard
+The long history of APL, its origins as an pedagogical tool, and its reputation
+ for directness of algorithmic expression 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "knuth1993computer,knuth2007computer"
+literal "false"
+
+\end_inset
+
+ help to address some of the concerns above.
+ Furthermore, it is one of the most linguistically stable languages, while
+ also being exceptionally high level and high performance at the same time
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+, making it highly suitable for long lived code as well as rapid prototyping.
+ Finally, the language itself defaults to a data-parallel semantics, making
+ its application to GPU programming an obvious conclusion.
+ 
+\end_layout
+
+\begin_layout Standard
+While the above advantages might suggest APL as a terrific tool for machine
+ learning, unfortunately, the vast majority of implementations have been
+ for the CPU only, and those have usually been entirely interpreted.
+ Traditionally, compiler implementors have considered APL a challenging
+ language to compile 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+, but recent innovations to the language (particularly those with a functional
+ programming focus) have made compilation much more tractable, and the Co-dfns
+ compiler now exists as an APL implementation with native GPU support 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Given the available APL technology and the parsity of existing materials
+ on modern machine learning development in APL, we conducted an exploration
+ into the state of the art in APL, both from a language design and a runtime
+ implementation perspective.
+ To do this, we focused our efforts on the implementation and benchmarking
+ of the U-net convolutional neural network 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+.
+ This is a popular image segmentation architecture with a particularly interesti
+ng U-shaped design.
+ It makes use of a range of popular CNN vocabularies and functions while
+ having a clear architecture that is not so simple as to be trivial.
+ This makes it an ideal candidate for exploring APL's capabilities.
+\end_layout
+
+\begin_layout Standard
+We make the following contributions:
+\end_layout
+
+\begin_layout Itemize
+A complete demonstration in APL of the popular U-net convolutional neural
+ network, which is non-trivial in vocabulary and architecture
+\end_layout
+
+\begin_layout Itemize
+Our U-net implementation is exceptionally simple, concise, transparent,
+ and direct
+\end_layout
+
+\begin_layout Itemize
+Our implementation was written with pure APL and no dependencies, frameworks,
+ libraries, or other supporting code outside of the APL implementation
+\end_layout
+
+\begin_layout Itemize
+A functional programming-friendly approach to neural network design and
+ implementation
+\end_layout
+
+\begin_layout Itemize
+An analysis and examination of the current language features within APL
+ that appear relevant to CNNs and machine learning
+\end_layout
+
+\begin_layout Itemize
+A critical discussion and design comparison of two different approaches
+ to supporting convolutions and similar operations in a general-purpose
+ array language with a recommendation for future implementation improvements
+\end_layout
+
+\begin_layout Itemize
+A grounded perspective on the applications of general-purpose array programming
+ languages like APL to the machine learning space from professional and
+ pedagogical angles and how APL compares to alternative, specialist framework
+ approaches
+\end_layout
+
+\begin_layout Itemize
+Performance results of two modern APL implementations, one compiled and
+ the other interpreted, on CPU and GPU hardware against a reference PyTorch
+ implementation for U-net
+\end_layout
+
+\begin_layout Itemize
+Performance observations of specialized neural network functionality exposed
+ in more general purpose array frameworks for GPU programming
+\end_layout
+
+\begin_layout Itemize
+Specific highlighting of low-hanging fruit for improving the current range
+ of APL implementations both in terms of language design and runtime implementat
+ion
+\end_layout
+
+\begin_layout Itemize
+A demonstration of the expressiveness and performance that careful language
+ design can enable without the need for complex implementation models or
+ theory
+\end_layout
+
+\begin_layout Section
+Background
+\end_layout
+
+\begin_layout Standard
+In this section, we provide the relevant background pertaining to the machine
+ learning concepts needed to work with CNNs, and the u-net in particular,
+ and to the APL language.
+\end_layout
+
+\begin_layout Subsection
+Convolutional Neural Networks
+\end_layout
+
+\begin_layout Standard
+The experiment this paper uses to produce its benchmarks is the reproduction
+ of a well-known convolutional neural network architecture.
+ The use of CNNs in machine learning was widely popularised with the publication
+ of a paper 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cnns-imagenet"
+literal "false"
+
+\end_inset
+
+ that used CNNs to achieve state-of-the-art performance in labeling pictures
+ of the ImageNet 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "imagenet"
+literal "false"
+
+\end_inset
+
+ challenge.
+ However, a proeminent paper from 1998 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cnns-lecun-doc-recognition"
+literal "false"
+
+\end_inset
+
+ shows that the modern use of CNNs can be dated farther back.
+\end_layout
+
+\begin_layout Standard
+The use of convolutional neural networks, as we know them today, builds
+ on top of the convolutional layer 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "intro-to-cnn"
+literal "false"
+
+\end_inset
+
+.
+ Convolutional layers receive three-dimensional tensors as input and produce
+ three-dimensional tensors as output.
+ These inputs have a fixed number of channels
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+channel
+\begin_inset Quotes erd
+\end_inset
+
+ typically refers to the leading dimension of these inputs/outputs, a nomenclatu
+re that is derived from the fact that CNNs were popularised in the context
+ of image processing.
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $n_{in}$
+\end_inset
+
+ which are then transformed into 
+\begin_inset Formula $n_{out}$
+\end_inset
+
+ channels through means of discrete convolutions with a total of 
+\begin_inset Formula $n_{in}\times n_{out}$
+\end_inset
+
+ kernels, the learnable parameters of the convolutional layer.
+ One of the advantages of CNNs is that, although the total number of kernels
+ 
+\begin_inset Formula $n_{in}\times n_{out}$
+\end_inset
+
+ depends on the number of input and output channels, the sizes of the kernels
+ are independent of the size of the other two dimensions of the inputs.
+ Despite the fact that the main dynamics of a convolutional layer is governed
+ by discrete convolution with the learnable kernels, the exact behaviour
+ of a convolutional layer depends on layer parameters like the padding and
+ the stride used 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Given that CNNs were primarily used in image recognition-related tasks,
+ convolutional layers were often paired with pooling layers that ease the
+ recognition of features over small neighbourhoods 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pooling"
+literal "false"
+
+\end_inset
+
+.
+ The rationale behind these pooling layers, as seen from an image recognition-re
+lated context, can be interpreted as follows: the image features one is
+ typically interested in (e.g., the recognition or segmentation of objects,
+ or image labeling) are not contained in single pixels of the input images,
+ but in regions of said pixels.
+ Pooling layers are, thus, employed with the purpose of aggregating low-level
+ information that can then be used to recognise the larger features of interest
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pooling"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In 2015, three authors published a paper
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+ introducing the u-net architecture: a CNN with a non-trivial architecture
+ that won several biomedical image segmentation challenges at the time of
+ its publication.
+ Since then, the u-net architecture was reimplemented hundreds of times
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Numbers by 
+\begin_inset CommandInset href
+LatexCommand href
+name "Papers with Code"
+target "https://paperswithcode.com/paper/u-net-convolutional-networks-for-biomedical"
+literal "false"
+
+\end_inset
+
+ as of March, 2022.
+\end_layout
+
+\end_inset
+
+, most notably through the use of deep-learning frameworks such as PyTorch
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+, a deep-learning framework used in this work, or Caffe 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "caffe"
+literal "false"
+
+\end_inset
+
+, which is the deep learning framework in which the original u-net was implement
+ed.
+ For this paper, we reimplemented the u-net architecture, in APL, without
+ making use of any (machine learning) libraries or frameworks.
+ Before we introduce our work on that implementation, we discuss the original
+ architecture that we set out to replicate.
+\end_layout
+
+\begin_layout Subsection
+Original U-net Architecture
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename u-net-architecture.png
+	width 60page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Original u-net architecture, as seen in the original paper 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+.
+ Arrows represent operations between the multi-channel feature maps represented
+ by the rectangles.
+ The number on top of each rectangle is its number of channels and the numbers
+ in the lower-left corner are the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ dimensions of the feature maps.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:unet-architecture"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the original diagram that represents the u-net architecture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet"
+literal "false"
+
+\end_inset
+
+, which we cover now.
+ We will go through the figure from left to right, following the U-shape
+ of the diagram.
+\end_layout
+
+\begin_layout Standard
+The blue right arrows, labeled 
+\begin_inset Quotes eld
+\end_inset
+
+conv 3x3, ReLU
+\begin_inset Quotes erd
+\end_inset
+
+, represent unpadded convolutions with 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ kernels.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows that after each of these convolutions, the size of the feature maps
+ decreases by 
+\begin_inset Formula $2$
+\end_inset
+
+, from which it can be inferred that the stride 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+ is 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ After each convolution, we use the activation function rectified linear
+ unit (ReLU) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "relu"
+literal "false"
+
+\end_inset
+
+.
+ Pairs of these convolutions are followed by max-pooling operations represented
+ by the red down arrows.
+ These max-pooling operations act on a 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ region and have a stride of 
+\begin_inset Formula $2$
+\end_inset
+
+, effectively downsampling each feature map to half the size.
+ Because of this repeated halving, the input size must be chosen carefully
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Specifically, the input dimensions must be congruent to 
+\begin_inset Formula $12\mod16$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ After every downsampling step, the first convolution doubles the number
+ of channels.
+ The pattern of two convolutions (with ReLUs) followed by downsampling via
+ max-pooling happens four times and makes up the contracting path of the
+ network, on the left of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Having reached the end of the contracting path (at the bottom of the diagram),
+ we start the expanding path.
+ The expanding path also makes use of unpadded convolutions with 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ kernels and stride 1, but these are now at the end of each step, instead
+ of at the beginning.
+ Each step of the expanding path starts with an upsampling operation (green
+ up arrows) that doubles the size of the feature maps while cutting their
+ number down in half.
+ For this upsampling, we infer that the original authors used a transposed
+ convolution (with 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ kernels) of stride 
+\begin_inset Formula $2$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "conv-arithmetic-guide"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "up-transposed"
+literal "false"
+
+\end_inset
+
+ for an informal discussion of this inferrence.
+\end_layout
+
+\end_inset
+
+.
+ These transpose convolutions produce half of the channels that are fed
+ as input to the regular convolutions.
+ The other half of the channels is copied and cropped from the corresponding
+ step in the contracting path, as represented by the gray right long arrows
+ in the middle of the diagram of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Because there is a slight mismatch between the size of the feature maps
+ that are copied and cropped and the other feature maps that resulted from
+ the upsampling step, the feature maps that are copied get cropped from
+ the centre of the larger feature maps of the contracting path.
+ It is after this copy and crop operation that we feed the feature maps
+ into the two convolution layers that are paired with their respective ReLU
+ activation functions.
+\end_layout
+
+\begin_layout Standard
+At the end of the contracting path, we have a 
+\begin_inset Formula $1\times1$
+\end_inset
+
+ unpadded convolution that reduces the 
+\begin_inset Formula $64$
+\end_inset
+
+ feature maps to 
+\begin_inset Formula $2$
+\end_inset
+
+ feature maps (one per class).
+\end_layout
+
+\begin_layout Standard
+To compute the loss of the output with respect to the expected labels, we
+ compute the softmax across the two output channels followed by the cross
+ entropy loss function.
+\end_layout
+
+\begin_layout Subsection
+APL Notation
+\end_layout
+
+\begin_layout Standard
+APL 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl"
+literal "false"
+
+\end_inset
+
+ is an alternative mathematical notation, introduced by Turing award winner
+ Kenneth E.
+ Iverson in the '60s, that has since evolved into an executable mathematical
+ notation 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "apl-since-78"
+literal "false"
+
+\end_inset
+
+.
+ In this section, we introduce the basics of the APL notation, but the reader
+ is directed to 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mdapl"
+literal "false"
+
+\end_inset
+
+ for a full tutorial.
+ Online interactive systems are also available
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+TryAPL 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://tryapl.org
+\end_layout
+
+\end_inset
+
+ is an example of such a service.
+\end_layout
+
+\end_inset
+
+, which should make it easier to get acquainted with APL.
+ Throughout the remainder of this paper, the notation used is such that
+ it is compatible with Dyalog APL 18.0
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+You can get Dyalog APL from Dyalog's website 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://dyalog.com/download-zone.htm
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Functions and Arrays
+\end_layout
+
+\begin_layout Standard
+APL is an 
+\begin_inset Quotes eld
+\end_inset
+
+alternative
+\begin_inset Quotes erd
+\end_inset
+
+ mathematical notation because it differs from the traditional mathematical
+ notation in some ways.
+ However, not everything in APL is foreign, as demonstrated by the following
+ examples of addition and multiplication:
+\end_layout
+
+\begin_layout Verbatim
+      1 + 2
+\end_layout
+
+\begin_layout Verbatim
+3
+\end_layout
+
+\begin_layout Verbatim
+      73 × 104
+\end_layout
+
+\begin_layout Verbatim
+7592
+\end_layout
+
+\begin_layout Standard
+The format of the two examples above will be the same throughout the paper
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This format mimics that of the APL session, the interactive environment
+ in which one can use APL.
+\end_layout
+
+\end_inset
+
+: the notation typed by the user is indentend to the right and the computed
+ result is left-aligned on the following line(s).
+ Subtraction and division are also represented by the usual glyphs, 
+\family typewriter
+-
+\family default
+ and 
+\family typewriter
+÷
+\family default
+, respectively:
+\end_layout
+
+\begin_layout Verbatim
+      10 - 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+9 8 7
+\end_layout
+
+\begin_layout Verbatim
+      100 50 20 ÷ 2
+\end_layout
+
+\begin_layout Verbatim
+50 25 10
+\end_layout
+
+\begin_layout Standard
+In APL, one is allowed to write multiple values next to each other, which
+ are then 
+\emph on
+stranded
+\emph default
+ together and interpreted as a vector.
+ Thus, 
+\family typewriter
+1 2 3
+\family default
+ represents the three-item vector whose elements are the first three positive
+ integers.
+ Then, the APL function 
+\emph on
+minus
+\emph default
+ takes the scalar 
+\family typewriter
+10
+\family default
+ as its left argument and the three-item vector 
+\family typewriter
+1 2 3
+\family default
+ as its right argument, and it subtracts each of the items of the right
+ argument vector from its left argument.
+ Similarly, the division example shows that vectors can also be used as
+ the left argument.
+ The natural progression is to wonder whether vectors can be used on the
+ left and on the right of a function, and typically they can.
+ We demonstrate that with the 
+\begin_inset Formula $\max$
+\end_inset
+
+ function, represented by the upstile glyph 
+\family typewriter
+⌈
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+      (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
+\end_layout
+
+\begin_layout Verbatim
+5 10 500 1000
+\end_layout
+
+\begin_layout Verbatim
+      1 10 100 1000 ⌈ 5 5 500 500
+\end_layout
+
+\begin_layout Verbatim
+5 10 500 1000
+\end_layout
+
+\begin_layout Standard
+The first example shows how parenthesis 
+\family typewriter
+()
+\family default
+ can be used to create vectors whose items are results of other expressions,
+ given that the four expressions inside parenthesis produced the four items
+ of the result vector.
+ The second example shows that we can obtain the same result by collecting
+ all the left arguments inside all 
+\family typewriter
+()
+\family default
+ on the left of a single 
+\family typewriter
+⌈
+\family default
+, and by collecting all the right arguments inside all 
+\family typewriter
+()
+\family default
+ on the right of that same 
+\family typewriter
+⌈
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The dyadic functions 
+\emph on
+plus
+\emph default
+ 
+\family typewriter
++
+\family default
+, 
+\emph on
+minus
+\emph default
+ 
+\family typewriter
+-
+\family default
+, 
+\emph on
+times
+\emph default
+ 
+\family typewriter
+×
+\family default
+, 
+\emph on
+divide
+\emph default
+ 
+\family typewriter
+÷
+\family default
+, and 
+\emph on
+max
+\emph default
+ 
+\family typewriter
+⌈
+\family default
+, all share the property that allows them to accept vectors as arguments:
+ they are 
+\emph on
+scalar functions
+\emph default
+.
+ Scalar functions are functions that pervade the structure of the argument(s)
+ and apply directly to each of the scalars that make up said argument(s).
+ This becomes increasingly relevant when one understands that APL has first-clas
+s support for arrays of any dimension, of which we have seen 
+\emph on
+scalars
+\emph default
+ such as 
+\family typewriter
+10
+\family default
+ and 
+\family typewriter
+73
+\family default
+ and 
+\emph on
+vectors
+\emph default
+.
+ Scalars and vectors can be typed directly but arrays of higher dimensions
+ must be loaded from an external data source or created dynamically through
+ computations.
+\end_layout
+
+\begin_layout Standard
+The reshape function is represented by the Greek letter rho 
+\family typewriter
+⍴
+\family default
+ and is a dyadic function that reshapes its right argument to have the shape
+ specified by the left argument.
+ For instance, if we want to create a 
+\begin_inset Formula $2\times3$
+\end_inset
+
+ matrix with the first six non-negative integers, we can do it like so:
+\end_layout
+
+\begin_layout Verbatim
+      2 3 ⍴ 0 1 2 3 4 5
+\end_layout
+
+\begin_layout Verbatim
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+3 4 5
+\end_layout
+
+\begin_layout Standard
+Each non-negative integer of the left argument specifies the length of the
+ result along the corresponding dimension.
+ So, if the left argument had been 
+\family typewriter
+5 9 7
+\family default
+, the resulting array would have been a cuboid (array with three dimensions)
+ composed of 
+\family typewriter
+5
+\family default
+ planes, 
+\family typewriter
+9
+\family default
+ rows, and 
+\family typewriter
+7
+\family default
+ columns, holding a total of 
+\begin_inset Formula $5\times9\times7=315$
+\end_inset
+
+ items.
+\end_layout
+
+\begin_layout Standard
+Given an arbitrary array 
+\family typewriter
+array
+\family default
+, we can also use the Greek letter rho 
+\family typewriter
+⍴
+\family default
+ to compute the 
+\emph on
+shape
+\emph default
+ of the array, that is, the length of each of its 
+\emph on
+axis
+\emph default
+, or dimensions.
+ In the example below, we can see that 
+\family typewriter
+array
+\family default
+ is a matrix with 
+\family typewriter
+2
+\family default
+ rows and 
+\family typewriter
+3
+\family default
+ columns, even though we don't know what the items of 
+\family typewriter
+array
+\family default
+ are:
+\end_layout
+
+\begin_layout Verbatim
+      ⍴array
+\end_layout
+
+\begin_layout Verbatim
+2 3
+\end_layout
+
+\begin_layout Standard
+This also goes to show that many functions have two behaviours, one monadic
+ behaviour and one dyadic behaviour.
+ A function is used monadically when it has an array argument on its right,
+ but not on its left, and a function is used dyadically when it has an array
+ argument on its left and another one on its right.
+ For example, rho 
+\family typewriter
+⍴
+\family default
+ represents the monadic function 
+\emph on
+shape
+\emph default
+ and the dyadic function 
+\emph on
+reshape
+\emph default
+.
+ In this particular instance, we can also see that 
+\family typewriter
+array
+\family default
+ is a 
+\emph on
+nested
+\emph default
+ matrix:
+\end_layout
+
+\begin_layout Verbatim
+      array
+\end_layout
+
+\begin_layout Verbatim
+┌───┬───┬───┐
+\end_layout
+
+\begin_layout Verbatim
+│0 0│0 1│0 2│
+\end_layout
+
+\begin_layout Verbatim
+├───┼───┼───┤
+\end_layout
+
+\begin_layout Verbatim
+│1 0│1 1│1 2│
+\end_layout
+
+\begin_layout Verbatim
+└───┴───┴───┘
+\end_layout
+
+\begin_layout Standard
+The cells above each contain a two-item vector (
+\family typewriter
+0 0
+\family default
+ through 
+\family typewriter
+1 2
+\family default
+), and the borders surrounding those two-item vectors are a visual cue to
+ help the reader discern the nested nature of the array.
+\end_layout
+
+\begin_layout Standard
+Another key difference between the APL notation and the traditional mathematical
+ notation is that APL normalises precedence rules by saying that all functions
+ have the same precedence: functions are said to have a 
+\emph on
+long right scope
+\emph default
+ and a 
+\emph on
+short left scope
+\emph default
+, which is why APL is often said to 
+\begin_inset Quotes eld
+\end_inset
+
+execute from right to left
+\begin_inset Quotes erd
+\end_inset
+
+.
+ A long right scope means that a function takes as right argument everything
+ to its right, whereas a short left scope means that a function only takes
+ as left argument the array that is immediately to its left.
+ The expression 
+\begin_inset Formula $2\times3-4\times5$
+\end_inset
+
+, in standard mathematical notation, is equivalent to 
+\begin_inset Formula $(2\times3)-(4\times5)=6-20=-14$
+\end_inset
+
+, because multiplication has higher precedence over subtraction.
+ However, the APL expression 
+\family typewriter
+2×3-4×5
+\family default
+ is equivalent to 
+\family typewriter
+2×(3-(4×5))
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+      (2 × 3) - (4 × 5)
+\end_layout
+
+\begin_layout Verbatim
+¯14
+\end_layout
+
+\begin_layout Verbatim
+      2 × (3 - (4 × 5))
+\end_layout
+
+\begin_layout Verbatim
+¯34
+\end_layout
+
+\begin_layout Verbatim
+      2 × 3 - 4 × 5
+\end_layout
+
+\begin_layout Verbatim
+¯34
+\end_layout
+
+\begin_layout Standard
+APL uses the high-minus 
+\family typewriter
+¯
+\family default
+ to represent negative numbers, otherwise there would be ambiguity in the
+ use of the minus sign 
+\family typewriter
+-
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Is 
+\family typewriter
+1 -2
+\family default
+ the APL expression 
+\begin_inset Quotes eld
+\end_inset
+
+one minus two
+\begin_inset Quotes erd
+\end_inset
+
+ or the two-item vector 
+\begin_inset Quotes eld
+\end_inset
+
+one, negative two
+\begin_inset Quotes erd
+\end_inset
+
+?
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Shape, Rank, Data
+\end_layout
+
+\begin_layout Standard
+Every APL array can be fundamentally characterised by its 
+\emph on
+shape
+\emph default
+, its 
+\emph on
+rank
+\emph default
+, and its data:
+\end_layout
+
+\begin_layout Itemize
+the 
+\emph on
+shape
+\emph default
+ of an array can be computed with the function 
+\emph on
+shape
+\emph default
+ and is a vector that specifies the length of each dimension of its argument;
+\end_layout
+
+\begin_layout Itemize
+the 
+\emph on
+rank
+\emph default
+ of an array is the number of its dimensions (the length of its 
+\emph on
+shape
+\emph default
+) and dictates the name of said array as per Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:rank-names"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+; and
+\end_layout
+
+\begin_layout Itemize
+the data of an array are the items that compose said array.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Array names according to 
+\emph on
+rank
+\emph default
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:rank-names"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Rank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Name
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+scalar
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vector
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+matrix
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cuboid
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+shape
+\emph default
+ of an array 
+\family typewriter
+arr
+\family default
+ is 
+\family typewriter
+⍴arr
+\family default
+.
+ The 
+\emph on
+rank
+\emph default
+ of an array is the 
+\emph on
+length
+\emph default
+ of its 
+\emph on
+shape
+\emph default
+ or, in APL vocabulary, the 
+\emph on
+tally
+\emph default
+ of its 
+\emph on
+shape
+\emph default
+, which is 
+\family typewriter
+≢⍴
+\family default
+.
+ Finally, the data of an array can be retrieved as a vector with the monadic
+ function 
+\emph on
+ravel
+\emph default
+ 
+\family typewriter
+,
+\family default
+ (comma).
+ These are illustrated below for a matrix.
+ We use the primitive 
+\emph on
+roll
+\emph default
+ 
+\family typewriter
+?
+\family default
+ to fill the matrix with random data and annotate the expressions with APL
+ comments 
+\family typewriter
+⍝
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+      mat ← ?2 3⍴0    ⍝ Create random array mat
+\end_layout
+
+\begin_layout Verbatim
+      mat
+\end_layout
+
+\begin_layout Verbatim
+0.999 0.00424 0.351
+\end_layout
+
+\begin_layout Verbatim
+0.967 0.92    0.821
+\end_layout
+
+\begin_layout Verbatim
+      ⍴mat            ⍝ mat has shape 2 3.
+\end_layout
+
+\begin_layout Verbatim
+2 3
+\end_layout
+
+\begin_layout Verbatim
+      ≢⍴mat           ⍝ mat has rank (tally shape) 2
+\end_layout
+
+\begin_layout Verbatim
+2
+\end_layout
+
+\begin_layout Verbatim
+      ,mat            ⍝ mat contains this data
+\end_layout
+
+\begin_layout Verbatim
+0.999 0.00424 0.351 0.967 0.92 0.821
+\end_layout
+
+\begin_layout Subsubsection
+Operators
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Operators"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On top of providing a rich set of built-in functions, APL provides a series
+ of operators that allow us to combine and modify our functions.
+ A typical example of a monadic APL operator is 
+\emph on
+reduce-first
+\emph default
+ 
+\family typewriter
+⌿
+\family default
+.
+ The monadic operator 
+\emph on
+reduce-first
+\emph default
+ takes a function on its left and then inserts it between the elements of
+ the right argument.
+ Previously, we computed the total number of elements in a cuboid with shape
+ 
+\family typewriter
+5 9 7
+\family default
+ by inserting the 
+\emph on
+times
+\emph default
+ function between each pair of numbers.
+ With 
+\emph on
+reduce-first
+\emph default
+, this can be simplified:
+\end_layout
+
+\begin_layout Verbatim
+      5×9×7
+\end_layout
+
+\begin_layout Verbatim
+315
+\end_layout
+
+\begin_layout Verbatim
+      ×⌿5 9 7
+\end_layout
+
+\begin_layout Verbatim
+315
+\end_layout
+
+\begin_layout Standard
+The function 
+\emph on
+times
+\emph default
+, together with the operator 
+\emph on
+reduce-first
+\emph default
+, creates the 
+\emph on
+derived function
+\emph default
+ 
+\family typewriter
+×⌿
+\family default
+, recognised as the function 
+\emph on
+product
+\emph default
+.
+ Similarly, the derived function 
+\family typewriter
++⌿
+\family default
+ is the function 
+\emph on
+sum
+\emph default
+:
+\end_layout
+
+\begin_layout Verbatim
+      1+2+3+4
+\end_layout
+
+\begin_layout Verbatim
+10
+\end_layout
+
+\begin_layout Verbatim
+      +⌿1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+10
+\end_layout
+
+\begin_layout Standard
+This highlights the versatility of APL in that operators combine with a
+ variety of functions.
+ Another source of versatility in APL comes from how functions get applied
+ to arrays of different ranks.
+\end_layout
+
+\begin_layout Standard
+The operator 
+\emph on
+reduce-first
+\emph default
+ 
+\family typewriter
+⌿
+\family default
+ gets its name by contrast with the operator 
+\emph on
+reduce
+\emph default
+ 
+\family typewriter
+/
+\family default
+, given that the two operators differ in the axis along which their derived
+ functions operate.
+ With the help of the function 
+\emph on
+index generator
+\emph default
+ 
+\family typewriter
+⍳
+\family default
+ and the 
+\emph on
+left arrow
+\emph default
+ 
+\family typewriter
+←
+\family default
+ that performs assignment, we can create a matrix 
+\family typewriter
+mat
+\family default
+ with shape 
+\family typewriter
+2 3
+\family default
+ and demonstrate the difference between the two derived functions 
+\family typewriter
++/
+\family default
+ and 
+\family typewriter
++⌿
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+      mat ← 2 3⍴⍳6
+\end_layout
+
+\begin_layout Verbatim
+      mat
+\end_layout
+
+\begin_layout Verbatim
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+3 4 5
+\end_layout
+
+\begin_layout Verbatim
+      +/mat
+\end_layout
+
+\begin_layout Verbatim
+3 12
+\end_layout
+
+\begin_layout Verbatim
+      +⌿mat
+\end_layout
+
+\begin_layout Verbatim
+3 5 7
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Plus-reduce-first
+\emph default
+ 
+\family typewriter
++⌿
+\family default
+ sums along the first axis of its argument and 
+\emph on
+plus-reduce
+\emph default
+ 
+\family typewriter
++/
+\family default
+ sums along the last axis of its argument.
+ For higher-rank arrays, an arbitrary axis can be specified with the 
+\emph on
+axis operator
+\emph default
+ 
+\family typewriter
+[axis]
+\family default
+.
+ For example, the construct 
+\family typewriter
++/[0]
+\family default
+ uses 
+\emph on
+reduce
+\emph default
+ with 
+\emph on
+axis 
+\emph default
+to replicate the behaviour of 
+\family typewriter
++⌿
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+On top of monadic operators, that take a single operand on the left, APL
+ provides a series of dyadic operators that take a left operand and a right
+ operand.
+ One such dyadic operator is the 
+\emph on
+inner product
+\emph default
+ 
+\family typewriter
+.
+
+\family default
+ (dot), which we use thoroughly for the derived function 
+\emph on
+matrix product
+\emph default
+ 
+\family typewriter
++.×
+\family default
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Presenting the operator 
+\emph on
+inner product 
+\emph default
+in all its generality is outside the scope of this paper.
+\end_layout
+
+\end_inset
+
+.
+ We exemplify 
+\emph on
+matrix product
+\emph default
+ below:
+\end_layout
+
+\begin_layout Verbatim
+      X ← 2 3⍴0 0 0 1 10 100
+\end_layout
+
+\begin_layout Verbatim
+      Y ← 3 2⍴1 2 3 4 5 6
+\end_layout
+
+\begin_layout Verbatim
+      X Y
+\end_layout
+
+\begin_layout Verbatim
+┌────────┬───┐
+\end_layout
+
+\begin_layout Verbatim
+│0  0   0│1 2│
+\end_layout
+
+\begin_layout Verbatim
+│1 10 100│3 4│
+\end_layout
+
+\begin_layout Verbatim
+│        │5 6│
+\end_layout
+
+\begin_layout Verbatim
+└────────┴───┘
+\end_layout
+
+\begin_layout Verbatim
+      X +.× Y
+\end_layout
+
+\begin_layout Verbatim
+  0   0
+\end_layout
+
+\begin_layout Verbatim
+531 642
+\end_layout
+
+\begin_layout Verbatim
+      Y +.× X
+\end_layout
+
+\begin_layout Verbatim
+2 20 200
+\end_layout
+
+\begin_layout Verbatim
+4 40 400
+\end_layout
+
+\begin_layout Verbatim
+6 60 600
+\end_layout
+
+\begin_layout Standard
+APL functions can only take arrays as arguments, but APL operators can take
+ functions or arrays as operands.
+ The operator 
+\emph on
+rank
+\emph default
+ 
+\family typewriter
+⍤
+\family default
+ is one such operator, which takes the forms 
+\family typewriter
+X (f⍤A) Y
+\family default
+ and 
+\family typewriter
+(f⍤A) Y
+\family default
+, where 
+\family typewriter
+X
+\family default
+ and 
+\family typewriter
+Y
+\family default
+ are arbitrary arrays, 
+\family typewriter
+A
+\family default
+ is a scalar or a one-item vector (or a two-item vector if 
+\family typewriter
+X
+\family default
+ is present), and 
+\family typewriter
+f
+\family default
+ is a function.
+ The derived function is such that, instead of operating on the full argument(s)
+, operates on subarrays of the specified rank(s) specified in 
+\family typewriter
+A
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+      mat ← 2 4⍴⍳8
+\end_layout
+
+\begin_layout Verbatim
+      mat
+\end_layout
+
+\begin_layout Verbatim
+0 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+4 5 6 7
+\end_layout
+
+\begin_layout Verbatim
+      mat (×⍤1 0) 1 ¯1
+\end_layout
+
+\begin_layout Verbatim
+ 0  1  2  3
+\end_layout
+
+\begin_layout Verbatim
+¯4 ¯5 ¯6 ¯7
+\end_layout
+
+\begin_layout Standard
+The matrix 
+\family typewriter
+mat
+\family default
+ has two subarrays of rank one, its rows; and the vector 
+\family typewriter
+1 ¯1
+\family default
+ has two subarrays of rank zero, its items, thus 
+\family typewriter
+(×⍤1 0)
+\family default
+ will multiply the rows of 
+\family typewriter
+mat
+\family default
+ with the items of 
+\family typewriter
+1 ¯1
+\family default
+, resulting in a matrix that has the same first row and a negated second
+ row as 
+\family typewriter
+mat
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
+User-defined Functions and Operators
+\end_layout
+
+\begin_layout Standard
+In APL, one can use the 
+\emph on
+direct functions (dfns)
+\emph default
+ syntax to create user-defined functions, which can then be named and reused
+ throughout the APL programs.
+ A dfn is enclosed by braces 
+\family typewriter
+{}
+\family default
+ and it can only take a right argument, or a left and right argument.
+ Inside a dfn, we use 
+\emph on
+omega
+\emph default
+ 
+\family typewriter
+⍵
+\family default
+ to refer to the right argument and 
+\emph on
+alpha
+\emph default
+ 
+\family typewriter
+⍺
+\family default
+ to refer to the left argument.
+ We provide a short example:
+\end_layout
+
+\begin_layout Verbatim
+      vec ← 0 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+      (+⌿vec)÷≢vec      ⍝ Sum of vec divided by its tally
+\end_layout
+
+\begin_layout Verbatim
+1.5
+\end_layout
+
+\begin_layout Verbatim
+      avg ← {(+⌿⍵)÷≢⍵}  ⍝ Sum of arg divided by its tally
+\end_layout
+
+\begin_layout Verbatim
+      avg vec
+\end_layout
+
+\begin_layout Verbatim
+1.5
+\end_layout
+
+\begin_layout Standard
+Similarly, the 
+\emph on
+direct operators (dops)
+\emph default
+ syntax can be used to create user-defined operators.
+ A dop is also enclosed by braces 
+\family typewriter
+{}
+\family default
+ and it can only take a left operand 
+\family typewriter
+⍺⍺
+\family default
+ if it is a monadic operator, or a left 
+\family typewriter
+⍺⍺
+\family default
+ and a right 
+\family typewriter
+⍵⍵
+\family default
+ operand if it is a dyadic operator.
+ Inside a dop, 
+\family typewriter
+⍵
+\family default
+ and 
+\family typewriter
+⍺
+\family default
+ still refer to the arguments of the derived function.
+ For example, given a dyadic function 
+\family typewriter
+f
+\family default
+ and a monadic function 
+\family typewriter
+g
+\family default
+, the pattern 
+\family typewriter
+(g X) f g Y
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A helpful interpretation of this pattern is 
+\begin_inset Quotes eld
+\end_inset
+
+preprocess the arguments to 
+\family typewriter
+f
+\family default
+ with the function 
+\family typewriter
+g
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\family default
+ can be abstracted away with the dop 
+\family typewriter
+{(⍵⍵ ⍺) ⍺⍺ ⍵⍵ ⍵}
+\family default
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This is a partial model of the operator 
+\emph on
+over
+\emph default
+ 
+\family typewriter
+⍥
+\family default
+ from APL.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Implementation
+\end_layout
+
+\begin_layout Subsection
+Overview
+\end_layout
+
+\begin_layout Standard
+Our implementation of u-net can be roughly divided into two significant
+ considerations: the implementation of the fundamental vocabulary of neural
+ networks, and the wiring of those operations into the actual u-net architecture.
+ We leveraged significant features of APL to implement both aspects of the
+ system, and so we will treat each in their own sub-section.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, because Co-dfns does not yet support the complete array of
+ Dyalog primitives and their semantics, some of the implementation techniques
+ that we use could be significantly enhanced through the use of a more rich
+ feature-set.
+ The effect of using these richer features is an increase in concision and
+ clarity, but we expect that such improvements would not significantly affect
+ the overall performance of the code, either positively or negatively.
+ We believe that the overall structure of the code is clear and simple enough
+ at the current state of Co-dfns to warrant inclusion almost verbatim here,
+ rather than use the richer features and require the reader to translate
+ those into the Co-dfns supported feature set in order to execute them.
+\end_layout
+
+\begin_layout Standard
+One area that deserves particular attention is the design of APL as a language
+ itself and the specific features that immediately present themselves as
+ particularly well-suited to expressing neural network computations.
+ Our exploration of these features uncovered a particular design tension
+ that is worth discussing in detail.
+ A complete copy of the code discussed in this paper is included in the
+ appendix.
+ 
+\end_layout
+
+\begin_layout Subsection
+Design of APL Primitives for Neural Networks
+\end_layout
+
+\begin_layout Standard
+The majority of APL primitives find fundamental use in computing neural
+ networks, which isn't surprising given the array-oriented and numerical
+ nature of the domain.
+ However, the stencil operator, introduced in Dyalog APL 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stencil-lives"
+literal "false"
+
+\end_inset
+
+, stands out as the most obviously aligned with convolutional neural networks.
+ The J programming language introduced an alternative implementation of
+ the stencil operator earlier 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stencil-in-J"
+literal "false"
+
+\end_inset
+
+, from which Dyalog derived inspiration for the implementation of their
+ own stencil operator.
+ 
+\end_layout
+
+\begin_layout Standard
+The stencil operator takes a function left operand and a specification array
+ as a right operand.
+ Given a function 
+\begin_inset Formula $f$
+\end_inset
+
+ as the left operand and a specification 
+\begin_inset Formula $s$
+\end_inset
+
+ as the right operand, the stencil operator, written 
+\begin_inset Formula $f\texttt{⌺}s$
+\end_inset
+
+, evaluates to a function that applies 
+\begin_inset Formula $f$
+\end_inset
+
+ on each sliding window specified by 
+\begin_inset Formula $s$
+\end_inset
+
+.
+ The two most common sliding window sizes for stencil in u-net are 
+\begin_inset Formula $3\,3$
+\end_inset
+
+ for the convolutions, corresponding to a window size of 
+\begin_inset Formula $3×3$
+\end_inset
+
+ and a step of 
+\begin_inset Formula $1$
+\end_inset
+
+ for each dimension, and 
+\begin_inset Formula $2\,2\rho2$
+\end_inset
+
+ for the max pooling layers and up convolutions, corresponding to a 
+\begin_inset Formula $2×2$
+\end_inset
+
+ window size and a step of 
+\begin_inset Formula $2$
+\end_inset
+
+ for each dimension.
+ 
+\end_layout
+
+\begin_layout Standard
+When first implementing a convolution, almost everyone familiar with Dyalog
+ APL and the stencil operator immediately comes to some variation of the
+ following expression for convolving a matrix 
+\begin_inset Formula $M$
+\end_inset
+
+ with a kernel 
+\begin_inset Formula $K$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\{+/,K×\omega\}\texttt{⌺}3\,3⊢M
+\end{equation}
+
+\end_inset
+
+Recall that 
+\begin_inset Formula $K×\omega$
+\end_inset
+
+ is the pointwise multiplication of kernel 
+\begin_inset Formula $K$
+\end_inset
+
+ with one of the 
+\begin_inset Formula $3×3$
+\end_inset
+
+ sliding windows.
+ We write 
+\begin_inset Formula $+/,A$
+\end_inset
+
+ to indicate the sum of all elements of array 
+\begin_inset Formula $A$
+\end_inset
+
+.
+ Thus, the above stencil computes the 2-D convolution over a matrix with
+ a given 2-D kernel.
+ Because APL's stencil operator is 
+\emph on
+leading axis biased
+\emph default
+, if we were to instead provide a kernel 
+\begin_inset Formula $K$
+\end_inset
+
+ with shape 
+\begin_inset Formula $3\,3\,C$
+\end_inset
+
+ where 
+\begin_inset Formula $C$
+\end_inset
+
+ is the number of channels in an array 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $M\,N\,C$
+\end_inset
+
+, the above expression would still function appropriately.
+ However, if we wish to continue to extend this to multiple kernels, that
+ is, multiple output channels, it is less straightforward to compute.
+ The following expression computes the convolution of an array 
+\begin_inset Formula $A$
+\end_inset
+
+ with shape 
+\begin_inset Formula $M N I$
+\end_inset
+
+ using kernels 
+\begin_inset Formula $K$
+\end_inset
+
+ with the shape 
+\begin_inset Formula $O 3 3 I$
+\end_inset
+
+ where 
+\begin_inset Formula $I$
+\end_inset
+
+ is the number of input channels and 
+\begin_inset Formula $O$
+\end_inset
+
+ the number of output channels:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K\{k←\alpha\,\texttt{⋄}\,\{+/,k×\omega\}\texttt{⌺}3\,3⊢\omega\}\texttt{⍤}3⊢A\label{eq:CV_op}
+\end{equation}
+
+\end_inset
+
+The result of the above expression is an array of shape 
+\begin_inset Formula $O M N$
+\end_inset
+
+.
+ We make use here of the rank operator, seen in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Operators"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The expression 
+\begin_inset Formula $K f\texttt{⍤}3⊢A$
+\end_inset
+
+ will divide 
+\begin_inset Formula $K$
+\end_inset
+
+ and 
+\begin_inset Formula $A$
+\end_inset
+
+ into subarrays each of rank 3, that is, each with 3 dimensions, and apply
+ 
+\begin_inset Formula $f$
+\end_inset
+
+ to the corresponding subarrays of 
+\begin_inset Formula $K$
+\end_inset
+
+ and 
+\begin_inset Formula $A$
+\end_inset
+
+.
+ Thus, in our expression above, our convolution will be applied over the
+ entire 
+\begin_inset Formula $A$
+\end_inset
+
+ for each output channel described by the first axis of 
+\begin_inset Formula $K$
+\end_inset
+
+, thus applying the original 2-D convolution over arbitrary numbers of input
+ channels and output channels.
+ 
+\end_layout
+
+\begin_layout Standard
+Unfortunately, the above expression has a number of design flaws.
+ Firstly, the output has the channel count as the leading axis, while the
+ expected input is to have the channel count as the trailing axis.
+ This requires that we perform a transposition of these dimensions after
+ computing the convolution in order to return our result to the input format.
+ Furthermore, the nested structure of the computation results in two primary
+ functions of non-primitive complexity, meaning that a more sophisticated
+ analysis of this function would be required by a compile-time or run-time
+ implementation in order to recognize this code.
+ 
+\end_layout
+
+\begin_layout Standard
+On principle, APL is at its best when it can concisely describe operations
+ over large arrays at a time, or large sub-arrays at a time.
+ In particular, concise APL expressions are possible when the solution can
+ be expressed as a composition of basic APL primitives.
+ However, in the case of the stencil operator, almost all interesting use
+ cases of the function come from complex, non-simple, non-primitive left
+ operands.
+ This is further exacerbated by the need to nest the stencil operation in
+ an outer rank as above.
+ Additionally, the input sizes provided to the left operand of the stencil
+ operator are remarkably small, all things considered.
+ This guarantees that a naive implementation of stencil will be inefficient
+ and slow, especially on interpreters.
+ 
+\end_layout
+
+\begin_layout Standard
+Dyalog APL can mitigate some of these issues through the use of idiom recognitio
+n.
+ However, we argue that idiom recognition scales particularly poorly to
+ this case.
+ Idiom recognition has been implemented for the stencil operator, and there
+ are a selected number of left operand inputs that are treated specially,
+ so that their performance can be enhanced behind the scenes 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+.
+ However, because of the complex nature of the left operand inputs, recognizing
+ the useful idioms for the stencil operator is a particularly difficult
+ task, and does not scale well to these sorts of problems.
+ For instance, while the above stencil operator is considered an idiom,
+ the following is not:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\{⌈⌿⌈⌿\omega\}\texttt{⌺}(2 2\rho2)⊢A\label{eq:MX_op}
+\end{equation}
+
+\end_inset
+
+This expression is one way to implement part of the max pooling layers in
+ u-net.
+ However, there are many other obvious variations of this expression that
+ would also have to be considered for idiom recognition, which would otherwise
+ be missed even if this particular expression were handled.
+ In the case of the design of the stencil operator, trying to improve its
+ performance via idiom recognition or even compiler optimization is a relatively
+ significant task.
+ It is combinatorial and not compositional.
+ 
+\end_layout
+
+\begin_layout Standard
+The result is that significant amounts of code would have to be implemented
+ and maintained in order to support performance enhancements on the stencil
+ operator, with none of that work benefiting other parts of an APL runtime.
+ 
+\end_layout
+
+\begin_layout Standard
+We instead propose an alternative that was first suggested to us by the
+ late Roger Hui, the stencil 
+\emph on
+function
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+.
+ The stencil function is a function whose left argument is the same as the
+ right operand of the stencil operator, and which receives the same right
+ argument as the right argument to the function returned by the stencil
+ operator.
+ A reasonable definition of the stencil function might be:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+SF←\{\{\omega\}\texttt{⌺}\alpha⊢\omega\}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We found that using the stencil function was in fact, not only easier to
+ work with and more compositional than the stencil operator, but that it
+ was also universally faster.
+ That is, even with the idiom recognition that Dyalog has put into their
+ interpreter to handle the special cases of the stencil operator, of which
+ 
+\begin_inset Formula $SF$
+\end_inset
+
+ is one 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SF-hui-blog"
+literal "false"
+
+\end_inset
+
+, using the stencil function instead of the stencil operator was always
+ at least as fast or faster, despite idiom recognition for the more complex
+ uses of the stencil operator.
+ 
+\end_layout
+
+\begin_layout Standard
+The compositionality of 
+\begin_inset Formula $SF$
+\end_inset
+
+ has performance ramifications, since it is fundamentally an indexing operation,
+ rather than a computational operation.
+ This categorical shift means that it can now be approached using the same
+ sorts of lazy indexing and fusion operations that are common for other
+ indexing operations, such as transposition.
+ This means that the use of the stencil function can help to broadly reduce
+ intermediate array generation, and performance enhancements to indexing
+ will compose well with 
+\begin_inset Formula $SF$
+\end_inset
+
+.
+ Functions and operators that are already designed to fuse with lazily indexing
+ functions can then readily take advantage of such features to work with
+ the output of 
+\begin_inset Formula $SF$
+\end_inset
+
+ as well, granting performance enhancements across a wider range of applications
+ without ever implementing any idiom recognition, which reduces the amount
+ of specialized code that needs to exist as well as the programmer burden
+ to maintain such code.
+ 
+\end_layout
+
+\begin_layout Standard
+To explore this further, a naive implementation of the stencil function
+ that did not pad its results was implemented in Co-dfns and used in the
+ following implementations.
+ In the following sections, we use 
+\begin_inset Formula $\texttt{⌺}$
+\end_inset
+
+ to mean the stencil 
+\emph on
+function
+\emph default
+ and not the stencil operator as it appears in Dyalog APL.
+ See 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:CV"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a stencil function implementation of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:CV_op"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:MX"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for the corresponding implementation of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:MX_op"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Neural Network Vocabulary
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Neural-Network-Vocabulary"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The original u-net paper uses five distinct operations to describe the network
+ (see 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Enumerate
+A 3×3 convolution with a ReLU activation function is used as the primary
+ operation
+\end_layout
+
+\begin_layout Enumerate
+A copy and crop operation is used to transfer data across one row of the
+ network
+\end_layout
+
+\begin_layout Enumerate
+Max pooling layers on a 2×2 window are used to compute 
+\begin_inset Quotes eld
+\end_inset
+
+down
+\begin_inset Quotes erd
+\end_inset
+
+ the network
+\end_layout
+
+\begin_layout Enumerate
+A 2×2 transposed convolution goes back 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ the network
+\end_layout
+
+\begin_layout Enumerate
+The final output has a single 1×1 convolution with a soft-max layer
+\end_layout
+
+\begin_layout Standard
+In our implementation, we mirror this vocabulary by implementing the forward
+ and back functions for each of these layers, one for each of the above
+ operations.
+ This results in a total of 10 functions grouped into 5 pairs, which we
+ will take in turn.
+\end_layout
+
+\begin_layout Subsubsection
+Convolution (3×3) with ReLU
+\end_layout
+
+\begin_layout Standard
+The primary u-net convolutional layer is a 3×3 convolution with a ReLU activatio
+n function.
+ The convolution in the paper uses 
+\begin_inset Quotes eld
+\end_inset
+
+valid
+\begin_inset Quotes erd
+\end_inset
+
+ convolutions, meaning that no padding is used.
+ This implies that the convolution dimensions of the output array shrink
+ by 2 for each dimension compared to the input.
+ We define the forward propagation function 
+\begin_inset Formula $CV$
+\end_inset
+
+ as a function over a set of kernels 
+\begin_inset Formula $\texttt{⍺}$
+\end_inset
+
+ and a layer 
+\begin_inset Formula $\texttt{⍵}$
+\end_inset
+
+ that obeys the following shape invariant:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\rho\,\alpha\,CV\,\omega & \leftrightarrow & (^{-}2+2↑\rho\omega),{}^{-}1↑\rho\alpha
+\end{eqnarray}
+
+\end_inset
+
+We write 
+\begin_inset Formula $S↑A$
+\end_inset
+
+ to describe the array derived from 
+\begin_inset Formula $A$
+\end_inset
+
+ whose shape is equal to the shape of 
+\begin_inset Formula $A$
+\end_inset
+
+ except that the leading dimensions of 
+\begin_inset Formula $S↑A$
+\end_inset
+
+ are 
+\begin_inset Formula $|S$
+\end_inset
+
+ (absolute value over 
+\begin_inset Formula $S$
+\end_inset
+
+), read as 
+\begin_inset Quotes eld
+\end_inset
+
+the S take of A.
+\begin_inset Quotes erd
+\end_inset
+
+ Negative values in 
+\begin_inset Formula $S$
+\end_inset
+
+ take from the 
+\begin_inset Quotes eld
+\end_inset
+
+far
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+trailing
+\begin_inset Quotes erd
+\end_inset
+
+ side of the dimension.
+ Thus, the resulting shape of 
+\begin_inset Formula $\alpha\,CV\,\omega$
+\end_inset
+
+ is the leading dimensions of the input 
+\begin_inset Formula $\omega$
+\end_inset
+
+ subtracted by 2 catenated with the final dimension (the output channels)
+ of kernel 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+ In the case of a u-net layer, we have input kernels of shape 
+\begin_inset Formula $3\,3\,I\,O$
+\end_inset
+
+ and input layer of shape 
+\begin_inset Formula $N M I$
+\end_inset
+
+ where 
+\begin_inset Formula $N M$
+\end_inset
+
+ are the image/layer dimensions, and 
+\begin_inset Formula $I O$
+\end_inset
+
+ are the input and output channel counts, respectively.
+ The resulting output layer has shape 
+\begin_inset Formula $(N-2) (M-2) O$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Using the stencil function, we define 
+\begin_inset Formula $CV$
+\end_inset
+
+ as follows for rank 4 kernel inputs and rank 3 layer inputs:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\iota3]\alpha\}\label{eq:CV}
+\end{eqnarray}
+
+\end_inset
+
+We include the ReLU function 
+\begin_inset Formula $0⌈\omega$
+\end_inset
+
+ as the final operation following the convolution.
+ We write 
+\begin_inset Formula $,\texttt{⍤}3⊢\omega$
+\end_inset
+
+ to describe the value 
+\begin_inset Formula $\omega$
+\end_inset
+
+ with its 3 trailing dimensions collapsed into a single dimension.
+ We write 
+\begin_inset Formula $,[\iota3]\omega$
+\end_inset
+
+ to describe the value 
+\begin_inset Formula $\omega$
+\end_inset
+
+ with its leading 3 dimensions likewise collapsed.
+ In 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Operators"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ we presented 
+\begin_inset Formula $+.×$
+\end_inset
+
+ as the matrix product form of the operator inner product, and in 
+\begin_inset Formula $CV$
+\end_inset
+
+ we use its extension to arrays of arbitrary rank.
+\end_layout
+
+\begin_layout Standard
+Inside of the u-net architecture itself, we want to save the output of the
+ convolution and the input to facilitate the backpropagation pass, and we
+ obtain our kernels from a single source containing all network kernels.
+ This results in the following source code implementation of 
+\begin_inset Formula $CV$
+\end_inset
+
+ that does the appropriate saving of layers and extracting of kernel data
+ given a label index into the network as its left argument instead of a
+ kernel, where 
+\begin_inset Formula $Z$
+\end_inset
+
+ is our storage for back propagation and 
+\begin_inset Formula $W$
+\end_inset
+
+ contains the weights:
+\end_layout
+
+\begin_layout Verbatim
+CV←{
+\end_layout
+
+\begin_layout Verbatim
+  z←(,⍤3⊢3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+  0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Standard
+Computing the backpropagation uses very similar approaches.
+ Given the output layer 
+\begin_inset Formula $z$
+\end_inset
+
+, input layer 
+\begin_inset Formula $x$
+\end_inset
+
+, activation layer 
+\begin_inset Formula $a$
+\end_inset
+
+, weights 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, and the gradient backpropagated so far 
+\begin_inset Formula $\omega$
+\end_inset
+
+, we compute the transposed weights 
+\begin_inset Formula $w$
+\end_inset
+
+, the derivative output layer 
+\begin_inset Formula $∆z$
+\end_inset
+
+ , the weight gradient 
+\begin_inset Formula $∆w$
+\end_inset
+
+, padded output layer 
+\begin_inset Formula $\Delta Z$
+\end_inset
+
+, and the resulting back gradient 
+\begin_inset Formula $∆x$
+\end_inset
+
+ as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+w & ← & \ominus\obar[1]0\,1\,3\,2\obslash\alpha\nonumber \\
+∆z & ← & \omega×0<a\\
+∆w & ← & 3\,0\,1\,2\obslash(\obslash,[\iota2]\Delta z)\mathnormal{+.×},[\iota2]3\,3\texttt{⌺}x\\
+\Delta Z & ← & ^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z\nonumber \\
+∆x & ← & (,\texttt{⍤}3⊢3\,3\texttt{⌺}\Delta Z)\mathnormal{+.×},[\iota3]w
+\end{eqnarray}
+
+\end_inset
+
+Since our stencil function does not pad its results, the expression 
+\begin_inset Formula $^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z$
+\end_inset
+
+ expands the shape of 
+\begin_inset Formula $\Delta z$
+\end_inset
+
+ to ensure that the output convolution dimensions are 2 greater than those
+ of 
+\begin_inset Formula $\Delta z$
+\end_inset
+
+, where the functions 
+\begin_inset Formula $\ominus$
+\end_inset
+
+ and 
+\begin_inset Formula $\obar$
+\end_inset
+
+ are functions to rotate an array.
+ The function 
+\begin_inset Formula $\obar[1]$
+\end_inset
+
+ rotates an array along the 
+\begin_inset Formula $1st$
+\end_inset
+
+ dimension while 
+\begin_inset Formula $\ominus$
+\end_inset
+
+ rotates along the leading axis.
+ The resulting function 
+\begin_inset Formula $\Delta CV$
+\end_inset
+
+ is written as follows:
+\end_layout
+
+\begin_layout Verbatim
+∆CV←{
+\end_layout
+
+\begin_layout Verbatim
+  x←⊃⍺⊃Z ⋄ a←1⊃⍺⊃Z ⋄ k←⍺⊃W
+\end_layout
+
+\begin_layout Verbatim
+  w←,[⍳3]⊖⌽[1]0 1 3 2⍉k
+\end_layout
+
+\begin_layout Verbatim
+  ∆z←⍵×0<a
+\end_layout
+
+\begin_layout Verbatim
+  ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
+\end_layout
+
+\begin_layout Verbatim
+  ∆w←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
+\end_layout
+
+\begin_layout Verbatim
+  ∆x←w+.×⍨,[2+⍳3]3 3 SF ∆Z
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Standard
+In the above code, we have a function 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ that updates the weights in 
+\begin_inset Formula $W$
+\end_inset
+
+, described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:U-net-Architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Copy and Crop
+\end_layout
+
+\begin_layout Standard
+Conceptually, the copy and crop operation is the simplest of the functions
+ in u-net.
+ Its sole job is to take the output from one side of the U-shaped net and
+ move it over to the other side, adjusting the dimensions to ensure that
+ it fits.
+ In the forward direction, the input layer will have a greater dimension
+ than the output layer, so we crop as evenly as possible around the edges
+ and then catenate the result at the head of the layer coming 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ from the network to form the output layer with twice the channels of the
+ 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ layer.
+ The following function 
+\begin_inset Formula $CC$
+\end_inset
+
+ computes the crop of 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ catenated with 
+\begin_inset Formula $\omega$
+\end_inset
+
+ using 
+\begin_inset Formula $↓$
+\end_inset
+
+ (read as 
+\begin_inset Quotes eld
+\end_inset
+
+drop
+\begin_inset Quotes erd
+\end_inset
+
+), which is the opposite function of the previously described 
+\begin_inset Formula $↑$
+\end_inset
+
+ (
+\begin_inset Quotes eld
+\end_inset
+
+take
+\begin_inset Quotes erd
+\end_inset
+
+) function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+CC & ← & \left\{ \begin{aligned}p\leftarrow & ((\rho\alpha)-\rho\omega)÷2),\omega\\
+ & ((⌊p)↓(-⌈p)↓\alpha
+\end{aligned}
+\right\} 
+\end{eqnarray}
+
+\end_inset
+
+For dimensions that are not evenly divisible by two, we choose to round
+ up on the right and bottom sides and round down on the left and upper sides
+ of the layer.
+ Computing the backpropagation of 
+\begin_inset Formula $CC$
+\end_inset
+
+ given the input 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and output gradient 
+\begin_inset Formula $\omega$
+\end_inset
+
+ simply reverses this operation and expands the shape back to the original
+ input size.
+ This result is then added to the appropriate layer in the u-net architecture
+ described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:U-net-Architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+n\,m & ← & -⌊(2↑(\rho\alpha)-\rho\omega)÷2\nonumber \\
+\Delta x & ← & n\ominus m\obar[1](\rho\alpha)↑\omega
+\end{eqnarray}
+
+\end_inset
+
+This leads to the following code for the forward and backpropagation passes:
+\end_layout
+
+\begin_layout Verbatim
+CC←{
+\end_layout
+
+\begin_layout Verbatim
+  ⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+∆CC←{
+\end_layout
+
+\begin_layout Verbatim
+  x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z
+\end_layout
+
+\begin_layout Verbatim
+  (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z
+\end_layout
+
+\begin_layout Verbatim
+}   
+\end_layout
+
+\begin_layout Subsubsection
+Max Pooling
+\end_layout
+
+\begin_layout Standard
+Max pooling is a shrinking convolution that computes the maximum value in
+ a non-overlapping sliding window.
+ Given the stencil function, the max pool over a layer is given by the following
+ expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+⌈⌿[2],[2\,3](2\,2\rho2)\texttt{⌺}\omega\label{eq:MX}
+\end{equation}
+
+\end_inset
+
+ Here we write 
+\begin_inset Formula $⌈⌿[2],[2\,3]\omega$
+\end_inset
+
+ to describe an array where we have collapsed dimensions 2 and 3 and computed
+ the maximum value reduction over the resulting dimension.
+ For example, given an input layer 
+\begin_inset Formula $\omega$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,M\,C$
+\end_inset
+
+, the result of 
+\begin_inset Formula $(2\,2\rho2)\texttt{⌺}\omega$
+\end_inset
+
+ is a rank 5 array of shape 
+\begin_inset Formula $(N÷2)(M÷2)2\,2\,C$
+\end_inset
+
+.
+ We then collapse the 
+\begin_inset Formula $2nd$
+\end_inset
+
+ and 
+\begin_inset Formula $3rd$
+\end_inset
+
+ dimensions to form an array of shape 
+\begin_inset Formula $(N÷2)(M÷2)4\,C$
+\end_inset
+
+ and subsequently find the maximum value for each vector along the 
+\begin_inset Formula $2nd$
+\end_inset
+
+ dimension, resulting in an array of shape 
+\begin_inset Formula $(N\div2)(M\div2)C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Computing the backpropagation of this involves replicating each of the stencil
+ dimensions, which are the two leading axes in our implementation.
+ We write 
+\begin_inset Formula $n⌿A$
+\end_inset
+
+ and 
+\begin_inset Formula $n/[1]A$
+\end_inset
+
+ to indicate the array 
+\begin_inset Formula $A$
+\end_inset
+
+ with each element duplicated or repeated along the first and second axes,
+ respectively, 
+\begin_inset Formula $n$
+\end_inset
+
+ times.
+ Given an input 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and output layer 
+\begin_inset Formula $\omega$
+\end_inset
+
+ the following expression computes the backpropagation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
+\end{equation}
+
+\end_inset
+
+ This leads to the following linked source implementation for max pooling:
+\end_layout
+
+\begin_layout Verbatim
+MX←{
+\end_layout
+
+\begin_layout Verbatim
+  ⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+∆MX←{
+\end_layout
+
+\begin_layout Verbatim
+  x←⍺⊃Z ⋄ ∆z←⍵ 
+\end_layout
+
+\begin_layout Verbatim
+  y×x=y←(⍴x)↑2⌿2/[1]∆z
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Subsubsection
+Transposed Convolution (2×2)
+\end_layout
+
+\begin_layout Standard
+In the initial exploration of this implementation, the upsampling computation
+ with convolution proved to be the most subtle and challenging, mostly in
+ part to the opaqueness of implementations.
+ The u-net paper was not immediately transparent regarding the exact operations
+ used for this layer and there were a number of potential design decisions
+ that could have been made.
+ Moreover, for users reading about upsampling through convolutions, the
+ descriptions are also the furthest removed from a reasonable implementation
+ of the same.
+ However, once the intuition of how an upsampling convolution matches the
+ shape and form of a non-overlapping sliding window in the output layer,
+ expressed via the simple expression 
+\begin_inset Formula $K⊂\texttt{⍤}\times\texttt{⍤}2\,0⊢A$
+\end_inset
+
+, the computation becomes much clearer.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "https://mathspp.com/blog/til/033"
+target "https://mathspp.com/blog/til/033"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For this convolution, we change the anticipated kernel shape from that used
+ for 
+\begin_inset Formula $CV$
+\end_inset
+
+ above.
+ Whereas 
+\begin_inset Formula $CV$
+\end_inset
+
+ expects kernels of shape 
+\begin_inset Formula $3\,3\,I\,O$
+\end_inset
+
+, our transposed convolutions expect kernels of shape 
+\begin_inset Formula $I\,2\,2\,O$
+\end_inset
+
+ for input channels 
+\begin_inset Formula $I$
+\end_inset
+
+ and output channels 
+\begin_inset Formula $O$
+\end_inset
+
+.
+ Given a layer of our standard shape 
+\begin_inset Formula $N\,M\,I$
+\end_inset
+
+, this gives the following definition for the upsampling pass.:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+UP & \leftarrow & \{\mathnormal{,}[\iota2]\,\mathnormal{,}[2\,3]\rho0\,2\,1\,3\,4\obslash\omega\,\mathnormal{+.\times}\,\alpha\}
+\end{eqnarray}
+
+\end_inset
+
+The key change here from the reliance on 
+\begin_inset Formula $+.\times$
+\end_inset
+
+ with 
+\begin_inset Formula $CV$
+\end_inset
+
+ is the use of a dyadic transpose 
+\begin_inset Formula $0\,2\,1\,3\,4\obslash$
+\end_inset
+
+.
+ Dyadic transpose is sometimes considered a somewhat challenging concept
+ in APL.
+ In brief, for a rank 
+\begin_inset Formula $r$
+\end_inset
+
+ array 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $S$
+\end_inset
+
+ and targeting array 
+\begin_inset Formula $D$
+\end_inset
+
+ where 
+\begin_inset Formula $(\rho D)\equiv\rho S$
+\end_inset
+
+, we write 
+\begin_inset Formula $D\obslash A$
+\end_inset
+
+ to describe a transposed array with shape 
+\begin_inset Formula $T$
+\end_inset
+
+ where 
+\begin_inset Formula $T[D]\leftarrow S$
+\end_inset
+
+, assuming that 
+\begin_inset Formula $\land⌿D\in\iota\rho S$
+\end_inset
+
+, that is, all dimensions of 
+\begin_inset Formula $S$
+\end_inset
+
+ are mentioned in 
+\begin_inset Formula $D$
+\end_inset
+
+.
+ So, given a targeting array 
+\begin_inset Formula $0\,2\,1\,3\,4$
+\end_inset
+
+ and an input array 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,M\,2\,2\,O$
+\end_inset
+
+, the expression 
+\begin_inset Formula $0\,2\,1\,3\,4\obslash A$
+\end_inset
+
+ describes an array with elements from 
+\begin_inset Formula $A$
+\end_inset
+
+ of shape 
+\begin_inset Formula $N\,2\,M\,2\,O$
+\end_inset
+
+.
+ As the final operation, we collapse the first two pairs of leading dimensions,
+ giving a final output array of shape 
+\begin_inset Formula $(N\times2)(M\times2)O$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To compute the backpropagation pass, we compute the convolutions on a 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ sliding window with stride 
+\begin_inset Formula $2$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\,\mathnormal{+.\times}\,\mathnormal{,}[\iota2](2\,2\rho2)\texttt{⌺}\Delta z\\
+\Delta x & \leftarrow & (\mathnormal{,}[2+\iota3](2\,2\rho\,2)\texttt{⌺}\Delta z)\,\mathnormal{+.\times}\obslash\texttt{⍪}\alpha
+\end{eqnarray}
+
+\end_inset
+
+ This gives the following source implementations for transposed convolutions:
+\end_layout
+
+\begin_layout Verbatim
+UP←{
+\end_layout
+
+\begin_layout Verbatim
+  ,[⍳2],[2 3]⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+∆UP←{
+\end_layout
+
+\begin_layout Verbatim
+  w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
+\end_layout
+
+\begin_layout Verbatim
+  ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
+\end_layout
+
+\begin_layout Verbatim
+  ∆x←(,[2+⍳3]cz)+.×⍉⍪w
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Subsubsection
+Final 1×1 Convolution
+\end_layout
+
+\begin_layout Standard
+The final convolution is a 1×1 convolution with 2 output channels, which
+ means that it collapses the final incoming channels into an output layer
+ with only two channels.
+ This gives the trivial simplification of our convolution code over layer
+ 
+\begin_inset Formula $\omega$
+\end_inset
+
+ and kernel 
+\begin_inset Formula $\alpha$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\omega+.\times\alpha
+\end{equation}
+
+\end_inset
+
+Additionally, the paper describes using a soft-max layer, which we include
+ at this phase:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+1e^{-}8+z\div[\iota2]\mathnormal{+/}z\leftarrow*\omega-[\iota2]\lceil/\omega
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Computing the backpropagation is likewise a simplification of the more complex
+ 
+\begin_inset Formula $CV$
+\end_inset
+
+ code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\mathnormal{+.\times}\,\mathnormal{,}[\iota2]\Delta z\\
+\Delta x & \leftarrow & \Delta z\,\mathnormal{+.\times}\obslash w
+\end{eqnarray}
+
+\end_inset
+
+ Which leads to the following source implementations:
+\end_layout
+
+\begin_layout Verbatim
+C1←{
+\end_layout
+
+\begin_layout Verbatim
+  1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+∆C1←{
+\end_layout
+
+\begin_layout Verbatim
+   w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵
+\end_layout
+
+\begin_layout Verbatim
+  ∆w←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z
+\end_layout
+
+\begin_layout Verbatim
+  ∆x←∆z+.×⍉w
+\end_layout
+
+\begin_layout Verbatim
+} 
+\end_layout
+
+\begin_layout Subsection
+U-net Architecture
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:U-net-Architecture"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A rectangular arrangement of the u-net network
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:A-rectangular-arrangement"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="11">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\noun on
+Operation
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $MX$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $CV$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $UP$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="center" valignment="top" rotate="90" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\noun on
+Depth
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\size tiny
+\begin_inset Formula $\texttt{3\ 3\ \ \ 1\ \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 64 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 \ 64 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 256 \ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 128 \ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 128 2 2 \ 64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="right" valignment="middle" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3\ 3\ \ 64\ 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 128 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 128 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 \ 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 256 \ 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 256 2 2 128}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 128 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 256 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 256 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 1024 \ 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 \ 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{\ 512 2 2 256}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 256 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 512 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{0 0 512 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 \ 512 1024}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{3 3 1024 1024}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+\begin_inset Formula $\texttt{1024 2 2 512}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Downward Pass
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Upward Pass
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Given the core vocabularies defined in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:Neural-Network-Vocabulary"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the remaining challenge with implementing u-net is to link together the
+ appropriate layers and compositions to form the complete network as described
+ by 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ To do this, we observe that the structure of the u-net diagram is an almost
+ symmetric pattern.
+ The output layer computations form 3 operations which are not part of the
+ pattern, but the rest of the pattern decomposes into 4 depths, each with
+ 6 operations each.
+ 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ contains a visual arrangement of the kernel shapes used in our architecture
+ mirroring the overall structure of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, we note that the U-shaped structure also mimicks the down
+ and up nature of a recursive program call-tree.
+ Thus, our overall strategy is to implement a recursive function 
+\begin_inset Formula $LA$
+\end_inset
+
+ that receives an index identifying a particular depth of the network, computes
+ the appropriate 
+\begin_inset Quotes eld
+\end_inset
+
+downward pass
+\begin_inset Quotes erd
+\end_inset
+
+ operations before recuring deeper into the network and finally computing
+ the upwards passes on the return of its recursive call.
+ We likewise implement backpropagation in same way, but in the opposite
+ direction.
+ Assuming that 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ contains the computed depth offset for the network layer, we write 
+\begin_inset Formula $\alpha+i$
+\end_inset
+
+ to access the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of the network described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at the depth 
+\begin_inset Formula $\alpha\div6$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Our forward pass function is responsible for initializing an appropriate
+ holding place for the intermediate results produced by forward propagation
+ for use by the backpropagation function.
+ Additionally, after the recursive computation, there are the final three
+ operations, 
+\begin_inset Formula $C1$
+\end_inset
+
+ and two 
+\begin_inset Formula $CV$
+\end_inset
+
+ operations, that must be called before returning.
+ We also assume that we may receive a rank 2 matrix instead of a rank 3
+ layer as input, and so we reshape the input to ensure that we always have
+ a rank 3 input to 
+\begin_inset Formula $LA$
+\end_inset
+
+.
+ This gives us the following function definition:
+\end_layout
+
+\begin_layout Verbatim
+FWD←{
+\end_layout
+
+\begin_layout Verbatim
+  Z⊢←(≢W)⍴⊂⍬
+\end_layout
+
+\begin_layout Verbatim
+  ⍝ Forward propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+  LA←{
+\end_layout
+
+\begin_layout Verbatim
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
+\end_layout
+
+\begin_layout Verbatim
+    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
+\end_layout
+
+\begin_layout Verbatim
+  }
+\end_layout
+
+\begin_layout Verbatim
+  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Standard
+The backwards computation mirrors this pattern, except that it proceeds
+ in the opposite direction and also defines an updater function 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ that will update the network weights in 
+\begin_inset Formula $W$
+\end_inset
+
+ and the velocities in 
+\begin_inset Formula $V$
+\end_inset
+
+ based on a given gradient 
+\begin_inset Formula $\omega$
+\end_inset
+
+ and index 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ pointing to a specific location in the network.
+ 
+\end_layout
+
+\begin_layout Verbatim
+BCK←{
+\end_layout
+
+\begin_layout Verbatim
+  Y←⍺ ⋄ Y∆←⍵
+\end_layout
+
+\begin_layout Verbatim
+  ∆←{
+\end_layout
+
+\begin_layout Verbatim
+    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+  }
+\end_layout
+
+\begin_layout Verbatim
+  ⍝ Back propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+  ∆LA←{
+\end_layout
+
+\begin_layout Verbatim
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down
+\end_layout
+
+\begin_layout Verbatim
+  }
+\end_layout
+
+\begin_layout Verbatim
+  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
+\end_layout
+
+\begin_layout Standard
+We also need to compute an error over the soft-max computed by 
+\begin_inset Formula $FWD$
+\end_inset
+
+.
+ This is given by the following function, which is based off of the error
+ function given in the original u-net paper by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "unet"
+literal "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Verbatim
+E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
+\end_layout
+
+\begin_layout Standard
+Finally, we wire all of these functions together into a 
+\begin_inset Formula $RUN$
+\end_inset
+
+ function that runs the forward pass and backward pass functions and returns
+ three values, the expected inputs 
+\begin_inset Formula $Y$
+\end_inset
+
+, the computed results 
+\begin_inset Formula $Y\Delta$
+\end_inset
+
+ from 
+\begin_inset Formula $FWD$
+\end_inset
+
+, and the error given by 
+\begin_inset Formula $Y\,E\,Y\Delta$
+\end_inset
+
+.
+ We reshape the original reference input to match the size of 
+\begin_inset Formula $Y\Delta$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Verbatim
+RUN←{
+\end_layout
+
+\begin_layout Verbatim
+  Y∆←FWD ⍺
+\end_layout
+
+\begin_layout Verbatim
+  Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆
+\end_layout
+
+\begin_layout Verbatim
+  Y Y∆(Y E Y∆)⊣Y BCK Y∆
+\end_layout
+
+\begin_layout Verbatim
+}
+\end_layout
+
+\begin_layout Section
+Performance
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename benchmark-comp.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Performance results for U-net across a range of platforms
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Performance-results-for"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+To examine the performance profile of our APL implementation, we primarily
+ focused on comparing our u-net implementation against a reference implemented
+ in PyTorch 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+, which is an easy to use Python framework with good performance.
+ In addition to this primary performance analysis, we examined the performance
+ of two varieties of stencil computations within the APL language.
+ We also make note of some small exploratory effects that we discovered
+ while implementing the stencil function and convolutions in Co-dfns.
+ 
+\end_layout
+
+\begin_layout Subsection
+U-net Performance
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Raw timings for each computing platform in seconds
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="13">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<column alignment="decimal" decimal_point="." valignment="top" width="0pt">
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Avg
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+Dyalog
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+80.90
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+77.56
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+78.32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+81.33
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+77.95
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+80.51
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+81.08
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+81.87
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+80.23
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+79.42
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+79.92
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+Co-dfns (CPU)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+34.11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+33.66
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+35.98
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+37.72
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.64
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.46
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.57
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+38.76
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+37.22
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+Co-dfns (GPU)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.39
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.62
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.63
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.49
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.39
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.19
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.63
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.51
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.59
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8.46
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+PyTorch (CPU)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.27
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.34
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.21
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+16.60
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.46
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.33
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.04
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.36
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.33
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+17.22
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+PyTorch (SMP)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.31
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.42
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.45
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.19
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.67
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.49
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.43
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.36
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.55
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6.42
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\noun on
+PyTorch (GPU)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.50
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.50
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.47
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.44
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.44
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.44
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.44
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.44
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.46
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.46
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3.46
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+We were primarily interested in the costs of executing a single run of the
+ u-net over a single image source in both the forwards and backwards directions.
+ We compared performance over the following platforms:
+\end_layout
+
+\begin_layout Itemize
+Dyalog APL 18.0 64-bit Windows interpreter
+\end_layout
+
+\begin_layout Itemize
+Co-dfns (v4.1.0 master branch) using the CUDA backend (AF v3.8.1)
+\end_layout
+
+\begin_layout Itemize
+Co-dfns (v4.1.0 master branch) using the CPU backend (AF v3.8.1)
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the CUDA gpu backend
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the multi-threaded CPU backend
+\end_layout
+
+\begin_layout Itemize
+PyTorch v1.10.2 with the single-threaded CPU backend
+\end_layout
+
+\begin_layout Standard
+The results of the execution can be seen in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Performance-results-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The timings do not include the cost of reading the image data from disk,
+ but they do include the costs of transferring the image input data and
+ the resulting error and forward propagation results back to the CPU main
+ memory.
+ In our testing, data transfer costs in Co-dfns accounted for significantly
+ less than 5% of the total runtime.
+ 
+\end_layout
+
+\begin_layout Standard
+The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
+ graphics memory.
+ We used NVIDIA driver version 511.65.
+ The CPU was an Intel Core i7-10870H with 16 logical cores @ 2.2GHz.
+ Main system memory was 32GB of DDR4 RAM.
+ The system was running an up to date release of Microsoft Windows 11.
+ 
+\end_layout
+
+\begin_layout Standard
+As input we used the original image data from the ISBI benchmark referenced
+ in the u-net paper 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "unet,isbi-data"
+literal "false"
+
+\end_inset
+
+.
+ These images are 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ images in grayscale with a binary mask for training.
+ Each run took one of these images and associated training mask and computed
+ the result of forward and backwards propagation and the error as well as
+ updating the weights for the network.
+ 
+\end_layout
+
+\begin_layout Standard
+When working on the network, APL implementations generally do not have a
+ concept of small floating point values.
+ Rather, their default is to always use 64-bit floating point values when
+ floats are called for.
+ In order to try to mimic this behavior as closely as possible, we attempted
+ to feed 64-bit data into the PyTorch models.
+ However, because of the opaqueness of the PyTorch implementation, we were
+ not able to fully verify that 64-bit values are used throughout the PyTorch
+ computational network.
+ On the other hand, the reliance on 64-bit only floating points, while a
+ boon to convenience and user-friendliness for non-computer science programmers,
+ creates well-defined performance issues for an application like this.
+\end_layout
+
+\begin_layout Standard
+When running the benchmark, we computed the average of 10 runs, ensuring
+ that we discarded the first run each time, since these runs often contained
+ significant setup and bootstrapping code (PyTorch's optimizer, the JIT
+ optimization in Co-dfns, and so forth).
+ The figure includes information about the variance of the individual runs
+ as well as the average run time in seconds.
+ 
+\end_layout
+
+\begin_layout Standard
+Examining the data, it is clear why traditional APL implementations were
+ relatively unsuited to extensive use within the machine learning space.
+ Dyalog's interpreter preformed the slowest by a very large magnitude.
+ After this, the single-threaded CPU implementations in Co-dfns and PyTorch
+ are predictably the next slowest, with the Co-dfns implementation running
+ about a factor of 2.2 times slower than the equivalent PyTorch implementation.
+\end_layout
+
+\begin_layout Standard
+When acceleration techniques are employed, the differences in execution
+ speed begin to shrink, with PyTorch's multi-threaded and GPU-based implementati
+ons coming in fasted, and Co-dfns' GPU backend running at roughly 2.4 times
+ slower than the PyTorch GPU execution.
+ 
+\end_layout
+
+\begin_layout Standard
+We observed the widest variance in performance results in the Co-dfns CPU
+ and Dyalog interpreter-based runs, and very little variance in the GPU-based
+ runs or in PyTorch itself.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Co-dfns Runtime Implementation
+\end_layout
+
+\begin_layout Standard
+The stencil function was modeled in APL and used to conduct the above benchmark.
+ The model, written in APL, is a naive implementation of the stencil function
+ and contains no special optimizations other than to distinguish between
+ sliding windows of step 1 and non-overlapping, adjacent windows (such as
+ used for the max pooling layers).
+ Additionally, no specialized code was used within Co-dfns that was specific
+ or specialized to neural network programming.
+ 
+\end_layout
+
+\begin_layout Standard
+The above benchmark therefore represents a comparison of the PyTorch implementat
+ion against a naive and unspecialized implementation in APL executed with
+ the general-purpose runtime used in Co-dfns that provides generalized GPU
+ computation but does not include domain-specific optimizations such as
+ those available in PyTorch.
+ 
+\end_layout
+
+\begin_layout Subsection
+APL Stencil Primitives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename micro-cv.eps
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Speedup of stencil function-based convolution with respect to stencil operator-b
+ased on inputs of shape 
+\begin_inset Formula $size\times size\times channels$
+\end_inset
+
+ and kernels of size 
+\begin_inset Formula $channels\times3\times3\times channels$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:micro-cv"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename micro-mx.eps
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Speedup of stencil function-based max pooling with respect to stencil operator-b
+ased on inputs of shape 
+\begin_inset Formula $size\times size\times channels$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:micro-mx"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this section we present some benchmarks relative to the speedup we get
+ when considering convolutional layers and max pooling layers that are based
+ on the stencil function instead of the stencil operator.
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:micro-cv"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ compares convolutional layers based on the stencil function with convolutional
+ layers based on the stencil operator.
+ To produce this benchmark, we consider inputs of different sizes and number
+ of channels.
+ Then, for each value 
+\begin_inset Formula $size$
+\end_inset
+
+ and number 
+\begin_inset Formula $channels$
+\end_inset
+
+, we create a random input cuboid of shape 
+\begin_inset Formula $size\,size\,channels$
+\end_inset
+
+ that is passed through a convolutional layer with a kernel having shape
+ 
+\begin_inset Formula $channels\,3\,3\,channels$
+\end_inset
+
+, which means the output also has shape 
+\begin_inset Formula $size\,size\,channels$
+\end_inset
+
+.
+ After creating these inputs and kernels, we benchmark the runtime of the
+ two convolutional layers (one stencil operator-based and one stencil function-b
+ased) and divide the runtime of the convolutional layer based on the stencil
+ function by the runtime of the convolutional layer based on the stencil
+ operator, in order to compute the speedup we get by adopting the stencil
+ function.
+\end_layout
+
+\begin_layout Standard
+Similarly, Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:micro-mx"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ compares max pooling layers based on the stencil function with max pooling
+ layers based on the stencil operator.
+ The experimental setup is identical, except that we do not have to generate
+ random kernels for the max pooling layers.
+\end_layout
+
+\begin_layout Standard
+While Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:micro-cv"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows a significant speedup achieved through the introduction of the stencil
+ function in the convolutional layers, Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:micro-mx"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows that the max pooling layer based on the stencil function is only
+ slightly faster when the number of channels is small, becoming slightly
+ slower than the convolutional layer based on the stencil operator when
+ the number of channels increases.
+\end_layout
+
+\begin_layout Subsection
+Microbenchmarks Against Other Libraries
+\end_layout
+
+\begin_layout Standard
+It is worth noting that we also explored optimizing our u-net with specialized
+ functions available via the Co-dfns platform (specific max filters and
+ convolutions) that are domain-specific operations much like those available
+ in PyTorch.
+ This sort of operation can be done via 
+\begin_inset Quotes eld
+\end_inset
+
+idiom recognition
+\begin_inset Quotes erd
+\end_inset
+
+ and for our small convolution expressions, it is quite conceivable that
+ idiom recognition could apply and convert these functions to use domain-specifi
+c code under the hood for convolutions and maximum filters, &c.
+ 
+\end_layout
+
+\begin_layout Standard
+However, we aborted this line of inquiry for now because in microbenchmarking
+ the domain-specific functions against our naive implementation of the stencil
+ function, we discovered that the domain specific functions were actually
+ a factor of 2 
+\emph on
+slower
+\emph default
+ than our naive implementations in our primary sample inputs.
+ Given that the underlying specialized functions are supposed to wrap the
+ CuDNN library 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "arrayfire-release-cudnn"
+literal "false"
+
+\end_inset
+
+, it is surprising that we achieved faster results with the naive stencil
+ function implementation over the domain specific implementations available
+ within the general purpose array libraries leveraged by Co-dfns.
+ 
+\end_layout
+
+\begin_layout Standard
+We are not sure of the cause of these slowdowns, and therefore, we did not
+ include a formal benchmark of these results here.
+ It is possible that a misconfiguration or some other element is causing
+ these degradations, and so we intend to explore these performance issues
+ in more detail, but we wished to at least note this effect, since this
+ represents a different result from our benchmarking here, which tests Co-dfns
+ against a specialized framework, rather than a more generalized array framework
+ with specialized functions within it.
+ The specialized frameworks appear to be clearly faster at the moment than
+ the naive Co-dfns implementations, but this is not true thus far in our
+ limited testing of specialized functions exposed within more generalized
+ array libraries.
+ 
+\end_layout
+
+\begin_layout Section
+Discussion
+\end_layout
+
+\begin_layout Subsection
+Pedagogy
+\end_layout
+
+\begin_layout Standard
+Pedagogy is a concern for new approaches to solving problems both in academic
+ as well as industrial spaces.
+ We believe that APL is a double-edged sword in this regard.
+ On one hand, there is significant institutional momentum around languages
+ like Python.
+ This creates a large base of prior knowledge which can be leveraged by
+ new users.
+ This results in users feeling like learning a Python based framework is
+ easier than learning a whole new language, and they are probably right,
+ in the short term.
+ 
+\end_layout
+
+\begin_layout Standard
+However, it has been argued 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "iverson2007notation"
+literal "false"
+
+\end_inset
+
+ that APL has two distinct advantages from a pedagogical point of view that
+ may warrant more interest.
+ First, what one learns in APL tends to also have direct skills transferrence
+ to many other programming domains, whereas in a more domain-specific, library-c
+entric approach, learning the particular API for one domain often does not
+ transfer any skills beyond that domain directly.
+ In the case of u-net, all of the operations used to build the u-net system
+ are general array programming concepts that are widely applicable to many
+ other domains, and are not restricted solely to convolutional neural networks.
+ 
+\end_layout
+
+\begin_layout Standard
+Second, a transparent and direction implementation of u-net in APL is somewhat
+ uniquely compact and simple, making it much easier to not only delve deeper
+ into the CNN domain, but also to make adjustments and modifications to
+ taste as one becomes more experienced.
+ Starting with a transparent implementation enables programs to be enhanced
+ or adapted or optimized without requiring the inclusion of abstractions
+ that increase program indirection and opaqueness.
+ The notational aspects of APL facilitates this sort of expressive power
+ in a way that other languages do not, especially from a 
+\begin_inset Quotes eld
+\end_inset
+
+human factors
+\begin_inset Quotes erd
+\end_inset
+
+ perspective.
+ 
+\end_layout
+
+\begin_layout Standard
+However, the current learning materials for APL, particularly in a space
+ like neural networks, are clearly underdeveloped and in need of improvement.
+ We believe it is likely possible to make it as easy to reference a convolutiona
+l implementation in APL as an API reference for PyTorch, but the current
+ ecosystem is not there yet.
+ 
+\end_layout
+
+\begin_layout Subsection
+Performance
+\end_layout
+
+\begin_layout Standard
+Clearly, specialized frameworks for deep neural networks are still the best
+ way to go in order to achieve the absolute maximum in performance at present.
+ However, our results indicate that the gap between reliance on specialized
+ frameworks and the freedom to use more general purpose and transferrable
+ programming languages while still achieving competitive performance is
+ not nearly as large as might have been the case even a few years ago.
+ 
+\end_layout
+
+\begin_layout Standard
+Given that almost zero special optimization is taking place for the APL
+ implementation executed under the Co-dfns runtime, it is impressive that
+ we are able to see results that come close to a factor of 2 of the specialized
+ frameworks.
+ Given some of the obvious design issues that would contribute to slower
+ performance, it seems more reasonable to be able to expect more general
+ purpose languages like APL to be able to reach performance parity with
+ specialized frameworks, without the requirement that the user learn a special
+ API, or import specialized dependencies.
+ In more complex applications that leverage APL for other domain-intensive
+ work, this suggests that APL might facilitate scaling such applications
+ to integrate machine learning algorithms more easily and with less programmer
+ effort than might be required to integrate a separate framework like PyTorch.
+ 
+\end_layout
+
+\begin_layout Subsection
+Stencil Operator
+\end_layout
+
+\begin_layout Standard
+The results we found regarding stencil operator performance vs.
+ stencil function performance suggest to us that companies like Dyalog or
+ implementors of Co-dfns should focus on implementing and improving the
+ performance of a stencil function instead of continuing with the use of
+ a stencil operator, which suffers from a number of design issues that makes
+ it incongruous with the rest of an otherwise elegantly designed language.
+ 
+\end_layout
+
+\begin_layout Standard
+It is likely that scalable performance with the stencil function will be
+ easier to achieve and easier to maintain over the long term.
+ Moreover, the stencil function results in more compositional code that
+ it easier to work with using the rest of the APL language than the stencil
+ operator.
+ 
+\end_layout
+
+\begin_layout Subsection
+APL vs.
+ Frameworks
+\end_layout
+
+\begin_layout Standard
+We have demonstrated that APL itself, without libraries or additional dependenci
+es, is exceptionally well suited to expressing neural network computations,
+ at a level of inherent complexity that is arguably equal or possibly even
+ less than that of the reference PyTorch implementation.
+ At the very least, it is less code with less underlying background code
+ and layers.
+ This comes at the admittedly heavy cost of being completely foreign and
+ alien to most programmers who are more familiar with languages like Python.
+ This certainly creates a fundamental and immediate learning cost to APL
+ over other frameworks, since other frameworks can assume a wider range
+ of pre-knowledge around their chosen language implementation.
+ 
+\end_layout
+
+\begin_layout Standard
+It remains unclear, however, whether, if this pre-knowledge were taken away,
+ APL would represent a compelling value proposition for such programming
+ tasks or not.
+ Indeed, it is exceptionally challenging to divorce the present reality
+ of prior background knowledge from such a question.
+ Even fundamental knowledge like what it means to do array programming and
+ how to structure problems in an array-style are rarely if ever taught at
+ universities, whereas most classes spend significant amounts of time teaching
+ students how to utilize the Python-style programming model of PyTorch.
+\end_layout
+
+\begin_layout Standard
+The argument that APL may be used more widely and broadly than PyTorch on
+ a wider range of problems using the same skillset may not matter to users
+ who are only interested in deep learning algorithms.
+ 
+\end_layout
+
+\begin_layout Standard
+APL presently has a higher barrier to entry, but rewards the user with full
+ and effortless control over what's being done in a way that other systems
+ do not.
+ This may present itself as a distinct advantage to users who are looking
+ to expand 
+\begin_inset Quotes eld
+\end_inset
+
+off the beaten track
+\begin_inset Quotes erd
+\end_inset
+
+ and utilize novel approaches that do not easily fit within existing frameworks.
+ 
+\end_layout
+
+\begin_layout Standard
+We encountered significant difficulties in identifying exactly what the
+ original authors did based on their paper alone because of many implementation
+ details that were omitted.
+ On the other hand, APL enables us to express our entire implementation
+ in a way that makes every implementation detail clear, improving the ability
+ of others to reproduce our work.
+\end_layout
+
+\begin_layout Standard
+Finally, in the implementation of u-net in APL, we gained insights into
+ the architecture that had a direct and material influence on the PyTorch
+ reference implementation that would not have emerged without first having
+ studied the APL implementation.
+ Thus, we gained significant insight simply from doing the APL implementation,
+ even if we were to re-implement that code in PyTorch.
+ 
+\end_layout
+
+\begin_layout Section
+Related Work
+\end_layout
+
+\begin_layout Standard
+Two particular avenues of research warrant particular mention here.
+ In addition to the Co-dfns compiler, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "bernecky-cnn"
+literal "false"
+
+\end_inset
+
+ have explored alternative implementations to CNNs, though not u-net specificall
+y.
+ They focused specifically on APL as a productivity enhancement for CNN
+ development, and only benchmarked the APL implementation on the CPU using
+ the Dyalog APL interpreter.
+ However, they indicated work in progress on a compiled version using the
+ APEX compiler with a SaC backend.
+ Their conclusion regarding the performance of APL-based systems may have
+ been premature given the results we found here, but they make a case for
+ the usability of APL even with the performance numbers they achieved.
+ While their code exhibits some material differences to that given here,
+ there are nonetheless some similarities that demonstrate some level of
+ convergence around implementing CNNs in APL.
+\end_layout
+
+\begin_layout Standard
+Another approach to GPU-based array programming with an APL focus is the
+ TAIL/Futhark system 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "futhark"
+literal "false"
+
+\end_inset
+
+, which is a compiler chain taking APL to the TAIL (Typed Array Intermediate
+ Language) and then compiling TAIL code using the Futhark GPU compiler backend.
+ While the authors are not aware of any work implementing complex neural
+ networks with this chain, it represents an interesting approach to compilation
+ of APL via typed intermediate languages, which have the potential to enhance
+ the fusion that can be done with an operation like the stencil function.
+ 
+\end_layout
+
+\begin_layout Standard
+Other programming environments that are often categorized as array programming
+ environments, such as Matlab 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "matlab"
+literal "false"
+
+\end_inset
+
+, Julia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "julia"
+literal "false"
+
+\end_inset
+
+, and Python/ Numpy 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "python,numpy"
+literal "false"
+
+\end_inset
+
+, are not exceptionally performant on their own for machine learning, but
+ often wrap libraries to do so.
+ Unfortunately, many of these languages use a syntax that much more closely
+ mirrors that of Python than APL.
+ In our perspective, this reduces the value proposition of such languages
+ over using specialized frameworks, since one does not obtain the particular
+ clarity and productivity benefits associated with the APL notation.
+ 
+\end_layout
+
+\begin_layout Section
+Future Work
+\end_layout
+
+\begin_layout Standard
+One of the most obvious questions to answer in future work is the reason
+ for the slower performance of the specialized convolution functions against
+ our naive implementation when using the same backend in Co-dfns.
+ 
+\end_layout
+
+\begin_layout Standard
+There are a number of design elements of the current crop of APL implementations
+, including Co-dfns, which hamper performance for machine learning.
+ Especially, the use of 64-bit floating points without any feature to reduce
+ their size makes memory usage a concern.
+ Additionally, no optimization on the design of stencil has been done, while
+ optimizations related to lazy indexing, batch processing, and a number
+ of other features seem readily accessible.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, we would like to explore the potential of using such systems
+ to improve machine learning pedagogy by encouraging students to have access
+ to high-performance, but also transparent, implementations of foundational
+ machine learning concepts.
+ There are still some challenges to recommending this approach at scale
+ for a large number of educational institutions, but we believe work on
+ understanding the pedagogical benefits of APL warrants further research
+ in addition to exploring APL in the professional space.
+ 
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Given the notational advantages of APL and the concision and clarity of
+ expression that one can obtain, we explored the potential impact of using
+ APL as a language for implementing convolutional neural networks of reasonable
+ complexity.
+ We found that, though the traditional implementations of APL suffer from
+ performance issues that would prevent widespread use in either academic,
+ educational, or industrial contexts, compilers such as Co-dfns are capable
+ of compiling complete neural network programs (in our case, the u-net architect
+ure) and producing much more competitive performance results (within a factor
+ of 2.2 - 2.4 times of our reference PyTorch implementation).
+ This is despite the naive nature of our implementation and the naive optimizati
+on support for neural networks on the part of the Co-dfns compiler.
+ 
+\end_layout
+
+\begin_layout Standard
+Furthermore, we found that our effort to implement u-net in APL resulted
+ in a concise but fully unambiguous implementation that provided transparency
+ over the entire source, without any frameworks or library dependencies.
+ Despite being a complete 
+\begin_inset Quotes eld
+\end_inset
+
+by hand
+\begin_inset Quotes erd
+\end_inset
+
+ implementation, its complexity of expression is on par with that of PyTorch
+ and other specialized frameworks, or even better, particularly in cases
+ where more exploration and novel implementation is required, or when customized
+ integrations may be called for.
+ The insights that we gained from implementing u-net in APL affected our
+ implementation of a reference implementation in PyTorch directly, suggesting
+ that APL may have significant pedagogical advantages for teaching neural
+ network programming and machine learning in general.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "bibliography"
+options "ACM-Reference-Format"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
