@@ -280,30 +280,17 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Specialized machine learning frameworks dominate the present industrial
- and educational spaces for deep learning applications.
- A wide number of higly specialized and highly optimized libraries exist,
- often built on top of one another, to support the modern wave of machine
- learning architectures.
- These systems are often more complex than your typical library, and they
- might even be better classified as their own domain-specific languages
- (DSLs).
- While these libraries have supported the current explosion of machine learning
- developers, a number of issues have emerged.
-\end_layout
-
-\begin_layout Standard
-First, because of their highly specialized nature, users of these systems
- tend to become experts not in generalized programming or algorithmic skills,
- but specialist toolkits and frameworks around a very specific model of
- computation.
- This specialized nature often mandates dedicated courses and even entire
- academic specializations (even at the undergraduate level) focused on the
- mastery of these particular concepts.
- This can create a sharp fall off of skills transferrence, where machine
- learning experts can use machine learning frameworks effectively, but may
- be underdeveloped and underprepared to handle situations that require a
- broader or more adaptive skillset.
+Specialized machine learning frameworks dominate present deep learning applicati
+ons.
+ A wide number of higly specialized, optimized libraries exist.
+ These systems are more complex than typical libraries and are better thought
+ of as domain-specific languages (DSLs).
+ While these libraries bolster the current machine learning explosion, because
+ of their highly specialized nature, users tend to become specialists around
+ a very specific framework for computation.
+ This creates a sharp wall that impedes skills transferrence, where experts
+ can use frameworks effectively but may be underprepared to handle situations
+ that benefit from broader or more flexible skillsets.
 \begin_inset Foot
 status open
 
@@ -313,19 +300,18 @@ To someone who only has a hammer, everything looks like a nail.
 
 \end_inset
 
+ This specialization makes sense in the context of traditional programming,
+ where simple networks are accessible, but tedious, while non-trivial ML
+ architectures quickly strain the performance and usability of a 
+\begin_inset Quotes eld
+\end_inset
 
-\end_layout
+from scratch
+\begin_inset Quotes erd
+\end_inset
 
-\begin_layout Standard
-Second, from a pedagogical perspective, when teaching machine learning,
- one may often be able to implement simple networks in a general-purpose
- programming language, but trying to teach machine learning through a typical
- general purpose language can be difficult, because one quickly encounters
- performance and scalability limitations that make any non-trivial and interesti
-ng applications likely beyond the competency and endurance of your typical
- student.
- This creates a sharp contrast in which one begins with simple systems that
- can be programmed 
+ implementation.
+ This creates a sharp contrast between simple systems programmed 
 \begin_inset Quotes eld
 \end_inset
 
@@ -333,15 +319,9 @@ by hand
 \begin_inset Quotes erd
 \end_inset
 
- but quickly transitions to highly opaque and complex frameworks that are
- difficult to understand, modify, or intuit.
- This can result in significant reductions in professional competency.
-\end_layout
-
-\begin_layout Standard
-Third, if a lack of profound and intuitive understanding of the underlying
- mechanics of a deep learning system continues into professional life, the
- result can be a type of 
+ and opaque, complex frameworks that work as inflexible black boxes.
+ A lack of profound and intuitive understanding of the underlying mechanics
+ of deep learning systems fosters a type of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -349,11 +329,9 @@ programming by knob turning
 \begin_inset Quotes erd
 \end_inset
 
- in which neural networks are programmed via trial and error rather than
- through intentional design.
- Machine Learning as a discipline is already opaque enough, with many cases
- of unintended consequences, without the added dangers inherent in this
- sort of unintentional programming guesswork 
+ where networks are programmed via trial and error rather than intentionality,
+ further exacerbating the danger of unintended consequences already an inherent
+ difficulty in statistical ML 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "domingos2012few"
@@ -362,32 +340,17 @@ literal "false"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-Fourth, the specificity of machine learning frameworks can result in significant
- amounts of code churn and a reduction in the stability of codebases for
- enterprise use.
- Switching hardware, architectures, operating systems, or the like can create
- unstable conditions in which code must be rewritten, adapted, or thrown
- away entirely.
- Machine learning frameworks are often highly vendor-specific, and even
- those which are more vendor-neutral tend to encode significantly greater
- specificity than is historically warranted for code intended to last for
- any long period of time.
- This almost necessitates higher levels of programmer investment in order
- to keep such systems running over a long period of time.
-\end_layout
-
-\begin_layout Standard
-Despite the above potential issues, specialist frameworks have proven highly
- effective, in large part because of how important high-performance is to
- the domain of machine learning.
- However, in recent years, general-purpose array programming languages have
- seen a resurgence, and naturally, they have been examined in the light
- of machine learning.
- Such languages were also popular during early exploration of neural network
- programming during the 20th century 
+ Machine learning frameworks are often highly vendor-specific; even more
+ vendor-neutral systems encode greater specificity than historically warranted
+ for long-running code intended.
+ This demands higher levels of programmer investment in system maintainence
+ over a product lifetime.
+ Despite this, specialist frameworks prove highly effective, in part because
+ of the performance demands of ML.
+ However, in recent years, reemerging general-purpose array programming
+ languages have presented an alternative potential direction.
+ Such languages were popular during early neural network programming in
+ the 20th century 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "alfonseca-1990-aplnn"
@@ -395,12 +358,12 @@ literal "false"
 
 \end_inset
 
-, but performance issues of then-current hardware prevented further progression.
+, but performance of then-current hardware prevented further development.
 \end_layout
 
 \begin_layout Standard
-APL, as a general-purpose array programming language, created by Kenneth
- Iverson as an improved mathematical notation 
+APL, a general-purpose array programming language, created by Kenneth Iverson
+ as an improved mathematical notation 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl"
@@ -408,17 +371,12 @@ literal "false"
 
 \end_inset
 
-, has seen an increase in popularity over the past decades, in part because
- of the renewed interest in parallel computation and a wider acceptance
- of the use of a variety of programming languages.
- However, only recently has significant new research into the use of APL
- as a possible implementation language for machine learning begun to surface.
+, has risen in popularity over the past decades, in part because of the
+ renewed interest in parallel computation and a wider acceptance of the
+ use of a variety of programming languages.
+ Recently, new research into APL as a machine learning language has begun.
+ APL's origins in education and its reputation for direct algorithmic expression
  
-\end_layout
-
-\begin_layout Standard
-The long history of APL, its origins as an pedagogical tool, and its reputation
- for directness of algorithmic expression 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "knuth1993computer,knuth2007computer"
@@ -426,10 +384,10 @@ literal "false"
 
 \end_inset
 
- help to address some of the concerns above.
- Furthermore, it is one of the most linguistically stable languages, while
- also being exceptionally high level and high performance at the same time
- 
+ address some of the above concerns around general-purpose languages and
+ ML.
+ As a linguistically stable language that is both high performance and high
+ level 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "hsu2019data"
@@ -437,28 +395,15 @@ literal "false"
 
 \end_inset
 
-, making it highly suitable for long lived code as well as rapid prototyping.
- Finally, the language itself defaults to a data-parallel semantics, making
- its application to GPU programming an obvious conclusion.
- 
-\end_layout
-
-\begin_layout Standard
-While the above advantages might suggest APL as a terrific tool for machine
- learning, unfortunately, the vast majority of implementations have been
- for the CPU only, and those have usually been entirely interpreted.
- Traditionally, compiler implementors have considered APL a challenging
- language to compile 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "hsu2019data"
-literal "false"
-
-\end_inset
-
-, but recent innovations to the language (particularly those with a functional
- programming focus) have made compilation much more tractable, and the Co-dfns
- compiler now exists as an APL implementation with native GPU support 
+, it is suitable for long lived code as well as rapid prototyping, and the
+ data-parallel by default semantics suggests obvious applications to GPU
+ programming.
+ While these advantages might recommend APL for machine learning, the majority
+ of implementations have run on the CPU only, usually via interpreter.
+ While challenging to compile, recent innovations to the language (particularly
+ those with a functional programming focus) make compilation more tractable,
+ and the Co-dfns compiler now exists as an APL implementation with native
+ GPU support 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "hsu2019data"
@@ -471,12 +416,10 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Given the available APL technology and the parsity of existing materials
- on modern machine learning development in APL, we conducted an exploration
- into the state of the art in APL, both from a language design and a runtime
- implementation perspective.
- To do this, we focused our efforts on the implementation and benchmarking
- of the U-net convolutional neural network 
+Given the available APL technology and the parsity of existing research
+ on modern ML in APL, we explored APL as a ML language in terms of language
+ design and runtime performance by implementing and benchmarking the U-net
+ convolutional neural network 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet"
@@ -488,8 +431,8 @@ literal "false"
  This is a popular image segmentation architecture with a particularly interesti
 ng U-shaped design.
  It makes use of a range of popular CNN vocabularies and functions while
- having a clear architecture that is not so simple as to be trivial.
- This makes it an ideal candidate for exploring APL's capabilities.
+ having a clear, non-trivial architecture.
+ This makes an ideal candidate for exploring APL's capabilities.
 \end_layout
 
 \begin_layout Standard
@@ -497,8 +440,8 @@ We make the following contributions:
 \end_layout
 
 \begin_layout Itemize
-A complete demonstration in APL of the popular U-net convolutional neural
- network, which is non-trivial in vocabulary and architecture
+A complete demonstration in APL of the U-net convolutional neural network,
+ which is non-trivial in vocabulary and architecture
 \end_layout
 
 \begin_layout Itemize
@@ -512,49 +455,9 @@ Our implementation was written with pure APL and no dependencies, frameworks,
 \end_layout
 
 \begin_layout Itemize
-A functional programming-friendly approach to neural network design and
- implementation
-\end_layout
-
-\begin_layout Itemize
-An analysis and examination of the current language features within APL
- that appear relevant to CNNs and machine learning
-\end_layout
-
-\begin_layout Itemize
-A critical discussion and design comparison of two different approaches
- to supporting convolutions and similar operations in a general-purpose
- array language with a recommendation for future implementation improvements
-\end_layout
-
-\begin_layout Itemize
-A grounded perspective on the applications of general-purpose array programming
- languages like APL to the machine learning space from professional and
- pedagogical angles and how APL compares to alternative, specialist framework
- approaches
-\end_layout
-
-\begin_layout Itemize
 Performance results of two modern APL implementations, one compiled and
  the other interpreted, on CPU and GPU hardware against a reference PyTorch
  implementation for U-net
-\end_layout
-
-\begin_layout Itemize
-Performance observations of specialized neural network functionality exposed
- in more general purpose array frameworks for GPU programming
-\end_layout
-
-\begin_layout Itemize
-Specific highlighting of low-hanging fruit for improving the current range
- of APL implementations both in terms of language design and runtime implementat
-ion
-\end_layout
-
-\begin_layout Itemize
-A demonstration of the expressiveness and performance that careful language
- design can enable without the need for complex implementation models or
- theory
 \end_layout
 
 \begin_layout Section
@@ -1139,22 +1042,18 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
-
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
-
 3
 \end_layout
 
 \begin_layout Verbatim
-
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
-
 7592
 \end_layout
 
@@ -1184,22 +1083,18 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
-
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
-
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
-
 50 25 10
 \end_layout
 
@@ -1246,22 +1141,18 @@ minus
 \end_layout
 
 \begin_layout Verbatim
-
       (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
-
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
-
 5 10 500 1000
 \end_layout
 
@@ -1380,17 +1271,14 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
-
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
-
 3 4 5
 \end_layout
 
@@ -1459,12 +1347,10 @@ array
 \end_layout
 
 \begin_layout Verbatim
-
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
-
 2 3
 \end_layout
 
@@ -1499,32 +1385,26 @@ nested
 \end_layout
 
 \begin_layout Verbatim
-
       array
 \end_layout
 
 \begin_layout Verbatim
-
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
-
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
-
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
-
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
-
 └───┴───┴───┘
 \end_layout
 
@@ -1585,32 +1465,26 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
-
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
-
 ¯14
 \end_layout
 
 \begin_layout Verbatim
-
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
-
 ¯34
 \end_layout
 
 \begin_layout Verbatim
-
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
-
 ¯34
 \end_layout
 
@@ -1924,52 +1798,42 @@ roll
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← ?2 3⍴0    ⍝ Create random array mat
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0.999 0.00424 0.351
 \end_layout
 
 \begin_layout Verbatim
-
 0.967 0.92    0.821
 \end_layout
 
 \begin_layout Verbatim
-
       ⍴mat            ⍝ mat has shape 2 3.
 \end_layout
 
 \begin_layout Verbatim
-
 2 3
 \end_layout
 
 \begin_layout Verbatim
-
       ≢⍴mat           ⍝ mat has rank (tally shape) 2
 \end_layout
 
 \begin_layout Verbatim
-
 2
 \end_layout
 
 \begin_layout Verbatim
-
       ,mat            ⍝ mat contains this data
 \end_layout
 
 \begin_layout Verbatim
-
 0.999 0.00424 0.351 0.967 0.92 0.821
 \end_layout
 
@@ -2020,22 +1884,18 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
-
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
-
 315
 \end_layout
 
 \begin_layout Verbatim
-
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
-
 315
 \end_layout
 
@@ -2073,22 +1933,18 @@ sum
 \end_layout
 
 \begin_layout Verbatim
-
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
-
 10
 \end_layout
 
 \begin_layout Verbatim
-
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
-
 10
 \end_layout
 
@@ -2154,42 +2010,34 @@ mat
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
-
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
-
       +/mat
 \end_layout
 
 \begin_layout Verbatim
-
 3 12
 \end_layout
 
 \begin_layout Verbatim
-
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
-
 3 5 7
 \end_layout
 
@@ -2283,77 +2131,62 @@ matrix product
 \end_layout
 
 \begin_layout Verbatim
-
       X ← 2 3⍴0 0 0 1 10 100
 \end_layout
 
 \begin_layout Verbatim
-
       Y ← 3 2⍴1 2 3 4 5 6
 \end_layout
 
 \begin_layout Verbatim
-
       X Y
 \end_layout
 
 \begin_layout Verbatim
-
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
-
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
-
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
-
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
-
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
-
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
-
   0   0
 \end_layout
 
 \begin_layout Verbatim
-
 531 642
 \end_layout
 
 \begin_layout Verbatim
-
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
-
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
-
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
-
 6 60 600
 \end_layout
 
@@ -2406,37 +2239,30 @@ A
 \end_layout
 
 \begin_layout Verbatim
-
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
-
       mat
 \end_layout
 
 \begin_layout Verbatim
-
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
-
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
-
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
-
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -2506,32 +2332,26 @@ alpha
 \end_layout
 
 \begin_layout Verbatim
-
       vec ← 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
-
       (+⌿vec)÷≢vec      ⍝ Sum of vec divided by its tally
 \end_layout
 
 \begin_layout Verbatim
-
 1.5
 \end_layout
 
 \begin_layout Verbatim
-
       avg ← {(+⌿⍵)÷≢⍵}  ⍝ Sum of arg divided by its tally
 \end_layout
 
 \begin_layout Verbatim
-
       avg vec
 \end_layout
 
 \begin_layout Verbatim
-
 1.5
 \end_layout
 
@@ -4727,52 +4547,42 @@ Our forward pass function is responsible for initializing an appropriate
 \end_layout
 
 \begin_layout Verbatim
-
 FWD←{
 \end_layout
 
 \begin_layout Verbatim
-
   Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
-
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-
   LA←{
 \end_layout
 
 \begin_layout Verbatim
-
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
-
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
 }
 \end_layout
 
@@ -4803,67 +4613,54 @@ The backwards computation mirrors this pattern, except that it proceeds
 \end_layout
 
 \begin_layout Verbatim
-
 BCK←{
 \end_layout
 
 \begin_layout Verbatim
-
   Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
-
   ∆←{
 \end_layout
 
 \begin_layout Verbatim
-
     V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
-
     W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
-
   ∆LA←{
 \end_layout
 
 \begin_layout Verbatim
-
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
     down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
     (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down
 \end_layout
 
 \begin_layout Verbatim
-
   }
 \end_layout
 
 \begin_layout Verbatim
-
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5390,7 +5187,6 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
 :Namespace UNET
 \end_layout
 
@@ -5399,7 +5195,6 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
  W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
 \end_layout
 
@@ -5408,52 +5203,42 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
  FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
-
   CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
 \end_layout
 
 \begin_layout Verbatim
-
   CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 \end_layout
 
 \begin_layout Verbatim
-
   MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
-
   UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
-
   C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
-
   LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
-
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
 \end_layout
 
 \begin_layout Verbatim
-
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
@@ -5462,82 +5247,66 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
  BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
-
   ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
 \end_layout
 
 \begin_layout Verbatim
-
    ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
-
    _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
 \end_layout
 
 \begin_layout Verbatim
-
    w+.×⍨,[2+⍳3]3 3⌺∆Z}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
-
    _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
 \end_layout
 
 \begin_layout Verbatim
-
    (,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w}
 \end_layout
 
 \begin_layout Verbatim
-
   ∆LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
-
    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
-
    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
 \end_layout
 
 \begin_layout Verbatim
-
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5546,7 +5315,6 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
  E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -5555,7 +5323,6 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
  RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 \end_layout
 
@@ -5564,7 +5331,6 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
-
 :EndNamespace
 \end_layout
 
@@ -5580,22 +5346,18 @@ Appendix B: PyTorch Reference Implementation
 \end_layout
 
 \begin_layout Verbatim
-
 import torch
 \end_layout
 
 \begin_layout Verbatim
-
 import torch.nn as nn
 \end_layout
 
 \begin_layout Verbatim
-
 import torchvision
 \end_layout
 
 \begin_layout Verbatim
-
 import torchvision.transforms.functional
 \end_layout
 
@@ -5604,7 +5366,6 @@ import torchvision.transforms.functional
 \end_layout
 
 \begin_layout Verbatim
-
 class TwoConv(nn.Module):
 \end_layout
 
@@ -5613,12 +5374,10 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
    def __init__(self, in_channels, out_channels):
 \end_layout
 
 \begin_layout Verbatim
-
         super().__init__()
 \end_layout
 
@@ -5627,42 +5386,34 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
-
             nn.Conv2d(in_channels, out_channels, 
 \end_layout
 
 \begin_layout Verbatim
-
                 kernel_size=(3, 3), bias=False),
 \end_layout
 
 \begin_layout Verbatim
-
             nn.ReLU(inplace=True),
 \end_layout
 
 \begin_layout Verbatim
-
             nn.Conv2d(out_channels, out_channels, 
 \end_layout
 
 \begin_layout Verbatim
-
                 kernel_size=(3, 3), bias=False),
 \end_layout
 
 \begin_layout Verbatim
-
             nn.ReLU(inplace=True),
 \end_layout
 
 \begin_layout Verbatim
-
         )
 \end_layout
 
@@ -5671,12 +5422,10 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
-
         return self.path(x)
 \end_layout
 
@@ -5685,7 +5434,6 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
 class Down(nn.Module):
 \end_layout
 
@@ -5694,12 +5442,10 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def __init__(self, in_channels):
 \end_layout
 
 \begin_layout Verbatim
-
         super().__init__()
 \end_layout
 
@@ -5708,22 +5454,18 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
-
             nn.MaxPool2d(kernel_size=(2, 2), stride=2),
 \end_layout
 
 \begin_layout Verbatim
-
             TwoConv(in_channels, 2 * in_channels),
 \end_layout
 
 \begin_layout Verbatim
-
         )
 \end_layout
 
@@ -5732,12 +5474,10 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
-
         return self.path(x)
 \end_layout
 
@@ -5746,7 +5486,6 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
 class Up(nn.Module):
 \end_layout
 
@@ -5755,12 +5494,10 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def __init__(self, in_channels):
 \end_layout
 
 \begin_layout Verbatim
-
         super().__init__()
 \end_layout
 
@@ -5769,47 +5506,38 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         self.upsampling = nn.ConvTranspose2d(
 \end_layout
 
 \begin_layout Verbatim
-
             in_channels,
 \end_layout
 
 \begin_layout Verbatim
-
             in_channels // 2,
 \end_layout
 
 \begin_layout Verbatim
-
             kernel_size=(2, 2),
 \end_layout
 
 \begin_layout Verbatim
-
             stride=2,
 \end_layout
 
 \begin_layout Verbatim
-
             bias=False,
 \end_layout
 
 \begin_layout Verbatim
-
         )
 \end_layout
 
 \begin_layout Verbatim
-
         self.convolutions = 
 \end_layout
 
 \begin_layout Verbatim
-
             TwoConv(in_channels, in_channels // 2)
 \end_layout
 
@@ -5818,7 +5546,6 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def forward(self, x_to_crop, x_in):
 \end_layout
 
@@ -5827,32 +5554,26 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         upped = self.upsampling(x_in)
 \end_layout
 
 \begin_layout Verbatim
-
         cropped = torchvision.transforms.functional.center_crop(
 \end_layout
 
 \begin_layout Verbatim
-
             x_to_crop, upped.shape[-2:]
 \end_layout
 
 \begin_layout Verbatim
-
         )
 \end_layout
 
 \begin_layout Verbatim
-
         x = torch.cat([cropped, upped], dim=1)
 \end_layout
 
 \begin_layout Verbatim
-
         return self.convolutions(x)
 \end_layout
 
@@ -5861,7 +5582,6 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
 class USegment(nn.Module):
 \end_layout
 
@@ -5870,12 +5590,10 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def __init__(self, in_channels, bottom_u=None):
 \end_layout
 
 \begin_layout Verbatim
-
         super().__init__()
 \end_layout
 
@@ -5884,17 +5602,14 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         # Default value for the bottom U.
 \end_layout
 
 \begin_layout Verbatim
-
         if bottom_u is None:
 \end_layout
 
 \begin_layout Verbatim
-
             bottom_u = lambda x: x
 \end_layout
 
@@ -5903,17 +5618,14 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         self.down = Down(in_channels)
 \end_layout
 
 \begin_layout Verbatim
-
         self.bottom_u = bottom_u
 \end_layout
 
 \begin_layout Verbatim
-
         self.up = Up(2 * in_channels)
 \end_layout
 
@@ -5922,12 +5634,10 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
-
         return self.up(x, self.bottom_u(self.down(x)))
 \end_layout
 
@@ -5936,7 +5646,6 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
 class UNet(nn.Module):
 \end_layout
 
@@ -5945,12 +5654,10 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def __init__(self):
 \end_layout
 
 \begin_layout Verbatim
-
         super().__init__()
 \end_layout
 
@@ -5959,47 +5666,38 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
         self.u = USegment(512)
 \end_layout
 
 \begin_layout Verbatim
-
         self.u = USegment(256, self.u)
 \end_layout
 
 \begin_layout Verbatim
-
         self.u = USegment(128, self.u)
 \end_layout
 
 \begin_layout Verbatim
-
         self.u = USegment(64, self.u)
 \end_layout
 
 \begin_layout Verbatim
-
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
-
             TwoConv(1, 64),
 \end_layout
 
 \begin_layout Verbatim
-
             self.u,
 \end_layout
 
 \begin_layout Verbatim
-
             nn.Conv2d(64, 2, kernel_size=1, bias=False),
 \end_layout
 
 \begin_layout Verbatim
-
         )
 \end_layout
 
@@ -6008,17 +5706,14 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
-
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
-
         return self.path(x)
 \end_layout
 
 \begin_layout Standard
-
 \begin_inset Newpage clearpage
 \end_inset
 
