@@ -440,8 +440,8 @@ We make the following contributions:
 \end_layout
 
 \begin_layout Itemize
-A complete demonstration in APL of the U-net convolutional neural network,
- which is non-trivial in vocabulary and architecture
+A from scratch implementation of the U-net convolutional neural network
+ in APL
 \end_layout
 
 \begin_layout Itemize
@@ -450,8 +450,8 @@ Our U-net implementation is exceptionally simple, concise, transparent,
 \end_layout
 
 \begin_layout Itemize
-Our implementation was written with pure APL and no dependencies, frameworks,
- libraries, or other supporting code outside of the APL implementation
+Our implementation consists of pure APL and no dependencies, frameworks,
+ libraries, or other supporting code
 \end_layout
 
 \begin_layout Itemize
@@ -462,12 +462,6 @@ Performance results of two modern APL implementations, one compiled and
 
 \begin_layout Section
 Background
-\end_layout
-
-\begin_layout Standard
-In this section, we provide the relevant background pertaining to the machine
- learning concepts needed to work with CNNs, and the u-net in particular,
- and to the APL language.
 \end_layout
 
 \begin_layout Subsection
@@ -584,83 +578,10 @@ literal "false"
 
 \end_inset
 
-.
- The rationale behind these pooling layers, as seen from an image recognition-re
-lated context, can be interpreted as follows: the image features one is
- typically interested in (e.g., the recognition or segmentation of objects,
- or image labeling) are not contained in single pixels of the input images,
- but in regions of said pixels.
- Pooling layers are, thus, employed with the purpose of aggregating low-level
- information that can then be used to recognise the larger features of interest
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "pooling"
-literal "false"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-In 2015, three authors published a paper
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset citation
-LatexCommand citep
-key "unet"
-literal "false"
-
-\end_inset
-
- introducing the u-net architecture: a CNN with a non-trivial architecture
- that won several biomedical image segmentation challenges at the time of
- its publication.
- Since then, the u-net architecture was reimplemented hundreds of times
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Numbers by 
-\begin_inset CommandInset href
-LatexCommand href
-name "Papers with Code"
-target "https://paperswithcode.com/paper/u-net-convolutional-networks-for-biomedical"
-literal "false"
-
-\end_inset
-
- as of March, 2022.
-\end_layout
-
-\end_inset
-
-, most notably through the use of deep-learning frameworks such as PyTorch
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "pytorch"
-literal "false"
-
-\end_inset
-
-, a deep-learning framework used in this work, or Caffe 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "caffe"
-literal "false"
-
-\end_inset
-
-, which is the deep learning framework in which the original u-net was implement
-ed.
- For this paper, we reimplemented the u-net architecture, in APL, without
- making use of any (machine learning) libraries or frameworks.
- Before we introduce our work on that implementation, we discuss the original
- architecture that we set out to replicate.
+ by aggregating low-level information to recognize larger features of interest,
+ with the rationale that typical image features (e.g., the recognition or
+ segmentation of objects, or image labeling) consist of regions of pixels
+ and not individual pixels.
 \end_layout
 
 \begin_layout Subsection
@@ -724,6 +645,56 @@ name "fig:unet-architecture"
 
 \end_inset
 
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "unet"
+literal "false"
+
+\end_inset
+
+ introduced the U-net architecture, a novel CNN architecture that won several
+ biomedical image segmentation challenges.
+ Since the original implementation in Caffe 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "caffe"
+literal "false"
+
+\end_inset
+
+, others have implemented U-net in numerous other frameworks and systems
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Numbers by 
+\begin_inset CommandInset href
+LatexCommand href
+name "Papers with Code"
+target "https://paperswithcode.com/paper/u-net-convolutional-networks-for-biomedical"
+literal "false"
+
+\end_inset
+
+ as of March, 2022.
+\end_layout
+
+\end_inset
+
+, including PyTorch 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -734,11 +705,7 @@ noprefix "false"
 
 \end_inset
 
- shows the original diagram that represents the u-net architecture
-\begin_inset space ~
-\end_inset
-
-
+ shows the original diagram that represents the U-net architecture 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet"
@@ -746,13 +713,8 @@ literal "false"
 
 \end_inset
 
-, which we cover now.
- We will go through the figure from left to right, following the U-shape
- of the diagram.
-\end_layout
-
-\begin_layout Standard
-The blue right arrows, labeled 
+.
+ The blue right arrows, labeled 
 \begin_inset Quotes eld
 \end_inset
 
@@ -765,18 +727,8 @@ conv 3x3, ReLU
 \end_inset
 
  kernels.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- shows that after each of these convolutions, the size of the feature maps
- decreases by 
+ After each of these convolutions, the size of the feature map decreases
+ by 
 \begin_inset Formula $2$
 \end_inset
 
@@ -793,8 +745,7 @@ literal "false"
 \end_inset
 
 .
- After each convolution, we use the activation function rectified linear
- unit (ReLU) 
+ A rectified linear unit (ReLU) 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "relu"
@@ -802,24 +753,23 @@ literal "false"
 
 \end_inset
 
-.
- Pairs of these convolutions are followed by max-pooling operations represented
- by the red down arrows.
- These max-pooling operations act on a 
+ activation function follows each convolution.
+ After two such convolutions, max-pooling operations represented by the
+ red down arrows downsample each feature map to half the size using a 
 \begin_inset Formula $2\times2$
 \end_inset
 
- region and have a stride of 
+ region with stride 
 \begin_inset Formula $2$
 \end_inset
 
-, effectively downsampling each feature map to half the size.
- Because of this repeated halving, the input size must be chosen carefully
+.
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-Specifically, the input dimensions must be congruent to 
+This makes the input size somewhat brittle.
+ Specifically, the input dimensions must be congruent to 
 \begin_inset Formula $12\mod16$
 \end_inset
 
@@ -828,38 +778,24 @@ Specifically, the input dimensions must be congruent to
 
 \end_inset
 
-.
  After every downsampling step, the first convolution doubles the number
  of channels.
  The pattern of two convolutions (with ReLUs) followed by downsampling via
  max-pooling happens four times and makes up the contracting path of the
- network, on the left of Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
+ network, on the left of the diagram.
 \end_layout
 
 \begin_layout Standard
-Having reached the end of the contracting path (at the bottom of the diagram),
- we start the expanding path.
- The expanding path also makes use of unpadded convolutions with 
+After the contracting path (at the diagram bottom) completes, a corresponding
+ expanding path reduces the channels while increasing the map size.
+ Expansion uses unpadded 
 \begin_inset Formula $3\times3$
 \end_inset
 
- kernels and stride 1, but these are now at the end of each step, instead
- of at the beginning.
- Each step of the expanding path starts with an upsampling operation (green
- up arrows) that doubles the size of the feature maps while cutting their
- number down in half.
- For this upsampling, we infer that the original authors used a transposed
- convolution (with 
+ convolutions preceeded by an upsampling operation (green up arrows) that
+ doubles the map size while halving the channels.
+ We infer that the original authors used a transposed convolution (with
+ 
 \begin_inset Formula $2\times2$
 \end_inset
 
@@ -894,36 +830,15 @@ literal "false"
 \end_inset
 
 .
- These transpose convolutions produce half of the channels that are fed
- as input to the regular convolutions.
- The other half of the channels is copied and cropped from the corresponding
- step in the contracting path, as represented by the gray right long arrows
- in the middle of the diagram of Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- Because there is a slight mismatch between the size of the feature maps
- that are copied and cropped and the other feature maps that resulted from
- the upsampling step, the feature maps that are copied get cropped from
- the centre of the larger feature maps of the contracting path.
- It is after this copy and crop operation that we feed the feature maps
- into the two convolution layers that are paired with their respective ReLU
- activation functions.
-\end_layout
-
-\begin_layout Standard
-At the end of the contracting path, we have a 
+ Half of the channels to the initial convolution after upsampling come from
+ the corresponding map on the contracting side of the architecture, as represent
+ed by the gray right long arrows in the middle of the diagram.
+ The copied maps are center cropped to ensure matching dimensions.
+ At the end of the contracting path, a 
 \begin_inset Formula $1\times1$
 \end_inset
 
- unpadded convolution that reduces the 
+ unpadded convolution reduces the 
 \begin_inset Formula $64$
 \end_inset
 
@@ -932,12 +847,6 @@ At the end of the contracting path, we have a
 \end_inset
 
  feature maps (one per class).
-\end_layout
-
-\begin_layout Standard
-To compute the loss of the output with respect to the expected labels, we
- compute the softmax across the two output channels followed by the cross
- entropy loss function.
 \end_layout
 
 \begin_layout Subsection
@@ -1042,18 +951,22 @@ alternative
 \end_layout
 
 \begin_layout Verbatim
+
       1 + 2
 \end_layout
 
 \begin_layout Verbatim
+
 3
 \end_layout
 
 \begin_layout Verbatim
+
       73 × 104
 \end_layout
 
 \begin_layout Verbatim
+
 7592
 \end_layout
 
@@ -1083,18 +996,22 @@ This format mimics that of the APL session, the interactive environment
 \end_layout
 
 \begin_layout Verbatim
+
       10 - 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 9 8 7
 \end_layout
 
 \begin_layout Verbatim
+
       100 50 20 ÷ 2
 \end_layout
 
 \begin_layout Verbatim
+
 50 25 10
 \end_layout
 
@@ -1141,18 +1058,22 @@ minus
 \end_layout
 
 \begin_layout Verbatim
+
       (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
 \begin_layout Verbatim
+
       1 10 100 1000 ⌈ 5 5 500 500
 \end_layout
 
 \begin_layout Verbatim
+
 5 10 500 1000
 \end_layout
 
@@ -1271,14 +1192,17 @@ The reshape function is represented by the Greek letter rho
 \end_layout
 
 \begin_layout Verbatim
+
       2 3 ⍴ 0 1 2 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
@@ -1347,10 +1271,12 @@ array
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴array
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
@@ -1385,26 +1311,32 @@ nested
 \end_layout
 
 \begin_layout Verbatim
+
       array
 \end_layout
 
 \begin_layout Verbatim
+
 ┌───┬───┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0 0│0 1│0 2│
 \end_layout
 
 \begin_layout Verbatim
+
 ├───┼───┼───┤
 \end_layout
 
 \begin_layout Verbatim
+
 │1 0│1 1│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 └───┴───┴───┘
 \end_layout
 
@@ -1465,26 +1397,32 @@ execute from right to left
 \end_layout
 
 \begin_layout Verbatim
+
       (2 × 3) - (4 × 5)
 \end_layout
 
 \begin_layout Verbatim
+
 ¯14
 \end_layout
 
 \begin_layout Verbatim
+
       2 × (3 - (4 × 5))
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
 \begin_layout Verbatim
+
       2 × 3 - 4 × 5
 \end_layout
 
 \begin_layout Verbatim
+
 ¯34
 \end_layout
 
@@ -1798,42 +1736,52 @@ roll
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← ?2 3⍴0    ⍝ Create random array mat
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0.999 0.00424 0.351
 \end_layout
 
 \begin_layout Verbatim
+
 0.967 0.92    0.821
 \end_layout
 
 \begin_layout Verbatim
+
       ⍴mat            ⍝ mat has shape 2 3.
 \end_layout
 
 \begin_layout Verbatim
+
 2 3
 \end_layout
 
 \begin_layout Verbatim
+
       ≢⍴mat           ⍝ mat has rank (tally shape) 2
 \end_layout
 
 \begin_layout Verbatim
+
 2
 \end_layout
 
 \begin_layout Verbatim
+
       ,mat            ⍝ mat contains this data
 \end_layout
 
 \begin_layout Verbatim
+
 0.999 0.00424 0.351 0.967 0.92 0.821
 \end_layout
 
@@ -1884,18 +1832,22 @@ reduce-first
 \end_layout
 
 \begin_layout Verbatim
+
       5×9×7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
 \begin_layout Verbatim
+
       ×⌿5 9 7
 \end_layout
 
 \begin_layout Verbatim
+
 315
 \end_layout
 
@@ -1933,18 +1885,22 @@ sum
 \end_layout
 
 \begin_layout Verbatim
+
       1+2+3+4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿1 2 3 4
 \end_layout
 
 \begin_layout Verbatim
+
 10
 \end_layout
 
@@ -2010,34 +1966,42 @@ mat
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 3⍴⍳6
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2
 \end_layout
 
 \begin_layout Verbatim
+
 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
       +/mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 12
 \end_layout
 
 \begin_layout Verbatim
+
       +⌿mat
 \end_layout
 
 \begin_layout Verbatim
+
 3 5 7
 \end_layout
 
@@ -2131,62 +2095,77 @@ matrix product
 \end_layout
 
 \begin_layout Verbatim
+
       X ← 2 3⍴0 0 0 1 10 100
 \end_layout
 
 \begin_layout Verbatim
+
       Y ← 3 2⍴1 2 3 4 5 6
 \end_layout
 
 \begin_layout Verbatim
+
       X Y
 \end_layout
 
 \begin_layout Verbatim
+
 ┌────────┬───┐
 \end_layout
 
 \begin_layout Verbatim
+
 │0  0   0│1 2│
 \end_layout
 
 \begin_layout Verbatim
+
 │1 10 100│3 4│
 \end_layout
 
 \begin_layout Verbatim
+
 │        │5 6│
 \end_layout
 
 \begin_layout Verbatim
+
 └────────┴───┘
 \end_layout
 
 \begin_layout Verbatim
+
       X +.× Y
 \end_layout
 
 \begin_layout Verbatim
+
   0   0
 \end_layout
 
 \begin_layout Verbatim
+
 531 642
 \end_layout
 
 \begin_layout Verbatim
+
       Y +.× X
 \end_layout
 
 \begin_layout Verbatim
+
 2 20 200
 \end_layout
 
 \begin_layout Verbatim
+
 4 40 400
 \end_layout
 
 \begin_layout Verbatim
+
 6 60 600
 \end_layout
 
@@ -2239,30 +2218,37 @@ A
 \end_layout
 
 \begin_layout Verbatim
+
       mat ← 2 4⍴⍳8
 \end_layout
 
 \begin_layout Verbatim
+
       mat
 \end_layout
 
 \begin_layout Verbatim
+
 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
 4 5 6 7
 \end_layout
 
 \begin_layout Verbatim
+
       mat (×⍤1 0) 1 ¯1
 \end_layout
 
 \begin_layout Verbatim
+
  0  1  2  3
 \end_layout
 
 \begin_layout Verbatim
+
 ¯4 ¯5 ¯6 ¯7
 \end_layout
 
@@ -2332,26 +2318,32 @@ alpha
 \end_layout
 
 \begin_layout Verbatim
+
       vec ← 0 1 2 3
 \end_layout
 
 \begin_layout Verbatim
+
       (+⌿vec)÷≢vec      ⍝ Sum of vec divided by its tally
 \end_layout
 
 \begin_layout Verbatim
+
 1.5
 \end_layout
 
 \begin_layout Verbatim
+
       avg ← {(+⌿⍵)÷≢⍵}  ⍝ Sum of arg divided by its tally
 \end_layout
 
 \begin_layout Verbatim
+
       avg vec
 \end_layout
 
 \begin_layout Verbatim
+
 1.5
 \end_layout
 
@@ -4547,42 +4539,52 @@ Our forward pass function is responsible for initializing an appropriate
 \end_layout
 
 \begin_layout Verbatim
+
 FWD←{
 \end_layout
 
 \begin_layout Verbatim
+
   Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Forward propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   LA←{
 \end_layout
 
 \begin_layout Verbatim
+
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
 \end_layout
 
 \begin_layout Verbatim
+
   }
 \end_layout
 
 \begin_layout Verbatim
+
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
 }
 \end_layout
 
@@ -4613,54 +4615,67 @@ The backwards computation mirrors this pattern, except that it proceeds
 \end_layout
 
 \begin_layout Verbatim
+
 BCK←{
 \end_layout
 
 \begin_layout Verbatim
+
   Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
   ∆←{
 \end_layout
 
 \begin_layout Verbatim
+
     V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
+
     W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
 \end_layout
 
 \begin_layout Verbatim
+
   }
 \end_layout
 
 \begin_layout Verbatim
+
   ⍝ Back propagation layers ...
 \end_layout
 
 \begin_layout Verbatim
+
   ∆LA←{
 \end_layout
 
 \begin_layout Verbatim
+
     ⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down
 \end_layout
 
 \begin_layout Verbatim
+
   }
 \end_layout
 
 \begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5187,6 +5202,7 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
 :Namespace UNET
 \end_layout
 
@@ -5195,6 +5211,7 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
  W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
 \end_layout
 
@@ -5203,42 +5220,52 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
  FWD←{Z⊢←(≢W)⍴⊂⍬
 \end_layout
 
 \begin_layout Verbatim
+
   CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
 \end_layout
 
 \begin_layout Verbatim
+
   CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
 \end_layout
 
 \begin_layout Verbatim
+
   LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
     down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
 \end_layout
 
 \begin_layout Verbatim
+
     (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
 \end_layout
 
 \begin_layout Verbatim
+
   2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 \end_layout
 
@@ -5247,66 +5274,82 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
  BCK←{Y←⍺ ⋄ Y∆←⍵
 \end_layout
 
 \begin_layout Verbatim
+
   ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
 \end_layout
 
 \begin_layout Verbatim
+
    ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
 \end_layout
 
 \begin_layout Verbatim
+
    _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
 \end_layout
 
 \begin_layout Verbatim
+
    w+.×⍨,[2+⍳3]3 3⌺∆Z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
 \end_layout
 
 \begin_layout Verbatim
+
    _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
 \end_layout
 
 \begin_layout Verbatim
+
    (,[2+⍳3]cz)+.×⍉⍪w}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w}
 \end_layout
 
 \begin_layout Verbatim
+
   ∆LA←{⍺≥≢Z:⍵
 \end_layout
 
 \begin_layout Verbatim
+
    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
 \end_layout
 
 \begin_layout Verbatim
+
    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
 \end_layout
 
 \begin_layout Verbatim
+
   3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
@@ -5315,6 +5358,7 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
  E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
 \end_layout
 
@@ -5323,6 +5367,7 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
  RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
 \end_layout
 
@@ -5331,6 +5376,7 @@ Appendix A: Complete APL U-net implementation
 \end_layout
 
 \begin_layout Verbatim
+
 :EndNamespace
 \end_layout
 
@@ -5346,18 +5392,22 @@ Appendix B: PyTorch Reference Implementation
 \end_layout
 
 \begin_layout Verbatim
+
 import torch
 \end_layout
 
 \begin_layout Verbatim
+
 import torch.nn as nn
 \end_layout
 
 \begin_layout Verbatim
+
 import torchvision
 \end_layout
 
 \begin_layout Verbatim
+
 import torchvision.transforms.functional
 \end_layout
 
@@ -5366,6 +5416,7 @@ import torchvision.transforms.functional
 \end_layout
 
 \begin_layout Verbatim
+
 class TwoConv(nn.Module):
 \end_layout
 
@@ -5374,10 +5425,12 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
    def __init__(self, in_channels, out_channels):
 \end_layout
 
 \begin_layout Verbatim
+
         super().__init__()
 \end_layout
 
@@ -5386,34 +5439,42 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
+
             nn.Conv2d(in_channels, out_channels, 
 \end_layout
 
 \begin_layout Verbatim
+
                 kernel_size=(3, 3), bias=False),
 \end_layout
 
 \begin_layout Verbatim
+
             nn.ReLU(inplace=True),
 \end_layout
 
 \begin_layout Verbatim
+
             nn.Conv2d(out_channels, out_channels, 
 \end_layout
 
 \begin_layout Verbatim
+
                 kernel_size=(3, 3), bias=False),
 \end_layout
 
 \begin_layout Verbatim
+
             nn.ReLU(inplace=True),
 \end_layout
 
 \begin_layout Verbatim
+
         )
 \end_layout
 
@@ -5422,10 +5483,12 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
+
         return self.path(x)
 \end_layout
 
@@ -5434,6 +5497,7 @@ class TwoConv(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
 class Down(nn.Module):
 \end_layout
 
@@ -5442,10 +5506,12 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def __init__(self, in_channels):
 \end_layout
 
 \begin_layout Verbatim
+
         super().__init__()
 \end_layout
 
@@ -5454,18 +5520,22 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
+
             nn.MaxPool2d(kernel_size=(2, 2), stride=2),
 \end_layout
 
 \begin_layout Verbatim
+
             TwoConv(in_channels, 2 * in_channels),
 \end_layout
 
 \begin_layout Verbatim
+
         )
 \end_layout
 
@@ -5474,10 +5544,12 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
+
         return self.path(x)
 \end_layout
 
@@ -5486,6 +5558,7 @@ class Down(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
 class Up(nn.Module):
 \end_layout
 
@@ -5494,10 +5567,12 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def __init__(self, in_channels):
 \end_layout
 
 \begin_layout Verbatim
+
         super().__init__()
 \end_layout
 
@@ -5506,38 +5581,47 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         self.upsampling = nn.ConvTranspose2d(
 \end_layout
 
 \begin_layout Verbatim
+
             in_channels,
 \end_layout
 
 \begin_layout Verbatim
+
             in_channels // 2,
 \end_layout
 
 \begin_layout Verbatim
+
             kernel_size=(2, 2),
 \end_layout
 
 \begin_layout Verbatim
+
             stride=2,
 \end_layout
 
 \begin_layout Verbatim
+
             bias=False,
 \end_layout
 
 \begin_layout Verbatim
+
         )
 \end_layout
 
 \begin_layout Verbatim
+
         self.convolutions = 
 \end_layout
 
 \begin_layout Verbatim
+
             TwoConv(in_channels, in_channels // 2)
 \end_layout
 
@@ -5546,6 +5630,7 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def forward(self, x_to_crop, x_in):
 \end_layout
 
@@ -5554,26 +5639,32 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         upped = self.upsampling(x_in)
 \end_layout
 
 \begin_layout Verbatim
+
         cropped = torchvision.transforms.functional.center_crop(
 \end_layout
 
 \begin_layout Verbatim
+
             x_to_crop, upped.shape[-2:]
 \end_layout
 
 \begin_layout Verbatim
+
         )
 \end_layout
 
 \begin_layout Verbatim
+
         x = torch.cat([cropped, upped], dim=1)
 \end_layout
 
 \begin_layout Verbatim
+
         return self.convolutions(x)
 \end_layout
 
@@ -5582,6 +5673,7 @@ class Up(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
 class USegment(nn.Module):
 \end_layout
 
@@ -5590,10 +5682,12 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def __init__(self, in_channels, bottom_u=None):
 \end_layout
 
 \begin_layout Verbatim
+
         super().__init__()
 \end_layout
 
@@ -5602,14 +5696,17 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         # Default value for the bottom U.
 \end_layout
 
 \begin_layout Verbatim
+
         if bottom_u is None:
 \end_layout
 
 \begin_layout Verbatim
+
             bottom_u = lambda x: x
 \end_layout
 
@@ -5618,14 +5715,17 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         self.down = Down(in_channels)
 \end_layout
 
 \begin_layout Verbatim
+
         self.bottom_u = bottom_u
 \end_layout
 
 \begin_layout Verbatim
+
         self.up = Up(2 * in_channels)
 \end_layout
 
@@ -5634,10 +5734,12 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
+
         return self.up(x, self.bottom_u(self.down(x)))
 \end_layout
 
@@ -5646,6 +5748,7 @@ class USegment(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
 class UNet(nn.Module):
 \end_layout
 
@@ -5654,10 +5757,12 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def __init__(self):
 \end_layout
 
 \begin_layout Verbatim
+
         super().__init__()
 \end_layout
 
@@ -5666,38 +5771,47 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
         self.u = USegment(512)
 \end_layout
 
 \begin_layout Verbatim
+
         self.u = USegment(256, self.u)
 \end_layout
 
 \begin_layout Verbatim
+
         self.u = USegment(128, self.u)
 \end_layout
 
 \begin_layout Verbatim
+
         self.u = USegment(64, self.u)
 \end_layout
 
 \begin_layout Verbatim
+
         self.path = nn.Sequential(
 \end_layout
 
 \begin_layout Verbatim
+
             TwoConv(1, 64),
 \end_layout
 
 \begin_layout Verbatim
+
             self.u,
 \end_layout
 
 \begin_layout Verbatim
+
             nn.Conv2d(64, 2, kernel_size=1, bias=False),
 \end_layout
 
 \begin_layout Verbatim
+
         )
 \end_layout
 
@@ -5706,10 +5820,12 @@ class UNet(nn.Module):
 \end_layout
 
 \begin_layout Verbatim
+
     def forward(self, x):
 \end_layout
 
 \begin_layout Verbatim
+
         return self.path(x)
 \end_layout
 
