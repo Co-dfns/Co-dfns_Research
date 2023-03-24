@@ -854,7 +854,8 @@ APL Notation
 \end_layout
 
 \begin_layout Standard
-APL 
+APL, introduced by Turing award winner Kenneth E.
+ Iverson in the '60s 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl"
@@ -862,10 +863,7 @@ literal "false"
 
 \end_inset
 
- is an alternative mathematical notation, introduced by Turing award winner
- Kenneth E.
- Iverson in the '60s, that has since evolved into an executable mathematical
- notation 
+, is an executable mathematical notation 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "apl-since-78"
@@ -874,22 +872,22 @@ literal "false"
 \end_inset
 
 .
- In this section, we introduce the basics of the APL notation, but the reader
- is directed to 
+ This section introduces the basics of the notation used in this paper,
+ but 
 \begin_inset CommandInset citation
-LatexCommand citep
+LatexCommand citet
 key "mdapl"
 literal "false"
 
 \end_inset
 
- for a full tutorial.
- Online interactive systems are also available
+ more fully describes the language.
+ Online interactive systems allow for experimentation with the language
+ without needing to install anything.
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-TryAPL 
 \begin_inset Flex URL
 status open
 
@@ -900,30 +898,27 @@ https://tryapl.org
 
 \end_inset
 
- is an example of such a service.
+
 \end_layout
 
 \end_inset
 
-, which should make it easier to get acquainted with APL.
- Throughout the remainder of this paper, the notation used is such that
- it is compatible with Dyalog APL 18.0
+ All notation used here is compatible with Dyalog APL 18.0
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-You can get Dyalog APL from Dyalog's website 
 \begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
 
-https://dyalog.com/download-zone.htm
+https://dyalog.com/
 \end_layout
 
 \end_inset
 
-.
+
 \end_layout
 
 \end_inset
