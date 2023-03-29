@@ -927,579 +927,37 @@ https://dyalog.com/
 \end_layout
 
 \begin_layout Subsubsection
-Functions and Arrays
+Arrays
 \end_layout
 
 \begin_layout Standard
-APL is an 
-\begin_inset Quotes eld
-\end_inset
-
-alternative
-\begin_inset Quotes erd
-\end_inset
-
- mathematical notation because it differs from the traditional mathematical
- notation in some ways.
- However, not everything in APL is foreign, as demonstrated by the following
- examples of addition and multiplication:
-\end_layout
-
-\begin_layout Verbatim
-
-      1 + 2
-\end_layout
-
-\begin_layout Verbatim
-
-3
-\end_layout
-
-\begin_layout Verbatim
-
-      73 × 104
-\end_layout
-
-\begin_layout Verbatim
-
-7592
-\end_layout
-
-\begin_layout Standard
-The format of the two examples above will be the same throughout the paper
+The primary datatype of an APL system is the array.
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-This format mimics that of the APL session, the interactive environment
- in which one can use APL.
+Other types may exist for commercial systems, but these are not treated
+ here.
 \end_layout
 
 \end_inset
 
-: the notation typed by the user is indentend to the right and the computed
- result is left-aligned on the following line(s).
- Subtraction and division are also represented by the usual glyphs, 
-\family typewriter
--
-\family default
- and 
-\family typewriter
-÷
-\family default
-, respectively:
-\end_layout
-
-\begin_layout Verbatim
-
-      10 - 1 2 3
-\end_layout
-
-\begin_layout Verbatim
-
-9 8 7
-\end_layout
-
-\begin_layout Verbatim
-
-      100 50 20 ÷ 2
-\end_layout
-
-\begin_layout Verbatim
-
-50 25 10
-\end_layout
-
-\begin_layout Standard
-In APL, one is allowed to write multiple values next to each other, which
- are then 
-\emph on
-stranded
-\emph default
- together and interpreted as a vector.
- Thus, 
-\family typewriter
-1 2 3
-\family default
- represents the three-item vector whose elements are the first three positive
- integers.
- Then, the APL function 
-\emph on
-minus
-\emph default
- takes the scalar 
-\family typewriter
-10
-\family default
- as its left argument and the three-item vector 
-\family typewriter
-1 2 3
-\family default
- as its right argument, and it subtracts each of the items of the right
- argument vector from its left argument.
- Similarly, the division example shows that vectors can also be used as
- the left argument.
- The natural progression is to wonder whether vectors can be used on the
- left and on the right of a function, and typically they can.
- We demonstrate that with the 
-\begin_inset Formula $\max$
+ In APL, an array is an 
+\begin_inset Formula $N$
 \end_inset
 
- function, represented by the upstile glyph 
-\family typewriter
-⌈
-\family default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      (1⌈5) (10⌈5) (100⌈500) (1000⌈500)
-\end_layout
-
-\begin_layout Verbatim
-
-5 10 500 1000
-\end_layout
-
-\begin_layout Verbatim
-
-      1 10 100 1000 ⌈ 5 5 500 500
-\end_layout
-
-\begin_layout Verbatim
-
-5 10 500 1000
-\end_layout
-
-\begin_layout Standard
-The first example shows how parenthesis 
-\family typewriter
-()
-\family default
- can be used to create vectors whose items are results of other expressions,
- given that the four expressions inside parenthesis produced the four items
- of the result vector.
- The second example shows that we can obtain the same result by collecting
- all the left arguments inside all 
-\family typewriter
-()
-\family default
- on the left of a single 
-\family typewriter
-⌈
-\family default
-, and by collecting all the right arguments inside all 
-\family typewriter
-()
-\family default
- on the right of that same 
-\family typewriter
-⌈
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-The dyadic functions 
-\emph on
-plus
-\emph default
- 
-\family typewriter
-+
-\family default
-, 
-\emph on
-minus
-\emph default
- 
-\family typewriter
--
-\family default
-, 
-\emph on
-times
-\emph default
- 
-\family typewriter
-×
-\family default
-, 
-\emph on
-divide
-\emph default
- 
-\family typewriter
-÷
-\family default
-, and 
-\emph on
-max
-\emph default
- 
-\family typewriter
-⌈
-\family default
-, all share the property that allows them to accept vectors as arguments:
- they are 
-\emph on
-scalar functions
-\emph default
-.
- Scalar functions are functions that pervade the structure of the argument(s)
- and apply directly to each of the scalars that make up said argument(s).
- This becomes increasingly relevant when one understands that APL has first-clas
-s support for arrays of any dimension, of which we have seen 
-\emph on
-scalars
-\emph default
- such as 
-\family typewriter
-10
-\family default
- and 
-\family typewriter
-73
-\family default
- and 
-\emph on
-vectors
-\emph default
-.
- Scalars and vectors can be typed directly but arrays of higher dimensions
- must be loaded from an external data source or created dynamically through
- computations.
-\end_layout
-
-\begin_layout Standard
-The reshape function is represented by the Greek letter rho 
-\family typewriter
-⍴
-\family default
- and is a dyadic function that reshapes its right argument to have the shape
- specified by the left argument.
- For instance, if we want to create a 
-\begin_inset Formula $2\times3$
-\end_inset
-
- matrix with the first six non-negative integers, we can do it like so:
-\end_layout
-
-\begin_layout Verbatim
-
-      2 3 ⍴ 0 1 2 3 4 5
-\end_layout
-
-\begin_layout Verbatim
-
-0 1 2
-\end_layout
-
-\begin_layout Verbatim
-
-3 4 5
-\end_layout
-
-\begin_layout Standard
-Each non-negative integer of the left argument specifies the length of the
- result along the corresponding dimension.
- So, if the left argument had been 
-\family typewriter
-5 9 7
-\family default
-, the resulting array would have been a cuboid (array with three dimensions)
- composed of 
-\family typewriter
-5
-\family default
- planes, 
-\family typewriter
-9
-\family default
- rows, and 
-\family typewriter
-7
-\family default
- columns, holding a total of 
-\begin_inset Formula $5\times9\times7=315$
-\end_inset
-
- items.
-\end_layout
-
-\begin_layout Standard
-Given an arbitrary array 
-\family typewriter
-array
-\family default
-, we can also use the Greek letter rho 
-\family typewriter
-⍴
-\family default
- to compute the 
-\emph on
+-dimensional rectangular arrangement of elements, indexed in a row-major
+ fashion.
+ The list of dimensions (axes) is known as an array's 
+\noun on
 shape
-\emph default
- of the array, that is, the length of each of its 
-\emph on
-axis
-\emph default
-, or dimensions.
- In the example below, we can see that 
-\family typewriter
-array
-\family default
- is a matrix with 
-\family typewriter
-2
-\family default
- rows and 
-\family typewriter
-3
-\family default
- columns, even though we don't know what the items of 
-\family typewriter
-array
-\family default
- are:
-\end_layout
-
-\begin_layout Verbatim
-
-      ⍴array
-\end_layout
-
-\begin_layout Verbatim
-
-2 3
-\end_layout
-
-\begin_layout Standard
-This also goes to show that many functions have two behaviours, one monadic
- behaviour and one dyadic behaviour.
- A function is used monadically when it has an array argument on its right,
- but not on its left, and a function is used dyadically when it has an array
- argument on its left and another one on its right.
- For example, rho 
-\family typewriter
-⍴
-\family default
- represents the monadic function 
-\emph on
-shape
-\emph default
- and the dyadic function 
-\emph on
-reshape
-\emph default
-.
- In this particular instance, we can also see that 
-\family typewriter
-array
-\family default
- is a 
-\emph on
-nested
-\emph default
- matrix:
-\end_layout
-
-\begin_layout Verbatim
-
-      array
-\end_layout
-
-\begin_layout Verbatim
-
-┌───┬───┬───┐
-\end_layout
-
-\begin_layout Verbatim
-
-│0 0│0 1│0 2│
-\end_layout
-
-\begin_layout Verbatim
-
-├───┼───┼───┤
-\end_layout
-
-\begin_layout Verbatim
-
-│1 0│1 1│1 2│
-\end_layout
-
-\begin_layout Verbatim
-
-└───┴───┴───┘
-\end_layout
-
-\begin_layout Standard
-The cells above each contain a two-item vector (
-\family typewriter
-0 0
-\family default
- through 
-\family typewriter
-1 2
-\family default
-), and the borders surrounding those two-item vectors are a visual cue to
- help the reader discern the nested nature of the array.
-\end_layout
-
-\begin_layout Standard
-Another key difference between the APL notation and the traditional mathematical
- notation is that APL normalises precedence rules by saying that all functions
- have the same precedence: functions are said to have a 
-\emph on
-long right scope
-\emph default
- and a 
-\emph on
-short left scope
-\emph default
-, which is why APL is often said to 
-\begin_inset Quotes eld
-\end_inset
-
-execute from right to left
-\begin_inset Quotes erd
-\end_inset
-
-.
- A long right scope means that a function takes as right argument everything
- to its right, whereas a short left scope means that a function only takes
- as left argument the array that is immediately to its left.
- The expression 
-\begin_inset Formula $2\times3-4\times5$
-\end_inset
-
-, in standard mathematical notation, is equivalent to 
-\begin_inset Formula $(2\times3)-(4\times5)=6-20=-14$
-\end_inset
-
-, because multiplication has higher precedence over subtraction.
- However, the APL expression 
-\family typewriter
-2×3-4×5
-\family default
- is equivalent to 
-\family typewriter
-2×(3-(4×5))
-\family default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      (2 × 3) - (4 × 5)
-\end_layout
-
-\begin_layout Verbatim
-
-¯14
-\end_layout
-
-\begin_layout Verbatim
-
-      2 × (3 - (4 × 5))
-\end_layout
-
-\begin_layout Verbatim
-
-¯34
-\end_layout
-
-\begin_layout Verbatim
-
-      2 × 3 - 4 × 5
-\end_layout
-
-\begin_layout Verbatim
-
-¯34
-\end_layout
-
-\begin_layout Standard
-APL uses the high-minus 
-\family typewriter
-¯
-\family default
- to represent negative numbers, otherwise there would be ambiguity in the
- use of the minus sign 
-\family typewriter
--
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Is 
-\family typewriter
-1 -2
-\family default
- the APL expression 
-\begin_inset Quotes eld
-\end_inset
-
-one minus two
-\begin_inset Quotes erd
-\end_inset
-
- or the two-item vector 
-\begin_inset Quotes eld
-\end_inset
-
-one, negative two
-\begin_inset Quotes erd
-\end_inset
-
-?
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsubsection
-Shape, Rank, Data
-\end_layout
-
-\begin_layout Standard
-Every APL array can be fundamentally characterised by its 
-\emph on
-shape
-\emph default
-, its 
-\emph on
+\noun default
+, and the number of dimensions (possibly 0) is its 
+\noun on
 rank
-\emph default
-, and its data:
-\end_layout
-
-\begin_layout Itemize
-the 
-\emph on
-shape
-\emph default
- of an array can be computed with the function 
-\emph on
-shape
-\emph default
- and is a vector that specifies the length of each dimension of its argument;
-\end_layout
-
-\begin_layout Itemize
-the 
-\emph on
-rank
-\emph default
- of an array is the number of its dimensions (the length of its 
-\emph on
-shape
-\emph default
-) and dictates the name of said array as per Table 
+\noun default
+.
+ Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:rank-names"
@@ -1509,11 +967,7 @@ noprefix "false"
 
 \end_inset
 
-; and
-\end_layout
-
-\begin_layout Itemize
-the data of an array are the items that compose said array.
+ gives specific names to arrays of particular rank:
 \end_layout
 
 \begin_layout Standard
@@ -1544,7 +998,7 @@ name "tab:rank-names"
 
 
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
+<lyxtabular version="3" rows="7" columns="2">
 <features booktabs="true" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="left" valignment="top">
@@ -1586,7 +1040,7 @@ Name
 \begin_inset Text
 
 \begin_layout Plain Layout
-scalar
+Scalar
 \end_layout
 
 \end_inset
@@ -1606,7 +1060,7 @@ scalar
 \begin_inset Text
 
 \begin_layout Plain Layout
-vector
+Vector
 \end_layout
 
 \end_inset
@@ -1626,14 +1080,14 @@ vector
 \begin_inset Text
 
 \begin_layout Plain Layout
-matrix
+Matrix
 \end_layout
 
 \end_inset
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1642,11 +1096,51 @@ matrix
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" bottomline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-cuboid
+Cuboid
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hypercube
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Noble
 \end_layout
 
 \end_inset
@@ -1665,776 +1159,687 @@ cuboid
 \end_layout
 
 \begin_layout Standard
-The 
-\emph on
-shape
-\emph default
- of an array 
-\family typewriter
-arr
-\family default
- is 
-\family typewriter
-⍴arr
-\family default
-.
- The 
-\emph on
-rank
-\emph default
- of an array is the 
-\emph on
-length
-\emph default
- of its 
-\emph on
-shape
-\emph default
- or, in APL vocabulary, the 
-\emph on
-tally
-\emph default
- of its 
-\emph on
-shape
-\emph default
-, which is 
-\family typewriter
-≢⍴
-\family default
-.
- Finally, the data of an array can be retrieved as a vector with the monadic
- function 
-\emph on
-ravel
-\emph default
- 
-\family typewriter
-,
-\family default
- (comma).
- These are illustrated below for a matrix.
- We use the primitive 
-\emph on
-roll
-\emph default
- 
-\family typewriter
-?
-\family default
- to fill the matrix with random data and annotate the expressions with APL
- comments 
-\family typewriter
-⍝
-\family default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      mat ← ?2 3⍴0    ⍝ Create random array mat
-\end_layout
-
-\begin_layout Verbatim
-
-      mat
-\end_layout
-
-\begin_layout Verbatim
-
-0.999 0.00424 0.351
-\end_layout
-
-\begin_layout Verbatim
-
-0.967 0.92    0.821
-\end_layout
-
-\begin_layout Verbatim
-
-      ⍴mat            ⍝ mat has shape 2 3.
-\end_layout
-
-\begin_layout Verbatim
-
-2 3
-\end_layout
-
-\begin_layout Verbatim
-
-      ≢⍴mat           ⍝ mat has rank (tally shape) 2
-\end_layout
-
-\begin_layout Verbatim
-
-2
-\end_layout
-
-\begin_layout Verbatim
-
-      ,mat            ⍝ mat contains this data
-\end_layout
-
-\begin_layout Verbatim
-
-0.999 0.00424 0.351 0.967 0.92 0.821
-\end_layout
-
-\begin_layout Subsubsection
-Operators
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Operators"
-
-\end_inset
-
-
+Note that all arrays have at least one element.
+ Scalars have exactly one, while higher ranked arrays with at least one
+ zero axis, called 
+\noun on
+empty
+\noun default
+ arrays, have a single element called the 
+\noun on
+prototype
+\noun default
+, or 
+\noun on
+fill
+\noun default
+, element.
 \end_layout
 
 \begin_layout Standard
-On top of providing a rich set of built-in functions, APL provides a series
- of operators that allow us to combine and modify our functions.
- A typical example of a monadic APL operator is 
-\emph on
-reduce-first
-\emph default
- 
+In modern APL, the elements of an array consist solely of other arrays,
+ allowing APL to have a single, uniform datatype.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This historically contentious design choice will be taken for granted.
+ Industrious readers may explore alternative designs elsewhere.
+\end_layout
+
+\end_inset
+
+ To make computation meaningful, APL defines a set of scalar arrays that
+ correspond to primitive values in the system.
+ In our case, we only require that the numbers be defined.
+ Thus, when we write a number like 
+\family typewriter
+1
+\family default
+, 
+\family typewriter
+3.5
+\family default
+, or 
+\family typewriter
+1e¯8
+\family default
+, this is the scalar array corresponding to that number in the APL system.
+ These special arrays have the unique property that they contain themselves
+ as their element.
+\end_layout
+
+\begin_layout Subsubsection
+Expressions
+\end_layout
+
+\begin_layout Standard
+Expressions consist of a series of literals, applications, bindings, or
+ assignments.
+ Functions can be first or second order.
+ First order functions are called 
+\noun on
+functions
+\noun default
+, while second order functions, which always evaluate to first order functions,
+ are called 
+\noun on
+operators
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+Literal expressions describe some literal array.
+ A single numeric value is a literal.
+ Adjacent literals, separated by whitespace, form a vector of those literals.
+ For example:
+\end_layout
+
+\begin_layout Verbatim
+
+¯5    ⍝ Scalar negative 5
+\end_layout
+
+\begin_layout Verbatim
+
+5 3 1 ⍝ Vector of 3 elements
+\end_layout
+
+\begin_layout Standard
+Note the use of a high minus to indicate a literal negative number instead
+ of 
+\family typewriter
+-5
+\family default
+, which is the application of the negate function to 
+\family typewriter
+5
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Application may take one of the following forms, all a form of infix notation:
+\end_layout
+
+\begin_layout Verbatim
+
+   fn ⍵   ⍝ Monadic function application
+\end_layout
+
+\begin_layout Verbatim
+
+ ⍺ fn ⍵   ⍝ Dyadic function application
+\end_layout
+
+\begin_layout Verbatim
+
+⍺⍺ op     ⍝ Monadic operator application
+\end_layout
+
+\begin_layout Verbatim
+
+⍺⍺ op ⍵⍵  ⍝ Dyadic operator application
+\end_layout
+
+\begin_layout Standard
+The terms 
+\noun on
+monadic
+\noun default
+ and 
+\noun on
+dyadic
+\noun default
+ refer to arity, not monads in the functional programming sense.
+ We use 
+\family typewriter
+⍺
+\family default
+, 
+\family typewriter
+⍵
+\family default
+, 
+\family typewriter
+⍺⍺
+\family default
+, and 
+\family typewriter
+⍵⍵
+\family default
+ to refer to the left and right arguments (for function application) and
+ operands (for operator application), respectively.
+ Operators have higher binding precedence than functions, and operators
+ always associate to the left while functions always associate to the right.
+ This applies even in cases where traditional math primitives are used.
+ Consider the following example, where 
 \family typewriter
 ⌿
 \family default
-.
- The monadic operator 
-\emph on
-reduce-first
-\emph default
- takes a function on its left and then inserts it between the elements of
- the right argument.
- Previously, we computed the total number of elements in a cuboid with shape
- 
+ is a monadic operator, and 
 \family typewriter
-5 9 7
+.
+
 \family default
- by inserting the 
-\emph on
-times
-\emph default
- function between each pair of numbers.
- With 
-\emph on
-reduce-first
-\emph default
-, this can be simplified:
+ a dyadic:
 \end_layout
 
 \begin_layout Verbatim
 
-      5×9×7
+   +.×⌿-2×3-4+3×5
 \end_layout
 
 \begin_layout Verbatim
 
-315
+←→ (((+.×)⌿)(-(2×(3-(4+(3×5))))))
+\end_layout
+
+\begin_layout Standard
+Notice that 
+\family typewriter
+-
+\family default
+ is applied both monadically and dyadically.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Primitives
+\end_layout
+
+\begin_layout Standard
+APL is known for its primitives, which are built-in functions and operators
+ assigned special symbols instead of the standard alphanumeric variable
+ names given to user-defined values.
+ The majority of examples used in this paper are expressions of mostly primitive
+ functions and operators.
+\end_layout
+
+\begin_layout Standard
+The largest class of primitives are the 
+\noun on
+scalar functions
+\noun default
+.
+ These are defined over a single scalar value or values and extended to
+ all arrays by point-wise, also called element-wise, extension.
+ The left and right arguments of a scalar function must share the same shape,
+ unless one is a scalar, in which case the scalar value is extended to have
+ the same shape as the other argument.
+ Consider the following example using addition:
 \end_layout
 
 \begin_layout Verbatim
 
-      ×⌿5 9 7
+      5+1 3 7 10
 \end_layout
 
 \begin_layout Verbatim
 
-315
+6 8 12 15
+\end_layout
+
+\begin_layout Standard
+Scalar functions return arrays the same shape as their inputs.
+\end_layout
+
+\begin_layout Standard
+The set of scalar functions used in this paper include the standard arithmetic
+ functions 
+\family typewriter
++
+\family default
+, 
+\family typewriter
+×
+\family default
+, 
+\family typewriter
+÷
+\family default
+, 
+\family typewriter
+-
+\family default
+, 
+\family typewriter
+⌈
+\family default
+ (maximum), 
+\family typewriter
+⌊
+\family default
+ (minimum), 
+\family typewriter
+|
+\family default
+ (absolute value), and 
+\family typewriter
+*
+\family default
+ (exponent), as well as the Boolean relations 
+\family typewriter
+=
+\family default
+, 
+\family typewriter
+≠
+\family default
+, 
+\family typewriter
+<
+\family default
+, 
+\family typewriter
+≤
+\family default
+, 
+\family typewriter
+≥
+\family default
+, and 
+\family typewriter
+>
+\family default
+, which return 
+\family typewriter
+1
+\family default
+ for 
+\noun on
+true
+\noun default
+ and 
+\family typewriter
+0
+\family default
+ for 
+\noun on
+false
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+The core primitive 
+\family typewriter
+⍴
+\family default
+ is used for the shape of an array.
+ The monadic application 
+\family typewriter
+⍴⍵
+\family default
+ returns a vector of the axes of 
+\family typewriter
+⍵
+\family default
+.
+ The dyadic application 
+\family typewriter
+⍺⍴⍵
+\family default
+ returns an array whose shape is 
+\family typewriter
+⍺
+\family default
+ and whose elements are taken in wrapping order from 
+\family typewriter
+⍵
+\family default
+.
+ For example:
+\end_layout
+
+\begin_layout Verbatim
+
+      3 5⍴1 2 3 4 ⍝ A 3×5 matrix
+\end_layout
+
+\begin_layout Verbatim
+
+1 2 3 4 1
+\end_layout
+
+\begin_layout Verbatim
+
+2 3 4 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 1 2 3
 \end_layout
 
 \begin_layout Standard
 The function 
-\emph on
-times
-\emph default
-, together with the operator 
-\emph on
-reduce-first
-\emph default
-, creates the 
-\emph on
-derived function
-\emph default
- 
 \family typewriter
-×⌿
+≢⍵
 \family default
-, recognised as the function 
-\emph on
-product
-\emph default
+ applied monadically returns a scalar of the first axis of 
+\family typewriter
+⍵
+\family default
+, that is, the first element of 
+\family typewriter
+⍴⍵
+\family default
 .
- Similarly, the derived function 
-\family typewriter
-+⌿
-\family default
- is the function 
-\emph on
-sum
-\emph default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      1+2+3+4
-\end_layout
-
-\begin_layout Verbatim
-
-10
-\end_layout
-
-\begin_layout Verbatim
-
-      +⌿1 2 3 4
-\end_layout
-
-\begin_layout Verbatim
-
-10
 \end_layout
 
 \begin_layout Standard
-This highlights the versatility of APL in that operators combine with a
- variety of functions.
- Another source of versatility in APL comes from how functions get applied
- to arrays of different ranks.
-\end_layout
-
-\begin_layout Standard
-The operator 
-\emph on
-reduce-first
-\emph default
- 
+Arrays may be rotated by 
 \family typewriter
-⌿
-\family default
- gets its name by contrast with the operator 
-\emph on
-reduce
-\emph default
- 
-\family typewriter
-/
-\family default
-, given that the two operators differ in the axis along which their derived
- functions operate.
- With the help of the function 
-\emph on
-index generator
-\emph default
- 
-\family typewriter
-⍳
-\family default
- and the 
-\emph on
-left arrow
-\emph default
- 
-\family typewriter
-←
-\family default
- that performs assignment, we can create a matrix 
-\family typewriter
-mat
-\family default
- with shape 
-\family typewriter
-2 3
-\family default
- and demonstrate the difference between the two derived functions 
-\family typewriter
-+/
+⌽
 \family default
  and 
 \family typewriter
-+⌿
+⊖
 \family default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      mat ← 2 3⍴⍳6
-\end_layout
-
-\begin_layout Verbatim
-
-      mat
-\end_layout
-
-\begin_layout Verbatim
-
-0 1 2
-\end_layout
-
-\begin_layout Verbatim
-
-3 4 5
-\end_layout
-
-\begin_layout Verbatim
-
-      +/mat
-\end_layout
-
-\begin_layout Verbatim
-
-3 12
-\end_layout
-
-\begin_layout Verbatim
-
-      +⌿mat
-\end_layout
-
-\begin_layout Verbatim
-
-3 5 7
+.
+ The monadic 
+\family typewriter
+⊖⍵
+\family default
+ returns 
+\family typewriter
+⍵
+\family default
+ with the elements along the frist axis reversed/flipped, while 
+\family typewriter
+⌽⍵
+\family default
+ does the same but along the last axis.
+ You may specify an axis to rotate using 
+\family typewriter
+⌽[x]
+\family default
+ or 
+\family typewriter
+⊖[x]
+\family default
+for rotation along axis 
+\family typewriter
+x
+\family default
+.
+ When applied dyadically, 
+\family typewriter
+⌽
+\family default
+ and 
+\family typewriter
+⊖
+\family default
+ shift an array's elements by the specified amount.
+ Thus 
+\family typewriter
+¯2⌽⍵
+\family default
+ will rotate the elements of 
+\family typewriter
+⍵
+\family default
+ two positions to the right along the last axis.
 \end_layout
 
 \begin_layout Standard
-
-\emph on
-Plus-reduce-first
-\emph default
- 
+The transpose primitive 
 \family typewriter
-+⌿
+⍉
 \family default
- sums along the first axis of its argument and 
-\emph on
-plus-reduce
-\emph default
- 
+ is quite powerful, and allows you to return an array with its dimensions
+ permuted into different positions.
+ Monadic 
 \family typewriter
-+/
+⍉⍵
 \family default
- sums along the last axis of its argument.
- For higher-rank arrays, an arbitrary axis can be specified with the 
-\emph on
-axis operator
-\emph default
- 
+ will reverse the shape of 
 \family typewriter
-[axis]
+⍵
 \family default
-.
- For example, the construct 
+, while giving 
 \family typewriter
-+/[0]
+⍉
 \family default
- uses 
-\emph on
-reduce
-\emph default
- with 
-\emph on
-axis 
-\emph default
-to replicate the behaviour of 
+ a left argument indicates how to permute the dimensions.
+ Thus, 
 \family typewriter
-+⌿
+0 1 2 3⍉⍵
 \family default
-.
+ will transpose a hypercube 
+\family typewriter
+⍵
+\family default
+, leaving the first two dimensions in the same positions but exchanging
+ the last two between themselves; likewise, 
+\family typewriter
+3 0 1 2⍉⍵
+\family default
+ transposes 
+\family typewriter
+⍵
+\family default
+ so that its first dimensions becomes its last, while all other dimensions
+ retain the same relative order.
 \end_layout
 
 \begin_layout Standard
-On top of monadic operators, that take a single operand on the left, APL
- provides a series of dyadic operators that take a left operand and a right
- operand.
- One such dyadic operator is the 
-\emph on
-inner product
-\emph default
- 
+The functions 
 \family typewriter
-.
-
+↑
 \family default
- (dot), which we use thoroughly for the derived function 
-\emph on
-matrix product
-\emph default
+ (Take) and 
+\family typewriter
+↓
+\family default
+ (Drop) will take or drop elements of 
+\family typewriter
+⍵
+\family default
+ to return arrays that are the same rank as the right argument but with
+ different axis sizes.
+ The expression 
+\family typewriter
+2 ¯3↑⍵
+\family default
+ will give a 
+\family typewriter
+2×3
+\family default
+ matrix from matrix 
+\family typewriter
+⍵
+\family default
+ with rows taken from the top and columns taken from the right, since a
+ negative size takes from the tail instead of the head.
+ Drop works the same way, but eliminates instead of taking items.
+\end_layout
+
+\begin_layout Standard
+When we may want to stitch arrays together, the expression 
+\family typewriter
+⍺,⍵
+\family default
+ will catenate 
+\family typewriter
+⍺
+\family default
+ and 
+\family typewriter
+⍵
+\family default
+ together as a single array along the last axis.
+ However, in this paper we primarily use 
+\family typewriter
+,
+\family default
+ monadically.
+ The expression 
+\family typewriter
+,⍵
+\family default
+ will give a vector of the elements of 
+\family typewriter
+⍵
+\family default
+, effectively collapsing all the dimensions of 
+\family typewriter
+⍵
+\family default
+ into a single dimensions that is the product of the dimensions of 
+\family typewriter
+⍵
+\family default
+.
+ If we wish to only collapse a subset of dimensions, we write 
+\family typewriter
+,[d]⍵
+\family default
+ to collapse the dimensions given in vector 
+\family typewriter
+d
+\family default
+.
  
+\end_layout
+
+\begin_layout Standard
+We write 
+\family typewriter
+N⌿⍵
+\family default
+ or 
+\family typewriter
+N/⍵
+\family default
+ to mean the array 
+\family typewriter
+⍵
+\family default
+ with each element duplicated 
+\family typewriter
+N
+\family default
+ times in sequence or adjacent to one another.
+ 
+\end_layout
+
+\begin_layout Standard
+The expressions 
+\family typewriter
+f⌿⍵
+\family default
+ and 
+\family typewriter
+f/⍵
+\family default
+ compute the reduction of 
+\family typewriter
+⍵
+\family default
+ using function 
+\family typewriter
+f
+\family default
+ over the first or last axis, respectively.
+ This is often called a right fold in many functional languages.
+\end_layout
+
+\begin_layout Standard
+The dyadic application 
 \family typewriter
 +.×
 \family default
-
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Presenting the operator 
-\emph on
-inner product 
-\emph default
-in all its generality is outside the scope of this paper.
-\end_layout
-
-\end_inset
-
-.
- We exemplify 
-\emph on
-matrix product
-\emph default
- below:
-\end_layout
-
-\begin_layout Verbatim
-
-      X ← 2 3⍴0 0 0 1 10 100
-\end_layout
-
-\begin_layout Verbatim
-
-      Y ← 3 2⍴1 2 3 4 5 6
-\end_layout
-
-\begin_layout Verbatim
-
-      X Y
-\end_layout
-
-\begin_layout Verbatim
-
-┌────────┬───┐
-\end_layout
-
-\begin_layout Verbatim
-
-│0  0   0│1 2│
-\end_layout
-
-\begin_layout Verbatim
-
-│1 10 100│3 4│
-\end_layout
-
-\begin_layout Verbatim
-
-│        │5 6│
-\end_layout
-
-\begin_layout Verbatim
-
-└────────┴───┘
-\end_layout
-
-\begin_layout Verbatim
-
-      X +.× Y
-\end_layout
-
-\begin_layout Verbatim
-
-  0   0
-\end_layout
-
-\begin_layout Verbatim
-
-531 642
-\end_layout
-
-\begin_layout Verbatim
-
-      Y +.× X
-\end_layout
-
-\begin_layout Verbatim
-
-2 20 200
-\end_layout
-
-\begin_layout Verbatim
-
-4 40 400
-\end_layout
-
-\begin_layout Verbatim
-
-6 60 600
+ is the function for matrix multiplication extended to higher dimensions.
+ 
 \end_layout
 
 \begin_layout Standard
-APL functions can only take arrays as arguments, but APL operators can take
- functions or arrays as operands.
- The operator 
-\emph on
-rank
-\emph default
- 
+We can mutate the elements of an array or bind the result of an expression
+ to a name.
+ We bind names using the form 
 \family typewriter
-⍤
+V←expr
 \family default
- is one such operator, which takes the forms 
+ where 
 \family typewriter
-X (f⍤A) Y
+V
 \family default
- and 
+ will then hold the result of 
 \family typewriter
-(f⍤A) Y
+expr
 \family default
-, where 
+.
+ We can assign the element of an array or multiple elements by indexing
+ into that array with 
 \family typewriter
-X
+A[i]←expr
 \family default
- and 
-\family typewriter
-Y
-\family default
- are arbitrary arrays, 
+.
+ This will set the elements in 
 \family typewriter
 A
 \family default
- is a scalar or a one-item vector (or a two-item vector if 
+ corresponding to indices 
 \family typewriter
-X
+i
 \family default
- is present), and 
+ to the corresponding elements of 
 \family typewriter
-f
+expr
 \family default
- is a function.
- The derived function is such that, instead of operating on the full argument(s)
-, operates on subarrays of the specified rank(s) specified in 
+.
+ As a pattern, if we have a nested array 
 \family typewriter
 A
 \family default
-:
-\end_layout
-
-\begin_layout Verbatim
-
-      mat ← 2 4⍴⍳8
-\end_layout
-
-\begin_layout Verbatim
-
-      mat
-\end_layout
-
-\begin_layout Verbatim
-
-0 1 2 3
-\end_layout
-
-\begin_layout Verbatim
-
-4 5 6 7
-\end_layout
-
-\begin_layout Verbatim
-
-      mat (×⍤1 0) 1 ¯1
-\end_layout
-
-\begin_layout Verbatim
-
- 0  1  2  3
-\end_layout
-
-\begin_layout Verbatim
-
-¯4 ¯5 ¯6 ¯7
-\end_layout
-
-\begin_layout Standard
-The matrix 
+ in which we want to store a single non-scalar array 
 \family typewriter
-mat
+X
 \family default
- has two subarrays of rank one, its rows; and the vector 
+ at index 
 \family typewriter
-1 ¯1
+i
 \family default
- has two subarrays of rank zero, its items, thus 
+, we box the value 
 \family typewriter
-(×⍤1 0)
+X
 \family default
- will multiply the rows of 
+ into a scalar first, using 
 \family typewriter
-mat
+⊂
 \family default
- with the items of 
+, resulting in the expression 
 \family typewriter
-1 ¯1
-\family default
-, resulting in a matrix that has the same first row and a negated second
- row as 
-\family typewriter
-mat
+A[i]←⊂X
 \family default
 .
-\end_layout
-
-\begin_layout Subsubsection
-User-defined Functions and Operators
+ 
 \end_layout
 
 \begin_layout Standard
-In APL, one can use the 
-\emph on
-direct functions (dfns)
-\emph default
- syntax to create user-defined functions, which can then be named and reused
- throughout the APL programs.
- A dfn is enclosed by braces 
+The syntax 
 \family typewriter
-{}
+{expr+ ...}
 \family default
- and it can only take a right argument, or a left and right argument.
- Inside a dfn, we use 
-\emph on
-omega
-\emph default
- 
-\family typewriter
-⍵
-\family default
- to refer to the right argument and 
-\emph on
-alpha
-\emph default
- 
+ returns a function.
+ Within the body of the function, consisting of a set of expressions, 
 \family typewriter
 ⍺
 \family default
- to refer to the left argument.
- We provide a short example:
-\end_layout
-
-\begin_layout Verbatim
-
-      vec ← 0 1 2 3
-\end_layout
-
-\begin_layout Verbatim
-
-      (+⌿vec)÷≢vec      ⍝ Sum of vec divided by its tally
-\end_layout
-
-\begin_layout Verbatim
-
-1.5
-\end_layout
-
-\begin_layout Verbatim
-
-      avg ← {(+⌿⍵)÷≢⍵}  ⍝ Sum of arg divided by its tally
-\end_layout
-
-\begin_layout Verbatim
-
-      avg vec
-\end_layout
-
-\begin_layout Verbatim
-
-1.5
-\end_layout
-
-\begin_layout Standard
-Similarly, the 
-\emph on
-direct operators (dops)
-\emph default
- syntax can be used to create user-defined operators.
- A dop is also enclosed by braces 
-\family typewriter
-{}
-\family default
- and it can only take a left operand 
-\family typewriter
-⍺⍺
-\family default
- if it is a monadic operator, or a left 
-\family typewriter
-⍺⍺
-\family default
- and a right 
-\family typewriter
-⍵⍵
-\family default
- operand if it is a dyadic operator.
- Inside a dop, 
+ is the left argument to the function and 
 \family typewriter
 ⍵
 \family default
- and 
+ is the right, while 
 \family typewriter
-⍺
+∇
 \family default
- still refer to the arguments of the derived function.
- For example, given a dyadic function 
-\family typewriter
-f
-\family default
- and a monadic function 
-\family typewriter
-g
-\family default
-, the pattern 
-\family typewriter
-(g X) f g Y
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-A helpful interpretation of this pattern is 
-\begin_inset Quotes eld
-\end_inset
-
-preprocess the arguments to 
-\family typewriter
-f
-\family default
- with the function 
-\family typewriter
-g
-\family default
-
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-
-\family default
- can be abstracted away with the dop 
-\family typewriter
-{(⍵⍵ ⍺) ⍺⍺ ⍵⍵ ⍵}
-\family default
-
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-This is a partial model of the operator 
-\emph on
-over
-\emph default
- 
-\family typewriter
-⍥
-\family default
- from APL.
-\end_layout
-
-\end_inset
-
-.
+ refers to the function itself, permitting anonymous recursion.
+ Functions execute expressions in order and return the first unbound expression.
 \end_layout
 
 \begin_layout Section
