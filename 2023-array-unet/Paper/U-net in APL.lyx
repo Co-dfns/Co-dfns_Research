@@ -1413,11 +1413,11 @@ Scalar functions return arrays the same shape as their inputs.
 \family typewriter
 ⌈
 \family default
- (maximum), 
+ (ceiling/maximum), 
 \family typewriter
 ⌊
 \family default
- (minimum), 
+ (floor/minimum), 
 \family typewriter
 |
 \family default
@@ -1445,11 +1445,15 @@ Scalar functions return arrays the same shape as their inputs.
 \family typewriter
 ≥
 \family default
-, and 
+, 
 \family typewriter
 >
 \family default
-, which return 
+, and 
+\family typewriter
+~
+\family default
+ (not) which return 
 \family typewriter
 1
 \family default
@@ -2114,18 +2118,22 @@ The syntax
 ∇
 \family default
  refers to the function itself, permitting anonymous recursion.
- Functions execute expressions in order and return the first unbound expression.
+ Functions execute expressions in order and return the first unbound expression
+ or the last bound expression.
 \end_layout
 
 \begin_layout Verbatim
+
       add1←{1+⍵}
 \end_layout
 
 \begin_layout Verbatim
+
       add1 3 4 5
 \end_layout
 
 \begin_layout Verbatim
+
 4 5 6
 \end_layout
 
@@ -2138,37 +2146,36 @@ Overview
 \end_layout
 
 \begin_layout Standard
-Our implementation of u-net can be roughly divided into two significant
- considerations: the implementation of the fundamental vocabulary of neural
- networks, and the wiring of those operations into the actual u-net architecture.
- We leveraged significant features of APL to implement both aspects of the
- system, and so we will treat each in their own sub-section.
+Our implementation of U-net divides into two significant considerations:
+ the implementation of the fundamental vocabulary of neural networks and
+ the wiring of those operations into the actual U-net architecture.
+ We leverage features of APL to implement both aspects of the system, and
+ so we treat each in its own sub-section.
  
 \end_layout
 
 \begin_layout Standard
-Additionally, because Co-dfns does not yet support the complete array of
- Dyalog primitives and their semantics, some of the implementation techniques
- that we use could be significantly enhanced through the use of a more rich
- feature-set.
- The effect of using these richer features is an increase in concision and
- clarity, but we expect that such improvements would not significantly affect
- the overall performance of the code, either positively or negatively.
- We believe that the overall structure of the code is clear and simple enough
- at the current state of Co-dfns to warrant inclusion almost verbatim here,
- rather than use the richer features and require the reader to translate
- those into the Co-dfns supported feature set in order to execute them.
+Because Co-dfns does not yet support the complete array of Dyalog primitives
+ and their semantics, we could enhance some implementation techniques through
+ the use of the richer feature-set.
+ The effect of these features would be increased concision and clarity,
+ but such improvements would not significantly affect the overall performance
+ of the code, either positively or negatively.
+ The overall structure of the code is clear and simple enough in its current
+ state to warrant inclusion almost verbatim, but some adjustments were made
+ to reduce the total number of primitives used, which makes the code slightly
+ less elegant while reducing the burden to the reader to learn more APL
+ primitives.
 \end_layout
 
 \begin_layout Standard
-One area that deserves particular attention is the design of APL as a language
- itself and the specific features that immediately present themselves as
- particularly well-suited to expressing neural network computations.
- Our exploration of these features uncovered a particular design tension
- that is worth discussing in detail.
+One area deserving particular attention is the design of APL as a language
+ itself and the features that present themselves as well-suited to expressing
+ neural network computations.
+ Our exploration of these features uncovered design tensions worth discussing
+ in detail.
  A complete copy of the code discussed in this paper is included in the
- appendix.
- 
+ appendices.
 \end_layout
 
 \begin_layout Subsection
@@ -2221,102 +2228,271 @@ literal "false"
  operator might be:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-SF←\{\{\omega\}\texttt{⌺}\alpha⊢\omega\}
-\end{equation}
+\begin_layout Verbatim
 
-\end_inset
-
-
+SF←{({⍵}⌺⍺)⍵}
 \end_layout
 
 \begin_layout Standard
 A naïve implementation of the stencil function that did not pad its results
- was implemented in Co-dfns and used in the following implementations.
- In the following sections, we use 
-\begin_inset Formula $\texttt{⌺}$
-\end_inset
-
+ was implemented in Co-dfns and used in U-net implementation.
+ We subsequently use 
+\family typewriter
+⌺
+\family default
  to mean the stencil 
 \emph on
+\noun on
 function
 \emph default
- and not the stencil operator as it appears in Dyalog APL.
- Given a specification 
-\begin_inset Formula $s$
-\end_inset
-
- as the left argument, the stencil function, written 
-\begin_inset Formula $s\texttt{⌺}a$
-\end_inset
-
-, returns an array of each sliding window slice of 
-\begin_inset Formula $a$
-\end_inset
-
- specified by 
-\begin_inset Formula $s$
-\end_inset
-
-.
- The two most common sliding window sizes for 
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\xout off
-\uuline off
-\uwave off
-\noun off
-\color none
-
-\begin_inset Formula $\texttt{⌺}$
-\end_inset
-
-
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\bar default
-\strikeout default
-\xout default
-\uuline default
-\uwave default
 \noun default
-\color inherit
+ and not the stencil 
+\noun on
+operator
+\noun default
+ as it appears in Dyalog APL.
+ Given a specification 
+\family typewriter
+s
+\family default
+ as the left argument, the stencil function, written 
+\family typewriter
+s⌺a
+\family default
+, returns an array of each sliding window slice of 
+\family typewriter
+a
+\family default
+ specified by 
+\family typewriter
+s
+\family default
+.
+ The first row of the specification indicates the window sizes while the
+ second row indicates the step size, or 1 if omitted.
+ The window is conceptually 
+\begin_inset Quotes eld
+\end_inset
+
+slid
+\begin_inset Quotes erd
+\end_inset
+
+ along the leading axes of the input array.
+ The two most common sliding window sizes for 
+\family typewriter
+⌺
+\family default
  in U-net are 
-\begin_inset Formula $3\,3$
-\end_inset
-
+\family typewriter
+3 3
+\family default
  for convolutions, corresponding to a window size of 
-\begin_inset Formula $3×3$
-\end_inset
-
+\family typewriter
+3×3
+\family default
  and a step of 
-\begin_inset Formula $1$
-\end_inset
-
- for each dimension, and 
-\begin_inset Formula $2\,2\rho2$
-\end_inset
-
+\family typewriter
+1
+\family default
+ for each axis, and 
+\family typewriter
+2 2⍴2
+\family default
  (a 2 by 2 matrix of 2's) for the max pooling layers and up convolutions,
  corresponding to a 
-\begin_inset Formula $2×2$
-\end_inset
-
+\family typewriter
+2×2
+\family default
  window size and a step of 
-\begin_inset Formula $2$
-\end_inset
+\family typewriter
+2
+\family default
+ for each axis.
+\end_layout
 
- for each dimension.
+\begin_layout Standard
+For example, a 
+\family typewriter
+3 3
+\family default
+ sliding window of step 1 on a 
+\family typewriter
+6 6
+\family default
+ matrix returns an array of shape 
+\family typewriter
+4 4 3 3
+\family default
+ consisting of 16 
+\family typewriter
+3 3
+\family default
+ matrix slices arranged in a 
+\family typewriter
+4 4
+\family default
+ grid.
+ The dimensions of the two leading axes will shrink by 2 each time because
+ we implemented stencil without padding.
+\end_layout
+
+\begin_layout Verbatim
+
+      6 6⍴⍳36
+\end_layout
+
+\begin_layout Verbatim
+
+ 0  1  2  3  4  5
+\end_layout
+
+\begin_layout Verbatim
+
+ 6  7  8  9 10 11
+\end_layout
+
+\begin_layout Verbatim
+
+12 13 14 15 16 17
+\end_layout
+
+\begin_layout Verbatim
+
+18 19 20 21 22 23
+\end_layout
+
+\begin_layout Verbatim
+
+24 25 26 27 28 29
+\end_layout
+
+\begin_layout Verbatim
+
+30 31 32 33 34 35
+\end_layout
+
+\begin_layout Verbatim
+
+      ⍴3 3⌺6 6⍴⍳36
+\end_layout
+
+\begin_layout Verbatim
+
+4 4 3 3
+\end_layout
+
+\begin_layout Standard
+In the following, we box each 
+\family typewriter
+3 3
+\family default
+ matrix slice using 
+\family typewriter
+⊂[2 3]
+\family default
+ to show the slices in a more compact form as a nested matrix of matrices,
+ but the result of 
+\family typewriter
+⌺
+\family default
+ is actually a rank 4 hypercube in this case.
+\end_layout
+
+\begin_layout Verbatim
+
+      ⊂[2 3]3 3⌺4 4⍴⍳16
+\end_layout
+
+\begin_layout Verbatim
+
+┌────────┬────────┬────────┬────────┐
+\end_layout
+
+\begin_layout Verbatim
+
+│ 0  1  2│ 1  2  3│ 2  3  4│ 3  4  5│
+\end_layout
+
+\begin_layout Verbatim
+
+│ 6  7  8│ 7  8  9│ 8  9 10│ 9 10 11│
+\end_layout
+
+\begin_layout Verbatim
+
+│12 13 14│13 14 15│14 15 16│15 16 17│
+\end_layout
+
+\begin_layout Verbatim
+
+├────────┼────────┼────────┼────────┤
+\end_layout
+
+\begin_layout Verbatim
+
+│ 6  7  8│ 7  8  9│ 8  9 10│ 9 10 11│
+\end_layout
+
+\begin_layout Verbatim
+
+│12 13 14│13 14 15│14 15 16│15 16 17│
+\end_layout
+
+\begin_layout Verbatim
+
+│18 19 20│19 20 21│20 21 22│21 22 23│
+\end_layout
+
+\begin_layout Verbatim
+
+├────────┼────────┼────────┼────────┤
+\end_layout
+
+\begin_layout Verbatim
+
+│12 13 14│13 14 15│14 15 16│15 16 17│
+\end_layout
+
+\begin_layout Verbatim
+
+│18 19 20│19 20 21│20 21 22│21 22 23│
+\end_layout
+
+\begin_layout Verbatim
+
+│24 25 26│25 26 27│26 27 28│27 28 29│
+\end_layout
+
+\begin_layout Verbatim
+
+├────────┼────────┼────────┼────────┤
+\end_layout
+
+\begin_layout Verbatim
+
+│18 19 20│19 20 21│20 21 22│21 22 23│
+\end_layout
+
+\begin_layout Verbatim
+
+│24 25 26│25 26 27│26 27 28│27 28 29│
+\end_layout
+
+\begin_layout Verbatim
+
+│30 31 32│31 32 33│32 33 34│33 34 35│
+\end_layout
+
+\begin_layout Verbatim
+
+└────────┴────────┴────────┴────────┘
+\end_layout
+
+\begin_layout Standard
+
+Notice that the window slides along the rows, so each slice captures all
+ columns for the two rows visible in the window.
 \end_layout
 
 \begin_layout Subsection
@@ -2331,7 +2507,7 @@ name "subsec:Neural-Network-Vocabulary"
 \end_layout
 
 \begin_layout Standard
-The original u-net paper uses five distinct operations to describe the network
+The original U-net paper uses five distinct operations to describe the network
  (see 
 \begin_inset CommandInset ref
 LatexCommand formatted
@@ -2346,8 +2522,11 @@ noprefix "false"
 \end_layout
 
 \begin_layout Enumerate
-A 3×3 convolution with a ReLU activation function is used as the primary
- operation
+A 
+\family typewriter
+3×3
+\family default
+ convolution with a ReLU activation function is used as the primary operation
 \end_layout
 
 \begin_layout Enumerate
@@ -2356,7 +2535,11 @@ A copy and crop operation is used to transfer data across one row of the
 \end_layout
 
 \begin_layout Enumerate
-Max pooling layers on a 2×2 window are used to compute 
+Max pooling layers on a 
+\family typewriter
+2×2
+\family default
+ window are used to compute 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2368,7 +2551,11 @@ down
 \end_layout
 
 \begin_layout Enumerate
-A 2×2 transposed convolution goes back 
+A 
+\family typewriter
+2×2
+\family default
+ transposed convolution goes back 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2380,7 +2567,11 @@ up
 \end_layout
 
 \begin_layout Enumerate
-The final output has a single 1×1 convolution with a soft-max layer
+The final output has a single 
+\family typewriter
+1×1
+\family default
+ convolution with a soft-max layer
 \end_layout
 
 \begin_layout Standard
@@ -2391,13 +2582,38 @@ In our implementation, we mirror this vocabulary by implementing the forward
  will take in turn.
 \end_layout
 
+\begin_layout Standard
+Each of our operations works over a given network 
+\begin_inset Quotes eld
+\end_inset
+
+layer,
+\begin_inset Quotes erd
+\end_inset
+
+ which is a cube of shape 
+\family typewriter
+N M C
+\family default
+ where 
+\family typewriter
+N M
+\family default
+ are the layer dimensions and 
+\family typewriter
+C
+\family default
+ is the number of layer channels.
+ 
+\end_layout
+
 \begin_layout Subsubsection
 Convolution (3×3) with ReLU
 \end_layout
 
 \begin_layout Standard
-The primary u-net convolutional layer is a 3×3 convolution with a ReLU activatio
-n function.
+The primary U-net convolutional kernel is a 3×3 convolution with a ReLU
+ activation function.
  The convolution in the paper uses 
 \begin_inset Quotes eld
 \end_inset
@@ -2410,271 +2626,223 @@ valid
  This implies that the convolution dimensions of the output array shrink
  by 2 for each dimension compared to the input.
  We define the forward propagation function 
-\begin_inset Formula $CV$
-\end_inset
-
+\family typewriter
+CV
+\family default
  as a function over a set of kernels 
-\begin_inset Formula $\texttt{⍺}$
-\end_inset
-
- and a layer 
-\begin_inset Formula $\texttt{⍵}$
-\end_inset
-
+\family typewriter
+⍺
+\family default
+ of shape 
+\family typewriter
+3 3 I O
+\family default
+ of 
+\family typewriter
+I
+\family default
+ input channels and 
+\family typewriter
+O
+\family default
+ output channels with a layer 
+\family typewriter
+⍵
+\family default
+ of shape 
+\family typewriter
+N M I
+\family default
  that obeys the following shape invariant:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-\rho\,\alpha\,CV\,\omega & \leftrightarrow & (^{-}2+2↑\rho\omega),{}^{-}1↑\rho\alpha
-\end{eqnarray}
+\begin_layout Verbatim
 
-\end_inset
-
-We write 
-\begin_inset Formula $S↑A$
-\end_inset
-
- to describe the array derived from 
-\begin_inset Formula $A$
-\end_inset
-
- whose shape is equal to the shape of 
-\begin_inset Formula $A$
-\end_inset
-
- except that the leading dimensions of 
-\begin_inset Formula $S↑A$
-\end_inset
-
- are 
-\begin_inset Formula $|S$
-\end_inset
-
- (absolute value over 
-\begin_inset Formula $S$
-\end_inset
-
-), read as 
-\begin_inset Quotes eld
-\end_inset
-
-the S take of A.
-\begin_inset Quotes erd
-\end_inset
-
- Negative values in 
-\begin_inset Formula $S$
-\end_inset
-
- take from the 
-\begin_inset Quotes eld
-\end_inset
-
-far
-\begin_inset Quotes erd
-\end_inset
-
- or 
-\begin_inset Quotes eld
-\end_inset
-
-trailing
-\begin_inset Quotes erd
-\end_inset
-
- side of the dimension.
- Thus, the resulting shape of 
-\begin_inset Formula $\alpha\,CV\,\omega$
-\end_inset
-
- is the leading dimensions of the input 
-\begin_inset Formula $\omega$
-\end_inset
-
- subtracted by 2 catenated with the final dimension (the output channels)
- of kernel 
-\begin_inset Formula $\alpha$
-\end_inset
-
-.
- In the case of a u-net layer, we have input kernels of shape 
-\begin_inset Formula $3\,3\,I\,O$
-\end_inset
-
- and input layer of shape 
-\begin_inset Formula $N M I$
-\end_inset
-
- where 
-\begin_inset Formula $N M$
-\end_inset
-
- are the image/layer dimensions, and 
-\begin_inset Formula $I O$
-\end_inset
-
- are the input and output channel counts, respectively.
- The resulting output layer has shape 
-\begin_inset Formula $(N-2) (M-2) O$
-\end_inset
-
-.
+⍴⍺ CV ⍵ ←→ (¯2+2↑⍴⍵),¯1↑⍴⍺
 \end_layout
 
 \begin_layout Standard
-Using the stencil function, we define 
-\begin_inset Formula $CV$
-\end_inset
-
+This says that the size of the first two axes of 
+\family typewriter
+⍺ CV ⍵
+\family default
+ will be two less than the first two axes of 
+\family typewriter
+⍵
+\family default
+, while the remaining axis, corresponding to the output channels, will match
+ the last axis of 
+\family typewriter
+⍺
+\family default
+.
+ In other words, given the kernel of shape 
+\family typewriter
+3 3 I O
+\family default
+ and layer of shape 
+\family typewriter
+N M I
+\family default
+, the result of 
+\family typewriter
+⍺ CV ⍵
+\family default
+ will have shape 
+\family typewriter
+(N-2) (M-2) O
+\family default
+.
+ Using the stencil function, we define 
+\family typewriter
+CV
+\family default
  as follows for rank 4 kernel inputs and rank 3 layer inputs:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-CV & ← & \{0⌈(,\texttt{⍤}3⊢3\,3\texttt{⌺}\omega)\mathnormal{+.×},[\iota3]\alpha\}\label{eq:CV}
-\end{eqnarray}
+\begin_layout Verbatim
 
-\end_inset
-
-We include the ReLU function 
-\begin_inset Formula $0⌈\omega$
-\end_inset
-
- as the final operation following the convolution.
- We write 
-\begin_inset Formula $,\texttt{⍤}3⊢\omega$
-\end_inset
-
- to describe the value 
-\begin_inset Formula $\omega$
-\end_inset
-
- with its 3 trailing dimensions collapsed into a single dimension.
- We write 
-\begin_inset Formula $,[\iota3]\omega$
-\end_inset
-
- to describe the value 
-\begin_inset Formula $\omega$
-\end_inset
-
- with its leading 3 dimensions likewise collapsed.
- In 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "subsec:Operators"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- we presented 
-\begin_inset Formula $+.×$
-\end_inset
-
- as the matrix product form of the operator inner product, and in 
-\begin_inset Formula $CV$
-\end_inset
-
- we use its extension to arrays of arbitrary rank.
+CV←{0⌈(,[2 3 4]3 3⌺⍵)+.×,[0 1 2]⍺}
 \end_layout
 
 \begin_layout Standard
-Computing the backpropagation uses very similar approaches.
+The result of 
+\family typewriter
+3 3⌺⍵
+\family default
+ will have the shape 
+\family typewriter
+(N-2) (M-2) 3 3 I
+\family default
+, so the expression 
+\family typewriter
+,[2 3 4]3 3⌺⍵
+\family default
+ gives us a cube of shape 
+\family typewriter
+(N-2) (M-2) (3×3×I)
+\family default
+ while the expression 
+\family typewriter
+,[0 1 2]⍺
+\family default
+ gives us a matrix of shape 
+\family typewriter
+(3×3×I) O
+\family default
+.
+ We use the extended matrix multiplication 
+\family typewriter
++.×
+\family default
+ to compute the convolution, resulting in a cube of shape 
+\family typewriter
+N M O
+\family default
+.
+ The ReLU function 
+\family typewriter
+0⌈⍵
+\family default
+ follows as the final operation.
+ 
+\end_layout
+
+\begin_layout Standard
+Computing backpropagation uses very similar approaches.
  Given the output layer 
-\begin_inset Formula $z$
-\end_inset
-
+\family typewriter
+z
+\family default
 , input layer 
-\begin_inset Formula $x$
-\end_inset
-
+\family typewriter
+x
+\family default
 , activation layer 
-\begin_inset Formula $a$
-\end_inset
-
+\family typewriter
+a
+\family default
 , weights 
-\begin_inset Formula $\alpha$
-\end_inset
-
+\family typewriter
+⍺
+\family default
 , and the gradient backpropagated so far 
-\begin_inset Formula $\omega$
-\end_inset
-
+\family typewriter
+⍵
+\family default
 , we compute the transposed weights 
-\begin_inset Formula $w$
-\end_inset
-
+\family typewriter
+w
+\family default
 , the derivative output layer 
-\begin_inset Formula $∆z$
-\end_inset
-
+\family typewriter
+∆z
+\family default
  , the weight gradient 
-\begin_inset Formula $∆w$
-\end_inset
-
+\family typewriter
+∆w
+\family default
 , padded output layer 
-\begin_inset Formula $\Delta Z$
-\end_inset
-
+\family typewriter
+∆Z
+\family default
 , and the resulting back gradient 
-\begin_inset Formula $∆x$
-\end_inset
-
+\family typewriter
+∆x
+\family default
  as follows:
 \end_layout
 
+\begin_layout Verbatim
+
+∆CV←{
+\end_layout
+
+\begin_layout Verbatim
+
+     w←⊖⌽[1]0 1 3 2⍉⍺
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆z←⍵×0<a
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆w←3 0 1 2⍉(⍉,[0 1]∆z)+.×,[0 1]3 3⌺x
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆x←(,[2 3 4]3 3⌺∆Z)+.×,[0 1 2]w
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
 \begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-w & ← & \ominus\obar[1]0\,1\,3\,2\obslash\alpha\nonumber \\
-∆z & ← & \omega×0<a\\
-∆w & ← & 3\,0\,1\,2\obslash(\obslash,[\iota2]\Delta z)\mathnormal{+.×},[\iota2]3\,3\texttt{⌺}x\\
-\Delta Z & ← & ^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z\nonumber \\
-∆x & ← & (,\texttt{⍤}3⊢3\,3\texttt{⌺}\Delta Z)\mathnormal{+.×},[\iota3]w
-\end{eqnarray}
-
-\end_inset
-
 Since our stencil function does not pad its results, the expression 
-\begin_inset Formula $^{-}2\ominus{}^{-}2\obar[1](4+2↑\rho\Delta z)↑\Delta z$
-\end_inset
-
+\family typewriter
+¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
+\family default
  expands the shape of 
-\begin_inset Formula $\Delta z$
-\end_inset
-
+\family typewriter
+∆z
+\family default
  to ensure that the output convolution dimensions are 2 greater than those
  of 
-\begin_inset Formula $\Delta z$
-\end_inset
-
-, where the functions 
-\begin_inset Formula $\ominus$
-\end_inset
-
- and 
-\begin_inset Formula $\obar$
-\end_inset
-
- are functions to rotate an array.
- The function 
-\begin_inset Formula $\obar[1]$
-\end_inset
-
- rotates an array along the 
-\begin_inset Formula $1st$
-\end_inset
-
- dimension while 
-\begin_inset Formula $\ominus$
-\end_inset
-
- rotates along the leading axis.
+\family typewriter
+∆z
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2683,7 +2851,7 @@ Copy and Crop
 
 \begin_layout Standard
 Conceptually, the copy and crop operation is the simplest of the functions
- in u-net.
+ in U-net.
  Its sole job is to take the output from one side of the U-shaped net and
  move it over to the other side, adjusting the dimensions to ensure that
  it fits.
@@ -2708,73 +2876,63 @@ up
 
  layer.
  The following function 
-\begin_inset Formula $CC$
-\end_inset
-
+\family typewriter
+CC
+\family default
  computes the crop of 
-\begin_inset Formula $\alpha$
-\end_inset
-
+\family typewriter
+⍺
+\family default
  catenated with 
-\begin_inset Formula $\omega$
-\end_inset
-
+\family typewriter
+⍵
+\family default
  using 
-\begin_inset Formula $↓$
-\end_inset
+\family typewriter
+↓
+\family default
+:
+\end_layout
 
- (read as 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Verbatim
 
-drop
-\begin_inset Quotes erd
-\end_inset
+CC←{
+\end_layout
 
-), which is the opposite function of the previously described 
-\begin_inset Formula $↑$
-\end_inset
+\begin_layout Verbatim
 
- (
-\begin_inset Quotes eld
-\end_inset
+    p←((⍴⍺)-⍴⍵)÷2),⍵
+\end_layout
 
-take
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Verbatim
 
-) function:
+    ((⌊p)↓(-⌈p)↓⍺
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-CC & ← & \left\{ \begin{aligned}p\leftarrow & ((\rho\alpha)-\rho\omega)÷2),\omega\\
- & ((⌊p)↓(-⌈p)↓\alpha
-\end{aligned}
-\right\} 
-\end{eqnarray}
-
-\end_inset
-
 For dimensions that are not evenly divisible by two, we choose to round
  up on the right and bottom sides and round down on the left and upper sides
  of the layer.
  Computing the backpropagation of 
-\begin_inset Formula $CC$
-\end_inset
-
+\family typewriter
+CC
+\family default
  given the input 
-\begin_inset Formula $\alpha$
-\end_inset
-
+\family typewriter
+⍺
+\family default
  and output gradient 
-\begin_inset Formula $\omega$
-\end_inset
-
+\family typewriter
+⍵
+\family default
  simply reverses this operation and expands the shape back to the original
  input size.
- This result is then added to the appropriate layer in the u-net architecture
+ This result is then added to the appropriate layer in the U-net architecture
  described in 
 \begin_inset CommandInset ref
 LatexCommand formatted
@@ -2789,16 +2947,24 @@ noprefix "false"
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-n\,m & ← & -⌊(2↑(\rho\alpha)-\rho\omega)÷2\nonumber \\
-\Delta x & ← & n\ominus m\obar[1](\rho\alpha)↑\omega
-\end{eqnarray}
+\begin_layout Verbatim
 
-\end_inset
+∆CC←{
+\end_layout
 
+\begin_layout Verbatim
 
+    n m←-⌊(2↑(⍴⍺)-⍴⍵)÷2
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆x←n⊖m⌽[1](⍴⍺)↑⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsubsection
@@ -2809,104 +2975,90 @@ Max Pooling
 Max pooling is a shrinking convolution that computes the maximum value in
  a non-overlapping sliding window.
  Given the stencil function, the max pool over a layer is given by the following
- expression:
+ definition for 
+\family typewriter
+MX
+\family default
+:
+\end_layout
+
+\begin_layout Verbatim
+
+MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⍵}
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-⌈⌿[2],[2\,3](2\,2\rho2)\texttt{⌺}\omega\label{eq:MX}
-\end{equation}
-
-\end_inset
-
- Here we write 
-\begin_inset Formula $⌈⌿[2],[2\,3]\omega$
-\end_inset
-
+Here we write 
+\family typewriter
+⌈⌿[2],[2 3]⍵
+\family default
  to describe an array where we have collapsed dimensions 2 and 3 and computed
  the maximum value reduction over the resulting dimension.
  For example, given an input layer 
-\begin_inset Formula $\omega$
-\end_inset
-
+\family typewriter
+⍵
+\family default
  of shape 
-\begin_inset Formula $N\,M\,C$
-\end_inset
-
+\family typewriter
+N M C
+\family default
 , the result of 
-\begin_inset Formula $(2\,2\rho2)\texttt{⌺}\omega$
-\end_inset
-
+\family typewriter
+(2 2⍴2)⌺⍵
+\family default
  is a rank 5 array of shape 
-\begin_inset Formula $(N÷2)(M÷2)2\,2\,C$
-\end_inset
-
+\family typewriter
+(N÷2) (M÷2) 2 2 C
+\family default
 .
- We then collapse the 
-\begin_inset Formula $2nd$
-\end_inset
-
- and 
-\begin_inset Formula $3rd$
-\end_inset
-
- dimensions to form an array of shape 
-\begin_inset Formula $(N÷2)(M÷2)4\,C$
-\end_inset
-
- and subsequently find the maximum value for each vector along the 
-\begin_inset Formula $2nd$
-\end_inset
-
- dimension, resulting in an array of shape 
-\begin_inset Formula $(N\div2)(M\div2)C$
-\end_inset
-
+ We then collapse axes 2 and 3 to form an array of shape 
+\family typewriter
+(N÷2) (M÷2) 4 C
+\family default
+ and subsequently find the maximum value for each vector along axis 2, resulting
+ in an array of shape 
+\family typewriter
+(N÷2) (M÷2) C
+\family default
 .
 \end_layout
 
 \begin_layout Standard
 Computing the backpropagation of this involves replicating each of the stencil
  dimensions, which are the two leading axes in our implementation.
- We write 
-\begin_inset Formula $n⌿A$
-\end_inset
-
- and 
-\begin_inset Formula $n/[1]A$
-\end_inset
-
- to indicate the array 
-\begin_inset Formula $A$
-\end_inset
-
- with each element duplicated or repeated along the first and second axes,
- respectively, 
-\begin_inset Formula $n$
-\end_inset
-
- times.
  Given an input 
-\begin_inset Formula $\alpha$
-\end_inset
-
+\family typewriter
+⍺
+\family default
  and output layer 
-\begin_inset Formula $\omega$
-\end_inset
-
- the following expression computes the backpropagation:
+\family typewriter
+⍵
+\family default
+ the following function 
+\family typewriter
+∆MX
+\family default
+ computes the backpropagation:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-y\times\alpha=y←(\rho\alpha)↑2⌿2/[1]\omega
-\end{equation}
+\begin_layout Verbatim
 
-\end_inset
+∆MX←{
+\end_layout
 
+\begin_layout Verbatim
 
+    y←(⍴⍺)↑2⌿2/[1]⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    y×⍺=y
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsubsection
@@ -2914,22 +3066,17 @@ Transposed Convolution (2×2)
 \end_layout
 
 \begin_layout Standard
-In the initial exploration of this implementation, the upsampling computation
- with convolution proved to be the most subtle and challenging, mostly in
- part to the opaqueness of implementations.
- The u-net paper was not immediately transparent regarding the exact operations
+The upsampling computation with convolution proved to be the most subtle
+ and challenging, mostly in part to the opaqueness of implementations.
+ The U-net paper was not immediately transparent regarding the exact operations
  used for this layer and there were a number of potential design decisions
  that could have been made.
  Moreover, for users reading about upsampling through convolutions, the
  descriptions are also the furthest removed from a reasonable implementation
  of the same.
  However, once the intuition of how an upsampling convolution matches the
- shape and form of a non-overlapping sliding window in the output layer,
- expressed via the simple expression 
-\begin_inset Formula $K⊂\texttt{⍤}\times\texttt{⍤}2\,0⊢A$
-\end_inset
-
-, the computation becomes much clearer.
+ shape and form of a non-overlapping sliding window in the output layer
+ the computation becomes much clearer.
 \begin_inset Foot
 status open
 
@@ -2953,163 +3100,110 @@ literal "false"
 \begin_layout Standard
 For this convolution, we change the anticipated kernel shape from that used
  for 
-\begin_inset Formula $CV$
-\end_inset
-
+\family typewriter
+CV
+\family default
  above.
  Whereas 
-\begin_inset Formula $CV$
-\end_inset
-
+\family typewriter
+CV
+\family default
  expects kernels of shape 
-\begin_inset Formula $3\,3\,I\,O$
-\end_inset
-
+\family typewriter
+3 3 I O
+\family default
 , our transposed convolutions expect kernels of shape 
-\begin_inset Formula $I\,2\,2\,O$
-\end_inset
-
+\family typewriter
+I 2 2 O
+\family default
  for input channels 
-\begin_inset Formula $I$
-\end_inset
-
+\family typewriter
+I
+\family default
  and output channels 
-\begin_inset Formula $O$
-\end_inset
-
+\family typewriter
+O
+\family default
 .
  Given a layer of our standard shape 
-\begin_inset Formula $N\,M\,I$
-\end_inset
+\family typewriter
+N M I
+\family default
+, this gives the following definition for the upsampling pass:
+\end_layout
 
-, this gives the following definition for the upsampling pass.:
+\begin_layout Verbatim
+
+UP←{,[0 1],[2 3]0 2 1 3 4⍉⍵+.×⍺}
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-UP & \leftarrow & \{\mathnormal{,}[\iota2]\,\mathnormal{,}[2\,3]\rho0\,2\,1\,3\,4\obslash\omega\,\mathnormal{+.\times}\,\alpha\}
-\end{eqnarray}
-
-\end_inset
-
 The key change here from the reliance on 
-\begin_inset Formula $+.\times$
-\end_inset
-
+\family typewriter
++.×
+\family default
  with 
-\begin_inset Formula $CV$
-\end_inset
-
- is the use of a dyadic transpose 
-\begin_inset Formula $0\,2\,1\,3\,4\obslash$
-\end_inset
-
+\family typewriter
+CV
+\family default
+ is the use of a dyadic transpose.
+ The input into the 
+\family typewriter
+⍉
+\family default
+ transpose is the result of 
+\family typewriter
+⍵+.×⍺
+\family default
+ which has shape 
+\family typewriter
+N M 2 2 O
+\family default
 .
- Dyadic transpose is sometimes considered a somewhat challenging concept
- in APL.
- In brief, for a rank 
-\begin_inset Formula $r$
-\end_inset
-
- array 
-\begin_inset Formula $A$
-\end_inset
-
- of shape 
-\begin_inset Formula $S$
-\end_inset
-
- and targeting array 
-\begin_inset Formula $D$
-\end_inset
-
- where 
-\begin_inset Formula $(\rho D)\equiv\rho S$
-\end_inset
-
-, we write 
-\begin_inset Formula $D\obslash A$
-\end_inset
-
- to describe a transposed array with shape 
-\begin_inset Formula $T$
-\end_inset
-
- where 
-\begin_inset Formula $T[D]\leftarrow S$
-\end_inset
-
-, assuming that 
-\begin_inset Formula $\land⌿D\in\iota\rho S$
-\end_inset
-
-, that is, all dimensions of 
-\begin_inset Formula $S$
-\end_inset
-
- are mentioned in 
-\begin_inset Formula $D$
-\end_inset
-
-.
- So, given a targeting array 
-\begin_inset Formula $0\,2\,1\,3\,4$
-\end_inset
-
- and an input array 
-\begin_inset Formula $A$
-\end_inset
-
- of shape 
-\begin_inset Formula $N\,M\,2\,2\,O$
-\end_inset
-
-, the expression 
-\begin_inset Formula $0\,2\,1\,3\,4\obslash A$
-\end_inset
-
- describes an array with elements from 
-\begin_inset Formula $A$
-\end_inset
-
- of shape 
-\begin_inset Formula $N\,2\,M\,2\,O$
-\end_inset
-
+ Thus, the expression 
+\family typewriter
+0 2 1 3 4⍉⍵+.×⍺
+\family default
+ returns an array of shape 
+\family typewriter
+N 2 M 2 O
+\family default
 .
  As the final operation, we collapse the first two pairs of leading dimensions,
  giving a final output array of shape 
-\begin_inset Formula $(N\times2)(M\times2)O$
-\end_inset
-
+\family typewriter
+(N×2) (M×2) O
+\family default
 .
  
 \end_layout
 
 \begin_layout Standard
 To compute the backpropagation pass, we compute the convolutions on a 
-\begin_inset Formula $2\times2$
-\end_inset
-
- sliding window with stride 
-\begin_inset Formula $2$
-\end_inset
-
-.
- 
+\family typewriter
+2×2
+\family default
+ sliding window with stride 2.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\,\mathnormal{+.\times}\,\mathnormal{,}[\iota2](2\,2\rho2)\texttt{⌺}\Delta z\\
-\Delta x & \leftarrow & (\mathnormal{,}[2+\iota3](2\,2\rho\,2)\texttt{⌺}\Delta z)\,\mathnormal{+.\times}\obslash\texttt{⍪}\alpha
-\end{eqnarray}
+\begin_layout Verbatim
 
-\end_inset
+∆UP←{
+\end_layout
 
+\begin_layout Verbatim
 
+    ∆w←(⍉,[0 1]x)+.×,[0 1](2 2⍴2)⌺∆z
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆x←(,[2 3 4](2 2⍴2)⌺∆z)+.×⍉,[1 2 3]⍺
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsubsection
@@ -3117,63 +3211,80 @@ Final 1×1 Convolution
 \end_layout
 
 \begin_layout Standard
-The final convolution is a 1×1 convolution with 2 output channels, which
- means that it collapses the final incoming channels into an output layer
- with only two channels.
+The final convolution is a 
+\family typewriter
+1×1
+\family default
+ convolution with 2 output channels, which means that it collapses the final
+ incoming channels into an output layer with only two channels.
  This gives the trivial simplification of our convolution code over layer
  
-\begin_inset Formula $\omega$
-\end_inset
-
+\family typewriter
+⍵
+\family default
  and kernel 
-\begin_inset Formula $\alpha$
-\end_inset
-
-:
+\family typewriter
+⍺
+\family default
+ of 
+\family typewriter
+⍵+.×⍺
+\family default
+, which we combine with the soft-max layer described in the paper:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-\omega+.\times\alpha
-\end{equation}
+\begin_layout Verbatim
 
-\end_inset
-
-Additionally, the paper describes using a soft-max layer, which we include
- at this phase:
+C1←{
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-1e^{-}8+z\div[\iota2]\mathnormal{+/}z\leftarrow*\omega-[\iota2]\lceil/\omega
-\end{equation}
+\begin_layout Verbatim
 
-\end_inset
+    z←⍵+.×⍺
+\end_layout
 
+\begin_layout Verbatim
 
+    z←*z-[0 1]⌈/z
+\end_layout
+
+\begin_layout Verbatim
+
+    1E¯8+z÷[0 1] +/z
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
 Computing the backpropagation is likewise a simplification of the more complex
  
-\begin_inset Formula $CV$
-\end_inset
-
+\family typewriter
+CV
+\family default
  code:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-\Delta w & \leftarrow & (\obslash\,\mathnormal{,}[\iota2]x)\mathnormal{+.\times}\,\mathnormal{,}[\iota2]\Delta z\\
-\Delta x & \leftarrow & \Delta z\,\mathnormal{+.\times}\obslash w
-\end{eqnarray}
+\begin_layout Verbatim
 
-\end_inset
+∆C1←{
+\end_layout
 
+\begin_layout Verbatim
 
+    ∆w←(⍉,[0 1]x)+.×,[0 1]∆z
+\end_layout
+
+\begin_layout Verbatim
+
+    ∆x←∆z+.×⍉w
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Subsection
@@ -3188,6 +3299,295 @@ name "subsec:U-net-Architecture"
 \end_layout
 
 \begin_layout Standard
+Given the core vocabularies defined in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:Neural-Network-Vocabulary"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the remaining challenge with implementing U-net is to link together the
+ appropriate layers and compositions to form the complete network as described
+ by 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ To do this, we observe that the structure of the U-net diagram is an almost
+ symmetric pattern.
+ The output layer computations form 3 operations which are not part of the
+ pattern, but the rest of the pattern decomposes into 4 depths, each with
+ 6 operations each.
+ 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ contains a visual arrangement of the kernel shapes used in our architecture
+ mirroring the overall structure of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, we note that the U-shaped structure also mimicks the down
+ and up nature of a recursive program call-tree.
+ Thus, our overall strategy is to implement a recursive function 
+\family typewriter
+LA
+\family default
+ that receives an index identifying a particular depth of the network, computes
+ the appropriate 
+\begin_inset Quotes eld
+\end_inset
+
+downward pass
+\begin_inset Quotes erd
+\end_inset
+
+ operations before recuring deeper into the network and finally computing
+ the upwards passes on the return of its recursive call.
+ We likewise implement backpropagation in same way, but in the opposite
+ direction.
+ Assuming that 
+\family typewriter
+⍺
+\family default
+ contains the computed depth offset for the network layer, we write 
+\family typewriter
+⍺+i
+\family default
+ to access the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of the network described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at the depth 
+\family typewriter
+⍺÷6
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Our forward pass function is responsible for initializing an appropriate
+ holding place for the intermediate results produced by forward propagation
+ for use by the backpropagation function.
+ Additionally, after the recursive computation, there are the final three
+ operations, 
+\family typewriter
+C1
+\family default
+ and two 
+\family typewriter
+CV
+\family default
+ operations, that must be called before returning.
+ We also assume that we may receive a rank 2 matrix instead of a rank 3
+ layer as input, and so we reshape the input to ensure that we always have
+ a rank 3 input to 
+\family typewriter
+LA
+\family default
+.
+ This gives us the following function definition:
+\end_layout
+
+\begin_layout Verbatim
+
+FWD←{
+\end_layout
+
+\begin_layout Verbatim
+
+  Z⊢←(≢W)⍴⊂⍬
+\end_layout
+
+\begin_layout Verbatim
+
+  ⍝ Forward propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+
+  LA←{
+\end_layout
+
+\begin_layout Verbatim
+
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
+The backwards computation mirrors this pattern, except that it proceeds
+ in the opposite direction and also defines an updater function 
+\family typewriter
+∆
+\family default
+ that will update the network weights in 
+\family typewriter
+W
+\family default
+ and the velocities in 
+\family typewriter
+V
+\family default
+ based on a given gradient 
+\family typewriter
+⍵
+\family default
+ and index 
+\family typewriter
+⍺
+\family default
+ pointing to a specific location in the network.
+ 
+\end_layout
+
+\begin_layout Verbatim
+
+BCK←{
+\end_layout
+
+\begin_layout Verbatim
+
+  Y←⍺ ⋄ Y∆←⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆←{
+\end_layout
+
+\begin_layout Verbatim
+
+    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  ⍝ Back propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆LA←{
+\end_layout
+
+\begin_layout Verbatim
+
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    up←(⍺+5)∆UP(-(≢⍉⍵)÷2)↑[2]⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV up
+\end_layout
+
+\begin_layout Verbatim
+
+    mx←(⍺+2)∆MX down
+\end_layout
+
+\begin_layout Verbatim
+
+    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+mx
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  diff←Y∆-(~Y),[1.5]Y
+\end_layout
+
+\begin_layout Verbatim
+
+  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 diff
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float table
 wide true
 sideways false
@@ -3197,7 +3597,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-A rectangular arrangement of the u-net network
+A rectangular arrangement of the U-net network
 \begin_inset CommandInset label
 LatexCommand label
 name "tab:A-rectangular-arrangement"
@@ -4098,276 +4498,25 @@ Upward Pass
 
 \end_inset
 
-Given the core vocabularies defined in 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "subsec:Neural-Network-Vocabulary"
-plural "false"
-caps "false"
-noprefix "false"
 
-\end_inset
-
-, the remaining challenge with implementing u-net is to link together the
- appropriate layers and compositions to form the complete network as described
- by 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- To do this, we observe that the structure of the u-net diagram is an almost
- symmetric pattern.
- The output layer computations form 3 operations which are not part of the
- pattern, but the rest of the pattern decomposes into 4 depths, each with
- 6 operations each.
- 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "tab:A-rectangular-arrangement"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- contains a visual arrangement of the kernel shapes used in our architecture
- mirroring the overall structure of 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Additionally, we note that the U-shaped structure also mimicks the down
- and up nature of a recursive program call-tree.
- Thus, our overall strategy is to implement a recursive function 
-\begin_inset Formula $LA$
-\end_inset
-
- that receives an index identifying a particular depth of the network, computes
- the appropriate 
-\begin_inset Quotes eld
-\end_inset
-
-downward pass
-\begin_inset Quotes erd
-\end_inset
-
- operations before recuring deeper into the network and finally computing
- the upwards passes on the return of its recursive call.
- We likewise implement backpropagation in same way, but in the opposite
- direction.
- Assuming that 
-\begin_inset Formula $\alpha$
-\end_inset
-
- contains the computed depth offset for the network layer, we write 
-\begin_inset Formula $\alpha+i$
-\end_inset
-
- to access the 
-\begin_inset Formula $i$
-\end_inset
-
-th column of the network described in 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "tab:A-rectangular-arrangement"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- at the depth 
-\begin_inset Formula $\alpha\div6$
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Our forward pass function is responsible for initializing an appropriate
- holding place for the intermediate results produced by forward propagation
- for use by the backpropagation function.
- Additionally, after the recursive computation, there are the final three
- operations, 
-\begin_inset Formula $C1$
-\end_inset
-
- and two 
-\begin_inset Formula $CV$
-\end_inset
-
- operations, that must be called before returning.
- We also assume that we may receive a rank 2 matrix instead of a rank 3
- layer as input, and so we reshape the input to ensure that we always have
- a rank 3 input to 
-\begin_inset Formula $LA$
-\end_inset
-
-.
- This gives us the following function definition:
-\end_layout
-
-\begin_layout Verbatim
-
-FWD←{
-\end_layout
-
-\begin_layout Verbatim
-
-  Z⊢←(≢W)⍴⊂⍬
-\end_layout
-
-\begin_layout Verbatim
-
-  ⍝ Forward propagation layers ...
-\end_layout
-
-\begin_layout Verbatim
-
-  LA←{
-\end_layout
-
-\begin_layout Verbatim
-
-    ⍺≥≢Z:⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
-\end_layout
-
-\begin_layout Verbatim
-
-}
-\end_layout
-
-\begin_layout Standard
-The backwards computation mirrors this pattern, except that it proceeds
- in the opposite direction and also defines an updater function 
-\begin_inset Formula $\Delta$
-\end_inset
-
- that will update the network weights in 
-\begin_inset Formula $W$
-\end_inset
-
- and the velocities in 
-\begin_inset Formula $V$
-\end_inset
-
- based on a given gradient 
-\begin_inset Formula $\omega$
-\end_inset
-
- and index 
-\begin_inset Formula $\alpha$
-\end_inset
-
- pointing to a specific location in the network.
- 
-\end_layout
-
-\begin_layout Verbatim
-
-BCK←{
-\end_layout
-
-\begin_layout Verbatim
-
-  Y←⍺ ⋄ Y∆←⍵
-\end_layout
-
-\begin_layout Verbatim
-
-  ∆←{
-\end_layout
-
-\begin_layout Verbatim
-
-    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
-\end_layout
-
-\begin_layout Verbatim
-
-    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  ⍝ Back propagation layers ...
-\end_layout
-
-\begin_layout Verbatim
-
-  ∆LA←{
-\end_layout
-
-\begin_layout Verbatim
-
-    ⍺≥≢Z:⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 \end_layout
 
 \begin_layout Section
 Performance
+\end_layout
+
+\begin_layout Standard
+We primarily focused on comparing our U-net implementation against a reference
+ implemented in PyTorch 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pytorch"
+literal "false"
+
+\end_inset
+
+, which is an easy to use Python framework with good performance.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4407,29 +4556,6 @@ name "fig:Performance-results-for"
 
 \end_inset
 
-To examine the performance profile of our APL implementation, we primarily
- focused on comparing our u-net implementation against a reference implemented
- in PyTorch 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "pytorch"
-literal "false"
-
-\end_inset
-
-, which is an easy to use Python framework with good performance.
- In addition to this primary performance analysis, we examined the performance
- of two varieties of stencil computations within the APL language.
- We also make note of some small exploratory effects that we discovered
- while implementing the stencil function and convolutions in Co-dfns.
- 
-\end_layout
-
-\begin_layout Subsection
-U-net Performance
-\end_layout
-
-\begin_layout Standard
 We were primarily interested in the costs of executing a single run of the
  u-net over a single image source in both the forwards and backwards directions.
  We compared performance over the following platforms:
@@ -4559,10 +4685,6 @@ We observed the widest variance in performance results in the Co-dfns CPU
  and Dyalog interpreter-based runs, and very little variance in the GPU-based
  runs or in PyTorch itself.
  
-\end_layout
-
-\begin_layout Subsubsection
-Co-dfns Runtime Implementation
 \end_layout
 
 \begin_layout Standard
