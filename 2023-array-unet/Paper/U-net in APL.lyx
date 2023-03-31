@@ -931,46 +931,6 @@ Arrays
 \end_layout
 
 \begin_layout Standard
-The primary datatype of an APL system is the array.
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Other types may exist for commercial systems, but these are not treated
- here.
-\end_layout
-
-\end_inset
-
- In APL, an array is an 
-\begin_inset Formula $N$
-\end_inset
-
--dimensional rectangular arrangement of elements, indexed in a row-major
- fashion.
- The list of dimensions (axes) is known as an array's 
-\noun on
-shape
-\noun default
-, and the number of dimensions (possibly 0) is its 
-\noun on
-rank
-\noun default
-.
- Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:rank-names"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- gives specific names to arrays of particular rank:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
@@ -1159,9 +1119,46 @@ Noble
 \end_layout
 
 \begin_layout Standard
-Note that all arrays have at least one element.
- Scalars have exactly one, while higher ranked arrays with at least one
- zero axis, called 
+The primary datatype of an APL system is the array.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Other types may exist for commercial systems, but these are not treated
+ here.
+\end_layout
+
+\end_inset
+
+ In APL, an array is an 
+\begin_inset Formula $N$
+\end_inset
+
+-dimensional rectangular arrangement of one or more elements in row-major
+ order according to a list of zero or more orthogonal dimensions (axes)
+ called its 
+\noun on
+shape
+\noun default
+, with the number of axes called its 
+\noun on
+rank
+\noun default
+.
+ Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:rank-names"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ gives the common names for sub-classes of arrays by rank.
+ Scalars have exactly one element.
+ Higher ranked, non-empty arrays contain as many elements as the product
+ of its axes, while those with at least one zero axis, called 
 \noun on
 empty
 \noun default
@@ -1174,11 +1171,18 @@ prototype
 fill
 \noun default
 , element.
+ For all numeric arrays, such as those used in this paper, the fill element
+ is 
+\family typewriter
+0
+\family default
+, and it is used by some primitives to extend or resize arrays to larger
+ shapes.
 \end_layout
 
 \begin_layout Standard
-In modern APL, the elements of an array consist solely of other arrays,
- allowing APL to have a single, uniform datatype.
+The elements of an array consist solely of other arrays, allowing APL to
+ have a single, uniform datatype.
 \begin_inset Foot
 status open
 
@@ -1190,8 +1194,7 @@ This historically contentious design choice will be taken for granted.
 \end_inset
 
  To make computation meaningful, APL defines a set of scalar arrays that
- correspond to primitive values in the system.
- In our case, we only require that the numbers be defined.
+ correspond to primitive values in the system, such as numbers and characters.
  Thus, when we write a number like 
 \family typewriter
 1
@@ -1205,8 +1208,6 @@ This historically contentious design choice will be taken for granted.
 1e¯8
 \family default
 , this is the scalar array corresponding to that number in the APL system.
- These special arrays have the unique property that they contain themselves
- as their element.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1216,21 +1217,7 @@ Expressions
 \begin_layout Standard
 Expressions consist of a series of literals, applications, bindings, or
  assignments.
- Functions can be first or second order.
- First order functions are called 
-\noun on
-functions
-\noun default
-, while second order functions, which always evaluate to first order functions,
- are called 
-\noun on
-operators
-\noun default
-.
-\end_layout
-
-\begin_layout Standard
-Literal expressions describe some literal array.
+ Literal expressions describe an array.
  A single numeric value is a literal.
  Adjacent literals, separated by whitespace, form a vector of those literals.
  For example:
@@ -1260,27 +1247,51 @@ Note the use of a high minus to indicate a literal negative number instead
 \end_layout
 
 \begin_layout Standard
-Application may take one of the following forms, all a form of infix notation:
+Functions can be first or second order.
+ First order functions, called 
+\noun on
+functions
+\noun default
+, take arrays as arguments and return a single array value as a result,
+ while second order functions, called 
+\noun on
+operators, 
+\noun default
+take arrays or 
+\noun on
+functions
+\noun default
+ as arguments and return a 
+\noun on
+function 
+\noun default
+result.
+ From now on, we use the term 
+\noun on
+function
+\noun default
+ to refer to first-order functions only.
+ Application takes one of the following infix forms:
 \end_layout
 
 \begin_layout Verbatim
 
-   fn ⍵   ⍝ Monadic function application
+   fn ⍵  ⍝ Monadic function application
 \end_layout
 
 \begin_layout Verbatim
 
- ⍺ fn ⍵   ⍝ Dyadic function application
+ ⍺ fn ⍵  ⍝ Dyadic  function application
 \end_layout
 
 \begin_layout Verbatim
 
-⍺⍺ op     ⍝ Monadic operator application
+⍺⍺ op    ⍝ Monadic operator application
 \end_layout
 
 \begin_layout Verbatim
 
-⍺⍺ op ⍵⍵  ⍝ Dyadic operator application
+⍺⍺ op ⍵⍵ ⍝ Dyadic  operator application
 \end_layout
 
 \begin_layout Standard
@@ -1350,11 +1361,11 @@ Primitives
 \end_layout
 
 \begin_layout Standard
-APL is known for its primitives, which are built-in functions and operators
- assigned special symbols instead of the standard alphanumeric variable
- names given to user-defined values.
- The majority of examples used in this paper are expressions of mostly primitive
- functions and operators.
+APL is known for its primitives, built-in functions and operators assigned
+ special symbols instead of the standard alphanumeric variable names given
+ to user-defined values.
+ The examples used in this paper are expressions of mostly primitive functions
+ and operators.
 \end_layout
 
 \begin_layout Standard
@@ -1362,18 +1373,16 @@ The largest class of primitives are the
 \noun on
 scalar functions
 \noun default
-.
- These are defined over a single scalar value or values and extended to
- all arrays by point-wise, also called element-wise, extension.
+, defined over a single scalar value or values and extended to all arrays
+ by point-wise, also called element-wise, extension.
  The left and right arguments of a scalar function must share the same shape,
- unless one is a scalar, in which case the scalar value is extended to have
- the same shape as the other argument.
- Consider the following example using addition:
+ with scalar arguments extended to the same shape as the other argument.
+ Consider the following example using addition and negation:
 \end_layout
 
 \begin_layout Verbatim
 
-      5+1 3 7 10
+      5+1 3 7 10 ⍝ Scalar extension
 \end_layout
 
 \begin_layout Verbatim
@@ -1383,10 +1392,7 @@ scalar functions
 
 \begin_layout Standard
 Scalar functions return arrays the same shape as their inputs.
-\end_layout
-
-\begin_layout Standard
-The set of scalar functions used in this paper include the standard arithmetic
+ The set of scalar functions used in this paper include the standard arithmetic
  functions 
 \family typewriter
 +
@@ -1421,19 +1427,19 @@ The set of scalar functions used in this paper include the standard arithmetic
 \family default
  (exponent), as well as the Boolean relations 
 \family typewriter
-=
-\family default
-, 
-\family typewriter
-≠
-\family default
-, 
-\family typewriter
 <
 \family default
 , 
 \family typewriter
 ≤
+\family default
+, 
+\family typewriter
+=
+\family default
+, 
+\family typewriter
+≠
 \family default
 , 
 \family typewriter
@@ -1530,29 +1536,27 @@ The function
 \end_layout
 
 \begin_layout Standard
-Arrays may be rotated by 
-\family typewriter
-⌽
-\family default
- and 
+The primitives 
 \family typewriter
 ⊖
 \family default
-.
- The monadic 
+ and 
 \family typewriter
-⊖⍵
+⌽
 \family default
- returns 
+ rotate arrays along the first and last axis, respectively.
+ Applied monadically, they reverse/flip an array along the appropriate axis.
+ When applied dyadically, they shift an array by the specified amount.
+ Thus 
+\family typewriter
+¯2⌽⍵
+\family default
+ rotates (with wrapping) 
 \family typewriter
 ⍵
 \family default
- with the elements along the frist axis reversed/flipped, while 
-\family typewriter
-⌽⍵
-\family default
- does the same but along the last axis.
- You may specify an axis to rotate using 
+ two positions to the right along the last axis.
+ Writing 
 \family typewriter
 ⌽[x]
 \family default
@@ -1560,29 +1564,32 @@ Arrays may be rotated by
 \family typewriter
 ⊖[x]
 \family default
-for rotation along axis 
+specifies rotation along axis 
 \family typewriter
 x
 \family default
 .
- When applied dyadically, 
-\family typewriter
-⌽
-\family default
- and 
-\family typewriter
-⊖
-\family default
- shift an array's elements by the specified amount.
- Thus 
-\family typewriter
-¯2⌽⍵
-\family default
- will rotate the elements of 
-\family typewriter
-⍵
-\family default
- two positions to the right along the last axis.
+ 
+\end_layout
+
+\begin_layout Verbatim
+
+      ¯1⊖3 5⍴1 2 3 4 ⍝ Shift down 1 row
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+1 2 3 4 1
+\end_layout
+
+\begin_layout Verbatim
+
+2 3 4 1 2
 \end_layout
 
 \begin_layout Standard
@@ -1590,13 +1597,12 @@ The transpose primitive
 \family typewriter
 ⍉
 \family default
- is quite powerful, and allows you to return an array with its dimensions
- permuted into different positions.
+ permutes its argument's axes into different positions.
  Monadic 
 \family typewriter
 ⍉⍵
 \family default
- will reverse the shape of 
+ reverses the shape of 
 \family typewriter
 ⍵
 \family default
@@ -1607,14 +1613,13 @@ The transpose primitive
  a left argument indicates how to permute the dimensions.
  Thus, 
 \family typewriter
-0 1 2 3⍉⍵
+0 1 3 2⍉⍵
 \family default
- will transpose a hypercube 
+ transposes a hypercube 
 \family typewriter
 ⍵
 \family default
-, leaving the first two dimensions in the same positions but exchanging
- the last two between themselves; likewise, 
+ by exchanging the last two axes between themselves; likewise, 
 \family typewriter
 3 0 1 2⍉⍵
 \family default
@@ -1622,8 +1627,90 @@ The transpose primitive
 \family typewriter
 ⍵
 \family default
- so that its first dimensions becomes its last, while all other dimensions
- retain the same relative order.
+ so that its first axis becomes its last, while all other dimensions retain
+ the same relative order.
+ Consider the following example of transposing two matrix slices (sub-arrays)
+ of a cube:
+\end_layout
+
+\begin_layout Verbatim
+
+      2 3 3⍴0 1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 0
+\end_layout
+
+\begin_layout Verbatim
+
+1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+     
+\end_layout
+
+\begin_layout Verbatim
+
+4 0 1
+\end_layout
+
+\begin_layout Verbatim
+
+2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+      0 2 1⍉2 3 3⍴0 1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 3 1
+\end_layout
+
+\begin_layout Verbatim
+
+1 4 2
+\end_layout
+
+\begin_layout Verbatim
+
+2 0 3
+\end_layout
+
+\begin_layout Verbatim
+
+     
+\end_layout
+
+\begin_layout Verbatim
+
+4 2 0
+\end_layout
+
+\begin_layout Verbatim
+
+0 3 1
+\end_layout
+
+\begin_layout Verbatim
+
+1 4 2
 \end_layout
 
 \begin_layout Standard
@@ -1631,16 +1718,15 @@ The functions
 \family typewriter
 ↑
 \family default
- (Take) and 
+ and 
 \family typewriter
 ↓
 \family default
- (Drop) will take or drop elements of 
+ resize 
 \family typewriter
 ⍵
 \family default
- to return arrays that are the same rank as the right argument but with
- different axis sizes.
+ by taking or dropping elements.
  The expression 
 \family typewriter
 2 ¯3↑⍵
@@ -1649,21 +1735,103 @@ The functions
 \family typewriter
 2×3
 \family default
- matrix from matrix 
+ matrix from 
 \family typewriter
 ⍵
 \family default
  with rows taken from the top and columns taken from the right, since a
  negative size takes from the tail instead of the head.
- Drop works the same way, but eliminates instead of taking items.
+ Drop (
+\family typewriter
+↓
+\family default
+) works the same way, but eliminates instead of taking items.
+ The following example centers a 
+\family typewriter
+2×2
+\family default
+ matrix into a 
+\family typewriter
+4×4
+\family default
+ matrix.
+ Notice how the matrix is extended using 
+\family typewriter
+0
+\family default
+ as the 
+\noun on
+fill
+\noun default
+ element.
+\end_layout
+
+\begin_layout Verbatim
+
+      2 2⍴1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4
+\end_layout
+
+\begin_layout Verbatim
+
+      3 3↑2 2⍴1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+1 2 0
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 0
+\end_layout
+
+\begin_layout Verbatim
+
+0 0 0
+\end_layout
+
+\begin_layout Verbatim
+
+      ¯4 ¯4↑3 3↑2 2⍴1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 0 0 0
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2 0
+\end_layout
+
+\begin_layout Verbatim
+
+0 3 4 0
+\end_layout
+
+\begin_layout Verbatim
+
+0 0 0 0
 \end_layout
 
 \begin_layout Standard
-When we may want to stitch arrays together, the expression 
+The expression 
 \family typewriter
 ⍺,⍵
 \family default
- will catenate 
+ catenates 
 \family typewriter
 ⍺
 \family default
@@ -1681,29 +1849,85 @@ When we may want to stitch arrays together, the expression
 \family typewriter
 ,⍵
 \family default
- will give a vector of the elements of 
+ gives a vector of the elements of 
 \family typewriter
 ⍵
 \family default
-, effectively collapsing all the dimensions of 
+, collapsing the axes of 
 \family typewriter
 ⍵
 \family default
- into a single dimensions that is the product of the dimensions of 
+ into a single axis whose size is the product of the axes of 
 \family typewriter
 ⍵
 \family default
 .
- If we wish to only collapse a subset of dimensions, we write 
+ We write 
 \family typewriter
 ,[d]⍵
 \family default
- to collapse the dimensions given in vector 
+ to collapse the specified axes 
 \family typewriter
 d
 \family default
-.
- 
+ to a single axis.
+ The following example collapses the trailing two axes of a cube, creating
+ a matrix:
+\end_layout
+
+\begin_layout Verbatim
+
+      2 3 3⍴0 1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4 0
+\end_layout
+
+\begin_layout Verbatim
+
+1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+     
+\end_layout
+
+\begin_layout Verbatim
+
+4 0 1
+\end_layout
+
+\begin_layout Verbatim
+
+2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2
+\end_layout
+
+\begin_layout Verbatim
+
+      ,[1 2]2 3 3⍴0 1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+0 1 2 3 4 0 1 2 3
+\end_layout
+
+\begin_layout Verbatim
+
+4 0 1 2 3 4 0 1 2
 \end_layout
 
 \begin_layout Standard
@@ -1723,8 +1947,47 @@ N/⍵
 \family typewriter
 N
 \family default
- times in sequence or adjacent to one another.
- 
+ times along the first or last axis, respectively, as follows:
+\end_layout
+
+\begin_layout Verbatim
+
+      2 2⍴1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+1 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 4
+\end_layout
+
+\begin_layout Verbatim
+
+      2⌿2/2 2⍴1 2 3 4
+\end_layout
+
+\begin_layout Verbatim
+
+1 1 2 2
+\end_layout
+
+\begin_layout Verbatim
+
+1 1 2 2
+\end_layout
+
+\begin_layout Verbatim
+
+3 3 4 4
+\end_layout
+
+\begin_layout Verbatim
+
+3 3 4 4
 \end_layout
 
 \begin_layout Standard
@@ -1748,6 +2011,16 @@ f
  This is often called a right fold in many functional languages.
 \end_layout
 
+\begin_layout Verbatim
+
+      +⌿1 2 3 4 5
+\end_layout
+
+\begin_layout Verbatim
+
+15
+\end_layout
+
 \begin_layout Standard
 The dyadic application 
 \family typewriter
@@ -1760,39 +2033,41 @@ The dyadic application
 \begin_layout Standard
 We can mutate the elements of an array or bind the result of an expression
  to a name.
- We bind names using the form 
+ The form 
 \family typewriter
 V←expr
 \family default
- where 
+ binds 
 \family typewriter
 V
 \family default
- will then hold the result of 
+ to the result of 
 \family typewriter
 expr
 \family default
 .
- We can assign the element of an array or multiple elements by indexing
- into that array with 
+ The expression 
 \family typewriter
-A[i]←expr
+A[i]
 \family default
-.
- This will set the elements in 
+←
 \family typewriter
-A
+expr
 \family default
- corresponding to indices 
+ assigns the elements of 
 \family typewriter
-i
+expr
 \family default
  to the corresponding elements of 
 \family typewriter
-expr
+A
+\family default
+ according to indices 
+\family typewriter
+i
 \family default
 .
- As a pattern, if we have a nested array 
+ If we have a nested array 
 \family typewriter
 A
 \family default
@@ -1840,6 +2115,18 @@ The syntax
 \family default
  refers to the function itself, permitting anonymous recursion.
  Functions execute expressions in order and return the first unbound expression.
+\end_layout
+
+\begin_layout Verbatim
+      add1←{1+⍵}
+\end_layout
+
+\begin_layout Verbatim
+      add1 3 4 5
+\end_layout
+
+\begin_layout Verbatim
+4 5 6
 \end_layout
 
 \begin_layout Section
