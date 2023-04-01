@@ -266,7 +266,7 @@ from scratch
 
  APL source was on par with the complexity of the PyTorch reference implementati
 on, albeit more foreign, while being more concise and complete.
- We also found that when compiled with Co-dfns, despite the naive implementation
+ We also found that when compiled with Co-dfns, despite the naïve implementation
  both of Co-dfns and our own code, performance on the GPU and the CPU were
  within a factor of 2.2 - 2.4 times that of the PyTorch implementation.
  We believe this suggests significant avenues of future exploration for
@@ -282,15 +282,15 @@ Introduction
 \begin_layout Standard
 Specialized machine learning frameworks dominate present deep learning applicati
 ons.
- A wide number of higly specialized, optimized libraries exist.
+ A wide number of highly specialized, optimized libraries exist.
  These systems are more complex than typical libraries and are better thought
  of as domain-specific languages (DSLs).
  While these libraries bolster the current machine learning explosion, because
  of their highly specialized nature, users tend to become specialists around
  a very specific framework for computation.
- This creates a sharp wall that impedes skills transferrence, where experts
- can use frameworks effectively but may be underprepared to handle situations
- that benefit from broader or more flexible skillsets.
+ This creates a sharp wall that impedes skills transference, where experts
+ can use frameworks effectively but may be under-prepared to handle situations
+ that benefit from broader or more flexible skill-sets.
 \begin_inset Foot
 status open
 
@@ -330,8 +330,8 @@ programming by knob turning
 \end_inset
 
  where networks are programmed via trial and error rather than intentionality,
- further exacerbating the danger of unintended consequences already an inherent
- difficulty in statistical ML 
+ further exacerbating the danger of unintended consequences, already an
+ inherent difficulty in statistical ML 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "domingos2012few"
@@ -340,10 +340,9 @@ literal "false"
 \end_inset
 
 .
- Machine learning frameworks are often highly vendor-specific; even more
- vendor-neutral systems encode greater specificity than historically warranted
- for long-running code intended.
- This demands higher levels of programmer investment in system maintainence
+ Machine learning frameworks are often highly vendor-specific; even vendor-neutr
+al systems encode greater specificity than warranted for long-running code.
+ This demands higher levels of programmer investment in system maintenance
  over a product lifetime.
  Despite this, specialist frameworks prove highly effective, in part because
  of the performance demands of ML.
@@ -416,7 +415,7 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Given the available APL technology and the parsity of existing research
+Given the available APL technology and the paucity of existing research
  on modern ML in APL, we explored APL as a ML language in terms of language
  design and runtime performance by implementing and benchmarking the U-net
  convolutional neural network 
@@ -471,7 +470,7 @@ Convolutional Neural Networks
 \begin_layout Standard
 The experiment this paper uses to produce its benchmarks is the reproduction
  of a well-known convolutional neural network architecture.
- The use of CNNs in machine learning was widely popularised with the publication
+ The use of CNNs in machine learning was widely popularized with the publication
  of a paper 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -490,7 +489,7 @@ literal "false"
 \end_inset
 
  challenge.
- However, a proeminent paper from 1998 
+ However, a prominent paper from 1998 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "cnns-lecun-doc-recognition"
@@ -527,7 +526,7 @@ channel
 \end_inset
 
  typically refers to the leading dimension of these inputs/outputs, a nomenclatu
-re that is derived from the fact that CNNs were popularised in the context
+re that is derived from the fact that CNNs were popularized in the context
  of image processing.
 \end_layout
 
@@ -554,7 +553,7 @@ re that is derived from the fact that CNNs were popularised in the context
  depends on the number of input and output channels, the sizes of the kernels
  are independent of the size of the other two dimensions of the inputs.
  Despite the fact that the main dynamics of a convolutional layer is governed
- by discrete convolution with the learnable kernels, the exact behaviour
+ by discrete convolution with the learnable kernels, the exact behavior
  of a convolutional layer depends on layer parameters like the padding and
  the stride used 
 \begin_inset CommandInset citation
@@ -570,7 +569,7 @@ literal "false"
 \begin_layout Standard
 Given that CNNs were primarily used in image recognition-related tasks,
  convolutional layers were often paired with pooling layers that ease the
- recognition of features over small neighbourhoods 
+ recognition of features over small neighborhoods 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "pooling"
@@ -792,7 +791,7 @@ After the contracting path (at the diagram bottom) completes, a corresponding
 \begin_inset Formula $3\times3$
 \end_inset
 
- convolutions preceeded by an upsampling operation (green up arrows) that
+ convolutions preceded by an upsampling operation (green up arrows) that
  doubles the map size while halving the channels.
  We infer that the original authors used a transposed convolution (with
  
@@ -824,7 +823,7 @@ literal "false"
 
 \end_inset
 
- for an informal discussion of this inferrence.
+ for an informal discussion of this inference.
 \end_layout
 
 \end_inset
@@ -1158,7 +1157,7 @@ noprefix "false"
  gives the common names for sub-classes of arrays by rank.
  Scalars have exactly one element.
  Higher ranked, non-empty arrays contain as many elements as the product
- of its axes, while those with at least one zero axis, called 
+ of its axes, while those with at least one zero length axis, called 
 \noun on
 empty
 \noun default
@@ -1215,11 +1214,11 @@ Expressions
 \end_layout
 
 \begin_layout Standard
-Expressions consist of a series of literals, applications, bindings, or
- assignments.
+Expressions consist of a series of literals/variables, applications, bindings,
+ or assignments.
  Literal expressions describe an array.
  A single numeric value is a literal.
- Adjacent literals, separated by whitespace, form a vector of those literals.
+ Adjacent values, separated by whitespace, form a vector of those values.
  For example:
 \end_layout
 
@@ -1361,7 +1360,7 @@ Primitives
 \end_layout
 
 \begin_layout Standard
-APL is known for its primitives, built-in functions and operators assigned
+APL is known for its primitives: built-in functions and operators assigned
  special symbols instead of the standard alphanumeric variable names given
  to user-defined values.
  The examples used in this paper are expressions of mostly primitive functions
@@ -1377,7 +1376,7 @@ scalar functions
  by point-wise, also called element-wise, extension.
  The left and right arguments of a scalar function must share the same shape,
  with scalar arguments extended to the same shape as the other argument.
- Consider the following example using addition and negation:
+ Consider the following example using addition:
 \end_layout
 
 \begin_layout Verbatim
@@ -1413,7 +1412,7 @@ Scalar functions return arrays the same shape as their inputs.
 \family typewriter
 ⌈
 \family default
- (ceiling/maximum), 
+ (ceiling or maximum), 
 \family typewriter
 ⌊
 \family default
@@ -1528,7 +1527,7 @@ The function
 \family typewriter
 ≢⍵
 \family default
- applied monadically returns a scalar of the first axis of 
+ applied monadically returns the length of the first axis of 
 \family typewriter
 ⍵
 \family default
@@ -2096,7 +2095,19 @@ X
 A[i]←⊂X
 \family default
 .
- 
+ We write 
+\family typewriter
+i⊃A
+\family default
+ to extract the same array 
+\family typewriter
+X
+\family default
+ from 
+\family typewriter
+A
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -2208,9 +2219,9 @@ literal "false"
  own stencil operator.
  We propose an alternative that was first suggested to us by the late Roger
  Hui, the stencil 
-\emph on
+\noun on
 function
-\emph default
+\noun default
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2241,10 +2252,8 @@ A naïve implementation of the stencil function that did not pad its results
 ⌺
 \family default
  to mean the stencil 
-\emph on
 \noun on
 function
-\emph default
 \noun default
  and not the stencil 
 \noun on
@@ -2490,9 +2499,8 @@ In the following, we box each
 \end_layout
 
 \begin_layout Standard
-
-Notice that the window slides along the rows, so each slice captures all
- columns for the two rows visible in the window.
+Notice that the window slides along the leading axes, so each slice captures
+ all trailing axes for each slice.
 \end_layout
 
 \begin_layout Subsection
@@ -2629,7 +2637,7 @@ valid
 \family typewriter
 CV
 \family default
- as a function over a set of kernels 
+ as a function over a kernel 
 \family typewriter
 ⍺
 \family default
@@ -2778,7 +2786,7 @@ w
 \family typewriter
 ∆z
 \family default
- , the weight gradient 
+, the weight gradient 
 \family typewriter
 ∆w
 \family default
@@ -3067,15 +3075,15 @@ Transposed Convolution (2×2)
 
 \begin_layout Standard
 The upsampling computation with convolution proved to be the most subtle
- and challenging, mostly in part to the opaqueness of implementations.
+ and challenging, mostly due to the opaqueness of implementations.
  The U-net paper was not immediately transparent regarding the exact operations
  used for this layer and there were a number of potential design decisions
  that could have been made.
  Moreover, for users reading about upsampling through convolutions, the
  descriptions are also the furthest removed from a reasonable implementation
  of the same.
- However, once the intuition of how an upsampling convolution matches the
- shape and form of a non-overlapping sliding window in the output layer
+ However, once the intuition hits that an upsampling convolution matches
+ the shape and form of a non-overlapping sliding window in the output layer,
  the computation becomes much clearer.
 \begin_inset Foot
 status open
@@ -3324,9 +3332,9 @@ noprefix "false"
 .
  To do this, we observe that the structure of the U-net diagram is an almost
  symmetric pattern.
- The output layer computations form 3 operations which are not part of the
- pattern, but the rest of the pattern decomposes into 4 depths, each with
- 6 operations each.
+ The output layer computations form three operations which are not part
+ of the pattern, but the rest of the pattern decomposes into 4 depths, each
+ with 6 operations each.
  
 \begin_inset CommandInset ref
 LatexCommand formatted
@@ -3353,8 +3361,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-Additionally, we note that the U-shaped structure also mimicks the down
- and up nature of a recursive program call-tree.
+Additionally, we note that the U-shaped structure also mimics the down and
+ up nature of a recursive program call-tree.
  Thus, our overall strategy is to implement a recursive function 
 \family typewriter
 LA
@@ -3368,7 +3376,7 @@ downward pass
 \begin_inset Quotes erd
 \end_inset
 
- operations before recuring deeper into the network and finally computing
+ operations before recurring deeper into the network and finally computing
  the upwards passes on the return of its recursive call.
  We likewise implement backpropagation in same way, but in the opposite
  direction.
@@ -3468,7 +3476,7 @@ FWD←{
 
 \begin_layout Verbatim
 
-  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵
+  2 C1 1 CV 0 CV 3 LA (3↑(⍴⍵),1)⍴⍵
 \end_layout
 
 \begin_layout Verbatim
@@ -3564,7 +3572,7 @@ BCK←{
 
 \begin_layout Verbatim
 
-    (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+mx
+    (⍺+0)∆CV(⍺+1)∆CV mx+(⍺+2)∆CC ⍵
 \end_layout
 
 \begin_layout Verbatim
@@ -4557,7 +4565,7 @@ name "fig:Performance-results-for"
 \end_inset
 
 We were primarily interested in the costs of executing a single run of the
- u-net over a single image source in both the forwards and backwards directions.
+ U-net over a single image source in both the forwards and backwards directions.
  We compared performance over the following platforms:
 \end_layout
 
@@ -4574,7 +4582,7 @@ Co-dfns (v4.1.0 master branch) using the CPU backend (AF v3.8.1)
 \end_layout
 
 \begin_layout Itemize
-PyTorch v1.10.2 with the CUDA gpu backend
+PyTorch v1.10.2 with the CUDA GPU backend
 \end_layout
 
 \begin_layout Itemize
@@ -4607,8 +4615,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
- graphics memory.
+The hardware used was an NVIDIA GeForce RTX 3070 Laptop GPU with 8GB of
+ dedicated graphics memory.
  We used NVIDIA driver version 511.65.
  The CPU was an Intel Core i7-10870H with 16 logical cores @ 2.2GHz.
  Main system memory was 32GB of DDR4 RAM.
@@ -4618,7 +4626,7 @@ The hardware used was an NVIDA GeForce RTX 3070 Laptop GPU with 8GB of dedicated
 
 \begin_layout Standard
 As input we used the original image data from the ISBI benchmark referenced
- in the u-net paper 
+ in the U-net paper 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "unet,isbi-data"
@@ -4689,7 +4697,7 @@ We observed the widest variance in performance results in the Co-dfns CPU
 
 \begin_layout Standard
 The stencil function was modeled in APL and used to conduct the above benchmark.
- The model, written in APL, is a naive implementation of the stencil function
+ The model, written in APL, is a naïve implementation of the stencil function
  and contains no special optimizations other than to distinguish between
  sliding windows of step 1 and non-overlapping, adjacent windows (such as
  used for the max pooling layers).
@@ -4700,7 +4708,7 @@ The stencil function was modeled in APL and used to conduct the above benchmark.
 
 \begin_layout Standard
 The above benchmark therefore represents a comparison of the PyTorch implementat
-ion against a naive and unspecialized implementation in APL executed with
+ion against a naïve and unspecialized implementation in APL executed with
  the general-purpose runtime used in Co-dfns that provides generalized GPU
  computation but does not include domain-specific optimizations such as
  those available in PyTorch.
@@ -4719,7 +4727,7 @@ Performance
 Clearly, specialized frameworks for deep neural networks are still the best
  way to go in order to achieve the absolute maximum in performance at present.
  However, our results indicate that the gap between reliance on specialized
- frameworks and the freedom to use more general purpose and transferrable
+ frameworks and the freedom to use more general purpose and transferable
  programming languages while still achieving competitive performance is
  not nearly as large as might have been the case even a few years ago.
  
@@ -4758,12 +4766,12 @@ es, is exceptionally well suited to expressing neural network computations,
  alien to most programmers who are more familiar with languages like Python.
  This certainly creates a fundamental and immediate learning cost to APL
  over other frameworks, since other frameworks can assume a wider range
- of pre-knowledge around their chosen language implementation.
+ of foreknowledge around their chosen language implementation.
  
 \end_layout
 
 \begin_layout Standard
-It remains unclear, however, whether, if this pre-knowledge were taken away,
+It remains unclear, however, whether, if this foreknowledge were taken away,
  APL would represent a compelling value proposition for such programming
  tasks or not.
  Indeed, it is exceptionally challenging to divorce the present reality
@@ -4776,7 +4784,7 @@ It remains unclear, however, whether, if this pre-knowledge were taken away,
 
 \begin_layout Standard
 The argument that APL may be used more widely and broadly than PyTorch on
- a wider range of problems using the same skillset may not matter to users
+ a wider range of problems using the same skill-set may not matter to users
  who are only interested in deep learning algorithms.
  
 \end_layout
@@ -4808,7 +4816,7 @@ We encountered significant difficulties in identifying exactly what the
 \end_layout
 
 \begin_layout Standard
-Finally, in the implementation of u-net in APL, we gained insights into
+Finally, in the implementation of U-net in APL, we gained insights into
  the architecture that had a direct and material influence on the PyTorch
  reference implementation that would not have emerged without first having
  studied the APL implementation.
@@ -4831,7 +4839,7 @@ literal "false"
 
 \end_inset
 
- have explored alternative implementations to CNNs, though not u-net specificall
+ have explored alternative implementations to CNNs, though not U-net specificall
 y.
  They focused specifically on APL as a productivity enhancement for CNN
  development, and only benchmarked the APL implementation on the CPU using
@@ -4906,9 +4914,10 @@ Future Work
 \end_layout
 
 \begin_layout Standard
-One of the most obvious questions to answer in future work is the reason
- for the slower performance of the specialized convolution functions against
- our naive implementation when using the same backend in Co-dfns.
+One of the most obvious questions to answer in future work is the performance
+ potential of the specialized convolution functions against our naïve implementa
+tion when using the same backend in Co-dfns; initial tests showed worse
+ results and were omitted here.
  
 \end_layout
 
@@ -4947,16 +4956,16 @@ Given the notational advantages of APL and the concision and clarity of
  We found that, though the traditional implementations of APL suffer from
  performance issues that would prevent widespread use in either academic,
  educational, or industrial contexts, compilers such as Co-dfns are capable
- of compiling complete neural network programs (in our case, the u-net architect
+ of compiling complete neural network programs (in our case, the U-net architect
 ure) and producing much more competitive performance results (within a factor
  of 2.2 - 2.4 times of our reference PyTorch implementation).
- This is despite the naive nature of our implementation and the naive optimizati
+ This is despite the naïve nature of our implementation and the naïve optimizati
 on support for neural networks on the part of the Co-dfns compiler.
  
 \end_layout
 
 \begin_layout Standard
-Furthermore, we found that our effort to implement u-net in APL resulted
+Furthermore, we found that our effort to implement U-net in APL resulted
  in a concise but fully unambiguous implementation that provided transparency
  over the entire source, without any frameworks or library dependencies.
  Despite being a complete 
@@ -4971,7 +4980,7 @@ by hand
  and other specialized frameworks, or even better, particularly in cases
  where more exploration and novel implementation is required, or when customized
  integrations may be called for.
- The insights that we gained from implementing u-net in APL affected our
+ The insights that we gained from implementing U-net in APL affected our
  implementation of a reference implementation in PyTorch directly, suggesting
  that APL may have significant pedagogical advantages for teaching neural
  network programming and machine learning in general.
