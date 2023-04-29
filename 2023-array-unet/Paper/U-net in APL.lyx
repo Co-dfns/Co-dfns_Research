@@ -25,7 +25,7 @@
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
-\use_microtype false
+\use_microtype true
 \use_dash_ligatures true
 \graphics default
 \default_output_format default
@@ -81,12 +81,36 @@
 
 \begin_body
 
+\begin_layout ACM Price
+15.00
+\end_layout
+
+\begin_layout ACM DOI
+10.1145/3589246.3595371
+\end_layout
+
+\begin_layout ACM Year
+2023
+\end_layout
+
+\begin_layout Copyright Year
+2023
+\end_layout
+
+\begin_layout ACM Submission ID
+pldiws23arraymain-p5-p
+\end_layout
+
+\begin_layout ACM ISBN
+979-8-4007-0169-6/23/06
+\end_layout
+
 \begin_layout ACM Conference
 \begin_inset Argument 1
 status open
 
 \begin_layout Plain Layout
-ARRAY'23
+ARRAY '23
 \end_layout
 
 \end_inset
@@ -96,7 +120,8 @@ ARRAY'23
 status open
 
 \begin_layout Plain Layout
-ARRAY Workshop
+Proceedings of the 9th ACM SIGPLAN International Workshop on Libraries,
+ Languages and Compilers for Array Programming
 \end_layout
 
 \end_inset
@@ -106,7 +131,7 @@ ARRAY Workshop
 status open
 
 \begin_layout Plain Layout
-Jun 17 - Jun 18, 2023
+June 18, 2023
 \end_layout
 
 \end_inset
@@ -116,12 +141,123 @@ Jun 17 - Jun 18, 2023
 status open
 
 \begin_layout Plain Layout
-Orlando, Florida, United States
+Orlando, FL, USA
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+acmBooktitle{Proceedings of the 9th ACM SIGPLAN International Workshop on
+ Libraries, Languages and Compilers for Array Programming (ARRAY '23), June
+ 18, 2023, Orlando, FL, USA}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Received
+2023-03-31
+\end_layout
+
+\begin_layout Received
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+accepted
+\end_layout
+
+\end_inset
+
+2023-04-21
+\end_layout
+
+\begin_layout CCSXML
+
+<ccs2012>
+\end_layout
+
+\begin_layout CCSXML
+
+  <concept>
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_id>10011007.10011006.10011008.10011009.10010175</concept_id>
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_desc>Software and its engineering~Parallel programming languages</c
+oncept_desc> 
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_significance>500</concept_significance>
+\end_layout
+
+\begin_layout CCSXML
+
+  </concept>
+\end_layout
+
+\begin_layout CCSXML
+
+  <concept>
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_id>10011007.10011006.10011041.10011048</concept_id>
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_desc>Software and its engineering~Runtime environments</concept_des
+c>
+\end_layout
+
+\begin_layout CCSXML
+
+    <concept_significance>500</concept_significance>
+\end_layout
+
+\begin_layout CCSXML
+
+  </concept>
+\end_layout
+
+\begin_layout CCSXML
+
+</ccs2012>
+\end_layout
+
+\begin_layout CCS Description
+
+Software and its engineering~Parallel programming languages
+\end_layout
+
+\begin_layout CCS Description
+
+Software and its engineering~Runtime environments
+\end_layout
+
+\begin_layout Keywords
+APL, Compilers, Neural Networks, Machine Learning, GPU, Co-dfns
 \end_layout
 
 \begin_layout Title
@@ -2246,8 +2382,8 @@ literal "false"
  right operand of the stencil operator, and which receives the same right
  argument as the right argument to the function returned by the stencil
  operator.
- A reasonable definition (with padding) of the stencil function using the
- Dyalog stencil operator might be:
+ A reasonable definition (padded) of the stencil function using the Dyalog
+ stencil operator might be:
 \end_layout
 
 \begin_layout Verbatim
