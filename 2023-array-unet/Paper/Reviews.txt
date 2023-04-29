@@ -1,0 +1,156 @@
+ARRAY 2023 Paper #5 Reviews and Comments
+===========================================================================
+Paper #5 U-net CNN in APL
+
+
+Review #5A
+===========================================================================
+
+Overall merit
+-------------
+3. Weak accept
+
+Reviewer expertise
+------------------
+3. Knowledgeable
+
+Paper summary
+-------------
+The paper proposes an implementation of the U-net CNN in APL
+and it studies performance of the resulting solution on GPUs
+using the Co-dfn APL compiler.
+
+Comments for authors
+--------------------
+This paper makes a good case for using Co-dfns to implement
+a practical application.  While it is clear that the chosen application
+can be expressed in APL concisely, it is nice to see that the compiler
+delivers reasonable performance.
+
+I think that the paper is a good fit for the workshop, but I do have
+several high-level suggestions.
+
+* Maybe I missed it, but you need to say explicitly that all your
+  arrays are 0-indexed, as this is not default in APL.
+
+* Your definition of SF doesn't work as advertised in the APL 
+  interpreter (tried locally, and with tryapl.org).  The problem
+  is that:
+  ```
+     ⍴3 3 SF 6 6⍴⍳36
+  6 6 3 3
+  ```
+  and not `4 4 3 3` as you write.  The reason for this is that
+  APL adds paddings in a completely crazy way.  However, it also
+  means that all the slices of such a padded tiling contain "wrong"
+  elements (with respect to desired tiling).
+
+* Page 6, right column top: 4 4⍴⍳16 -> 6 6⍴⍳36
+
+* Following up on incorrect SF, I would like to see a discussion
+  on correctness guarantees (or lack of these).
+  You suggest that the APL implementation in appendix A computes
+  the same results as PyTorch implementation in appendix B.
+  What is the evidence that this is actually the case?
+  The APL code is far from obvious, so simply staring at it
+  is not really an option.  You can surely write tests, but
+  maybe there is a more principled way?  If not, maybe it is
+  worth mentioning that this is a price for a highly dynamic
+  language.
+
+* Performance.  The PyTorch example runs for ~4 seconds. It
+  seem to be an incredibly tiny runtime --- the framework
+  cannot demonstrating its full capabilities.  Can you add several
+  experiments on larger inputs so that runtimes are at least
+  measured in minutes?
+
+  Actually, I am surprised that you are not catching-up with
+  PyTorch. All the array sizes are static, and so is the execution
+  graph.  Maybe, it would be worth explaining what is exactly
+  the problem and what are the obvious compiler improvements.
+
+* Autodiff.  One crucial feature of all the machine-learning
+  frameworks is automatic differentiation.  No machine-learning
+  expert will use a framework without autodiff, as computing
+  backward parts for large networks by hands is no fun.
+  What's the state of autodiff in APL; how difficult would
+  it be to add it to Co-dfns?
+
+* References.  These references seem relevant to your work:
+  1. AI-related primitives implemented in Futhark.
+     Compositional deep learning in Futhark: https://dl.acm.org/doi/abs/10.1145/3331553.3342617
+  2. A follow-up of [28] that is more focused on performance.
+     Array languages make neural networks fast: https://dl.acm.org/doi/abs/10.1145/3460944.3464312
+
+
+
+Review #5B
+===========================================================================
+
+Overall merit
+-------------
+3. Weak accept
+
+Reviewer expertise
+------------------
+3. Knowledgeable
+
+Paper summary
+-------------
+This paper describes an implementation of the U-Net, a well-known CNN, in APL and it benchmarks its performance using the Dyalog APL interpreter and Co-Dfns generated C and Cuda code against a Pytorch implementation. The authors show that despite comparing their library-free implementation their performance gets roughly within a factor 2 of the Pytorch implementation.
+
+Comments for authors
+--------------------
+This is really nicely written paper. I particularly like the argument for general purpose languages as opposed to DSLs in your introduction as well as light-weight introduction into the key APL constructs that you are using.
+The key CNN operations are well presented and the performance results you present look impressive.
+
+Given that the from-scratch implementation of CNNs in array languages has been presented before (as you mention), the main contribution of the paper lies in the choice of the CNN and in the performance evaluation.
+
+Here I would hope to see some more elaboration. You state that you measure only one iteration on one 512x512 image, including forward computation and back-propagation. Yet your runtimes are in the seconds. Systems like Pytorch typically generate a graph of the CNN and generate code at runtime before starting the execution. So I would not be surprised if the Pytorch runtime would not increase anywhere near to linearly when increasing the number of iterations while in your a-priori compiled approach this is not the case.
+
+You mention that you are aware of setup/startup costs and you say that you measure several "runs" and present the average and range. To me, that suggests that all your runs where runs "from scratch" doing exactly 1 iteration. If that is true, it would be really important to look at higher numbers of iterations to see if the compared approaches scale in the same way.
+
+When talking about performance and comparing against different implementations, it would be nice if you could relate your work to findings of other array languages (eg Futhark, SaC, Accelerate) when implementing CNNs, as in several languages similar experiments have been conducted.
+
+
+
+Review #5C
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+This paper reports the authors' experience on implementing U-net
+convolutional neural network in APL with an APL compiler equipped
+with GPU support, namely Co-dfns. The result is satisfactory:
+thanks to APL's concise notation and array-based semantics,
+without any support of any librarie and framework, the authors
+successfully implemented a U-net over a single image without loosing
+its clarity. The benchmark shows that their implementation is 2 times
+slower than PyTorch, but it should be reasonable, considering its
+conciseness and clarity.
+
+Comments for authors
+--------------------
+I really enjoyed this paper.  Regardless of the fact that the
+implementation presented in this paper does not include apparently
+any amazing piece of work in accordance with the original proposal
+of U-net, the performance of such a clear implementation is only 2
+times slower than a complicated and black-boxed Python framework.
+This fact would shed some light on high-level but performant array
+programming.
+
+Unfortunately I do not have any sense to be familiar with the
+unique representation of APL programs, so I wonder if I really could
+understand what is going on in this paper, but I understand the
+claim that a functional language give us some benefit in a field of
+high-performance computing, in which traditionally functional language
+is not often made use of.  This would give good lessons taken away
+by the audience of the workshop.

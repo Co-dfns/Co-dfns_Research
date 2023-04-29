@@ -298,3 +298,39 @@ numpages = {5}
   pages   = {357–362},
   doi     = {10.1038/s41586-020-2649-2}
 }
+
+@inproceedings{futhark-deeplearning,
+author = {Tran, Duc Minh and Henriksen, Troels and Elsman, Martin},
+title = {Compositional Deep Learning in Futhark},
+year = {2019},
+isbn = {9781450368148},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3331553.3342617},
+doi = {10.1145/3331553.3342617},
+abstract = {We present a design pattern for composing deep learning networks in a typed, higher-order fashion. The exposed library functions are generically typed and the composition structure allows for networks to be trained (using back-propagation) and for trained networks to be used for predicting new results (using forward-propagation). Individual layers in a network can take different forms ranging over dense sigmoid layers to convolutional layers. The paper discusses different typing techniques aimed at enforcing proper use and composition of networks. The approach is implemented in Futhark, a data-parallel functional language and compiler targeting GPU architectures, and we demonstrate that Futhark's elimination of higher-order functions and modules leads to efficient generated code.},
+booktitle = {Proceedings of the 8th ACM SIGPLAN International Workshop on Functional High-Performance and Numerical Computing},
+pages = {47–59},
+numpages = {13},
+keywords = {data-parallelism, deep learning, functional languages},
+location = {Berlin, Germany},
+series = {FHPNC 2019}
+}
+
+@inproceedings{sac-cnn,
+author = {\v{S}inkarovs, Artjoms and Vie\ss{}mann, Hans-Nikolai and Scholz, Sven-Bodo},
+title = {Array Languages Make Neural Networks Fast},
+year = {2021},
+isbn = {9781450384667},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3460944.3464312},
+doi = {10.1145/3460944.3464312},
+abstract = {Most implementations of machine learning algorithms are based on special-purpose frameworks such as TensorFlow or PyTorch. While these frameworks are convenient to use, they introduce multi-million lines of code dependency that one has to trust, understand and potentially modify. As an alternative, this paper investigates a direct implementation of a state of the art Convolutional Neural Network (CNN) in an array language. While our implementation requires 150 lines of code to define the special-purpose operators needed for CNNs, which are readily provided through frameworks such as TensorFlow and PyTorch, our implementation outperforms these frameworks by factors 2 and 3 on a fixed set of hardware — a 64-core GPU-accelerated machine; for a simple example network. The resulting specification is written in a rank-polymorphic data-parallel style, and it can be immediately leveraged by optimising compilers. Indeed, array languages make neural networks fast.},
+booktitle = {Proceedings of the 7th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming},
+pages = {39–50},
+numpages = {12},
+keywords = {array language, machine learning},
+location = {Virtual, Canada},
+series = {ARRAY 2021}
+}

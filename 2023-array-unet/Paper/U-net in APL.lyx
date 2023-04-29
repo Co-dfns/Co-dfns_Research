@@ -1177,6 +1177,17 @@ fill
 \family default
 , and it is used by some primitives to extend or resize arrays to larger
  shapes.
+ Indices begin at 0, rather than 1.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Dyalog APL defaults to 1-based indexing.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2235,8 +2246,8 @@ literal "false"
  right operand of the stencil operator, and which receives the same right
  argument as the right argument to the function returned by the stencil
  operator.
- A reasonable definition of the stencil function using the Dyalog stencil
- operator might be:
+ A reasonable definition (with padding) of the stencil function using the
+ Dyalog stencil operator might be:
 \end_layout
 
 \begin_layout Verbatim
@@ -2255,7 +2266,7 @@ A naïve implementation of the stencil function that did not pad its results
 \noun on
 function
 \noun default
- and not the stencil 
+ without padding and not the stencil 
 \noun on
 operator
 \noun default
@@ -2410,7 +2421,7 @@ In the following, we box each
 
 \begin_layout Verbatim
 
-      ⊂[2 3]3 3⌺4 4⍴⍳16
+      ⊂[2 3]3 3⌺6 6⍴⍳36
 \end_layout
 
 \begin_layout Verbatim
@@ -4830,8 +4841,7 @@ Related Work
 \end_layout
 
 \begin_layout Standard
-Two particular avenues of research warrant particular mention here.
- In addition to the Co-dfns compiler, 
+In addition to the Co-dfns compiler, 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "bernecky-cnn"
@@ -4841,14 +4851,21 @@ literal "false"
 
  have explored alternative implementations to CNNs, though not U-net specificall
 y.
- They focused specifically on APL as a productivity enhancement for CNN
- development, and only benchmarked the APL implementation on the CPU using
- the Dyalog APL interpreter.
- However, they indicated work in progress on a compiled version using the
- APEX compiler with a SaC backend.
- Their conclusion regarding the performance of APL-based systems may have
- been premature given the results we found here, but they make a case for
- the usability of APL even with the performance numbers they achieved.
+ They focused on APL as a productivity enhancement for CNN development,
+ and only benchmarked the APL implementation on the CPU using the Dyalog
+ APL interpreter.
+ They make a case for the usability of APL even with the performance numbers
+ they achieved.
+ Research in SaC demonstrates implementations competitive with the current
+ state of the art 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "sac-cnn"
+literal "false"
+
+\end_inset
+
+.
  While their code exhibits some material differences to that given here,
  there are nonetheless some similarities that demonstrate some level of
  convergence around implementing CNNs in APL.
@@ -4866,10 +4883,17 @@ literal "false"
 
 , which is a compiler chain taking APL to the TAIL (Typed Array Intermediate
  Language) and then compiling TAIL code using the Futhark GPU compiler backend.
- While the authors are not aware of any work implementing complex neural
- networks with this chain, it represents an interesting approach to compilation
- of APL via typed intermediate languages, which have the potential to enhance
- the fusion that can be done with an operation like the stencil function.
+ Futhark has been used to implement deep learning primitives 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "futhark-deeplearning"
+literal "false"
+
+\end_inset
+
+, and it represents an interesting approach to compilation of APL via typed
+ intermediate languages, which have the potential to enhance the fusion
+ that can be done with an operation like the stencil function.
  
 \end_layout
 
