@@ -1,0 +1,5 @@
+* Formal correctness? 
+* Why are the runtimes so small? Partly memory issues, partly to mimic the original paper.
+* Static vs. Dynamic graphs and arrays sizes (differences in PyTorch vs. APL implementation?)
+* Automatic differentiation and what to do about it
+* Add in the 
