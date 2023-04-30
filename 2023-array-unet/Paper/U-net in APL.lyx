@@ -5189,6 +5189,22 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+balance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Given the notational advantages of APL and the concision and clarity of
  expression that one can obtain, we explored the potential impact of using
  APL as a language for implementing convolutional neural networks of reasonable
@@ -6912,6 +6928,8 @@ status open
 
 \backslash
 twocolumn
+\backslash
+balance
 \end_layout
 
 \end_inset
