@@ -8,7 +8,7 @@
 \begin_preamble
 
 \end_preamble
-\options format=sigplan,screen
+\options format=sigplan,screen,balance
 \use_default_options false
 \maintain_unincluded_children false
 \language english
@@ -80,6 +80,10 @@
 \end_header
 
 \begin_body
+
+\begin_layout Set Copyright
+rightsretained
+\end_layout
 
 \begin_layout ACM Price
 15.00
@@ -330,6 +334,10 @@ Rodrigo Girão Serrão
 
 \begin_layout Email
 rodrigo@dyalog.com
+\end_layout
+
+\begin_layout ORCID
+0009-0009-3361-3835
 \end_layout
 
 \begin_layout Affiliation
@@ -1683,6 +1691,23 @@ The function
 ⍴⍵
 \family default
 .
+ The expression 
+\family typewriter
+⍳N
+\family default
+ gives the natural numbers up to 
+\family typewriter
+N
+\family default
+.
+\end_layout
+
+\begin_layout Verbatim
+      ⍳7
+\end_layout
+
+\begin_layout Verbatim
+0 1 2 3 4 5 6
 \end_layout
 
 \begin_layout Standard
@@ -1769,7 +1794,7 @@ The transpose primitive
 \family typewriter
 ⍵
 \family default
- by exchanging the last two axes between themselves; likewise, 
+ by exchanging the last two axes; likewise, 
 \family typewriter
 3 0 1 2⍉⍵
 \family default
@@ -1779,8 +1804,7 @@ The transpose primitive
 \family default
  so that its first axis becomes its last, while all other dimensions retain
  the same relative order.
- Consider the following example of transposing two matrix slices (sub-arrays)
- of a cube:
+ The following transposes two matrix slices (sub-arrays) of a cube:
 \end_layout
 
 \begin_layout Verbatim
@@ -2097,7 +2121,7 @@ N/⍵
 \family typewriter
 N
 \family default
- times along the first or last axis, respectively, as follows:
+ times along the first or last axis, respectively:
 \end_layout
 
 \begin_layout Verbatim
@@ -2861,15 +2885,15 @@ CV←{0⌈(,[2 3 4]3 3⌺⍵)+.×,[0 1 2]⍺}
 \end_layout
 
 \begin_layout Standard
-The result of 
+The result of the expression 
 \family typewriter
 3 3⌺⍵
 \family default
- will have the shape 
+ will have a rank of 5 and shape 
 \family typewriter
 (N-2) (M-2) 3 3 I
 \family default
-, so the expression 
+, so raveling the trailing dimensions with the expression 
 \family typewriter
 ,[2 3 4]3 3⌺⍵
 \family default
@@ -3280,7 +3304,7 @@ I
 O
 \family default
 .
- Given a layer of our standard shape 
+ With a layer of standard shape 
 \family typewriter
 N M I
 \family default
@@ -3435,306 +3459,6 @@ CV
 \begin_layout Verbatim
 
     ∆x←∆z+.×⍉w
-\end_layout
-
-\begin_layout Verbatim
-
-}
-\end_layout
-
-\begin_layout Subsection
-U-net Architecture
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:U-net-Architecture"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Given the core vocabularies defined in 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "subsec:Neural-Network-Vocabulary"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-, the remaining challenge with implementing U-net is to link together the
- appropriate layers and compositions to form the complete network as described
- by 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- To do this, we observe that the structure of the U-net diagram is an almost
- symmetric pattern.
- The output layer computations form three operations which are not part
- of the pattern, but the rest of the pattern decomposes into 4 depths, each
- with 6 operations each.
- 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "tab:A-rectangular-arrangement"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- contains a visual arrangement of the kernel shapes used in our architecture
- mirroring the overall structure of 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "fig:unet-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Additionally, we note that the U-shaped structure also mimics the down and
- up nature of a recursive program call-tree.
- Thus, our overall strategy is to implement a recursive function 
-\family typewriter
-LA
-\family default
- that receives an index identifying a particular depth of the network, computes
- the appropriate 
-\begin_inset Quotes eld
-\end_inset
-
-downward pass
-\begin_inset Quotes erd
-\end_inset
-
- operations before recurring deeper into the network and finally computing
- the upwards passes on the return of its recursive call.
- We likewise implement backpropagation in same way, but in the opposite
- direction.
- Assuming that 
-\family typewriter
-⍺
-\family default
- contains the computed depth offset for the network layer, we write 
-\family typewriter
-⍺+i
-\family default
- to access the 
-\begin_inset Formula $i$
-\end_inset
-
-th column of the network described in 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "tab:A-rectangular-arrangement"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- at the depth 
-\family typewriter
-⍺÷6
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-Our forward pass function is responsible for initializing an appropriate
- holding place for the intermediate results produced by forward propagation
- for use by the backpropagation function.
- Additionally, after the recursive computation, there are the final three
- operations, 
-\family typewriter
-C1
-\family default
- and two 
-\family typewriter
-CV
-\family default
- operations, that must be called before returning.
- We also assume that we may receive a rank 2 matrix instead of a rank 3
- layer as input, and so we reshape the input to ensure that we always have
- a rank 3 input to 
-\family typewriter
-LA
-\family default
-.
- This gives us the following function definition:
-\end_layout
-
-\begin_layout Verbatim
-
-FWD←{
-\end_layout
-
-\begin_layout Verbatim
-
-  Z⊢←(≢W)⍴⊂⍬
-\end_layout
-
-\begin_layout Verbatim
-
-  ⍝ Forward propagation layers ...
-\end_layout
-
-\begin_layout Verbatim
-
-  LA←{
-\end_layout
-
-\begin_layout Verbatim
-
-    ⍺≥≢Z:⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  2 C1 1 CV 0 CV 3 LA (3↑(⍴⍵),1)⍴⍵
-\end_layout
-
-\begin_layout Verbatim
-
-}
-\end_layout
-
-\begin_layout Standard
-The backwards computation mirrors this pattern, except that it proceeds
- in the opposite direction and also defines an updater function 
-\family typewriter
-∆
-\family default
- that will update the network weights in 
-\family typewriter
-W
-\family default
- and the velocities in 
-\family typewriter
-V
-\family default
- based on a given gradient 
-\family typewriter
-⍵
-\family default
- and index 
-\family typewriter
-⍺
-\family default
- pointing to a specific location in the network.
- 
-\end_layout
-
-\begin_layout Verbatim
-
-BCK←{
-\end_layout
-
-\begin_layout Verbatim
-
-  Y←⍺ ⋄ Y∆←⍵
-\end_layout
-
-\begin_layout Verbatim
-
-  ∆←{
-\end_layout
-
-\begin_layout Verbatim
-
-    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
-\end_layout
-
-\begin_layout Verbatim
-
-    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  ⍝ Back propagation layers ...
-\end_layout
-
-\begin_layout Verbatim
-
-  ∆LA←{
-\end_layout
-
-\begin_layout Verbatim
-
-    ⍺≥≢Z:⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    up←(⍺+5)∆UP(-(≢⍉⍵)÷2)↑[2]⍵
-\end_layout
-
-\begin_layout Verbatim
-
-    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV up
-\end_layout
-
-\begin_layout Verbatim
-
-    mx←(⍺+2)∆MX down
-\end_layout
-
-\begin_layout Verbatim
-
-    (⍺+0)∆CV(⍺+1)∆CV mx+(⍺+2)∆CC ⍵
-\end_layout
-
-\begin_layout Verbatim
-
-  }
-\end_layout
-
-\begin_layout Verbatim
-
-  diff←Y∆-(~Y),[1.5]Y
-\end_layout
-
-\begin_layout Verbatim
-
-  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 diff
 \end_layout
 
 \begin_layout Verbatim
@@ -4654,6 +4378,362 @@ Upward Pass
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+U-net Architecture
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:U-net-Architecture"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Given the core vocabularies defined in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "subsec:Neural-Network-Vocabulary"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the remaining challenge with implementing U-net is to link together the
+ appropriate layers and compositions to form the complete network as described
+ by 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ To do this, we observe that the structure of the U-net diagram is an almost
+ symmetric pattern.
+ The output layer computations form three operations which are not part
+ of the pattern, but the rest of the pattern decomposes into 4 depths, each
+ with 6 operations each.
+ 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ contains a visual arrangement of the kernel shapes used in our architecture
+ mirroring the overall structure of 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:unet-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Additionally, we note that the U-shaped structure also mimics the down and
+ up nature of a recursive program call-tree.
+ Thus, our overall strategy is to implement a recursive function 
+\family typewriter
+LA
+\family default
+ that receives an index identifying a particular depth of the network, computes
+ the appropriate 
+\begin_inset Quotes eld
+\end_inset
+
+downward pass
+\begin_inset Quotes erd
+\end_inset
+
+ operations before recurring deeper into the network and finally computing
+ the upwards passes on the return of its recursive call.
+ We likewise implement backpropagation in same way, but in the opposite
+ direction.
+ Assuming that 
+\family typewriter
+⍺
+\family default
+ contains the computed depth offset for the network layer, we write 
+\family typewriter
+⍺+i
+\family default
+ to access the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of the network described in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "tab:A-rectangular-arrangement"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at the depth 
+\family typewriter
+⍺÷6
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Our architecture is agnostic to any specific size of kernels or depth of
+ the 
+\begin_inset Quotes eld
+\end_inset
+
+U
+\begin_inset Quotes erd
+\end_inset
+
+; using greater depth with larger resolutions is possible simply by providing
+ a different network of kernels as input.
+ Many systems typically allocate networks statically, including our own
+ PyTorch implementation.
+ Our implementation instead assumes a network defined by a set of kernels
+ 
+\family typewriter
+W
+\family default
+ that match the expected shape.
+ We mirror the 
+\family typewriter
+W
+\family default
+ network with our intermediate results in 
+\family typewriter
+Z
+\family default
+ so that we can do backpropagation.
+ The full code for our layers extract their values from these 
+\family typewriter
+Z
+\family default
+ and 
+\family typewriter
+W
+\family default
+ vectors directly using expressions like 
+\family typewriter
+⍺⊃W
+\family default
+ to extract the weights for the layer at index 
+\family typewriter
+⍺
+\family default
+.
+ We likewise store intermediate results with expressions like 
+\family typewriter
+Z[⍺]←⊂⍵
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Our forward pass function is responsible for initializing 
+\family typewriter
+Z
+\family default
+ to hold the intermediate results produced by forward propagation for use
+ by the backpropagation function.
+ After the recursive computation, there are the final three operations,
+ 
+\family typewriter
+C1
+\family default
+ and two 
+\family typewriter
+CV
+\family default
+ operations, that must be called before returning.
+ We assume that we may receive a rank 2 matrix instead of a rank 3 layer
+ as input, and so we reshape the input to ensure that we always have a rank
+ 3 input to 
+\family typewriter
+LA
+\family default
+.
+ This gives us the following function definition:
+\end_layout
+
+\begin_layout Verbatim
+
+FWD←{
+\end_layout
+
+\begin_layout Verbatim
+
+  Z⊢←(≢W)⍴⊂⍬
+\end_layout
+
+\begin_layout Verbatim
+
+  ⍝ Forward propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+
+  LA←{
+\end_layout
+
+\begin_layout Verbatim
+
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  2 C1 1 CV 0 CV 3 LA (3↑(⍴⍵),1)⍴⍵
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
+The backwards computation mirrors this pattern, except that it proceeds
+ in the opposite direction and also defines an updater function 
+\family typewriter
+∆
+\family default
+ that will update the network weights in 
+\family typewriter
+W
+\family default
+ and the velocities in 
+\family typewriter
+V
+\family default
+ based on a given gradient 
+\family typewriter
+⍵
+\family default
+ and index 
+\family typewriter
+⍺
+\family default
+ pointing to a specific location in the network.
+ 
+\end_layout
+
+\begin_layout Verbatim
+
+BCK←{
+\end_layout
+
+\begin_layout Verbatim
+
+  Y←⍺ ⋄ Y∆←⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆←{
+\end_layout
+
+\begin_layout Verbatim
+
+    V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+    W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  ⍝ Back propagation layers ...
+\end_layout
+
+\begin_layout Verbatim
+
+  ∆LA←{
+\end_layout
+
+\begin_layout Verbatim
+
+    ⍺≥≢Z:⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    up←(⍺+5)∆UP(-(≢⍉⍵)÷2)↑[2]⍵
+\end_layout
+
+\begin_layout Verbatim
+
+    down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV up
+\end_layout
+
+\begin_layout Verbatim
+
+    mx←(⍺+2)∆MX down
+\end_layout
+
+\begin_layout Verbatim
+
+    (⍺+0)∆CV(⍺+1)∆CV mx+(⍺+2)∆CC ⍵
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  diff←Y∆-(~Y),[1.5]Y
+\end_layout
+
+\begin_layout Verbatim
+
+  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 diff
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Section
