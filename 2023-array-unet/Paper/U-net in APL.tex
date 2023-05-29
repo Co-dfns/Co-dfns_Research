@@ -1,7 +1,5 @@
-\batchmode
-\makeatletter
-\def\input@path{{C:/Users/arcfi/OneDrive/Documents/Co-dfns/Papers/2023-array-unet/Paper/}}
-\makeatother
+%% LyX 2.3.7 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
 \documentclass[10pt,twocolumn,english,format=sigplan,screen,balance]{acmart}
 \usepackage{fontspec}
 \setmonofont{APL385 Unicode}
@@ -15,10 +13,10 @@
 \usepackage{rotating}
 \ifx\hypersetup\undefined
   \AtBeginDocument{%
-    \hypersetup{xetex,unicode=true}
+    \hypersetup{unicode=true}
   }
 \else
-  \hypersetup{xetex,unicode=true}
+  \hypersetup{unicode=true}
 \fi
 
 \makeatletter
@@ -44,8 +42,7 @@
 \acmISBN{979-8-4007-0169-6/23/06}
 
 
-\acmConference[ARRAY '23]{Proceedings of the 9th ACM SIGPLAN International Workshop on Libraries,
-Languages and Compilers for Array Programming}{June 18, 2023}{Orlando, FL, USA}{}
+\acmConference[ARRAY '23]{Proceedings of the 9th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming}{June 18, 2023}{Orlando, FL, USA}
 
 
 
@@ -58,12 +55,18 @@ Languages and Compilers for Array Programming}{June 18, 2023}{Orlando, FL, USA}{
 %% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+
+\usepackage{dblfloatfix}
+
 \makeatother
 
 \usepackage{polyglossia}
 \setdefaultlanguage[variant=american]{english}
 \begin{document}
 \acmBooktitle{Proceedings of the 9th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming (ARRAY '23), June 18, 2023, Orlando, FL, USA}
+
+\acmPrice{}
 \begin{CCSXML}
 <ccs2012>
   <concept>
@@ -233,7 +236,7 @@ of regions of pixels and not individual pixels.
 \subsection{Original U-Net Architecture}
 
 \begin{figure*}
-\includegraphics[width=0.6\paperwidth]{0C__Users_arcfi_OneDrive_Documents_Co-dfns_Papers_2023-array-unet_Paper_u-net-architecture.png}
+\includegraphics[width=0.6\paperwidth]{u-net-architecture}
 
 \caption{Original u-net architecture, as seen in the original paper \citep{unet}.
 Arrows represent operations between the multi-channel feature maps
@@ -291,21 +294,14 @@ used here is compatible with Dyalog APL 18.0\footnote{\url{https://dyalog.com/}}
 \begin{table}
 \caption{Array names according to \emph{rank}.\label{tab:rank-names}}
 \begin{tabular}{ll}
-\emph{Rank} &
-\emph{Name}\tabularnewline
+\emph{Rank} & \emph{Name}\tabularnewline
 \midrule 
-0 &
-Scalar\tabularnewline
-1 &
-Vector\tabularnewline
-2 &
-Matrix\tabularnewline
-3 &
-Cuboid\tabularnewline
-4 &
-Hypercube\tabularnewline
-5+ &
-Noble\tabularnewline
+0 & Scalar\tabularnewline
+1 & Vector\tabularnewline
+2 & Matrix\tabularnewline
+3 & Cuboid\tabularnewline
+4 & Hypercube\tabularnewline
+5+ & Noble\tabularnewline
 \bottomrule
 \end{tabular}
 \end{table}
@@ -867,75 +863,18 @@ more complex \texttt{CV} code:
 \caption{A rectangular arrangement of the U-net network\label{tab:A-rectangular-arrangement}}
 
 \begin{tabular}{crrrlrrrlrr}
- &
- &
-\multicolumn{7}{c}{\noun{Operation}} &
- &
-\tabularnewline
+ &  & \multicolumn{7}{c}{\noun{Operation}} &  & \tabularnewline
 \cmidrule{3-9} \cmidrule{4-9} \cmidrule{5-9} \cmidrule{6-9} \cmidrule{7-9} \cmidrule{8-9} \cmidrule{9-9} 
- &
- &
-\multicolumn{1}{l}{$CV$} &
-\multicolumn{1}{l}{$CV$} &
-$MX$ &
- &
-\multicolumn{1}{l}{$CV$} &
-\multicolumn{1}{l}{$CV$} &
-$UP$ &
- &
-\tabularnewline
+ &  & \multicolumn{1}{l}{$CV$} & \multicolumn{1}{l}{$CV$} & $MX$ &  & \multicolumn{1}{l}{$CV$} & \multicolumn{1}{l}{$CV$} & $UP$ &  & \tabularnewline
 \cmidrule{3-5} \cmidrule{4-5} \cmidrule{5-5} \cmidrule{7-9} \cmidrule{8-9} \cmidrule{9-9} 
 \multirow{4}{*}{\begin{turn}{90}
 \noun{Depth}
-\end{turn}} &
-{\tiny{}0} &
-\texttt{\tiny{}$\texttt{3\ 3\ \ \ 1\ \ 64}$} &
-{\tiny{}$\texttt{3 3 \ 64 \ 64}$} &
-{\tiny{}$\texttt{0 0 \ 64 \ 64}$} &
- &
-{\tiny{}$\texttt{3 3 \ 256 \ 128}$} &
-{\tiny{}$\texttt{3 3 \ 128 \ 128}$} &
-{\tiny{}$\texttt{\ 128 2 2 \ 64}$} &
- &
-\tabularnewline
- & {\tiny{}1} &
-\multirow{1}{*}{{\tiny{}$\texttt{3\ 3\ \ 64\ 128}$}} &
-{\tiny{}$\texttt{3 3 128 128}$} &
-{\tiny{}$\texttt{0 0 128 128}$} &
- &
-{\tiny{}$\texttt{3 3 \ 512 \ 256}$} &
-{\tiny{}$\texttt{3 3 \ 256 \ 256}$} &
-{\tiny{}$\texttt{\ 256 2 2 128}$} &
- &
-\tabularnewline
- & {\tiny{}2} &
-{\tiny{}$\texttt{3 3 128 256}$} &
-{\tiny{}$\texttt{3 3 256 256}$} &
-{\tiny{}$\texttt{0 0 256 256}$} &
- &
-{\tiny{}$\texttt{3 3 1024 \ 512}$} &
-{\tiny{}$\texttt{3 3 \ 512 \ 512}$} &
-{\tiny{}$\texttt{\ 512 2 2 256}$} &
- &
-\tabularnewline
- & {\tiny{}3} &
-{\tiny{}$\texttt{3 3 256 512}$} &
-{\tiny{}$\texttt{3 3 512 512}$} &
-{\tiny{}$\texttt{0 0 512 512}$} &
- &
-{\tiny{}$\texttt{3 3 \ 512 1024}$} &
-{\tiny{}$\texttt{3 3 1024 1024}$} &
-{\tiny{}$\texttt{1024 2 2 512}$} &
- &
-\tabularnewline
+\end{turn}} & {\tiny{}0} & \texttt{\tiny{}$\texttt{3\ 3\ \ \ 1\ \ 64}$} & {\tiny{}$\texttt{3 3 \ 64 \ 64}$} & {\tiny{}$\texttt{0 0 \ 64 \ 64}$} &  & {\tiny{}$\texttt{3 3 \ 256 \ 128}$} & {\tiny{}$\texttt{3 3 \ 128 \ 128}$} & {\tiny{}$\texttt{\ 128 2 2 \ 64}$} &  & \tabularnewline
+ & {\tiny{}1} & \multirow{1}{*}{{\tiny{}$\texttt{3\ 3\ \ 64\ 128}$}} & {\tiny{}$\texttt{3 3 128 128}$} & {\tiny{}$\texttt{0 0 128 128}$} &  & {\tiny{}$\texttt{3 3 \ 512 \ 256}$} & {\tiny{}$\texttt{3 3 \ 256 \ 256}$} & {\tiny{}$\texttt{\ 256 2 2 128}$} &  & \tabularnewline
+ & {\tiny{}2} & {\tiny{}$\texttt{3 3 128 256}$} & {\tiny{}$\texttt{3 3 256 256}$} & {\tiny{}$\texttt{0 0 256 256}$} &  & {\tiny{}$\texttt{3 3 1024 \ 512}$} & {\tiny{}$\texttt{3 3 \ 512 \ 512}$} & {\tiny{}$\texttt{\ 512 2 2 256}$} &  & \tabularnewline
+ & {\tiny{}3} & {\tiny{}$\texttt{3 3 256 512}$} & {\tiny{}$\texttt{3 3 512 512}$} & {\tiny{}$\texttt{0 0 512 512}$} &  & {\tiny{}$\texttt{3 3 \ 512 1024}$} & {\tiny{}$\texttt{3 3 1024 1024}$} & {\tiny{}$\texttt{1024 2 2 512}$} &  & \tabularnewline
 \cmidrule{3-5} \cmidrule{4-5} \cmidrule{5-5} \cmidrule{7-9} \cmidrule{8-9} \cmidrule{9-9} 
- &
- &
-\multicolumn{3}{c}{\emph{Downward Pass}} &
- &
-\multicolumn{3}{c}{\emph{Upward Pass}} &
- &
-\tabularnewline
+ &  & \multicolumn{3}{c}{\emph{Downward Pass}} &  & \multicolumn{3}{c}{\emph{Upward Pass}} &  & \tabularnewline
 \cmidrule{3-5} \cmidrule{4-5} \cmidrule{5-5} \cmidrule{7-9} \cmidrule{8-9} \cmidrule{9-9} 
 \end{tabular}
 \end{table*}
@@ -1031,7 +970,7 @@ a reference implemented in PyTorch \citep{pytorch}, which is an easy
 to use Python framework with good performance. 
 
 \begin{figure*}
-\includegraphics[width=1\textwidth]{1C__Users_arcfi_OneDrive_Documents_Co-dfns_Papers_2023-array-unet_Paper_benchmark-comp.pdf}
+\includegraphics[width=1\textwidth]{benchmark-comp}
 
 \caption{Performance results for U-net across a range of platforms\label{fig:Performance-results-for}}
 \end{figure*}
@@ -1119,6 +1058,23 @@ optimizations such as those available in PyTorch.
 \section{Discussion}
 
 \subsection{Performance}
+
+\begin{table*}
+\caption{Raw Performance Timings (Secs)}
+
+\centering{}%
+\begin{tabular}{rr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}l}
+ & \multicolumn{2}{c}{0} & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{2} & \multicolumn{2}{c}{3} & \multicolumn{2}{c}{4} & \multicolumn{2}{c}{5} & \multicolumn{2}{c}{6} & \multicolumn{2}{c}{7} & \multicolumn{2}{c}{8} & \multicolumn{2}{c}{9} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{\emph{Avg}}\tabularnewline
+\cmidrule{2-25} \cmidrule{4-25} \cmidrule{6-25} \cmidrule{8-25} \cmidrule{10-25} \cmidrule{12-25} \cmidrule{14-25} \cmidrule{16-25} \cmidrule{18-25} \cmidrule{20-25} \cmidrule{22-25} \cmidrule{24-25} 
+\noun{\footnotesize{}Dyalog} & {\footnotesize{}80}&{\footnotesize{}90} & {\footnotesize{}77}&{\footnotesize{}56} & {\footnotesize{}78}&{\footnotesize{}32} & {\footnotesize{}81}&{\footnotesize{}33} & {\footnotesize{}77}&{\footnotesize{}95} & {\footnotesize{}80}&{\footnotesize{}51} & {\footnotesize{}81}&{\footnotesize{}08} & {\footnotesize{}81}&{\footnotesize{}87} & {\footnotesize{}80}&{\footnotesize{}23} & {\footnotesize{}79}&{\footnotesize{}42} & \multicolumn{2}{c}{} & {\footnotesize{}79}&{\footnotesize{}92}\tabularnewline
+\noun{\footnotesize{}Co-dfns (CPU)} & {\footnotesize{}34}&{\footnotesize{}11} & {\footnotesize{}33}&{\footnotesize{}66} & {\footnotesize{}35}&{\footnotesize{}98} & {\footnotesize{}37}&{\footnotesize{}72} & {\footnotesize{}38}&{\footnotesize{}20} & {\footnotesize{}38}&{\footnotesize{}64} & {\footnotesize{}38}&{\footnotesize{}11} & {\footnotesize{}38}&{\footnotesize{}46} & {\footnotesize{}38}&{\footnotesize{}57} & {\footnotesize{}38}&{\footnotesize{}76} & \multicolumn{2}{c}{} & {\footnotesize{}37}&{\footnotesize{}22}\tabularnewline
+\noun{\footnotesize{}Co-dfns (GPU)} & {\footnotesize{}8}&{\footnotesize{}39} & {\footnotesize{}8}&{\footnotesize{}20} & {\footnotesize{}8}&{\footnotesize{}62} & {\footnotesize{}8}&{\footnotesize{}63} & {\footnotesize{}8}&{\footnotesize{}49} & {\footnotesize{}8}&{\footnotesize{}39} & {\footnotesize{}8}&{\footnotesize{}19} & {\footnotesize{}8}&{\footnotesize{}63} & {\footnotesize{}8}&{\footnotesize{}51} & {\footnotesize{}8}&{\footnotesize{}59} & \multicolumn{2}{c}{} & {\footnotesize{}8}&{\footnotesize{}46}\tabularnewline
+\noun{\footnotesize{}PyTorch (CPU)} & {\footnotesize{}17}&{\footnotesize{}27} & {\footnotesize{}17}&{\footnotesize{}34} & {\footnotesize{}17}&{\footnotesize{}21} & {\footnotesize{}16}&{\footnotesize{}60} & {\footnotesize{}17}&{\footnotesize{}46} & {\footnotesize{}17}&{\footnotesize{}01} & {\footnotesize{}17}&{\footnotesize{}33} & {\footnotesize{}17}&{\footnotesize{}04} & {\footnotesize{}17}&{\footnotesize{}36} & {\footnotesize{}17}&{\footnotesize{}33} & \multicolumn{2}{c}{} & {\footnotesize{}17}&{\footnotesize{}22}\tabularnewline
+\noun{\footnotesize{}PyTorch (SMP)} & {\footnotesize{}6}&{\footnotesize{}31} & {\footnotesize{}6}&{\footnotesize{}42} & {\footnotesize{}6}&{\footnotesize{}45} & {\footnotesize{}6}&{\footnotesize{}19} & {\footnotesize{}6}&{\footnotesize{}67} & {\footnotesize{}6}&{\footnotesize{}49} & {\footnotesize{}6}&{\footnotesize{}43} & {\footnotesize{}6}&{\footnotesize{}38} & {\footnotesize{}6}&{\footnotesize{}36} & {\footnotesize{}6}&{\footnotesize{}55} & \multicolumn{2}{c}{} & {\footnotesize{}6}&{\footnotesize{}42}\tabularnewline
+\noun{\footnotesize{}PyTorch (GPU)} & {\footnotesize{}3}&{\footnotesize{}50} & {\footnotesize{}3}&{\footnotesize{}50} & {\footnotesize{}3}&{\footnotesize{}47} & {\footnotesize{}3}&{\footnotesize{}44} & {\footnotesize{}3}&{\footnotesize{}44} & {\footnotesize{}3}&{\footnotesize{}44} & {\footnotesize{}3}&{\footnotesize{}44} & {\footnotesize{}3}&{\footnotesize{}44} & {\footnotesize{}3}&{\footnotesize{}46} & {\footnotesize{}3}&{\footnotesize{}46} & \multicolumn{2}{c}{} & {\footnotesize{}3}&{\footnotesize{}46}\tabularnewline
+\cmidrule{2-25} \cmidrule{4-25} \cmidrule{6-25} \cmidrule{8-25} \cmidrule{10-25} \cmidrule{12-25} \cmidrule{14-25} \cmidrule{16-25} \cmidrule{18-25} \cmidrule{20-25} \cmidrule{22-25} \cmidrule{24-25} 
+\end{tabular}
+\end{table*}
 
 Clearly, specialized frameworks for deep neural networks are still
 the best way to go in order to achieve the absolute maximum in performance
@@ -1248,8 +1204,6 @@ APL in the professional space.
 
 \section{Conclusion}
 
-\balance
-
 Given the notational advantages of APL and the concision and clarity
 of expression that one can obtain, we explored the potential impact
 of using APL as a language for implementing convolutional neural networks
@@ -1277,53 +1231,57 @@ teaching neural network programming and machine learning in general.
 
 \appendix
 
-\section{Reference Code and Timings}
-
-\begin{figure*}
+\section{Complete APL U-Net Implementation}
 \begin{verbatim}
-:Namespace UNET
+W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
 
- W←⍬ ⋄ V←⍬ ⋄ Z←⍬ ⋄ LR←1e¯9 ⋄ MO←0.99
+FWD←{Z⊢←(≢W)⍴⊂⍬
+ CV←{Z[⍺]←⊂⍵
+  z←(,[2+⍳3]3 3⌺⍺⊃Z)+.×,[⍳3]⍺⊃W
+  0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z}
+ CC←{p←2÷⍨(⍴⍺⊃Z)-⍴⍵
+  ⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)}
+ MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵}
+ UP←{Z[⍺]←⊂⍵
+  s←(2×¯1↓⍴⍵),¯1↑⍴⍺⊃W
+  s⍴0 2 1 3 4⍉⍵+.×⍺⊃W}
+ C1←{Z[⍺]←⊂⍵
+  1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W}
+ LA←{⍺≥≢Z:⍵
+  down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
+  (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
+ 2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
 
- FWD←{Z⊢←(≢W)⍴⊂⍬
-  CV←{0⌈z⊣Z[⍺]←⊂Z[⍺],⊂z←(,[2+⍳3]3 3⌺⊃Z[⍺]←⊂⍵)+.×,[⍳3]⍺⊃W}
-  CC←{⍵,⍨(⌊p)↓(-⌈p)↓(⍺⊃Z)⊣p←2÷⍨(⍴⍺⊃Z)-⍴⍵}
-  MX←{⌈⌿[2],[2 3](2 2⍴2)⌺⊃Z[⍺]←⊂⍵}
-  UP←{((2×¯1↓⍴⍵),¯1↑⍴⍺⊃W)⍴0 2 1 3 4⍉⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
-  C1←{1E¯8+z÷[⍳2]+/z←*z-[⍳2]⌈/z←⍵+.×⍺⊃W⊣Z[⍺]←⊂⍵}
-  LA←{⍺≥≢Z:⍵
-    down←(⍺+6)∇(⍺+2)MX(⍺+1)CV(⍺+0)CV ⍵
-    (⍺+2)CC(⍺+5)UP(⍺+4)CV(⍺+3)CV down}
-  2 C1 1 CV 0 CV 3 LA ⍵⍴⍨3↑1,⍨⍴⍵}
+BCK←{Y←⍺ ⋄ Y∆←⍵
+ ∆←{V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V
+  W[⍺]←⊂(⍺⊃W)-LR×⍺⊃V}
+ ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z
+  ∆z←⍵×0<1⊃⍺⊃Z
+  ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
+  _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
+  w+.×⍨,[2+⍳3]3 3⌺∆Z}
+ ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z
+  (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
+ ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵
+  y×x=y←(⍴x)↑2⌿2/[1]∆z}
+ ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵
+  _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz←(2 2⍴2)⌺∆z
+  (,[2+⍳3]cz)+.×⍉⍪w}
+ ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵
+  _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z
+  ∆z+.×⍉w}
+ ∆LA←{⍺≥≢Z:⍵ ⋄ in←⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
+  d←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP in
+  (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX d
+ }
+ 3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
 
- BCK←{Y←⍺ ⋄ Y∆←⍵
-  ∆←{0⊣W[⍺]←⊂(⍺⊃W)-LR×⊃V[⍺]←⊂⍵+MO×(⍴⍵)⍴⍺⊃V}
-  ∆CV←{w←,[⍳3]⊖⌽[1]0 1 3 2⍉⍺⊃W ⋄ x←⊃⍺⊃Z ⋄ ∆z←⍵×0<1⊃⍺⊃Z
-   ∆Z←¯2⊖¯2⌽[1](4+2↑⍴∆z)↑∆z
-   _←⍺ ∆ 3 0 1 2⍉(⍉,[⍳2]∆z)+.×,[⍳2]3 3⌺x
-   w+.×⍨,[2+⍳3]3 3⌺∆Z}
-  ∆CC←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ d←-⌊2÷⍨2↑(⍴x)-⍴∆z ⋄ (⊃d)⊖(1⊃d)⌽[1](⍴x)↑∆z}
-  ∆MX←{x←⍺⊃Z ⋄ ∆z←⍵ ⋄ y×x=y←(⍴x)↑2⌿2/[1]∆z}
-  ∆UP←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ cz←(2 2⍴2)⌺∆z
-   _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]cz
-   (,[2+⍳3]cz)+.×⍉⍪w}
-  ∆C1←{w←⍺⊃W ⋄ x←⍺⊃Z ⋄ ∆z←⍵ ⋄ _←⍺ ∆(⍉,[⍳2]x)+.×,[⍳2]∆z ⋄ ∆z+.×⍉w}
-  ∆LA←{⍺≥≢Z:⍵
-   down←(⍺+6)∇(⍺+3)∆CV(⍺+4)∆CV(⍺+5)∆UP ⍵↑[2]⍨-2÷⍨⊃⌽⍴⍵
-   (⍺+0)∆CV(⍺+1)∆CV(⍵ ∆CC⍨⍺+2)+(⍺+2)∆MX down}
-  3 ∆LA 0 ∆CV 1 ∆CV 2 ∆C1 Y∆-(~Y),[1.5]Y}
-
- E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
-
- RUN←{Y Y∆(Y E Y∆)⊣(Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆)BCK⊢Y∆←FWD ⍺}
-
-:EndNamespace
+E←{-+⌿,⍟(⍺×⍵[;;1])+(~⍺)×⍵[;;0]}
+RUN←{Y←⌊0.5+nm↑⍵↓⍨2÷⍨(⍴⍵)-nm←2↑⍴Y∆←FWD ⍺
+ Y Y∆(Y E Y∆)⊣Y BCK Y∆}
 \end{verbatim}
-\caption{Complete APL U-Net Implementation}
 
-\end{figure*}
-
-\begin{figure*}
+\section{PyTorch Reference Implementation}
 \begin{verbatim}
 import torch
 import torch.nn as nn
@@ -1332,209 +1290,109 @@ import torchvision.transforms.functional
 
 class TwoConv(nn.Module):
 
-   def __init__(self, in_channels, out_channels):
-        super().__init__()
+ def __init__(
+   self, in_channels, out_channels):
+  super().__init__()
 
-        self.path = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, 
-                kernel_size=(3, 3), bias=False),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels, 
-                kernel_size=(3, 3), bias=False),
-            nn.ReLU(inplace=True),
-        )
+  self.path = nn.Sequential(
+   nn.Conv2d(in_channels, out_channels, 
+    kernel_size=(3, 3), bias=False),
+    nn.ReLU(inplace=True),
+    nn.Conv2d(
+     out_channels, out_channels, 
+     kernel_size=(3, 3), bias=False),
+     nn.ReLU(inplace=True),
+    )
 
-    def forward(self, x):
-        return self.path(x)
-\end{verbatim}
-\caption{PyTorch Reference Implementation, Preamble and Helpers}
+ def forward(self, x):
+  return self.path(x)
 
-\end{figure*}
-\begin{figure*}
-\begin{verbatim}
 class Down(nn.Module):
 
-    def __init__(self, in_channels):
-        super().__init__()
+ def __init__(self, in_channels):
+  super().__init__()
 
-        self.path = nn.Sequential(
-            nn.MaxPool2d(kernel_size=(2, 2), stride=2),
-            TwoConv(in_channels, 2 * in_channels),
-        )
+  self.path = nn.Sequential(
+   nn.MaxPool2d(
+    kernel_size=(2, 2), stride=2),
+    TwoConv(
+     in_channels, 2 * in_channels
+    ),
+   )
 
-    def forward(self, x):
-        return self.path(x)
+ def forward(self, x):
+  return self.path(x)
 
 class Up(nn.Module):
 
-    def __init__(self, in_channels):
-        super().__init__()
+ def __init__(self, in_channels):
+  super().__init__()
 
-        self.upsampling = nn.ConvTranspose2d(
-            in_channels,
-            in_channels // 2,
-            kernel_size=(2, 2),
-            stride=2,
-            bias=False,
-        )
-        self.convolutions = 
-            TwoConv(in_channels, in_channels // 2)
+  self.upsampling = nn.ConvTranspose2d(
+   in_channels,
+   in_channels // 2,
+   kernel_size=(2, 2),
+   stride=2,
+   bias=False,
+  )
+  self.convolutions = 
+   TwoConv(
+    in_channels, in_channels // 2
+   )
 
-    def forward(self, x_to_crop, x_in):
+ def forward(self, x_to_crop, x_in):
 
-        upped = self.upsampling(x_in)
-        cropped = torchvision.transforms.functional.center_crop(
-            x_to_crop, upped.shape[-2:]
-        )
-        x = torch.cat([cropped, upped], dim=1)
-        return self.convolutions(x)
-\end{verbatim}
-\caption{PyTorch Reference Implementation, Down and Up passes}
-\end{figure*}
+  upped = self.upsampling(x_in)
+  cropped = 
+   torchvision.transforms.
+    functional.center_crop(
+     x_to_crop, upped.shape[-2:]
+    )
+  x = torch.cat([cropped, upped], dim=1)
+  return self.convolutions(x)
 
-\begin{figure*}
-\begin{verbatim}
 class USegment(nn.Module):
 
-    def __init__(self, in_channels, bottom_u=None):
-        super().__init__()
+ def __init__(
+   self, in_channels, bottom_u=None
+  ):
+  super().__init__()
 
-        # Default value for the bottom U.
-        if bottom_u is None:
-            bottom_u = lambda x: x
+  if bottom_u is None:
+   bottom_u = lambda x: x
 
-        self.down = Down(in_channels)
-        self.bottom_u = bottom_u
-        self.up = Up(2 * in_channels)
+  self.down = Down(in_channels)
+  self.bottom_u = bottom_u
+  self.up = Up(2 * in_channels)
 
-    def forward(self, x):
-        return self.up(x, self.bottom_u(self.down(x)))
+ def forward(self, x):
+  return self.up(
+   x, self.bottom_u(self.down(x))
+  )
 
 class UNet(nn.Module):
 
-    def __init__(self):
-        super().__init__()
+ def __init__(self):
+  super().__init__()
 
-        self.u = USegment(512)
-        self.u = USegment(256, self.u)
-        self.u = USegment(128, self.u)
-        self.u = USegment(64, self.u)
-        self.path = nn.Sequential(
-            TwoConv(1, 64),
-            self.u,
-            nn.Conv2d(64, 2, kernel_size=1, bias=False),
-        )
+  self.u = USegment(512)
+  self.u = USegment(256, self.u)
+  self.u = USegment(128, self.u)
+  self.u = USegment(64, self.u)
+  self.path = nn.Sequential(
+   TwoConv(1, 64),
+   self.u,
+   nn.Conv2d(
+    64, 2, kernel_size=1, bias=False
+   ),
+  )
 
-    def forward(self, x):
-        return self.path(x)
+ def forward(self, x):
+  return self.path(x)
 \end{verbatim}
-\caption{PyTorch Reference Implementation, Wiring}
-
-\end{figure*}
-
-\begin{table*}
-\begin{centering}
-\begin{tabular}{rr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}lr@{\extracolsep{0pt}.}l}
- &
-\multicolumn{2}{c}{0} &
-\multicolumn{2}{c}{1} &
-\multicolumn{2}{c}{2} &
-\multicolumn{2}{c}{3} &
-\multicolumn{2}{c}{4} &
-\multicolumn{2}{c}{5} &
-\multicolumn{2}{c}{6} &
-\multicolumn{2}{c}{7} &
-\multicolumn{2}{c}{8} &
-\multicolumn{2}{c}{9} &
-\multicolumn{2}{c}{} &
-\multicolumn{2}{c}{\emph{Avg}}\tabularnewline
-\cmidrule{2-25} \cmidrule{4-25} \cmidrule{6-25} \cmidrule{8-25} \cmidrule{10-25} \cmidrule{12-25} \cmidrule{14-25} \cmidrule{16-25} \cmidrule{18-25} \cmidrule{20-25} \cmidrule{22-25} \cmidrule{24-25} 
-\noun{\footnotesize{}Dyalog} &
-{\footnotesize{}80}&{\footnotesize{}90} &
-{\footnotesize{}77}&{\footnotesize{}56} &
-{\footnotesize{}78}&{\footnotesize{}32} &
-{\footnotesize{}81}&{\footnotesize{}33} &
-{\footnotesize{}77}&{\footnotesize{}95} &
-{\footnotesize{}80}&{\footnotesize{}51} &
-{\footnotesize{}81}&{\footnotesize{}08} &
-{\footnotesize{}81}&{\footnotesize{}87} &
-{\footnotesize{}80}&{\footnotesize{}23} &
-{\footnotesize{}79}&{\footnotesize{}42} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}79}&{\footnotesize{}92}\tabularnewline
-\noun{\footnotesize{}Co-dfns (CPU)} &
-{\footnotesize{}34}&{\footnotesize{}11} &
-{\footnotesize{}33}&{\footnotesize{}66} &
-{\footnotesize{}35}&{\footnotesize{}98} &
-{\footnotesize{}37}&{\footnotesize{}72} &
-{\footnotesize{}38}&{\footnotesize{}20} &
-{\footnotesize{}38}&{\footnotesize{}64} &
-{\footnotesize{}38}&{\footnotesize{}11} &
-{\footnotesize{}38}&{\footnotesize{}46} &
-{\footnotesize{}38}&{\footnotesize{}57} &
-{\footnotesize{}38}&{\footnotesize{}76} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}37}&{\footnotesize{}22}\tabularnewline
-\noun{\footnotesize{}Co-dfns (GPU)} &
-{\footnotesize{}8}&{\footnotesize{}39} &
-{\footnotesize{}8}&{\footnotesize{}20} &
-{\footnotesize{}8}&{\footnotesize{}62} &
-{\footnotesize{}8}&{\footnotesize{}63} &
-{\footnotesize{}8}&{\footnotesize{}49} &
-{\footnotesize{}8}&{\footnotesize{}39} &
-{\footnotesize{}8}&{\footnotesize{}19} &
-{\footnotesize{}8}&{\footnotesize{}63} &
-{\footnotesize{}8}&{\footnotesize{}51} &
-{\footnotesize{}8}&{\footnotesize{}59} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}8}&{\footnotesize{}46}\tabularnewline
-\noun{\footnotesize{}PyTorch (CPU)} &
-{\footnotesize{}17}&{\footnotesize{}27} &
-{\footnotesize{}17}&{\footnotesize{}34} &
-{\footnotesize{}17}&{\footnotesize{}21} &
-{\footnotesize{}16}&{\footnotesize{}60} &
-{\footnotesize{}17}&{\footnotesize{}46} &
-{\footnotesize{}17}&{\footnotesize{}01} &
-{\footnotesize{}17}&{\footnotesize{}33} &
-{\footnotesize{}17}&{\footnotesize{}04} &
-{\footnotesize{}17}&{\footnotesize{}36} &
-{\footnotesize{}17}&{\footnotesize{}33} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}17}&{\footnotesize{}22}\tabularnewline
-\noun{\footnotesize{}PyTorch (SMP)} &
-{\footnotesize{}6}&{\footnotesize{}31} &
-{\footnotesize{}6}&{\footnotesize{}42} &
-{\footnotesize{}6}&{\footnotesize{}45} &
-{\footnotesize{}6}&{\footnotesize{}19} &
-{\footnotesize{}6}&{\footnotesize{}67} &
-{\footnotesize{}6}&{\footnotesize{}49} &
-{\footnotesize{}6}&{\footnotesize{}43} &
-{\footnotesize{}6}&{\footnotesize{}38} &
-{\footnotesize{}6}&{\footnotesize{}36} &
-{\footnotesize{}6}&{\footnotesize{}55} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}6}&{\footnotesize{}42}\tabularnewline
-\noun{\footnotesize{}PyTorch (GPU)} &
-{\footnotesize{}3}&{\footnotesize{}50} &
-{\footnotesize{}3}&{\footnotesize{}50} &
-{\footnotesize{}3}&{\footnotesize{}47} &
-{\footnotesize{}3}&{\footnotesize{}44} &
-{\footnotesize{}3}&{\footnotesize{}44} &
-{\footnotesize{}3}&{\footnotesize{}44} &
-{\footnotesize{}3}&{\footnotesize{}44} &
-{\footnotesize{}3}&{\footnotesize{}44} &
-{\footnotesize{}3}&{\footnotesize{}46} &
-{\footnotesize{}3}&{\footnotesize{}46} &
-\multicolumn{2}{c}{} &
-{\footnotesize{}3}&{\footnotesize{}46}\tabularnewline
-\cmidrule{2-25} \cmidrule{4-25} \cmidrule{6-25} \cmidrule{8-25} \cmidrule{10-25} \cmidrule{12-25} \cmidrule{14-25} \cmidrule{16-25} \cmidrule{18-25} \cmidrule{20-25} \cmidrule{22-25} \cmidrule{24-25} 
-\end{tabular}
-\par\end{centering}
-\caption{Raw Performance Timings (Secs)}
-
-\end{table*}
+\balance
 
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{2C__Users_arcfi_OneDrive_Documents_Co-dfns_Papers_2023-array-unet_Paper_bibliography}
+\bibliography{bibliography}
 
 \end{document}
