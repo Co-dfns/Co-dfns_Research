@@ -181,8 +181,8 @@ Japan
 
 \end_layout
 
-\begin_layout Section*
-Abstract
+\begin_layout Section
+Introduction
 \end_layout
 
 \begin_layout Standard
@@ -218,6 +218,14 @@ perverse parsing environments
  one issue.
 \end_layout
 
+\begin_layout Section
+Challenges
+\end_layout
+
+\begin_layout Subsection
+Defining the Language
+\end_layout
+
 \begin_layout Standard
 The first issue comes from defining just what APL is as a syntax.
  Since the parser must meet industrial requirements, we cannot simply use
@@ -246,6 +254,10 @@ bugs
  This makes the process of writing a parser a fundamentally incremental
  one with frequent introductions of potentially breaking new information
  demanding a resilient parser that can be modified easily at will.
+\end_layout
+
+\begin_layout Subsection
+Language Ambiguity/Context Sensitivity
 \end_layout
 
 \begin_layout Standard
@@ -318,6 +330,10 @@ These and other more mundane challenges make any traditional parsing architectur
 e difficult and cumbersome to use.
 \end_layout
 
+\begin_layout Subsection
+Industrial Requirements
+\end_layout
+
 \begin_layout Standard
 The third major class of issues comes from the context fo the parser itself.
  As an industrial parser, it must address and deal with source in the field,
@@ -343,6 +359,10 @@ The final requirement is the need for an architecture maintainable and scalable
  as maintaining separate CPU and GPU implementations that are manually synchroni
 zed.
  
+\end_layout
+
+\begin_layout Section
+Nano-parsing to the Rescue
 \end_layout
 
 \begin_layout Standard
