@@ -8,6 +8,7 @@
 \begin_preamble
 
 \usepackage{dblfloatfix}
+\usepackage{fancyvrb}
 \end_preamble
 \options format=sigplan,screen,balance
 \use_default_options false
@@ -186,6 +187,280 @@ Introduction
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{Verbatim}[fontsize=
+\backslash
+tiny]
+\end_layout
+
+\begin_layout Plain Layout
+
+Input Source:
+\end_layout
+
+\begin_layout Plain Layout
+
+:Namespace ⋄ f←{(2=+⌿0=X∘.|X)⌿X←⍳⍵} ⋄ :EndNamespace
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+After Tokenization:                                          |  Final result:
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○  ○  ○  ○  ○  ○                                    ○  ○    |   ○     
+                                                    
+\end_layout
+
+\begin_layout Plain Layout
+
+                ├─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┐          |   │     
+                                                    
+\end_layout
+
+\begin_layout Plain Layout
+
+                ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○          |   ○     
+                                                    
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                             |   ├─┐   
+                                                    
+\end_layout
+
+\begin_layout Plain Layout
+
+After parsing Brackets:                                      |   ○ ○   
+                                                    
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○                                                           |     ├────────────
+───────────────┐                           
+\end_layout
+
+\begin_layout Plain Layout
+
+ │                                                           |     ○   
+                        ○                           
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○                                                           |     │   
+                        │                           
+\end_layout
+
+\begin_layout Plain Layout
+
+ ├─┬─┐                                                       |     ○   
+                        ○                           
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○ ○ ○                                                       |     ├────────────
+───────┬─┐     ├───────────────────┬─┐     
+\end_layout
+
+\begin_layout Plain Layout
+
+     │                                                       |     ○   
+                ○ ○     ○                   ○ ○     
+\end_layout
+
+\begin_layout Plain Layout
+
+     ○                                                       |     ├─┬─┐
+                 ├─┐   ├─┬─┐                 ├─┐   
+\end_layout
+
+\begin_layout Plain Layout
+
+     ├───────────────────┬─┬─┬─┬─┐                           |     ○ ○ ○
+                 ○ ○   ○ ○ ○                 ○ ○   
+\end_layout
+
+\begin_layout Plain Layout
+
+     ○                   ○ ○ ○ ○ ○                           |         ├───┐
+               ├─┐     ├───┐               ├─┐ 
+\end_layout
+
+\begin_layout Plain Layout
+
+     ├─┬─┬─┬─┬─┬─┬─┬─┬─┐                                     |         ○
+   ○               ○ ○     ○   ○               ○ ○ 
+\end_layout
+
+\begin_layout Plain Layout
+
+     ○ ○ ○ ○ ○ ○ ○ ○ ○ ○                                     |         ├─┐
+ ├─┬─┐                   ├─┐ ├─┬─┐               
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                             |         ○
+ ○ ○ ○ ○                   ○ ○ ○ ○ ○               
+\end_layout
+
+\begin_layout Plain Layout
+
+After function specialization:                               |         
+        ├─┬───┐                     ├─┬───┐         
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○                                                           |         
+        ○ ○   ○                     ○ ○   ○         
+\end_layout
+
+\begin_layout Plain Layout
+
+ │                                                           |         
+          ├─┐                         ├─┐           
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○                                                           |         
+          ○ ○                         ○ ○           
+\end_layout
+
+\begin_layout Plain Layout
+
+ │                                                           |  
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○                                                           |  
+\end_layout
+
+\begin_layout Plain Layout
+
+ ├─┐                                                         |  
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○ ○                                                         |  
+\end_layout
+
+\begin_layout Plain Layout
+
+ │ │                                                         |  
+\end_layout
+
+\begin_layout Plain Layout
+
+ ○ ○                                                         |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ├───────────────────────────┐                             |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ○                           ○                             |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   │                           │                             |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ○                           ○                             |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ├───────────────────┬─┐     ├───────────────────┬─┐       |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ○                   ○ ○     ○                   ○ ○       |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ├─┬─┬─┬─┬─┬─┬─┬─┬─┐   ├─┐   ├─┬─┬─┬─┬─┬─┬─┬─┬─┐   ├─┐     |  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ○ ○ ○ ○ ○ ○ ○ ○ ○ ○   ○ ○   ○ ○ ○ ○ ○ ○ ○ ○ ○ ○   ○ ○     |  
+\end_layout
+
+\begin_layout Plain Layout
+
+                         │ ├─┐                       │ ├─┐   |  
+\end_layout
+
+\begin_layout Plain Layout
+
+                         ○ ○ ○                       ○ ○ ○   |  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{Verbatim}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Various stages of the Co-dfns Parser
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 Traditional parsing literature and design tends to focus on well defined
  grammars over languages that are mostly context free or have contexts that
  require minimal computation that can be reasonably expressed in formal
@@ -266,6 +541,7 @@ The second issue comes from the language itself, which exhibits many challenging
 \end_layout
 
 \begin_layout Verbatim
+
 A B C
 \end_layout
 
