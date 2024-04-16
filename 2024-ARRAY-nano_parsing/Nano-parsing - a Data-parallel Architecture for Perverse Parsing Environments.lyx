@@ -681,7 +681,7 @@ Code is often quite flat, and many functions reference many other functions
 \end_layout
 
 \begin_layout Itemize
-Syntax errors may signal at runtime or parse time
+Syntax errors may signal at run time or parse time
 \end_layout
 
 \begin_layout Itemize
@@ -824,7 +824,7 @@ We present details of the implementation and the architecture as a whole
  as well as discuss the results of migrating to this new design from a tradition
 al PEG grammar.
  We will highlight some of the ways this design has enabled us to fix issues
- in our pasrsing of APL.
+ in our parsing of APL.
  
 \end_layout
 
