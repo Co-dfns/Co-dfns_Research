@@ -83,6 +83,110 @@
 
 \begin_body
 
+\begin_layout Set Copyright
+rightsretained
+\end_layout
+
+\begin_layout ACM Year
+2024
+\end_layout
+
+\begin_layout Copyright Year
+2024
+\end_layout
+
+\begin_layout ACM Conference
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+ARRAY '24
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+The 10th ACM SIGPLAN International Workshop on Libraries, Languages and
+ Compilers for Array Programming
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+June 25, 2023
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Copenhagen, Denmark
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+acmPrice{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+acmDOI{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+acmISBN{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Title
 Extended Abstract: Nano-parsing
 \end_layout
@@ -184,6 +288,53 @@ Japan
 
 \begin_layout Section
 Introduction
+\end_layout
+
+\begin_layout Standard
+Traditional parsing literature and design tends to focus on LL or LR grammars
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "johnson1975yacc,parr2011ll,ford2004parsing,ortin2022evaluation"
+literal "false"
+
+\end_inset
+
+ or have contexts that require minimal computation that can be reasonably
+ expressed in formal notations not designed for general purpose computation
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "woods1970context,laurent2016taming,kurs2014top"
+literal "false"
+
+\end_inset
+
+.
+ The architecture and tooling support that emerges from this research and
+ the general community usually comes in the form of parser generators, parser
+ combinators, or, usually, a fallback to recursive descent implemented directly
+ in the host language.
+ Context sensitive languages often feel like second class citizens in the
+ software engineering parsing ecosystem 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "laurent2016taming,kurs2014top"
+literal "false"
+
+\end_inset
+
+.
+ In our work on static, offline parsing of APL code, the complexity of the
+ task has driven us to coin the term 
+\begin_inset Quotes eld
+\end_inset
+
+perverse parsing environments
+\begin_inset Quotes erd
+\end_inset
+
+ to describe the situation.
 \end_layout
 
 \begin_layout Standard
@@ -461,36 +612,7 @@ Various stages of the Co-dfns Parser
 
 \end_inset
 
-Traditional parsing literature and design tends to focus on well defined
- grammars over languages that are mostly context free or have contexts that
- require minimal computation that can be reasonably expressed in formal
- notations not designed for general purpose computation.
- [CITATION] The architecture and tooling support that emerges from this
- research and the general community usually comes in the form of parser
- generators, which compile grammars written in a restricted language to
- some implementation such as a parse table or reecursive descent parser;
- parser combinators, which allow the more concise expression of an underlying
- model; or, usually, a recursive descent parser implemented directly in
- the host language, since this often is the most flexible and scalable option
- as complexity increases.
- Context sensitive languages often feel like second class citizens in the
- software engineering parsing ecosystem.
-\end_layout
 
-\begin_layout Standard
-In our work on static, offline parsing of APL code, the situation is much
- more complex.
- The complexity of the task and the myriad challenges has driven us to coin
- the term 
-\begin_inset Quotes eld
-\end_inset
-
-perverse parsing environments
-\begin_inset Quotes erd
-\end_inset
-
- to describe the situation, since non-trivial context sensitivity is only
- one issue.
 \end_layout
 
 \begin_layout Section
@@ -502,21 +624,16 @@ Defining the Language
 \end_layout
 
 \begin_layout Standard
-The first issue comes from defining just what APL is as a syntax.
- Since the parser must meet industrial requirements, we cannot simply use
- a reduced language.
- There is no formal specification of the language.
- Worse, there are multiple linguistic variations that must be supported,
- since code migration from one APL implementation to another is a major
- use case for a static parser.
- But it does not stop there, because there is no reference implementation
- of an APL parser either! Extant parsers are woefully incomplete with respect
- to modern APL, and none of them have a meaningful API to permit even basic
- kinds of black box introspection.
- Existing commercial implementations do not implement a static parser, but
- operate on token streams.
- Unfortunately, even the major implementations cannot serve as black box
- reference implementations because of a preponderance of 
+Modern APL syntax is not formally specified.
+ Industrial requirements prevent the use of a reduced language.
+ The parser must support multiple variations to facilitate migration from
+ one APL implementation to another.
+ There is no reference implementation either! Extant parsers do not parse
+ modern APL, and none have meaningful APIs for black box introspection.
+ Existing commercial implementations do not parse statically, but operate
+ on token streams.
+ Even these implementations cannot serve as reference implementations because
+ of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -524,11 +641,11 @@ bugs
 \begin_inset Quotes erd
 \end_inset
 
- that do not affect every day users, but that do make finding ground truth
- impossible via mechanical means alone.
- This makes the process of writing a parser a fundamentally incremental
- one with frequent introductions of potentially breaking new information
- demanding a resilient parser that can be modified easily at will.
+ that make finding ground truth impossible via mechanical means alone.
+ Incremental evolution of the parser is the only path forward, demanding
+ frequent and potentially breaking changes; an architecturally resilient
+ and easily modified parser is required.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -536,19 +653,13 @@ Language Ambiguity/Context Sensitivity
 \end_layout
 
 \begin_layout Standard
-The second issue comes from the language itself, which exhibits many challenging
- features such as the famous ambiguous phrase: 
-\end_layout
-
-\begin_layout Verbatim
-
+The language itself exhibits challenging features such as the famous ambiguous
+ phrase 
+\family typewriter
 A B C
-\end_layout
-
-\begin_layout Standard
-This expression has well over 10 different parses depending on the types
- of each name.
- But this is only one of the issues; there are more:
+\family default
+, which has over 10 different parses depending on the types of each name.
+ Furthermore:
 \end_layout
 
 \begin_layout Itemize
@@ -560,36 +671,22 @@ It mixes dynamic and lexical scope, allowing intermingled function calls
 \end_layout
 
 \begin_layout Itemize
-Source code makes extensive use of execute/eval constructs, and APL's execute
- primitive can and often does introduce new bindings into various scopes
- while also being sensitive to dynamic and lexical scoping
+Code makes extensive use of an eval that can and does introduce new bindings
+ into scope (dynamic/lexical)
 \end_layout
 
 \begin_layout Itemize
-Code bases are often quite flat, with call graphs of high in and out degree;
- that is, many functions will reference many other functions and vice versa
- leading to function dependencies that are many to many with little hierarchical
- segmentation
+Code is often quite flat, and many functions reference many other functions
+ leading to highly connected call graphs
 \end_layout
 
 \begin_layout Itemize
-Some syntax errors must be reported at runtime and not at parse time
+Syntax errors may signal at runtime or parse time
 \end_layout
 
 \begin_layout Itemize
-The same core tokens are used to mean different things in different contexts;
- these are the traditional context sensitive parsing problems
-\end_layout
-
-\begin_layout Itemize
-The context of an expression can amount to the whole program or practically
- the whole program quite easily since an expression's parse may depend on
- distantly defined information
-\end_layout
-
-\begin_layout Itemize
-Computed goto statements can form the majority of control flow in some functions
-, often involving execute/eval
+The context of an expression can amount to the whole program quite easily
+ since it may depend on distantly defined values
 \end_layout
 
 \begin_layout Itemize
@@ -602,8 +699,8 @@ Forward references in the source can alter or affect the parse tree
 \end_layout
 
 \begin_layout Standard
-These and other more mundane challenges make any traditional parsing architectur
-e difficult and cumbersome to use.
+These and other more mundane context sensitive challenges make any traditional
+ parsing architecture difficult and cumbersome to use.
 \end_layout
 
 \begin_layout Subsection
@@ -611,29 +708,38 @@ Industrial Requirements
 \end_layout
 
 \begin_layout Standard
-The third major class of issues comes from the context fo the parser itself.
- As an industrial parser, it must address and deal with source in the field,
- and it must integrate with the rest of the Co-dfns [citation] compiler.
- This means it must deliver adequate debugging and source information in
- the AST and it should have excellent and apropos error messages at the
- right stage of compilation.
- Since the whole Co-dfns compiler is meant to self-host on the GPU, the
- parser must execute efficiently on the GPU and CPU.
- It must also perform well when integrated with the APL interpreter (meaning
- that it must execute efficiently under interpretation, and not just compilation
-), since it may be embedded into interpreted code.
- Since real APL codebases may have millions of lines of code in them, we
- must handle this.
- Given the high connectedness and combinatorial nature of the AST, this
- means we may need, in effect, the entire source available to us at once
- to parse it correctly, which presents immediate performance challenges.
+As an industrial, commercial parser, we must handle real world source, and
+ it must integrate with the rest of the Co-dfns compiler 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2014co"
+literal "false"
+
+\end_inset
+
+.
+ This means adequate debugging and source information with excellent and
+ apropos error messages at the right time.
+ The Co-dfns compiler is meant to self-host on the GPU 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hsu2019data"
+literal "false"
+
+\end_inset
+
+, so parsing must execute efficiently on the GPU and CPU, as well as under
+ interpretation and compilation, since it may be embedded into interpreted
+ code.
+ The high connectedness of the AST means we may need the entire source available
+ to us at once to parse it correctly, which presents performance challenges
+ when APL codebases may have millions of lines of code
 \end_layout
 
 \begin_layout Standard
-The final requirement is the need for an architecture maintainable and scalable
- by a single developer, not a team who can farm out engineering labor such
- as maintaining separate CPU and GPU implementations that are manually synchroni
-zed.
+Finally, the architecture must be maintainable and scalable by a single
+ developer, not a team who can farm out engineering labor such as maintaining
+ separate CPU and GPU implementations that are manually synchronized.
  
 \end_layout
 
@@ -642,9 +748,9 @@ Nano-parsing to the Rescue
 \end_layout
 
 \begin_layout Standard
-To address these concerns, we present a parser architecture deemed Nano-parsing,
+To address these concerns, we present a parser architecture called Nano-parsing,
  written in APL, and designed to meet the above needs.
- The core strategy of nano-parsing is to traspose the act of parsing from
+ The core strategy of nano-parsing is to transpose the act of parsing from
  a top down, depth-first vision of the tree to a series of data-parallel
  passes over the input that incrementally refines the AST into its final
  form.
@@ -670,8 +776,8 @@ Fundamentally, this means that at any point, anywhere in the parser, we
  small passes, we no longer must plan ahead carefully the phases of parsing
  (cut points) that would be needed to handle APL, since these cut points
  fall out naturally from the design.
- Previous attempts at parsing APL using more traditional designs have demonstrat
-ed the difficulty in choosing these cut points and the resulting rigidity
+ Previous attempts at parsing APL using more traditional designs demonstrate
+ the difficulty in choosing these cut points and the resulting rigidity
  and inflexibility in design that results.
 \end_layout
 
@@ -716,10 +822,22 @@ The global state and independent passes makes it relatively easy to modify
 \begin_layout Standard
 We present details of the implementation and the architecture as a whole
  as well as discuss the results of migrating to this new design from a tradition
-al PEG parser generator.
+al PEG grammar.
  We will highlight some of the ways this design has enabled us to fix issues
  in our pasrsing of APL.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "bibliography"
+options "ACM-Reference-Format"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
