@@ -246,11 +246,7 @@ Brandon Wilson
 \end_layout
 
 \begin_layout Email
-TBD
-\end_layout
-
-\begin_layout ORCID
-TBD
+research@wilsonb.com
 \end_layout
 
 \begin_layout Affiliation
@@ -268,7 +264,7 @@ Dyalog, Ltd.
 status open
 
 \begin_layout Plain Layout
-TBD
+Aizu, Fukushima
 \end_layout
 
 \end_inset
@@ -295,7 +291,7 @@ Traditional parsing literature and design tends to focus on LL or LR grammars
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "johnson1975yacc,parr2011ll,ford2004parsing,ortin2022evaluation"
+key "johnson1975yacc,parr2011ll,ford2004parsing,ortin2022evaluation,leijen2001parsec"
 literal "false"
 
 \end_inset
@@ -690,8 +686,7 @@ The context of an expression can amount to the whole program quite easily
 \end_layout
 
 \begin_layout Itemize
-Inherent generality and ambiguity can introduce combinatorial factors to
- the size of the parse tree
+Type-dependent parse trees can combinatorial increase the size of the AST
 \end_layout
 
 \begin_layout Itemize
@@ -751,7 +746,7 @@ Nano-parsing to the Rescue
 To address these concerns, we present a parser architecture called Nano-parsing,
  written in APL, and designed to meet the above needs.
  The core strategy of nano-parsing is to transpose the act of parsing from
- a top down, depth-first vision of the tree to a series of data-parallel
+ a production-centric, recursive descent pattern to a series of data-parallel
  passes over the input that incrementally refines the AST into its final
  form.
  This 
@@ -770,15 +765,23 @@ bottom up
 \end_layout
 
 \begin_layout Standard
-Fundamentally, this means that at any point, anywhere in the parser, we
- have full visibility of the global parsing state to use at will.
- Additionally, since the entire parser is a series of extremely simple and
- small passes, we no longer must plan ahead carefully the phases of parsing
- (cut points) that would be needed to handle APL, since these cut points
- fall out naturally from the design.
- Previous attempts at parsing APL using more traditional designs demonstrate
- the difficulty in choosing these cut points and the resulting rigidity
- and inflexibility in design that results.
+Fundamentally, we have full visibility of the global parsing state at any
+ time instead of a restricted context per production.
+ Since the entire parser is a series of extremely simple and small passes,
+ we no longer must plan ahead carefully the phases of parsing (cut points)
+ that would be needed to handle APL, since these cut points fall out naturally
+ from the design.
+ Previous attempts at parsing APL 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bernecky1991compiling,bernecky1992compiler,budd2012apl,bunda1984apl,otto2000apl,sengul2023faster"
+literal "false"
+
+\end_inset
+
+using more traditional designs demonstrate the difficulty in choosing these
+ cut points and the resulting rigidity and inflexibility in design that
+ results.
 \end_layout
 
 \begin_layout Standard
