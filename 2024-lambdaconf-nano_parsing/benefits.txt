@@ -1,0 +1,10 @@
+Nano-parsing:
+
+∘ It is GPU compatible
+∘ It decouples error reporting from the act of parsing, 
+  allowing errors to be dealt with independently
+∘ It allows arbitrary computation at any point
+∘ Well suited for interpreters that may suffer interpretation overhead
+∘ Easier to understand at scale using code inspection
+∘ Easier to see what code will be impacted by a change
+∘ Easy to modify a pass or insert new passes

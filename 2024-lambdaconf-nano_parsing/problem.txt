@@ -1,0 +1,21 @@
+The Perverse Environment:
+
+∘ APL is not formally specified
+∘ There are no existing implementations that are functionally correct
+∘ We need to support different languages together under the same AST
+
+∘ Dynamically typed, but parsing depends on the types of variables
+∘ Mixes dynamic and lexical scope, allowing intermingled function calls
+∘ Extensive use of an eval; introduces bindings into scope
+∘ Highly connected call graphs
+∘ Syntax errors may signal at run time or parse time
+∘ The context of an expression can easily amount to the whole program
+∘ Type-dependent parse trees can combinatorially increase the size of the AST
+∘ Forward references in the source can alter or affect the parse tree
+
+∘ We need industrial strength
+∘ It needs to be fast
+∘ Should be compatible with running on the GPU
+∘ Should be compatible with being token-stream interpreted
+∘ Low developer counts
+∘ Should be efficient enough to fully parse 10 million+ LoC at once in memory

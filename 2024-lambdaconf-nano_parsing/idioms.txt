@@ -1,0 +1,3 @@
+msk←1,1↓(t[p]=C)∧msk⍀⌽≠⌽p⌿⍨msk←t=F
+msk[i] dwv pp3 {⍵⍳r[⍵]}i←⍸t=F
+msk←1,1↓(t[p]=C)∧msk⍀⍉≠⍉p⌿⍨msk←t=F ⋄ (N∆[0⌈t],¨(⍕¨k))[i] dwv pp3 i⍳p[i←⍸0=p I@{(t[⍵]≠F)∨msk[⍵]}⍣≡⍳≢p]
