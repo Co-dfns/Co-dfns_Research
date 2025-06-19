@@ -249,17 +249,11 @@ Brandon Wilson
 research@wilsonb.com
 \end_layout
 
-\begin_layout Affiliation
-\begin_inset Flex Institution
-status open
-
-\begin_layout Plain Layout
-Dyalog, Ltd.
+\begin_layout ORCID
+0009-0001-9190-9206
 \end_layout
 
-\end_inset
-
-
+\begin_layout Affiliation
 \begin_inset Flex City
 status open
 
@@ -686,7 +680,8 @@ The context of an expression can amount to the whole program quite easily
 \end_layout
 
 \begin_layout Itemize
-Type-dependent parse trees can combinatorial increase the size of the AST
+Type-dependent parse trees can combinatorially increase the size of the
+ AST
 \end_layout
 
 \begin_layout Itemize
